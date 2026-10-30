@@ -1,5 +1,8 @@
-//! `space`: uploads `space/` to the Hugging Face Space with the pinned `hf` CLI (run through uvx, so nothing is
+//! `space`: uploads `space/` to the Hugging Face Space with the pinned `huggingface_hub` (run through uvx, so nothing is
 //! installed globally), then follows the runtime until the new build is RUNNING or fails.
+//!
+//! `HfApi.upload_folder` is called directly rather than `hf upload`: the CLI calls `create_repo(exist_ok=True)` first,
+//! which a free account is refused (HTTP 402, "Gradio Spaces on cpu-basic require PRO") even when the Space exists.
 
 use std::thread::sleep;
 use std::time::{Duration, Instant};
@@ -13,7 +16,7 @@ use crate::paths;
 use crate::secret::Secret;
 
 const HF_CLI: &str = "huggingface_hub==0.36.2";
-/// Not uploaded: tests, caches and editor/OS litter. `hf upload` matches with fnmatch, where `*` also crosses `/`.
+/// Not uploaded: tests, caches and editor/OS litter. `upload_folder` matches with fnmatch, where `*` also crosses `/`.
 pub const EXCLUDE: &[&str] =
     &["tests/*", "*__pycache__*", "*.pyc", "*.pytest_cache*", "*.DS_Store", "*.ruff_cache*", "*.venv*", "*.egg-info*"];
 const POLL: Duration = Duration::from_secs(10);
@@ -21,15 +24,18 @@ const TIMEOUT: Duration = Duration::from_secs(30 * 60);
 /// Polls of unchanged RUNNING (with no commit info) that count as "nothing to rebuild".
 const SETTLE_POLLS: u32 = 9;
 
+/// Python run by uvx: `argv` = repo, folder, commit message, then exclude patterns. The token comes from `HF_TOKEN`.
+const UPLOAD_SCRIPT: &str = "import sys; from huggingface_hub import HfApi; \
+r = HfApi().upload_folder(repo_id=sys.argv[1], repo_type='space', folder_path=sys.argv[2], \
+commit_message=sys.argv[3], ignore_patterns=sys.argv[4:]); print(r.commit_url)";
+
 /// Arguments to `uvx`. The token is not among them: it goes through the `HF_TOKEN` environment variable.
 pub fn upload_args(space_dir: &str, message: &str) -> Vec<String> {
-    let mut args: Vec<String> = ["--from", HF_CLI, "hf", "upload", SPACE_REPO, space_dir, ".", "--repo-type", "space"]
-        .iter()
-        .map(|s| (*s).to_owned())
-        .collect();
-    args.push("--commit-message".to_owned());
-    args.push(message.to_owned());
-    args.push("--exclude".to_owned());
+    let mut args: Vec<String> =
+        ["--from", HF_CLI, "python", "-I", "-c", UPLOAD_SCRIPT, SPACE_REPO, space_dir, message]
+            .iter()
+            .map(|s| (*s).to_owned())
+            .collect();
     args.extend(EXCLUDE.iter().map(|s| (*s).to_owned()));
     args
 }
@@ -90,10 +96,10 @@ mod tests {
     #[test]
     fn upload_args_pin_the_cli_and_carry_no_token() {
         let args = upload_args("/repo/space", "nolabs-reader abc");
-        assert_eq!(&args[..4], ["--from", "huggingface_hub==0.36.2", "hf", "upload"]);
-        assert_eq!(&args[4..9], ["ibrahimar397/nolabs-engine", "/repo/space", ".", "--repo-type", "space"]);
-        let ex = args.iter().position(|a| a == "--exclude").unwrap();
-        assert_eq!(&args[ex + 1..], EXCLUDE);
+        assert_eq!(&args[..5], ["--from", "huggingface_hub==0.36.2", "python", "-I", "-c"]);
+        assert!(args[5].contains("upload_folder") && !args[5].contains("create_repo"));
+        assert_eq!(&args[6..9], ["ibrahimar397/nolabs-engine", "/repo/space", "nolabs-reader abc"]);
+        assert_eq!(&args[9..], EXCLUDE);
         assert!(args.iter().all(|a| !a.contains("token") && !a.starts_with("hf_")));
     }
 
