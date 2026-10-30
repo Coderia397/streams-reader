@@ -4,6 +4,21 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D18. Mark v2: the pixel book (designer B, with the judges' fixes)
+- Decision: B's concept (a page stack drawn like the Streams cube's depth band, which bows into a sound arc) became the Streams Reader mark. Scores were A 199, B 206, C 0 (C submitted nothing). Applied fixes:
+  - The silhouette closes at the bottom right with the cube's three-step diagonal, so it shares the cube's outline cells.
+  - The folded corner was replaced by a book spine (column 2), so the mark reads as a book, not a document.
+  - The text lines are 5, 3 and 4 pixels long.
+  - The inner voice arc is symmetric on rows 5-11 and never touches the page edge or the outer arc.
+  - The ember pixel is removed from every app icon, favicon and Android layer. It survives only in `streams-reader-mark-ember.svg`, for 128 px and up.
+  - The white and one-colour marks are pure.
+  - The tile gradient is faint (2.4 % lightness). The tile gets A's quarter-cell blue-800 shadow at 32 % and the hairline rim.
+  - A's 640 px mark is used on the 1024 tile (40 px cells).
+  - Every export is drawn at its own size with whole-pixel cells. At 32 px and below the bare blue mark is used, as in Streams' favicon.
+- Rejected: B's folded corner (read as a Google Docs or file icon), the ember pixel on the tile (judges: it reads as a stray dot and breaks white-on-blue), B's 2.83 dp Android cells and the blur filter in the foreground layer, and A's book-and-equaliser (wide, flat, no cube silhouette).
+- Old mark and icons: `brand/archive/v1/`.
+- Decided by: assistant on the owner's delegation (D17); owner may veto.
+
 ### D17. Brand icon direction v2: pixel-grid sibling mark + voxel mascot illustrations
 - Owner feedback on brand v1 (contact sheet): "a bit unprofessional … kinda like it, not fully". Assistant's diagnosis: the cursor-waveform mark reads as an X/bone and vanishes on a dark tile; spots look clip-art (heavy navy fills, uneven strokes, circle plates).
 - Decision: app icon = a Streams-family mark on the same 16×16 pixel grid as Streams' pixel-cube S (an open book whose pages become sound bars) on a Streams-blue tile, white mark, legible at 16 px; illustrations = the voxel character from the film as a recurring mascot, rendered from the same 3D scene as transparent PNG/WebP spots (20 presets, `media/spots/`); UI icons stay Remix Icon.

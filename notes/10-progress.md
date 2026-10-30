@@ -4,6 +4,15 @@ Progress log, newest first. Each entry: done, blocked, next.
 
 ## 2026-10-30
 
+### Late evening, brand mark v2 (D18)
+- Done: the pixel book mark is in `brand/src/mark.txt`.
+  - Wrote `brand/brandkit/pixel.py` and rewrote `icons.py` so every export is drawn per size with whole-pixel cells.
+  - Regenerated all exports with `uv run --script brand/build.py` (about 26 s): web, Android, macOS .icns, Windows .ico, Linux, Tauri, OG, the new `dist/email/` and the contact sheet.
+  - `brand/tests` has 25 tests, all passing (verified 2026-10-30). The tests include an exact 16/32/48 px grid match on Void and Paper, a check that ember appears only in the -ember variant, and Android layer checks.
+  - v1 is archived in `brand/archive/v1/`.
+- Open: `crates/web/tools/make_icons.py` still draws v1 icons. To unblock, copy `brand/dist/web/*` into the web app. There is no `crates/mail` yet; its logos are in `brand/dist/email/`.
+- Open: the owner has not yet seen the v2 contact sheet (`brand/dist/contact-sheet.png`). The spots wait for the voxel mascot renders.
+
 ### Evening, design research
 - Done: studied ElevenReader Android v1.7.30 over ADB (35 screenshots plus UI dumps, read-only) and the public elevenreader.io pages; wrote [12-design-benchmark.md](12-design-benchmark.md) with the inventory, feature parity gaps and the design brief. Screenshots are in `raw/design-private/` (gitignored).
 - Side effect: an accidental playback of about 45 s moved one title's position from 7:03 to 7:48 in the owner's ElevenReader account; nothing else changed.
