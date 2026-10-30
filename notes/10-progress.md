@@ -4,6 +4,10 @@ Progress log, newest first. Each entry: done, blocked, next.
 
 ## 2026-10-30
 
+### Late evening, phase 1 accounts (branch of the accounts agent; see note 17)
+- Done: Supabase migrations 0001–0004 applied to `atxbmgfuxjtcwmoaldqy` (profiles, invites, documents, progress, bookmarks, voices, budget_shares; forced RLS; invite-only sign-up hook + trigger; passwords disabled; Realtime on progress/documents); auth config applied (email OTP 6 digits/10 min, redirects, Send Email hook, manual linking); owner account seeded as admin; live check 22/22; advisors clean except HIBP (Pro only). Worker/server: Supabase JWT auth (ES256 JWKS cache + optional HS256), audio URL tokens, ownership via PostgREST with D1 cache, per-user GPU share, `/hooks/auth-email` with `crates/mail` (8 languages, Brevo). xtask: `supabase-migrate`, `supabase-auth`, `supabase-owner`, `supabase-check`, `invite`, `auth-provider`; deploy binds the new vars/secrets; smoke/status run as a throwaway user. All native tests and clippy (native + wasm) pass.
+- Blocked: sign-in emails until the Worker is deployed at `listen.streams.watch`; OAuth until provider credentials exist.
+- Next: lead merges, runs D1 `migrate`, `build`, `deploy`, attaches the domain, `smoke`; web app sign-in (note 17, "What the web app must change").
 ### Evening, design research
 - Done: studied ElevenReader Android v1.7.30 over ADB (35 screenshots plus UI dumps, read-only) and the public elevenreader.io pages; wrote [12-design-benchmark.md](12-design-benchmark.md) with the inventory, feature parity gaps and the design brief. Screenshots are in `raw/design-private/` (gitignored).
 - Side effect: an accidental playback of about 45 s moved one title's position from 7:03 to 7:48 in the owner's ElevenReader account; nothing else changed.

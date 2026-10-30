@@ -114,6 +114,19 @@ impl EnvFile {
     }
 }
 
+/// Adds `key=value` at the end of an existing credential file, keeping every other line (and its comments) as it is.
+/// The value must not need quoting (see [`render`]).
+pub fn append_private(path: &Path, key: &str, value: &str) -> Result<()> {
+    let existing = fs::read_to_string(path).with_context(|| format!("cannot read {}", tilde(path)))?;
+    let line = render("", &[(key, value)])?;
+    let mut content = existing;
+    if !content.is_empty() && !content.ends_with('\n') {
+        content.push('\n');
+    }
+    content.push_str(&line);
+    write_private(path, &content)
+}
+
 #[cfg(unix)]
 fn warn_if_readable_by_others(path: &Path) {
     use std::os::unix::fs::PermissionsExt as _;

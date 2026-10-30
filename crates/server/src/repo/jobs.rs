@@ -32,6 +32,10 @@ pub struct JobRow {
     pub retry_at_ms: Option<i64>,
     pub error_code: Option<ErrorCode>,
     pub error_message: Option<String>,
+    /// Who asked for it: GPU time is charged to this user.
+    pub user_id: String,
+    /// The user's daily GPU share when the job was admitted, for re-checks without a token.
+    pub gpu_share_s: u32,
     pub created_at_ms: i64,
     pub updated_at_ms: i64,
 }
@@ -52,6 +56,8 @@ impl JobRow {
             retry_at_ms: row::opt_i64(r, "retry_at_ms")?,
             error_code: row::opt_str(r, "error_code")?.map(|c| parse_enum(&c)).transpose()?,
             error_message: row::opt_str(r, "error_message")?,
+            user_id: row::str(r, "user_id")?,
+            gpu_share_s: row::u32(r, "gpu_share_s")?,
             created_at_ms: row::i64(r, "created_at_ms")?,
             updated_at_ms: row::i64(r, "updated_at_ms")?,
         })
@@ -83,6 +89,8 @@ pub struct NewJob {
     pub requested_s: u32,
     pub retry_at_ms: Option<i64>,
     pub error: Option<ApiError>,
+    pub user_id: String,
+    pub gpu_share_s: u32,
 }
 
 /// A compare-and-set transition: applies only while the job is still in `from`.
@@ -115,6 +123,8 @@ impl Repo<'_> {
                 job.retry_at_ms.into(),
                 code,
                 message,
+                job.user_id.as_str().into(),
+                job.gpu_share_s.into(),
                 now_ms.into(),
                 now_ms.into(),
             ],
@@ -174,11 +184,12 @@ impl Repo<'_> {
     }
 
     /// `(job id, requested seconds)` of every admitted Ming job that has not reached the GPU yet.
-    pub async fn pending_gpu_requests(&self) -> Result<Vec<(String, u32)>, PortError> {
+    /// Queued Ming jobs as (job id, requested seconds, user id).
+    pub async fn pending_gpu_requests(&self) -> Result<Vec<(String, u32, String)>, PortError> {
         self.all(sql::JOB_PENDING_GPU, vec![])
             .await?
             .iter()
-            .map(|r| Ok((row::str(r, "id")?, row::u32(r, "requested_s")?)))
+            .map(|r| Ok((row::str(r, "id")?, row::u32(r, "requested_s")?, row::str(r, "user_id")?)))
             .collect()
     }
 

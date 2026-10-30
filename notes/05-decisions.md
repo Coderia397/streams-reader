@@ -4,6 +4,9 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D18–D24. Accounts phase 1 decisions
+- Recorded in [17-accounts-phase-1.md](17-accounts-phase-1.md) (Supabase schema and RLS, invite-only sign-up for every provider, email OTP only (no passwords), identity linking rules, per-user GPU share, JWT verification in the Worker, email hook through Brevo). Renumbered from the agent's D13–D19 when merged.
+
 ### D17. Brand icon direction v2: pixel-grid sibling mark + voxel mascot illustrations
 - Owner feedback on brand v1 (contact sheet): "a bit unprofessional … kinda like it, not fully". Assistant's diagnosis: the cursor-waveform mark reads as an X/bone and vanishes on a dark tile; spots look clip-art (heavy navy fills, uneven strokes, circle plates).
 - Decision: app icon = a Streams-family mark on the same 16×16 pixel grid as Streams' pixel-cube S (an open book whose pages become sound bars) on a Streams-blue tile, white mark, legible at 16 px; illustrations = the voxel character from the film as a recurring mascot, rendered from the same 3D scene as transparent PNG/WebP spots (20 presets, `media/spots/`); UI icons stay Remix Icon.
@@ -81,5 +84,7 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 - Reason: proven on the same accounts; the user maintains these patterns already.
 - Decided by: assistant.
 
+D10–D12 are in note 14; D13–D19 (accounts phase 1: no service key in the Worker, atomic invite redemption, no passwords, per-user GPU share, audio URL tokens, brand constant, Bearer + CORS) are in note 15.
+
 ## Open items
-- Subdomain name: waiting on the user.
+- Subdomain name: decided as `listen.streams.watch`, product name "Streams Reader" (owner, 2026-10-30).

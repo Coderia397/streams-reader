@@ -31,11 +31,10 @@ commit_message=sys.argv[3], ignore_patterns=sys.argv[4:]); print(r.commit_url)";
 
 /// Arguments to `uvx`. The token is not among them: it goes through the `HF_TOKEN` environment variable.
 pub fn upload_args(space_dir: &str, message: &str) -> Vec<String> {
-    let mut args: Vec<String> =
-        ["--from", HF_CLI, "python", "-I", "-c", UPLOAD_SCRIPT, SPACE_REPO, space_dir, message]
-            .iter()
-            .map(|s| (*s).to_owned())
-            .collect();
+    let mut args: Vec<String> = ["--from", HF_CLI, "python", "-I", "-c", UPLOAD_SCRIPT, SPACE_REPO, space_dir, message]
+        .iter()
+        .map(|s| (*s).to_owned())
+        .collect();
     args.extend(EXCLUDE.iter().map(|s| (*s).to_owned()));
     args
 }

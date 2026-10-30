@@ -1,16 +1,15 @@
-//! `status`: the Space runtime from the Hugging Face API and the app's own `/api/status` (which needs a login, so it
-//! uses the passphrase from app.env). Either half is reported even when the other fails.
+//! `status`: the Space runtime from the Hugging Face API and the app's own `/api/status` (which needs a signed-in
+//! user, so it runs as a throwaway one). Either half is reported even when the other fails.
 
-use anyhow::{Context as _, Result, bail};
+use anyhow::{Result, bail};
 use nolabs_core::proto::api::SystemStatus;
 
 use crate::api::Api;
-use crate::envfile::EnvFile;
 use crate::hf::Hf;
 use crate::names::SPACE_REPO;
 use crate::paths::{self, tilde};
-use crate::secret::Secret;
 use crate::state::State;
+use crate::test_user::with_test_user;
 
 /// `--base`, else the URL `deploy` recorded.
 pub fn resolve_base(base: Option<String>) -> Result<String> {
@@ -24,16 +23,11 @@ pub fn resolve_base(base: Option<String>) -> Result<String> {
     }
 }
 
-pub fn login_passphrase() -> Result<Secret> {
-    let path = paths::app_env()?;
-    let env = EnvFile::load(&path).with_context(|| "run `cargo xtask passphrase` first")?;
-    Ok(env.secret("PASSPHRASE")?.clone())
-}
-
 pub fn print_system_status(s: &SystemStatus) {
     println!("app version   {}", s.version);
     println!("space         {} (healthy: {}, checked {} ms)", s.space.stage, s.space.healthy, s.space.checked_at_ms);
     println!("gpu budget    {}/{} s, {}/{} runs", s.gpu.used_s, s.gpu.cap_s, s.gpu.runs_used, s.gpu.runs_cap);
+    println!("your share    {}/{} s", s.my_gpu.used_s, s.my_gpu.share_s);
     if let Some(at) = s.gpu.resets_at_ms {
         println!("gpu resets    {at} ms");
     }
@@ -68,14 +62,13 @@ fn space_status() -> Result<()> {
 
 fn app_status(base: Option<String>) -> Result<()> {
     let base = resolve_base(base)?;
-    let passphrase = login_passphrase()?;
-    let mut api = Api::new(&base)?;
-    api.login(&passphrase)?;
-    let status = api.get_json::<SystemStatus>("/api/status");
-    let _ = api.logout();
-    println!("app {}:", api.base());
-    print_system_status(&status?);
-    Ok(())
+    with_test_user("status", |user| {
+        let api = Api::new(&base, &user.session.access_token)?;
+        let status = api.get_json::<SystemStatus>("/api/status")?;
+        println!("app {}:", api.base());
+        print_system_status(&status);
+        Ok(())
+    })
 }
 
 #[cfg(test)]

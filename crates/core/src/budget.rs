@@ -97,7 +97,48 @@ pub fn estimate_seconds(policy: &GpuPolicy, chars: usize) -> u32 {
 /// admitted with a zero request (there is nothing to run).
 pub fn admit(policy: &GpuPolicy, history: &[GpuUse], now_ms: i64, item_chars: &[usize]) -> Admission {
     let budget = view(policy, history, now_ms);
-    let defer = Admission::Defer { retry_at_ms: budget.resets_at_ms.unwrap_or(now_ms.saturating_add(DAY_MS)) };
+    admit_within(policy, &budget, budget.resets_at_ms, now_ms, item_chars)
+}
+
+/// One user's slice of the deployment's budget: their own uses and their daily share in seconds.
+#[derive(Debug, Clone, Copy)]
+pub struct Share<'a> {
+    pub daily_s: u32,
+    pub history: &'a [GpuUse],
+}
+
+/// [`admit`] for one user: the call must fit the deployment's budget (`all`, which also holds the runs cap, an HF
+/// account limit shared by everyone) and the user's own share. When the share is what blocks, the retry time is
+/// when the user's own window resets, not the deployment's.
+pub fn admit_for_user(
+    policy: &GpuPolicy,
+    all: &[GpuUse],
+    share: Share<'_>,
+    now_ms: i64,
+    item_chars: &[usize],
+) -> Admission {
+    let global = view(policy, all, now_ms);
+    let user_policy = GpuPolicy { daily_cap_s: share.daily_s.min(policy.daily_cap_s), runs_cap: u32::MAX, ..*policy };
+    let mine = view(&user_policy, share.history, now_ms);
+    let (limit, resets) = if mine.remaining_s < global.remaining_s {
+        (BudgetView { runs_left: global.runs_left, ..mine }, mine.resets_at_ms)
+    } else {
+        (global, global.resets_at_ms)
+    };
+    // A share too small for even one item, with nothing used yet, has no reset time: it waits a day.
+    admit_within(policy, &limit, resets.or(global.resets_at_ms), now_ms, item_chars)
+}
+
+/// The admission rule over an already computed view: `remaining_s` and `runs_left` from `budget`, deferring to
+/// `resets_at_ms` (or a day from now when unknown).
+fn admit_within(
+    policy: &GpuPolicy,
+    budget: &BudgetView,
+    resets_at_ms: Option<i64>,
+    now_ms: i64,
+    item_chars: &[usize],
+) -> Admission {
+    let defer = Admission::Defer { retry_at_ms: resets_at_ms.unwrap_or(now_ms.saturating_add(DAY_MS)) };
     if item_chars.is_empty() {
         return Admission::Admit { request_s: 0 };
     }
