@@ -4,6 +4,13 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D13. Product name: Streams Reader
+- Decision: the product is **Streams Reader**, a sub-brand of Streams (streams.watch), at `listen.streams.watch`. The user proposed "Streams Reader / Streams Books / Streams something" and delegated the choice.
+- Reason: one brand family with the user's film app; says exactly what it is; "listen" (the address) is the action, "Reader" is the product.
+- Rejected: standalone names. Checked 2026-10-30 with the naming skill script (.com via Verisign RDAP, crates.io, GitHub user/org; .app returned unknown): rawi, sada, lilt, murmur, verso, hakawati, lectern, cadenza, qari, raawi — all 10 .com taken and all 10 GitHub names taken; crates free for rawi, sada, hakawati, qari, raawi. Trademarks and app stores not checked.
+- Follow-up: display name lives in one constant per surface; GitHub repo renamed to `streams-reader`; internal resource names (`nolabs-*`) kept until a planned rename refactor.
+- Decided by: assistant on the user's direction ("take care of everything").
+
 ### D9. Native apps with Tauri 2, and all eight extra features are in scope
 - Decision: Tauri 2 apps for macOS, Windows, Linux, Android sharing the Leptos UI, with native playback, media controls, downloads and self-updating (note 11). In scope (user: "yes for all the eight things"): cross-device sync, offline downloads, share into the app / open files, lock-screen + headset + car controls, invite-only accounts with a fair split of expressive minutes, Arabic, whole books in the cloned voice overnight (Kaggle), library export/backup.
 - Also in scope (user, later the same evening): final name and logo; home-screen widget (resume/play); import from Google Drive and Kindle; notification when a long render finishes; "read this page" button for desktop browsers; several users on every platform.
