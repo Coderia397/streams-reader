@@ -23,6 +23,11 @@ All calls: plain Gradio HTTP API (`POST /gradio_api/call/<api>` then SSE), `Auth
 ### GPU runs used today
 1 run (the Ming measurement above) at about 19:08 UTC. The window resets about 19:08 UTC on 2026-10-31.
 
+### Live deploy and phone checks (2026-10-30, evening)
+- `cargo xtask smoke` against https://nolabs-api.ibrahimar397.workers.dev: passed; first audio 13.7 s after POST /api/render on a cold queue; total 15.66 s (verified).
+- Pixel 8 Chrome, listen.streams.watch: login, document creation, reader and player render; tap play → MediaSource blob audio playing within about 4 s (pre-render on import), 37.3 s buffered, Media Session state playing (verified via CDP over adb).
+- Alice chapters 1-3 (31,125 chars): playback advanced 60.6 s per wall-clock minute for 4 minutes with 200-440 s buffered ahead (verified, CDP poll every 60 s). The screen-off test is INVALID: `mWakefulness` stayed Awake throughout because the owner was using the phone; at 20:26 playback reset, later paused at 42.6 s, and from 20:34 the tab was gone. Re-run with the phone untouched (open).
+
 ## Open items
 - Re-measure Kokoro after the thread fix.
 - Quota attribution: confirm the authenticated call drew on the account's 5 minutes (check `hf spaces zero-gpu quota` or the error text on the next limit hit).
