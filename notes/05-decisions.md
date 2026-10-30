@@ -4,6 +4,12 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D16. Landing v2 open questions (note 15), decided by the assistant on the owner's delegation
+- Standard Ebooks: no Patrons Circle; source books and covers from the public GitHub repos (CC0) and the open Atom feed; honour HTTP 451 withdrawals; never follow their crawler-trap links.
+- A dated, factual comparison with ElevenReader (features, price, platforms) is included; no disparaging claims; date and sources on the section.
+- Withdrawn titles already in a user's library stay; they leave the Explore shelves.
+- Hero media: the 3D film studio loop (note 16, owner's idea) replaces the plain screen recording recommended in note 15; the screen recording stays as the fallback.
+
 ### D15. Every component goes through a find-fix loop on the real thing
 - Decision: after each build phase, adversarial testers exercise the real rendered/running component (real browser, real audio, the phone over ADB), report only reproduced defects, a separate fixer repairs them at the root with tests, and the round repeats until no new defect is found. First applied to the player (workflow `wf_a6ae6ada-16b`, harness in `crates/player/harness/`).
 - Reason: the owner found seek and tracking problems on the Pixel that unit tests missed (Streams lesson: score the real page, not fixtures).
