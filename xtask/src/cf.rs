@@ -48,12 +48,21 @@ pub struct CfError {
 struct Envelope {
     #[serde(default)]
     success: bool,
-    #[serde(default)]
+    /// Some APIs (Queues) send `"errors": null` on success.
+    #[serde(default, deserialize_with = "null_as_empty")]
     errors: Vec<CfMessage>,
     #[serde(default)]
     result: Value,
     #[serde(default)]
     result_info: Option<ResultInfo>,
+}
+
+fn null_as_empty<'de, D, T>(de: D) -> Result<Vec<T>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+    T: Deserialize<'de>,
+{
+    Ok(Option::<Vec<T>>::deserialize(de)?.unwrap_or_default())
 }
 
 #[derive(Debug, Deserialize)]

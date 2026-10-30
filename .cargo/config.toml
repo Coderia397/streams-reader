@@ -10,3 +10,6 @@ incremental = false
 [profile.test]
 debug = 0
 incremental = false
+
+[alias]
+xtask = "run -q -p xtask --"
