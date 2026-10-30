@@ -1,0 +1,11 @@
+[package]
+name = "nolabs-worker"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+nolabs-core.workspace = true

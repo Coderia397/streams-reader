@@ -1,0 +1,12 @@
+# Media Session types in web-sys are behind this cfg.
+[target.wasm32-unknown-unknown]
+rustflags = ["--cfg=web_sys_unstable_apis"]
+
+# Small target directory: the laptop has little free disk, and debug info is rarely needed here.
+[profile.dev]
+debug = 0
+incremental = false
+
+[profile.test]
+debug = 0
+incremental = false

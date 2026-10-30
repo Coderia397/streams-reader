@@ -1,0 +1,961 @@
+{
+ "US_Emma": {
+  "desc": "female, American",
+  "variants": []
+ },
+ "US_James": {
+  "desc": "male, American",
+  "variants": []
+ },
+ "US_Stella": {
+  "desc": "female, American",
+  "variants": []
+ },
+ "UK_George": {
+  "desc": "male, British",
+  "variants": []
+ },
+ "UK_Charlotte": {
+  "desc": "female, British",
+  "variants": []
+ },
+ "灵小安": {
+  "desc": "Female, Teenage girl. Sweet, crisp and energetic, with an approachable, cute anime-style delivery.",
+  "variants": []
+ },
+ "灵语汐": {
+  "desc": "Female, Teenage girl. Clear, bright and youthful, with a sunny, energetic delivery.",
+  "variants": []
+ },
+ "灵小萌": {
+  "desc": "Female, Young adult. Bright, crisp and brisk, with an energetic yet dependable delivery.",
+  "variants": []
+ },
+ "灵小柔": {
+  "desc": "Female, Young adult. Clear, sweet and articulate, with polite, patient and professional intonation.",
+  "variants": []
+ },
+ "灵小雅": {
+  "desc": "Female, Young adult. Sweet, bright and youthful, with an energetic delivery.",
+  "variants": []
+ },
+ "花小呗": {
+  "desc": "Female, Teenage girl. Crisp and sweet, with a distinctly childlike, lively delivery.",
+  "variants": []
+ },
+ "灵韵": {
+  "desc": "Female, Young adult. Bright and crisp, with brisk, dependable delivery.",
+  "variants": []
+ },
+ "妩媚妲己": {
+  "desc": "Female, Young adult. Sweet and crisp, with light, rising intonation and an alluring delivery.",
+  "variants": []
+ },
+ "灵婉": {
+  "desc": "Female, Teenage girl. Clear and sweet, with a youthful, intimate and soothing delivery.",
+  "variants": []
+ },
+ "灵小月": {
+  "desc": "Female, Young adult. Sweet, clear and energetic, with cheerful, welcoming intonation.",
+  "variants": []
+ },
+ "灵朵儿": {
+  "desc": "Female, Young adult. Warm, thoughtful and approachable, with an unhurried, soothing storytelling style.",
+  "variants": []
+ },
+ "灵岩": {
+  "desc": "Male, Young adult. Clear, formal and professional.",
+  "variants": []
+ },
+ "灵小锋": {
+  "desc": "Male, Young adult. Warm and resonant, with natural confidence and a balance of friendliness and maturity.",
+  "variants": []
+ },
+ "灵小川": {
+  "desc": "Male, Young adult. Warm, mellow and resonant, with sensitive, expressive delivery.",
+  "variants": []
+ },
+ "灵小甄": {
+  "desc": "Female, Young adult. Bright, crisp and lively, with a friendly, persuasive recommendation style.",
+  "variants": []
+ },
+ "灵小知": {
+  "desc": "Female, Young adult. Bright and confident, with strong, articulate and persuasive delivery.",
+  "variants": []
+ },
+ "灵小惠": {
+  "desc": "Female, Young adult. Very fast and penetrating, conveying urgency, enthusiasm and professional confidence.",
+  "variants": []
+ },
+ "灵小晴": {
+  "desc": "Female, Young adult. Very fast yet clear, with a powerful, bright delivery that conveys urgency.",
+  "variants": []
+ },
+ "灵小琪": {
+  "desc": "Male, Young adult. Sunny, friendly and natural, with an enthusiastic recommendation style.",
+  "variants": []
+ },
+ "灵梦": {
+  "desc": "Female, Young adult. Very sweet and youthful, with playful, affectionate delivery.",
+  "variants": []
+ },
+ "灵恬": {
+  "desc": "Female, Young adult. Honey-sweet, with a gently playful yet assured romantic delivery.",
+  "variants": []
+ },
+ "灵小汐": {
+  "desc": "Female, Young adult. Clear and sweet, with relaxed, natural and endearingly innocent delivery.",
+  "variants": []
+ },
+ "灵小棠": {
+  "desc": "Female, Young adult. Clear and warm, with calm pacing and a gentle, experienced storytelling style.",
+  "variants": []
+ },
+ "灵小梨": {
+  "desc": "Female, Young adult. Sweet and clear, combining youthful playfulness with gentle, expressive narration.",
+  "variants": []
+ },
+ "灵舒": {
+  "desc": "Female, Young adult. Gentle and thoughtful, with natural pauses and conversational fillers that evoke everyday life.",
+  "variants": []
+ },
+ "灵娇": {
+  "desc": "Female, Young adult. Sweet, bright and lively, with vivid, youthful storytelling.",
+  "variants": []
+ },
+ "灵小芸": {
+  "desc": "Female, Young adult. Warm and thoughtful, with sincere, calm and sensitive delivery.",
+  "variants": []
+ },
+ "灵锐": {
+  "desc": "Male, Young adult. Standard pronunciation and natural delivery, with pauses and self-corrections conveying difficult choices and determination.",
+  "variants": []
+ },
+ "灵空": {
+  "desc": "Male, Young adult. Low and resonant, with close, breathy delivery that conveys affection and reassurance.",
+  "variants": []
+ },
+ "灵宇": {
+  "desc": "Male, Young adult. Youthful and resonant, with a confident smile and gentle teasing.",
+  "variants": []
+ },
+ "灵朗": {
+  "desc": "Male, Young adult. Low and resonant, combining confident warmth with affectionate reassurance.",
+  "variants": []
+ },
+ "灵楷": {
+  "desc": "Male, Young adult. Warm and resonant, with slow, soothing late-night-radio narration.",
+  "variants": []
+ },
+ "灵旭": {
+  "desc": "Male, Young adult. Clear, youthful and scholarly, with calm, gentle storytelling.",
+  "variants": []
+ },
+ "灵骁": {
+  "desc": "Male, Young adult. Gentle and sincere, with natural hesitation and repetition conveying fond memories.",
+  "variants": []
+ },
+ "灵江": {
+  "desc": "Male, Young adult. Warm and resonant, with relaxed, heartfelt reflections on youth and enthusiasm.",
+  "variants": []
+ },
+ "悲伤女声": {
+  "desc": "Female, Young adult. Gentle yet determined, with a thoughtful, intimate storytelling style.",
+  "variants": []
+ },
+ "皮六": {
+  "desc": "Male, Young adult. Bright, youthful and confident, with strong contrast and dramatic emphasis.",
+  "variants": []
+ },
+ "说唱小哥": {
+  "desc": "Male, Young adult. Clear and rhythmic, with rap-like pacing and a relaxed, independent delivery.",
+  "variants": []
+ },
+ "蜡笔小新": {
+  "desc": "Male, Child. Low and full, with slow, innocent and distinctly cartoon-like delivery.",
+  "variants": []
+ },
+ "悟空": {
+  "desc": "Male, Young adult. Highly expressive and theatrical, with vivid but measured exaggeration.",
+  "variants": []
+ },
+ "蜡笔小新_野原新之助 (小新)": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "蜡笔小新_野原美伢 (美伢)": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "小猪佩奇_佩奇": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "康熙王朝_康熙": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "西游记_唐僧": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "甄嬛传_四郎": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "潜伏_余则成": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "水浒传_武松": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "水浒传_潘金莲": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "雍正王朝_雍正": {
+  "desc": "-, -. -",
+  "variants": []
+ },
+ "灵信远": {
+  "desc": "Male, Young adult. Clear and warm, with a slight smile and audible breath, balancing youthful freshness and mature affection.",
+  "variants": [
+   "灵信远_生气",
+   "灵信远_厌恶",
+   "灵信远_惊讶",
+   "灵信远_高兴",
+   "灵信远_恐惧",
+   "灵信远_中性",
+   "灵信远_悲伤"
+  ]
+ },
+ "灵思齐": {
+  "desc": "Male, Young adult. Sunny, bright and engaging, with sincere praise and approachable warmth.",
+  "variants": [
+   "灵思齐_高兴",
+   "灵思齐_恐惧",
+   "灵思齐_生气",
+   "灵思齐_厌恶",
+   "灵思齐_中性",
+   "灵思齐_惊讶",
+   "灵思齐_悲伤"
+  ]
+ },
+ "灵叙柔": {
+  "desc": "Female, Young to middle-aged adult. Composed and dignified, with clear articulation and a balance of authority and gentle narration.",
+  "variants": [
+   "灵叙柔_高兴",
+   "灵叙柔_恐惧",
+   "灵叙柔_惊讶",
+   "灵叙柔_悲伤",
+   "灵叙柔_生气",
+   "灵叙柔_中性",
+   "灵叙柔_厌恶"
+  ]
+ },
+ "灵绮木": {
+  "desc": "Female, Young to middle-aged adult. Professional yet approachable, with gentle, assured delivery.",
+  "variants": [
+   "灵绮木_悲伤",
+   "灵绮木_厌恶",
+   "灵绮木_中性",
+   "灵绮木_恐惧",
+   "灵绮木_惊讶",
+   "灵绮木_高兴",
+   "灵绮木_生气"
+  ]
+ },
+ "灵书悦": {
+  "desc": "Female, Young adult. Crisp and pleasant, balancing objective narration with lively, humorous commentary.",
+  "variants": [
+   "灵书悦_恐惧",
+   "灵书悦_厌恶",
+   "灵书悦_高兴",
+   "灵书悦_惊讶",
+   "灵书悦_悲伤",
+   "灵书悦_生气",
+   "灵书悦_中性"
+  ]
+ },
+ "灵渊霆": {
+  "desc": "Male, Middle-aged adult. Youthful, natural and relaxed, like a familiar friend making a casual invitation.",
+  "variants": [
+   "灵渊霆_厌恶",
+   "灵渊霆_中性",
+   "灵渊霆_恐惧",
+   "灵渊霆_惊讶",
+   "灵渊霆_悲伤",
+   "灵渊霆_生气",
+   "灵渊霆_高兴"
+  ]
+ },
+ "灵素心": {
+  "desc": "Female, Teenage girl. Sweet, crisp and energetic, with lively, curious intonation.",
+  "variants": [
+   "灵素心_高兴",
+   "灵素心_惊讶",
+   "灵素心_恐惧",
+   "灵素心_中性",
+   "灵素心_生气",
+   "灵素心_悲伤",
+   "灵素心_厌恶"
+  ]
+ },
+ "灵晓声": {
+  "desc": "Male, Young adult. Youthful and resonant, with calm confidence and an assertive, charismatic delivery.",
+  "variants": [
+   "灵晓声_惊讶",
+   "灵晓声_厌恶",
+   "灵晓声_高兴",
+   "灵晓声_生气",
+   "灵晓声_中性",
+   "灵晓声_悲伤"
+  ]
+ },
+ "灵风信": {
+  "desc": "Female, Young adult. Sweet and clear, with warm, concerned and reassuring delivery.",
+  "variants": [
+   "灵风信_生气",
+   "灵风信_中性",
+   "灵风信_厌恶",
+   "灵风信_高兴",
+   "灵风信_惊讶",
+   "灵风信_悲伤",
+   "灵风信_恐惧"
+  ]
+ },
+ "灵采薇": {
+  "desc": "Female, Young adult. Warm and thoughtful, with clear articulation and calm, trustworthy delivery.",
+  "variants": [
+   "灵采薇_惊讶",
+   "灵采薇_厌恶",
+   "灵采薇_恐惧",
+   "灵采薇_生气",
+   "灵采薇_悲伤",
+   "灵采薇_中性",
+   "灵采薇_高兴"
+  ]
+ },
+ "灵卓然": {
+  "desc": "Male, Young or middle-aged adult. Full and resonant, with precise pronunciation and calm, objective delivery.",
+  "variants": [
+   "灵卓然_厌恶",
+   "灵卓然_中性",
+   "灵卓然_恐惧",
+   "灵卓然_惊讶",
+   "灵卓然_高兴",
+   "灵卓然_悲伤",
+   "灵卓然_生气"
+  ]
+ },
+ "灵惜梦": {
+  "desc": "Female, Young adult. Bright and crisp, combining approachable warmth with independence and decisiveness.",
+  "variants": [
+   "灵惜梦_中性",
+   "灵惜梦_厌恶",
+   "灵惜梦_高兴",
+   "灵惜梦_悲伤",
+   "灵惜梦_恐惧",
+   "灵惜梦_惊讶",
+   "灵惜梦_生气"
+  ]
+ },
+ "灵浅忧": {
+  "desc": "Male (boy), Child / adolescent. Bright and crisp, with precise articulation and professional, objective confidence.",
+  "variants": [
+   "灵浅忧_高兴",
+   "灵浅忧_生气",
+   "灵浅忧_厌恶",
+   "灵浅忧_悲伤",
+   "灵浅忧_惊讶",
+   "灵浅忧_恐惧",
+   "灵浅忧_中性"
+  ]
+ },
+ "灵昭野": {
+  "desc": "Male, Young adult. Clear and youthful, with sincere admiration and a warm, captivated delivery.",
+  "variants": [
+   "灵昭野_生气",
+   "灵昭野_高兴",
+   "灵昭野_悲伤",
+   "灵昭野_中性",
+   "灵昭野_厌恶",
+   "灵昭野_恐惧",
+   "灵昭野_惊讶"
+  ]
+ },
+ "灵心澜": {
+  "desc": "Female, Middle-aged; mature and composed. Mature and composed, with assured, discerning and dignified delivery.",
+  "variants": [
+   "灵心澜_厌恶",
+   "灵心澜_惊讶",
+   "灵心澜_生气",
+   "灵心澜_中性",
+   "灵心澜_高兴",
+   "灵心澜_悲伤",
+   "灵心澜_恐惧"
+  ]
+ },
+ "灵犀言": {
+  "desc": "Male, Middle-aged / older adult. Deep and full, with mature composure, firm articulation and an authoritative delivery.",
+  "variants": [
+   "灵犀言_悲伤",
+   "灵犀言_厌恶",
+   "灵犀言_恐惧",
+   "灵犀言_中性",
+   "灵犀言_惊讶",
+   "灵犀言_高兴",
+   "灵犀言_生气"
+  ]
+ },
+ "灵语冰": {
+  "desc": "Female, Young adult. Thoughtful and efficient, with precise articulation and objective, trustworthy delivery.",
+  "variants": [
+   "灵语冰_悲伤",
+   "灵语冰_厌恶",
+   "灵语冰_高兴",
+   "灵语冰_恐惧",
+   "灵语冰_惊讶",
+   "灵语冰_中性",
+   "灵语冰_生气"
+  ]
+ },
+ "灵逸风": {
+  "desc": "Male, Young adult. Fresh and youthful, with relaxed, casual and slightly evasive delivery.",
+  "variants": [
+   "灵逸风_生气",
+   "灵逸风_悲伤",
+   "灵逸风_惊讶",
+   "灵逸风_中性",
+   "灵逸风_恐惧",
+   "灵逸风_高兴",
+   "灵逸风_厌恶"
+  ]
+ },
+ "灵悦澜": {
+  "desc": "Female, Young / teenage girl. Sweet and crisp, with a smiling, approachable and lively delivery.",
+  "variants": [
+   "灵悦澜_中性",
+   "灵悦澜_高兴",
+   "灵悦澜_厌恶",
+   "灵悦澜_恐惧",
+   "灵悦澜_生气",
+   "灵悦澜_悲伤",
+   "灵悦澜_惊讶"
+  ]
+ },
+ "灵惊鸿": {
+  "desc": "Male, Young adult. Brisk and direct, with natural, easygoing business confidence.",
+  "variants": [
+   "灵惊鸿_厌恶",
+   "灵惊鸿_高兴",
+   "灵惊鸿_中性",
+   "灵惊鸿_惊讶",
+   "灵惊鸿_恐惧",
+   "灵惊鸿_生气",
+   "灵惊鸿_悲伤"
+  ]
+ },
+ "灵御心": {
+  "desc": "Female, Young adult. Bright, crisp and direct, with efficient, youthful energy.",
+  "variants": [
+   "灵御心_高兴",
+   "灵御心_中性",
+   "灵御心_生气",
+   "灵御心_恐惧",
+   "灵御心_厌恶",
+   "灵御心_惊讶",
+   "灵御心_悲伤"
+  ]
+ },
+ "灵语恬": {
+  "desc": "Female, Young adult. Clear and gentle, with attentive, earnest delivery.",
+  "variants": [
+   "灵语恬_厌恶",
+   "灵语恬_高兴",
+   "灵语恬_恐惧",
+   "灵语恬_悲伤",
+   "灵语恬_惊讶",
+   "灵语恬_生气",
+   "灵语恬_中性"
+  ]
+ },
+ "灵心恬": {
+  "desc": "Female, Young adult. Crisp and composed, with objective delivery and vivid storytelling.",
+  "variants": [
+   "灵心恬_厌恶",
+   "灵心恬_惊讶",
+   "灵心恬_悲伤",
+   "灵心恬_中性",
+   "灵心恬_恐惧",
+   "灵心恬_高兴",
+   "灵心恬_生气"
+  ]
+ },
+ "灵惜蕊": {
+  "desc": "Female, Young adult. Clear and pleasant, with standard pronunciation and patient, professional warmth.",
+  "variants": [
+   "灵惜蕊_惊讶",
+   "灵惜蕊_厌恶",
+   "灵惜蕊_恐惧",
+   "灵惜蕊_高兴",
+   "灵惜蕊_中性",
+   "灵惜蕊_悲伤",
+   "灵惜蕊_生气"
+  ]
+ },
+ "灵语萱": {
+  "desc": "Female, Young adult. Clear and sweet, with gentle yet firm affection, trust and reassurance.",
+  "variants": [
+   "灵语萱_厌恶",
+   "灵语萱_高兴",
+   "灵语萱_惊讶",
+   "灵语萱_恐惧",
+   "灵语萱_生气",
+   "灵语萱_悲伤",
+   "灵语萱_中性"
+  ]
+ },
+ "灵语烟": {
+  "desc": "Female, Teenage girl / young adult. Bright, crisp and lively, expressing surprise and everyday banter.",
+  "variants": [
+   "灵语烟_生气",
+   "灵语烟_恐惧",
+   "灵语烟_中性",
+   "灵语烟_厌恶",
+   "灵语烟_惊讶",
+   "灵语烟_高兴",
+   "灵语烟_悲伤"
+  ]
+ },
+ "灵律雅": {
+  "desc": "Female, Middle-aged adult. Efficient and grounded in urban life, with restrained, authentic frustration.",
+  "variants": [
+   "灵律雅_恐惧",
+   "灵律雅_生气",
+   "灵律雅_惊讶",
+   "灵律雅_高兴",
+   "灵律雅_厌恶",
+   "灵律雅_中性",
+   "灵律雅_悲伤"
+  ]
+ },
+ "灵惊涛": {
+  "desc": "Male, Young adult. Young male delivery with a distinctive Nanning accent, conveying humorous frustration at an overly cold internet cafe.",
+  "variants": [
+   "灵惊涛_厌恶",
+   "灵惊涛_恐惧",
+   "灵惊涛_高兴",
+   "灵惊涛_悲伤",
+   "灵惊涛_中性",
+   "灵惊涛_惊讶",
+   "灵惊涛_生气"
+  ]
+ },
+ "灵寒陌": {
+  "desc": "Male, Young adult. Clear and youthful, with urgent, innocent attempts to clear up a misunderstanding.",
+  "variants": [
+   "灵寒陌_生气",
+   "灵寒陌_厌恶",
+   "灵寒陌_恐惧",
+   "灵寒陌_高兴",
+   "灵寒陌_中性",
+   "灵寒陌_惊讶",
+   "灵寒陌_悲伤"
+  ]
+ },
+ "灵决冥": {
+  "desc": "Male, Young adult. Resonant and precise, with calm, objective and engaging documentary-style delivery.",
+  "variants": [
+   "灵决冥_悲伤",
+   "灵决冥_厌恶",
+   "灵决冥_生气",
+   "灵决冥_中性",
+   "灵决冥_惊讶",
+   "灵决冥_恐惧",
+   "灵决冥_高兴"
+  ]
+ },
+ "灵亦尘": {
+  "desc": "Male, Young adult. Warm and resonant, with natural, gentle concern and reassuring delivery.",
+  "variants": [
+   "灵亦尘_中性",
+   "灵亦尘_厌恶",
+   "灵亦尘_高兴",
+   "灵亦尘_恐惧",
+   "灵亦尘_生气",
+   "灵亦尘_悲伤",
+   "灵亦尘_惊讶"
+  ]
+ },
+ "灵语尘": {
+  "desc": "Male, Young adult. Low, husky and world-weary, conveying helplessness and resignation.",
+  "variants": [
+   "灵语尘_生气",
+   "灵语尘_高兴",
+   "灵语尘_厌恶",
+   "灵语尘_惊讶",
+   "灵语尘_中性",
+   "灵语尘_悲伤",
+   "灵语尘_恐惧"
+  ]
+ },
+ "灵慈萱": {
+  "desc": "Female, Young adult. Crisp, youthful and natural, with a familiar, slightly urgent delivery.",
+  "variants": [
+   "灵慈萱_高兴",
+   "灵慈萱_厌恶",
+   "灵慈萱_惊讶",
+   "灵慈萱_生气",
+   "灵慈萱_中性",
+   "灵慈萱_悲伤",
+   "灵慈萱_恐惧"
+  ]
+ },
+ "灵妙音": {
+  "desc": "Female, Young adult. Resonant and forceful, with efficient delivery and an unquestionable sense of authority.",
+  "variants": [
+   "灵妙音_中性",
+   "灵妙音_悲伤",
+   "灵妙音_惊讶",
+   "灵妙音_厌恶",
+   "灵妙音_生气",
+   "灵妙音_高兴",
+   "灵妙音_恐惧"
+  ]
+ },
+ "灵断尘": {
+  "desc": "Male, Young adult. Youthful and conversational, with light questions and decisive refusals.",
+  "variants": [
+   "灵断尘_悲伤",
+   "灵断尘_高兴",
+   "灵断尘_惊讶",
+   "灵断尘_恐惧",
+   "灵断尘_中性",
+   "灵断尘_生气",
+   "灵断尘_厌恶"
+  ]
+ },
+ "灵悦兮": {
+  "desc": "Female, Young adult. Bright and crisp, with lively, confident and action-oriented delivery.",
+  "variants": [
+   "灵悦兮_高兴",
+   "灵悦兮_中性",
+   "灵悦兮_生气",
+   "灵悦兮_惊讶",
+   "灵悦兮_厌恶",
+   "灵悦兮_悲伤",
+   "灵悦兮_恐惧"
+  ]
+ },
+ "灵若虚": {
+  "desc": "Female, Middle-aged / older adult. Clean and efficient, with thoughtful, objective yet warm delivery.",
+  "variants": [
+   "灵若虚_恐惧",
+   "灵若虚_惊讶",
+   "灵若虚_中性",
+   "灵若虚_悲伤",
+   "灵若虚_高兴",
+   "灵若虚_厌恶",
+   "灵若虚_生气"
+  ]
+ },
+ "灵熙婉": {
+  "desc": "Female, Middle-aged adult. Sweet and clear, with a smiling, approachable and lively storytelling style.",
+  "variants": [
+   "灵熙婉_厌恶",
+   "灵熙婉_生气",
+   "灵熙婉_惊讶",
+   "灵熙婉_高兴",
+   "灵熙婉_中性",
+   "灵熙婉_恐惧",
+   "灵熙婉_悲伤"
+  ]
+ },
+ "灵旭扬": {
+  "desc": "Male, Young adult. Warm and resonant, with affectionate delivery and a hint of illness-related weakness and desire for attention.",
+  "variants": [
+   "灵旭扬_中性",
+   "灵旭扬_生气",
+   "灵旭扬_恐惧",
+   "灵旭扬_高兴",
+   "灵旭扬_惊讶",
+   "灵旭扬_悲伤",
+   "灵旭扬_厌恶"
+  ]
+ },
+ "灵阅川": {
+  "desc": "Male, Young adult. Deep and resonant, with experienced, composed and dignified storytelling.",
+  "variants": [
+   "灵阅川_生气",
+   "灵阅川_悲伤",
+   "灵阅川_高兴",
+   "灵阅川_厌恶",
+   "灵阅川_惊讶",
+   "灵阅川_中性",
+   "灵阅川_恐惧"
+  ]
+ },
+ "灵未央": {
+  "desc": "Female, Young adult. Sweet and crisp, with playful, rising intonation and confident explanations.",
+  "variants": [
+   "灵未央_高兴",
+   "灵未央_中性",
+   "灵未央_惊讶",
+   "灵未央_悲伤",
+   "灵未央_厌恶",
+   "灵未央_恐惧",
+   "灵未央_生气"
+  ]
+ },
+ "灵妩月": {
+  "desc": "Female, Young adult. Gentle and thoughtful, combining caring, rational advice with quiet strength.",
+  "variants": [
+   "灵妩月_厌恶",
+   "灵妩月_生气",
+   "灵妩月_中性",
+   "灵妩月_惊讶",
+   "灵妩月_恐惧",
+   "灵妩月_高兴",
+   "灵妩月_悲伤"
+  ]
+ },
+ "灵梦瑶": {
+  "desc": "Female, Child. Soft and sweet, with a friendly, earnest and soothing explanatory style.",
+  "variants": [
+   "灵梦瑶_中性",
+   "灵梦瑶_恐惧",
+   "灵梦瑶_高兴",
+   "灵梦瑶_悲伤",
+   "灵梦瑶_惊讶",
+   "灵梦瑶_生气"
+  ]
+ },
+ "灵妙声": {
+  "desc": "Male, Adolescent. Sweet and crisp, with standard pronunciation and a fresh, approachable, professional delivery.",
+  "variants": [
+   "灵妙声_中性",
+   "灵妙声_恐惧",
+   "灵妙声_高兴",
+   "灵妙声_悲伤",
+   "灵妙声_惊讶",
+   "灵妙声_生气"
+  ]
+ },
+ "灵烈瑶": {
+  "desc": "Female, Young adult. Bright and efficient, with clear articulation and objective, logical delivery.",
+  "variants": [
+   "灵烈瑶_中性",
+   "灵烈瑶_厌恶",
+   "灵烈瑶_恐惧",
+   "灵烈瑶_悲伤",
+   "灵烈瑶_惊讶",
+   "灵烈瑶_生气",
+   "灵烈瑶_高兴"
+  ]
+ },
+ "灵幽月": {
+  "desc": "Female, Young adult. Clear and thoughtfully warm, with precise articulation and an appreciative, open-minded delivery.",
+  "variants": [
+   "灵幽月_中性",
+   "灵幽月_厌恶",
+   "灵幽月_恐惧",
+   "灵幽月_悲伤",
+   "灵幽月_惊讶",
+   "灵幽月_生气",
+   "灵幽月_高兴"
+  ]
+ },
+ "灵悦心": {
+  "desc": "Female, Young adult. Warm and thoughtful, with rounded articulation and gentle, uplifting delivery.",
+  "variants": [
+   "灵悦心_中性",
+   "灵悦心_厌恶",
+   "灵悦心_恐惧",
+   "灵悦心_悲伤",
+   "灵悦心_惊讶",
+   "灵悦心_生气",
+   "灵悦心_高兴"
+  ]
+ },
+ "灵汐月": {
+  "desc": "Female, Young adult. Sweet and soothing, with relaxed, heartfelt delivery conveying intimacy and trust.",
+  "variants": [
+   "灵汐月_中性",
+   "灵汐月_厌恶",
+   "灵汐月_恐惧",
+   "灵汐月_悲伤",
+   "灵汐月_惊讶",
+   "灵汐月_生气",
+   "灵汐月_高兴"
+  ]
+ },
+ "灵书意": {
+  "desc": "Male, Young adult. Warm and resonant, with steady, engaging delivery and a comforting late-night-radio feel.",
+  "variants": [
+   "灵书意_中性",
+   "灵书意_厌恶",
+   "灵书意_恐惧",
+   "灵书意_悲伤",
+   "灵书意_惊讶",
+   "灵书意_生气",
+   "灵书意_高兴"
+  ]
+ },
+ "灵知远": {
+  "desc": "Male, Young adult. Clear and warm, balancing composure and youthful energy with an optimistic delivery.",
+  "variants": [
+   "灵知远_中性",
+   "灵知远_厌恶",
+   "灵知远_恐惧",
+   "灵知远_悲伤",
+   "灵知远_惊讶",
+   "灵知远_生气",
+   "灵知远_高兴"
+  ]
+ },
+ "灵温言": {
+  "desc": "Male, Young adult. Youthful and resonant, with rational, gentle and persuasive narration.",
+  "variants": [
+   "灵温言_中性",
+   "灵温言_厌恶",
+   "灵温言_恐惧",
+   "灵温言_悲伤",
+   "灵温言_惊讶",
+   "灵温言_生气",
+   "灵温言_高兴"
+  ]
+ },
+ "灵傲尘": {
+  "desc": "Male, Young adult. Warm, mellow and resonant, with steady, objective and mature reflection.",
+  "variants": [
+   "灵傲尘_中性",
+   "灵傲尘_厌恶",
+   "灵傲尘_恐惧",
+   "灵傲尘_悲伤",
+   "灵傲尘_生气",
+   "灵傲尘_高兴"
+  ]
+ },
+ "灵佑安": {
+  "desc": "Male, Young adult. Mellow and resonant, with calm, persuasive and professional delivery.",
+  "variants": [
+   "灵佑安_中性",
+   "灵佑安_厌恶",
+   "灵佑安_恐惧",
+   "灵佑安_悲伤",
+   "灵佑安_惊讶",
+   "灵佑安_生气",
+   "灵佑安_高兴"
+  ]
+ },
+ "灵惜晨": {
+  "desc": "Female, Young adult. Sweet and crisp, with lively, thoughtful and enthusiastic delivery.",
+  "variants": [
+   "灵惜晨_中性",
+   "灵惜晨_厌恶",
+   "灵惜晨_恐惧",
+   "灵惜晨_悲伤",
+   "灵惜晨_惊讶",
+   "灵惜晨_生气",
+   "灵惜晨_高兴"
+  ]
+ },
+ "灵宛溪": {
+  "desc": "Female, Young adult. Gentle and dignified, with relaxed, heartfelt and soothing resonance.",
+  "variants": [
+   "灵宛溪_中性",
+   "灵宛溪_厌恶",
+   "灵宛溪_恐惧",
+   "灵宛溪_悲伤",
+   "灵宛溪_惊讶",
+   "灵宛溪_生气",
+   "灵宛溪_高兴"
+  ]
+ },
+ "灵言澈": {
+  "desc": "Male, Young adult. Warm, resonant and reassuring, with gentle, affectionate concern.",
+  "variants": [
+   "灵言澈_中性",
+   "灵言澈_厌恶",
+   "灵言澈_恐惧",
+   "灵言澈_悲伤",
+   "灵言澈_惊讶",
+   "灵言澈_生气",
+   "灵言澈_高兴"
+  ]
+ },
+ "灵溯光": {
+  "desc": "Male, Young adult. Approachable and youthful, with warm interest and an affirmative recommendation style.",
+  "variants": [
+   "灵溯光_中性",
+   "灵溯光_厌恶",
+   "灵溯光_恐惧",
+   "灵溯光_悲伤",
+   "灵溯光_惊讶",
+   "灵溯光_生气",
+   "灵溯光_高兴"
+  ]
+ },
+ "灵惊弦": {
+  "desc": "Female, Young adult. Bright and textured, with precise pronunciation and thoughtful, authoritative yet objective delivery.",
+  "variants": [
+   "灵惊弦_中性",
+   "灵惊弦_厌恶",
+   "灵惊弦_恐惧",
+   "灵惊弦_悲伤",
+   "灵惊弦_惊讶",
+   "灵惊弦_生气",
+   "灵惊弦_高兴"
+  ]
+ },
+ "灵嘉肴": {
+  "desc": "Male, Young adult. Bright and energetic, with precise articulation and rational, approachable confidence.",
+  "variants": [
+   "灵嘉肴_中性",
+   "灵嘉肴_厌恶",
+   "灵嘉肴_恐惧",
+   "灵嘉肴_悲伤",
+   "灵嘉肴_惊讶",
+   "灵嘉肴_生气",
+   "灵嘉肴_高兴"
+  ]
+ },
+ "灵黛嗔": {
+  "desc": "Female, Young adult. Warm, thoughtful and engaging, with sincere, confident recommendations.",
+  "variants": [
+   "灵黛嗔_中性",
+   "灵黛嗔_厌恶",
+   "灵黛嗔_恐惧",
+   "灵黛嗔_悲伤",
+   "灵黛嗔_惊讶",
+   "灵黛嗔_生气",
+   "灵黛嗔_高兴"
+  ]
+ },
+ "灵孤影": {
+  "desc": "Male, Young adult. Warm and resonant, with composed, sincere appreciation and natural satisfaction.",
+  "variants": [
+   "灵孤影_中性",
+   "灵孤影_厌恶",
+   "灵孤影_恐惧",
+   "灵孤影_悲伤",
+   "灵孤影_惊讶",
+   "灵孤影_生气",
+   "灵孤影_高兴"
+  ]
+ },
+ "灵雨汐": {
+  "desc": "Female, Young adult. Soft and sweet, with natural breathiness and an affectionate, relaxed youthful delivery.",
+  "variants": [
+   "灵雨汐_中性",
+   "灵雨汐_恐惧",
+   "灵雨汐_高兴",
+   "灵雨汐_悲伤",
+   "灵雨汐_惊讶",
+   "灵雨汐_生气"
+  ]
+ }
+}

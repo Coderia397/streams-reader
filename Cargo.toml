@@ -1,0 +1,40 @@
+[workspace]
+resolver = "3"
+members = ["crates/core", "crates/import", "crates/server", "crates/worker", "crates/player", "crates/web", "xtask"]
+# The worker and web crates only build for wasm32; `cargo test` / `cargo clippy` at the root cover the native crates.
+default-members = ["crates/core", "crates/import", "crates/server", "xtask"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+rust-version = "1.91"
+repository = "https://github.com/Coderia397/nolabs-reader"
+
+[workspace.dependencies]
+nolabs-core = { path = "crates/core" }
+nolabs-import = { path = "crates/import" }
+nolabs-server = { path = "crates/server" }
+nolabs-player = { path = "crates/player" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+hex = "0.4"
+thiserror = "2"
+async-trait = "0.1"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "warn"
+panic = "warn"
+dbg_macro = "deny"
+todo = "warn"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true

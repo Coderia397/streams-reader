@@ -1,0 +1,11 @@
+/target
+/crates/web/dist
+/crates/worker/build
+/deploy/state.toml
+**/__pycache__/
+.pytest_cache/
+*.pyc
+.DS_Store
+.env
+*.env
+/archive

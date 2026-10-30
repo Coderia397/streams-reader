@@ -1,0 +1,18 @@
+[package]
+name = "nolabs-player"
+description = "Gapless audiobook player for the browser: MediaSource timeline, Media Session, sleep timer (wasm only)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+nolabs-core.workspace = true
+thiserror.workspace = true
+futures = { version = "0.3", default-features = false, features = ["std"] }
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+js-sys = "0.3"
+web-sys = { version = "0.3", features = ["Window", "Document", "HtmlAudioElement", "HtmlMediaElement"] }
+
+[lints]
+workspace = true

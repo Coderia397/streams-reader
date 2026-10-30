@@ -1,0 +1,29 @@
+# Resolved with `uv pip compile` for Python 3.10 / manylinux x86_64 (see notes/03). torch is pinned to a ZeroGPU-supported
+# version; gradio itself comes from sdk_version in README.md and must stay <= 6.17.3 because transformers 4.46.3 needs
+# huggingface-hub < 1.0.
+spaces==0.51.3
+torch==2.11.0
+huggingface_hub==0.36.2
+# Kokoro (standard tier)
+kokoro==0.9.4
+misaki[en]==0.9.4
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+# Ming-3.0-tts-0.5B (expressive tier), pins from the vendored runtime
+transformers==4.46.3
+tokenizers==0.20.3
+safetensors==0.8.0
+accelerate==1.14.0
+diffusers==0.33.0
+x-transformers==2.9.2
+einx==0.4.3
+einops==0.8.2
+loguru==0.7.3
+inflect==7.5.0
+pynini==2.1.6.post1
+onnxruntime==1.23.2
+soundfile==0.14.0
+scipy==1.15.3
+numpy==1.26.4
+# Audio and storage
+pyloudnorm==0.1.1
+boto3==1.43.122

@@ -1,0 +1,659 @@
+# Chat export: Self-hosted FOSS TTS reader to replace ElevenLabs Reader
+
+- Date: 2026-10-30
+- Format: alternating `## [n] USER` / `## [n] ASSISTANT` sections, separated by `---`.
+- Notes: tool calls and raw web search results are omitted. Inline citations are rendered as plain text; each assistant reply keeps its "Sources" list. Two documents the user pasted (answers from other AI models) are included inside message 3, with image placeholders removed.
+
+---
+
+## [1] USER
+
+best foss alt for 11labs gen 4, i want ot use it for my phone I am okay with building a wrapper around it and building an app for it on the phone so that it can replace my 11 Labs reader subscription.I know how to code in multiple languages, so don't worry about that part.You just do the research for me, and I can make it run in a server, which is technically cheaper. Much cheaper.I just want as long... I just want it to be as long as it is expressive and has many voices, including voice cloning, my own or something like that. So, and stuff like that, etc., etc. Including also normal common presets of voices and good voices. Or just the model to run somewhere. I don't care, just anything, please.
+
+Worked for 2m 34s
+I'll compare the strongest genuinely open models and self-hostable projects against the features that matter for a phone reader: long-form stability, expressive delivery, voice variety, cloning, streaming latency, hardware cost, and licence restrictions. I'll distinguish model weights that are actually usable from projects that are merely open-source wrappers around hosted services.
+
+Searched 8 websites
+
+The strongest options are not all in the same category. The current field separates into lightweight, cheap narration models (especially Kokoro), voice-cloning models with more expressive control (Chatterbox and Qwen3-TTS), and heavier "maximum quality / experimentation" systems (Fish Speech and newer research releases). I'm checking the actual model cards and licences now, because several popular recommendations are not as free to use as their GitHub pages initially suggest.
+
+Assessed TTS options
+
+Searched 9 websites
+
+A particularly relevant find is MOSS-TTS: its maintainers explicitly recommend one model for long-form narration and cloning, while offering a separate 100M-parameter version that can run on CPU. That maps unusually well to a phone reader with a self-hosted backend. Qwen3-TTS and Chatterbox remain strong alternatives, especially for generated/custom voices and cross-language cloning.
+
+Verified deployment choices
+
+Designed the voice stack and compared final candidates
+
+Made the recommendation
+
+Searched 15 websites
+
+as well it has to be high quality, right? And stuff like that. So I want the cloning to also produce expressive stuff, just based on the actual text itself and the quality of expressiveness, right? All of that stuff, all together.It doesn't necessarily, I, like, I can do the hard work from my end, building backend, building front end, etc., etc.
+
+---
+
+## [2] ASSISTANT
+
+**Fish Audio Drama 3** is the one to run. It came out on 13 October 2026: a 35B mixture of experts with about 3B parameters active per token, and it takes acting direction in plain language. It leads every downloadable model on both blind arenas. On native voices it scores 1278 Elo, against 1334 for Eleven v4. On the cloned voice arena, which tests exactly what you're asking for, it scores 1085, against 1156 for Eleven v4. So it sits roughly 55 to 70 Elo behind v4 and ahead of every other model with public weights. The licence is fine for a personal reader: research and noncommercial use are free, commercial use is free under US$500K revenue, and you only need a paid licence to offer it to others as a TTS or cloning service.
+
+This replaces my earlier shortlist. On the same arena, Chatterbox scores 1024 and Qwen3 TTS scores 929.
+
+**Expression driven by the text.** Drama 3 performs from direction you give it: a bracketed cue at the start of a line sets the read, a new cue partway through changes it from that point, and paired tags apply direction to just the words inside them. Eleven v4 does this inference step for you internally (it tracks the context of the text and adjusts expression as it reads). You can replicate it with a director pass in front of the model:
+
+1. Split the book into paragraphs. Give a small instruct LLM the previous and current paragraph, and have it return the current paragraph with `[direction]` and `<emphasis>` tags inserted.
+2. Strip the tags and diff the result against the source. Reject any output where a word changed.
+3. Send the tagged text to Drama 3 with your saved voice and fixed sampling settings and seed, so the voice stays consistent across chunks.
+
+**Cloning.** It needs about 30 to 60 seconds of speech plus an exact transcript. Get the transcript by running ASR on your recording. The clone inherits delivery from the reference, so record yourself reading something with emotional range. Encode the reference once and store the codes. Use the original FP8 experts, because the W4A8 community quant goes silent more often with real voice clips.
+
+**Preset voices.** The model makes up new voices when you give it no reference; the ComfyUI pack demonstrates one made from a single line and then reused for new text. Generate a batch, keep the voices you like as saved references, and that becomes your preset library. Clones of your own recordings go in the same library.
+
+**Hardware.**
+- **Full quality:** one Ada or Hopper card with 48 GB or more, such as an L40S or H100. Fish's documentation calls for Hopper or Ada GPUs, and the original FP8 checkpoint uses about 36 GiB on the GPU. Fish documents serving it through SGLang-Omni.
+- **Budget:** a rented 24 GB RTX 4090 with expert offloading. It peaks at 20.3 GiB of VRAM and 38.9 GiB of system RAM and runs slightly faster than playback. drama-rs does the same in Rust, on CUDA or Apple Silicon. 4090 rentals start around $0.58/hr, so an hour of finished audio costs about that.
+- **Serving pattern:** render chapters ahead of the listening position and cache them as Opus files. The phone then only streams files.
+
+**Backup pick: Ming-3.0-tts.** It's a 0.5B model with preset voices and voice cloning, MIT licensed, with a 14 tag paralinguistic system and voice design from a text description. Its cloned voice score is 1068, and its confidence interval overlaps Drama 3's. That makes it the cheap option, or a fast preview engine alongside Drama 3.
+
+**Voxtral 3**, which also ranks high, has no published weights and is API only.
+
+Sources:
+- [Fish Audio Drama 3 launch post](https://fish.audio/blog/fish-audio-drama-3/)
+- [Artificial Analysis Provider Voice leaderboard](https://artificialanalysis.ai/text-to-speech/leaderboard/provider-voice)
+- [Artificial Analysis Controlled Voice leaderboard](https://artificialanalysis.ai/text-to-speech/leaderboard/controlled-voice)
+- [drama3-offloading (24 GB 4090)](https://github.com/darth-feir/drama3-offloading)
+- [drama-rs](https://docs.rs/crate/drama-rs/0.3.0)
+- [ComfyUI-Drama3 quant notes](https://huggingface.co/PedroMarinhoDev/Drama-3-ComfyUI)
+- [Ming-3.0-tts release notes](https://www.orcarouter.ai/es/blog/ming-3-0-tts-0-5b-quiet-release)
+
+//
+
+---
+
+## [3] USER
+
+So I have your answer and I have another answer from a different model and another another answer from another different AI evaluate and combine and make some and that make some decisions adopt you everything that you do if it works well that you're both agreeing all three of you then that's good so I can make it simple for myself
+
+#### Attached document 1 (answer from another AI, referred to as "Answer A")
+
+For a self-hosted replacement for ElevenLabs Reader that delivers zero-shot voice cloning, preset voices, and context-driven expressiveness directly from the text, Qwen3-TTS (1.7B) combined with Kokoro-82M is the strongest stack to build around.   Because TTS models are LLM-based (predicting audio tokens from text tokens), they infer prosody, pacing, and emotion directly from sentence semantics and punctuation rather than reading word-by-word. However, no single open-weight model wins across every metric, so your backend should expose a unified /v1/audio/speech endpoint that routes between two models depending on the task.   1. Primary Engine (Cloning + Text-Driven Expressiveness): Qwen3-TTS (1.7B)Qwen3-TTS (Qwen3-TTS-12Hz-1.7B-Base and CustomVoice) is the best all-around open-weight (Apache 2.0) model for expressive cloning and reading.   Context-Aware Prosody & Instruct Control: Because it is built on an LLM backbone trained on 5M+ hours of speech, it naturally shifts cadence and intonation based on the text. It also supports an instruct mode where you can pass natural language delivery prompts alongside the text (e.g., "Warm, slow narrative tone").Voice Cloning: Clones accurately from 3 to 10 seconds of reference audio. Crucial implementation detail: Always pass both the reference audio (--ref-audio) and the exact transcript of that reference audio (--ref-text). Cloning without the transcript causes a steep drop in similarity and prosody.   Presets: Ships with 49+ built-in voice timbres.   Hardware & Speed: Needs ~6–8 GB VRAM (or 10–12 GB with full KV cache). Do not use the default Hugging Face inference script in production—it is slow. Run it via faster-qwen3-tts or qwen3-tts-triton (or vLLM), which brings Time-To-First-Audio (TTFA) down to ~120ms.   2. High-End Expressive Alternative: Fish Speech S2-Pro (4.4B)If Qwen3-TTS isn't expressive enough for dramatic fiction and you are willing to pay for heavier GPU compute, use Fish Audio S2-Pro.Why it wins on pure quality: It uses a Dual-AR architecture (4B slow AR + 400M fast AR) aligned with reinforcement learning (GRPO) for acoustic preference and emotional range. In blind tests, it is the closest model to ElevenLabs Gen 4.   Inline Natural Language Tags: You can inject free-form bracketed instructions anywhere in the text stream—such as [whisper in small voice], [sigh], or [sarcastic tone]—and it adjusts the cloned voice dynamically.The Catch: It requires ~16–24 GB VRAM to run comfortably ( best run on an RTX 3090/4090 or rented L4/A10G via SGLang, which caches the cloned voice prefix KV state for ~100ms streaming latency). Its weights are also under the restrictive Fish Audio Research License, which is fine for a personal phone app but prohibits commercial resale.   3. Secondary Engine (Zero-Cost Daily Presets): Kokoro-82MFor reading standard articles, documentation, or PDFs when you don't need a custom cloned voice, run Kokoro-82M (Apache 2.0) alongside your main model.Why include it: At just 82M parameters, it runs faster than real-time on a basic CPU (or directly on-device on your phone via ONNX) and has 54 built-in preset voices (including solid US and UK English presets like af_heart, af_bella, and bf_emma). It cannot clone voices, so use it strictly as your fast, zero-compute preset engine.   4. Other Notable Contenders (And Their Trade-Offs)Chatterbox / Chatterbox-Turbo (MIT): By Resemble AI. Exceptional 1:1 voice cloning similarity and an exaggeration slider (0.0 to 2.0) to dial up emotional range. However, it caps out at 1,000 speech tokens (~40 seconds) per pass before silently dropping text, requiring strict 300-character sentence chunking.   MOSS-TTS v1.5 (OpenMOSS): Outputs native 48 kHz stereo audio with strong punctuation-driven prosody and explicit [pause Xs] tags. Great for long-form audiobooks, though heavier to host than Qwen3-TTS.IndexTTS-2: The strongest model for extreme emotional range on cloned voices (uses dedicated emotion vectors or text-inferred emotion), but pushing emotion intensity too high causes the voice timbre to drift away from the clone.   ModelLicenseCloningPresetsContext ExpressivenessVRAM NeededQwen3-TTS (1.7B)Apache 2.03–10s (+transcript)49+ voicesHigh + Instruct mode6–8 GBFish S2-Pro (4.4B)Research Only10–30sMulti-speakerHighest + inline tags16–24 GBChatterboxMIT5–10sCurated packModerate (exaggeration param)4–6 GBMOSS-TTS v1.5Open Weights5–15sBuilt-in packHigh (48kHz, pause tags)8–12 GBKokoro-82MApache 2.0None54 voicesGood natural cadenceCPU / <1 GBHow to Architect Your Reader App & BackendWhen building your wrapper and phone client to replace ElevenLabs Reader, implement these four pipeline rules so long-form reading doesn't break:Sentence-Boundary Chunking & Lookahead Queue: Never feed an entire chapter or article into an autoregressive TTS model at once; attention drift will degrade the voice or cause skipped lines. Have your backend split articles by sentence/paragraph (~300–600 characters per chunk). Stream chunk 1 to the phone immediately via HTTP chunked transfer or WebSockets while the server pre-generates chunks 2 and 3 in the background.   Optional LLM Emotion Tagging Pass (For Fish S2-Pro / Qwen3): If you want maximum dramatic expressiveness on stories without manual tagging, run a tiny local LLM (like Qwen3-0.6B or 1.7B) as a preprocessor on your text chunks to automatically inject tone instructions or inline tags based on the surrounding paragraph context before passing it to the TTS engine.   Loudness Normalization (loudnorm): Cloned voices in Qwen3-TTS and Fish Speech often wander in volume by 2–3 LUFS between separate paragraph generations. Pipe your raw PCM output through an ffmpeg filter (loudnorm=I=-20:TP=-2) before sending the opus/AAC stream to your phone so volume stays locked across an entire book.   Length Sanity Check: Autoregressive TTS models occasionally hallucinate silence or drop the final clause of a sentence. English prose averages 0.05 to 0.06 seconds per character; if a generated audio chunk's duration deviates by more than 40% from the expected character length, have your backend automatically re-roll that sentence with seed + 1 before streaming it to your client.   If you want a ready-made backend reference before writing your own, inspect Voicebox ([github.com/jamiepine/voicebox](https://github.com/jamiepine/voicebox))—it already wraps Qwen3-TTS, Chatterbox, Kokoro, and Hume TADA behind a clean local API.
+
+#### Attached document 2 (answer from another AI, referred to as "Answer B")
+
+Yes. That changes the recommendation: you are not just looking for a TTS model that can imitate your voice. You want a self-hosted narration engine that can take an ordinary piece of text, understand its emotional context, and read it naturally in a chosen or cloned voice.
+
+For example, it should recognise that a passage is becoming tense, that a character is asking a question, that a sentence is sarcastic, or that a paragraph is reflective. It should express those differences through pacing, intonation, emphasis and tone without you having to manually insert emotion tags into every paragraph.
+
+There is no open model I would confidently claim matches ElevenLabs v4 in every respect. But there are some genuinely promising options, and a combination of models may give you a better result than relying on one.
+
+## My top recommendations
+
+### 1. MOSS-TTS v1.5 — best starting point for your reader
+
+Project: [OpenMOSS/MOSS-TTS](https://github.com/OpenMOSS/MOSS-TTS)
+Models: [MOSS-TTS-v1.5](https://huggingface.co/OpenMOSS-Team/MOSS-TTS-v1.5) · [MOSS-TTS-Local-Transformer-v1.5](https://huggingface.co/OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5)
+
+This is where I would begin. Its main strengths are long-form narration, zero-shot voice cloning, multilingual speech and maintaining natural prosody over extended passages. The v1.5 model supports 31 languages, including English and Arabic, and its model documentation describes generation of continuous speech up to an hour. It also includes pause and duration controls, which are useful for reading books rather than producing isolated voice clips.
+
+There are two versions worth looking at:
+
+- MOSS-TTS-v1.5 (8B Delay): the one I would investigate first for long-form narration and stable voice cloning.
+- MOSS-TTS-Local-Transformer-v1.5: a roughly 4B-class alternative designed with local inference and streaming in mind. It supports 48 kHz stereo output.
+
+An especially interesting part of the MOSS ecosystem is MOSS-VoiceGenerator. Rather than cloning a voice from a recording, it generates a new speaker identity from a text description. You can describe the voice you want and generate a sample. The project describes it as a voice-design component that can be used with downstream TTS systems.
+
+That gives you a possible way to build a voice library: create different voices from descriptions, save their generated recordings, and use those recordings as reference voices for narration. You could offer presets such as a warm British narrator, a restrained documentary voice, a deep American voice or a more animated conversational voice. The consistency of each resulting voice would need testing.
+
+The licensing is also attractive: the MOSS model family is released under Apache 2.0.
+
+My assessment: the strongest starting point if you want a genuinely open, self-hosted system that handles books and articles, with room to build a voice catalogue around it. I would test how naturally it changes emotional delivery from plain text, because long-form stability does not automatically mean the most convincing emotional performance.
+
+### 2. Fish Audio Drama 3 — the one to audition for maximum expressiveness
+
+Project: [Fish Audio / fish-speech](https://github.com/fishaudio/fish-speech)
+Model: [Drama 3](https://huggingface.co/fishaudio/drama-3)
+
+This is probably the most interesting model to test if expressive performance is your biggest priority.
+
+Drama 3 is a 35B-parameter mixture-of-experts model, with around 3B parameters active per token. Its capabilities include voice cloning, long-form speech, multiple speakers, emotional direction and natural-language instructions. It also supports expressive delivery such as whispering, laughter, crying and anger. You can give it direction and revise the performance, rather than being limited to a fixed set of voice settings.
+
+The distinction I would test is whether it can deliver a convincing performance from the plain text alone, without explicit instructions. Its ability to follow emotional directions is useful, but that is not quite the same thing as understanding the prose and choosing the right delivery by itself.
+
+There are two substantial drawbacks:
+
+First, its published minimum hardware requirement is a 48 GB Nvidia GPU for the FP8 configuration. That makes it considerably more expensive to host than the smaller models.
+
+Second, it is not permissively licensed FOSS. It uses the Fish Audio Community License. The terms allow personal hobbyist use, but hosted TTS services for third parties are restricted and may require a separate written licence. The licence also includes requirements concerning voice-cloning consent. Read the terms before building anything intended for other users.
+
+My assessment: audition this if you can access a sufficiently powerful GPU. It could be an excellent expressive engine, but I would not make it the foundation of a public app without resolving the licensing first.
+
+### 3. Qwen3-TTS — excellent voice design and a useful second engine
+
+Project: [QwenLM/Qwen3-TTS](https://github.com/QwenLM/Qwen3-TTS)
+
+Qwen3-TTS is worth testing because it provides several capabilities in one family of models.
+
+Its 1.7B models include:
+
+- VoiceDesign: create a voice from a natural-language description.
+- CustomVoice: use one of its supplied speaker voices, with instructions for delivery.
+- Base: clone a voice from a short reference recording and its transcript.
+
+The supplied CustomVoice model includes nine speaker voices, and the instruction system can guide delivery with descriptions such as being happy or angry. The Base cloning model is a separate checkpoint, however, and does not offer the same direct instruction controls in the model's documented interface.
+
+That distinction matters for your requirements. You want to clone your own voice and then have that clone read naturally and expressively. Qwen provides voice cloning and voice design, but you should not assume its strongest voice-direction features transfer directly to the cloned-voice checkpoint.
+
+It is Apache 2.0, and the 1.7B model is a fairly manageable size compared with Drama 3. One limitation is language coverage: its documented supported languages are ten major languages, and Arabic is not among them.
+
+My assessment: a very good additional engine for building a range of voices. I would compare its cloned output against MOSS rather than make it your only model.
+
+### 4. Higgs TTS 3 — promising text-driven emotion, but licensing is restrictive
+
+Model: [Boson AI Higgs TTS 3](https://huggingface.co/bosonai/higgs-tts-3-4b)
+
+This one deserves attention because its published evaluation specifically tested speech generated without manually inserted style tags. Its authors reported strong results for emotional and non-verbal performance compared with several competing models. It also supports voice cloning, a wide range of expressive controls and many languages. These are the developers' own evaluation results, not an independent guarantee that it will outperform the alternatives on your reading material.
+
+Unfortunately, its Research and Non-Commercial licence is restrictive. It does not give you the permissions you would want to embed the model in an application or offer it as a hosted TTS service. There are separate grants for certain creator uses, but those should not be confused with permission to build a general-purpose reading app around it.
+
+My assessment: one of the most interesting models to compare when evaluating emotional inference, but I would not build your product around it without obtaining the appropriate licence.
+
+### 5. Chatterbox Multilingual V3 — useful lighter-weight alternative
+
+Project: [Resemble AI / Chatterbox](https://github.com/resemble-ai/chatterbox)
+
+Chatterbox Multilingual V3 is around 0.5B parameters, supports voice cloning and lists 23 languages, including English and Arabic. The project is MIT-licensed. Its Turbo and Nano variants offer additional trade-offs for faster or smaller inference.
+
+I would keep it as a cheaper comparison model or secondary option. It is considerably easier to experiment with than a 35B model, but its documented feature set does not give me the same confidence in long-form, text-driven emotional narration as MOSS or Drama 3.
+
+### 6. Kokoro — good preset voices, but not a complete replacement
+
+Model: [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M)
+
+Kokoro is an 82M-parameter Apache 2.0 model. It is an impressive quality-to-size option and is worth considering for a lightweight fallback or a simple preset-voice mode. However, it does not provide the zero-shot voice cloning and voice-design capabilities you are looking for.
+
+I would not use it as the main engine for your app.
+
+## How I would rank them for your requirements
+
+| Model          | Voice cloning   | Text-driven expression                                     | Long-form                     | Licence / concern                      |
+| -------------- | --------------- | ---------------------------------------------------------- | ----------------------------- | -------------------------------------- |
+| MOSS-TTS v1.5  | Yes             | Worth testing                                              | Strong focus                  | Apache 2.0                             |
+| Fish Drama 3   | Yes             | Strong direction controls; test untagged text              | Yes                           | Community licence, 48 GB GPU           |
+| Qwen3-TTS 1.7B | Yes, Base model | Strong voice design and CustomVoice instructions           | Test for your use             | Apache 2.0                             |
+| Higgs TTS 3    | Yes             | Particularly promising in its own untagged-text evaluation | Test for your use             | Research / non-commercial restrictions |
+| Chatterbox V3  | Yes             | More limited documented controls                           | Test for your use             | MIT                                    |
+| Kokoro         | No              | Limited                                                    | Suitable for ordinary reading | Apache 2.0                             |
+
+## The architecture I would build
+
+I would keep the TTS engine on your server and make the phone a relatively thin client. The phone should send text and a selected voice profile to the server, then stream back audio. It does not need to run the large model itself.
+
+For the first version, I would build around:
+
+- Phone app: text input, document reading, voice selection, playback, bookmarks and progress.
+- Your API / orchestration backend: authentication, text segmentation, voice profiles, caching, playback state and model selection.
+- MOSS-TTS: primary long-form narration and cloning.
+- MOSS VoiceGenerator: create custom voice identities and presets.
+- Qwen3-TTS: alternative voice design and cloning.
+- Other models: optional engines for comparison and fallback.
+
+MOSS has integrations with serving systems including vLLM-Omni and SGLang-Omni, with OpenAI-compatible audio endpoints. That means you can keep your application-facing API relatively independent of the model implementation.
+
+For long-form reading, I would not send each sentence as a separate generation request. That is likely to make the result sound disjointed. Give the model enough surrounding text to understand the paragraph or scene, then generate manageable audio chunks. Preserve the order, pre-generate the next chunk while the current one plays, and cache the output so the user can return to a previous position without regenerating it.
+
+For the voice-cloning side, keep a reference recording and its exact transcript for each cloned speaker. Give the model a clean recording with a natural range of expression. A completely flat reference recording can limit the character of the resulting voice; the voice sample is not just an identity label, it can influence the speaking style too. ElevenLabs' own cloning guidance makes a similar point about the speaking style of the source recording.
+
+## The most important test: emotional inference without instructions
+
+This is where I would be particularly rigorous. A model that can produce `[angry]`, `[whispering]` or `[sad]` speech is not necessarily a model that can understand a piece of writing and independently decide how it should sound.
+
+I would test each serious candidate using the same three passages:
+
+1. Narrative prose: a passage that shifts from calm description to danger or suspense.
+2. Dialogue: a passage containing questions, sarcasm, anger, uncertainty and changes in speaker.
+3. Reflective prose: a passage that requires restraint, pauses and emphasis rather than theatrical acting.
+
+Run each passage first as plain text, without emotion tags or extra instructions. That is the test that matters most for your reader. Then run it with style directions to see how much control the model offers when you need it.
+
+Compare the results for natural emphasis, believable emotional transitions, pronunciation, voice consistency, pacing and whether the model starts sounding exaggerated after several minutes. A short demo can sound excellent while a chapter-length recording becomes monotonous or inconsistent.
+
+## My final recommendation
+
+I would build the first prototype with MOSS-TTS-v1.5 and MOSS-VoiceGenerator. That gives you a promising combination of long-form narration, cloning, custom voice creation, multilingual support and a permissive licence.
+
+Then I would audition Fish Audio Drama 3 against it if you can access a 48 GB Nvidia GPU. Fish is the candidate I would investigate for the highest level of expressive performance, but its licence and hardware requirements make it a less straightforward foundation.
+
+I would also test Higgs TTS 3 as a quality reference, because its reported untagged-text results are directly relevant to your central requirement. I would not build the app around it without permission under its licence.
+
+One final distinction: ElevenLabs v4 is designed to deliver expressive speech, while its multilingual v2 model is specifically positioned for stable long-form generation. So you are effectively trying to combine the strengths of expressive v4 with the long-form reliability of a dedicated narration engine.
+
+The key is not simply finding the model with the most emotion tags. It is finding one that can read ordinary prose with convincing emotional interpretation, while preserving the identity of your cloned voice for an entire book. That is what I would make the deciding benchmark.
+
+---
+
+## [4] ASSISTANT
+
+Final stack:
+
+1. **Narration: Fish Audio Drama 3.** One engine for presets, clones, English and Arabic. Run it on a rented 24 GB 4090 with expert offloading, or on a 48 GB Ada or Hopper card to keep the full FP8 model in VRAM.
+2. **Director: a small local instruct LLM.** It adds emotion tags from context, and the app has a toggle for it.
+3. **Presets: Qwen3-TTS VoiceDesign.** It only generates preset voices; it never reads books.
+4. **ASR (Whisper or Parakeet).** It writes transcripts for reference clips and checks each generated chunk.
+5. **Kokoro on the server CPU.** It's the free fallback when the GPU box is off.
+6. **Phone.** A thin client that streams cached Opus files.
+
+**All three answers agree on these, so they're adopted as they are:**
+- All inference happens on the server.
+- Clone from a clean reference clip plus its exact transcript.
+- Record the reference with real expressive range, because the clone copies its delivery.
+- Generate in paragraph chunks of about 300–600 characters, with context. Render ahead of playback and cache everything.
+- The Fish model line is the ceiling for expressiveness.
+- Chatterbox and Kokoro are not main engines.
+
+**Where they disagree, and my call:**
+
+**Main engine: Drama 3.** Answer A picked Qwen3-TTS and Answer B picked MOSS v1.5. On the independent blind arena, Qwen3 TTS scores 929 on its own voices, against 1278 for Drama 3. MOSS has no independent ranking at all, only its authors' own evaluations. Answer A was written before Drama 3 came out. Its pick for closest to ElevenLabs, S2 Pro, scores 1006 on cloned voices, against 1085 for Drama 3.
+
+**Answer B's objections to Drama 3 don't apply to you.** Personal use is free under the licence. Answer B gives 48 GB as the minimum GPU, but expert offloading runs it on a 24 GB 4090, peaking at 20.3 GiB of VRAM and 38.9 GiB of system RAM.
+
+**Arabic also points to Drama 3.** Answer B is right that Qwen3-TTS has no Arabic. Drama 3 covers 83 languages, including regional Arabic such as Egyptian, so one engine handles both your languages.
+
+**Plain text vs tags: use both, in order.**
+1. Run Answer B's test on plain text first. Use three passages: narrative that shifts into suspense, dialogue with sarcasm and questions, and reflective prose. Judge after several minutes of listening, not short clips.
+2. If the plain text reads flat, turn the director pass on by default.
+3. Ship the director as a toggle either way.
+
+**Presets: use Qwen3-TTS VoiceDesign once per preset.** Describe a voice, generate a 30–60 second clip, and save the clip and its transcript as a Drama 3 voice. Both other answers proposed designing voices from descriptions; doing it once per preset keeps narration on a single engine.
+
+**Dropped:**
+- Higgs TTS 3: 962 on cloned voices, noncommercial licence.
+- Chatterbox: 935 on cloned voices.
+- MOSS as the primary engine.
+- Fish S2 Pro: superseded by Drama 3.
+- Voicebox: it doesn't wrap Drama 3.
+
+**Taken from Answer A's pipeline:**
+- **Loudness:** run `loudnorm=I=-20:TP=-2` on every chunk so volume stays level across a book.
+- **Chunk check, with an upgrade:** instead of only checking duration, run ASR on each chunk and regenerate with seed+1 if words are missing or added. This also catches silent chunks; the W4A8 quant goes silent more often with real voice clips, so stay on FP8.
+- **Interface:** expose an OpenAI-style `/v1/audio/speech` endpoint so swapping engines is a config change. If you ever offer the app to other people, Drama 3 needs a paid licence; swap in Ming-3.0-tts (MIT) behind the same endpoint.
+
+**Build order:**
+1. Rent the GPU, record 60 seconds of yourself, clone your voice, and run the passage test with and without the director.
+2. Build the server pipeline: chunker → director → Drama 3 → ASR check → loudnorm → Opus cache.
+3. Build the phone client, fetching 2–3 chunks ahead of playback.
+4. Make the presets.
+
+//
+
+---
+
+## [5] USER
+
+And what about if I just wanted it for free?
+use hugging face or anything or google architectures or any free ones for backend
+
+---
+
+## [6] ASSISTANT
+
+Here's the free version.
+
+**Main engine: Drama 3 on Modal's free plan.**
+- Modal's Starter plan gives you $30 of compute every month with no card required. It bills by the second and the credit resets monthly.
+- That buys a little under 8 hours of H100 time, or about 12 hours on an A100 80GB.
+- A reader doesn't need a GPU running all day. Render chapters in batches ahead of where you are, and the GPU only bills while it renders.
+- Pick an L40S or H100 so the FP8 weights stay in VRAM.
+- Throughput: Fish measured Drama 3 on one H200 at RTF 0.13 for a single stream, and still under real time with 64 streams at once. If you batch a chapter's chunks in parallel, a few GPU hours a month covers a lot of listening. Measure your own rate in the first week.
+- Store the 40 GB of weights on a Modal Volume (volumes include 1 TiB a month free) so cold starts don't download them again.
+- Starter includes up to 8 deployed web endpoints, so the orchestrator API lives on Modal as well. Run the director LLM in the same GPU job. Nothing else to host.
+
+**While you build: Fish's free API.**
+- `s2.1-pro-free` is free through 30 November 2026.
+- There's no hard character cap, only a fair use policy. It covers 83 languages, including Arabic.
+- Quality is a step below Drama 3: it scores 1188 on native voices and 1006 on cloned voices, against 1278 and 1085 for Drama 3.
+- Build the app against it now, then switch the `/v1/audio/speech` config to Modal before it ends.
+
+**Presets: Gemini's free tier.**
+- Gemini 3.8 Flash TTS designs a voice from a text description and returns a WAV sample of it.
+- It also has a library of hundreds of extra voices you can browse.
+- The free tier allows about 10 requests a day, according to community reports. That's far too few for reading books, but enough to build a preset library over a few days.
+- Transcribe each sample with your ASR step and register it as a Drama 3 voice. This replaces Qwen3 VoiceDesign from the previous plan.
+
+**Backup compute: Kaggle, if Modal credit runs out mid-month.**
+- Kaggle gives about 30 GPU hours a week on 2× T4 (32 GB combined), with 12 hour sessions, and you can drive it from scripts.
+- The T4 is a Turing card, and the Drama 3 offloading build needs Ada or Hopper. Run Ming-3.0-tts there instead (MIT licence, scores 1068 on cloned voices).
+- Ming has no Arabic. It covers Chinese, English, German, Spanish, French, Korean and Japanese.
+- Lightning AI's 80 free GPU hours a month works the same way if you need more.
+
+**Skip Hugging Face ZeroGPU.** Free accounts get 5 GPU minutes a day, which is only enough for demos.
+
+**Order:**
+1. Build the phone app and server against Fish's free API now.
+2. Stand up Drama 3 on Modal before 30 November and switch the config.
+3. Fill the preset library from Gemini over a few days.
+4. Set up Kaggle with Ming only if Modal credit runs short.
+
+Sources:
+- [Modal pricing](https://modal.com/pricing)
+- [Modal free tier details](https://aicreditmart.com/ai-credits-providers/modal-free-tier-how-to-get-30-month-in-compute-credits-2026/)
+- [Fish Audio S2.1 Pro free API](https://fish.audio/ko/blog/s2-1-pro-free-api/)
+- [Fish free period end date](https://github.com/100yenadmin/fish-audio-hermes/releases)
+- [Gemini voice design](https://ai.google.dev/gemini-api/docs/voice-design)
+- [Gemini TTS voice options](https://ai.google.dev/gemini-api/docs/speech-generation)
+- [Gemini free tier cap (community)](https://github.com/dAAAb/gemini-3.8-flash-tts-voice-clone)
+- [Kaggle limits](https://pypi.org/p/kgz)
+- [Ming-3.0-tts 0.5B card](https://huggingface.co/sekkit/Ming-3.0-tts-0.5B)
+- [Free cloud GPUs 2026](https://gpuperhour.com/blog/free-cloud-gpus-and-credits)
+- [Drama 3 model card](https://huggingface.co/fishaudio/drama-3)
+
+//
+
+---
+
+## [7] USER
+
+I meant probably FOSS is better. FOSS. Am I wrong? Or do you have any other thoughts? Because just using a free trial plan is kind of tricky and annoying, to be honest. What do you think? I want everything to be managed by me, mostly, I think, perhaps. Think of me as a Linux guy. Not necessarily that I'm using Linux, but you get the idea, right? Also, that I do dual boot macOS and Linux. Don't ask me how, even though it is a common thing. But rarely people do it.
+
+---
+
+## [8] ASSISTANT
+
+You're right to go FOSS. One distinction first: any model whose weights you download runs entirely on your own box, FOSS or not, so Drama 3 on your own GPU would also be fully yours. What made the last plan annoying was renting someone else's free compute. That's a hardware problem.
+
+FOSS still wins for you, for two reasons:
+- **The terms can't change under you between releases.** Fish kept S2.1 Pro API only after open-sourcing the earlier S2 models. Mistral released Voxtral 3 with no weights.
+- **You give up little on cloning.** Ming-3.0-tts is MIT licensed and scores 1068 on the cloned voice arena, against 1085 for Drama 3, and the two confidence intervals overlap.
+
+One trap: OmniVoice is often listed as Apache 2.0, but only its code is. The weights are CC-BY-NC because of the training data.
+
+**FOSS stack (OSI licences on both code and weights):**
+- **English: Ming-3.0-tts 0.5B (MIT).** It does cloning, has preset voices, and can design a voice from a description. It also has emotion control and 14 paralinguistic tags the director can insert. It covers Chinese, English, German, Spanish, French, Korean and Japanese, with no Arabic.
+- **Arabic: Chatterbox Multilingual V3 (MIT, 0.5B).** It covers 23 languages including Arabic, does cloning, and has an exaggeration control for intensity.
+- **Engine that runs on CPU: MOSS-TTS-Nano (Apache 2.0, 100M).** It's built for CPU, clones from about 3 seconds of audio, and covers 11 languages including Arabic. Quality is below the two above; it's what you run until you have a GPU.
+- **Director:** llama.cpp (MIT) with Qwen3 4B (Apache 2.0) at Q4, which runs fine on CPU.
+- **ASR:** whisper.cpp (MIT), for reference transcripts and chunk checks.
+- **Remote access:** WireGuard, so your phone reaches the box from outside home.
+
+**Hardware.**
+
+*Now: CPU only.* None of your machines has a usable GPU for this. The 2019 MacBook Pro's Radeon 5500M is RDNA1, which ROCm doesn't support, so use its 6 cores and 32 GB of RAM.
+- Run MOSS-TTS-Nano as a systemd service.
+- Queue chapters and render them overnight into an Opus cache while you're booted into Linux. A reader doesn't need real time.
+- Speed reference: Nano ran at RTF 0.23 on 8 threads with ONNX on a Strix Halo CPU. Expect slower on a 2019 i7.
+
+*Later: one purchase.* A used NVIDIA card with 12 GB or more, in any Linux box.
+- That fits Ming, Chatterbox V3 and the director together, all on hardware you own.
+- A 24 GB card (a 3090) would also let you run Drama 3 if you ever want it.
+
+**What you give up compared with Drama 3:**
+- Its acting range: crying, laughs mid-line, tight direction.
+- Its lead on built-in voices: 1278 against Ming's 1187.
+
+If you mostly read in your own cloned voice, the gap is the 17 points above.
+
+The rest of the pipeline stays as before: paragraph chunks, director pass, ASR check, loudnorm, Opus cache.
+
+Sources:
+- [Artificial Analysis Controlled Voice leaderboard](https://artificialanalysis.ai/text-to-speech/leaderboard/controlled-voice)
+- [Ming-3.0-tts 0.5B card](https://huggingface.co/sekkit/Ming-3.0-tts-0.5B)
+- [Ming-3.0-tts release notes](https://www.orcarouter.ai/es/blog/ming-3-0-tts-0-5b-quiet-release)
+- [Chatterbox Multilingual V3](https://featherless.ai/models/ResembleAI/chatterbox)
+- [MOSS-TTS-Nano](https://tts.ai/voices/moss-tts-nano/?lang=nl)
+- [MOSS-TTS repo](https://github.com/OpenMOSS/MOSS-TTS)
+- [CPU benchmark (Strix Halo)](https://sleepingrobots.com/dreams/dots-tts-strix-halo)
+- [OmniVoice licence](https://huggingface.co/k2-fsa/omnivoice)
+- [Fish S2.1 Pro closed](https://dev.to/lukeocodes/fish-audios-52m-seed-open-weights-got-them-here-25e5)
+- [Voxtral 3 API only](https://ai-tldr.dev/models/voxtral-tts-3/)
+
+//
+
+---
+
+## [9] USER
+
+also running on the laptop wouldn't be called actually back end, because most of the time I'm not on my laptop, or my laptop is on sleep. 
+Also I have a 2019 MacBook Pro 16 inch 32 GB of RAM but it's not modified memory so that doesn't help the memory that we are talking about is 8 GB and even then I can't just run it on my MacBook cause I need my MacBook for the stuff that I do on my MacBook I don't want it to be running stuff on that I can buy a dedicated machine for when I have the money for but I don't want that anyways that's like for the future. I'll start to finish my university, but I have a good morning even though I can't have the money soon that's possible, but I don't want to spend it on that. It's just more better if I find a best solution that fits everything so smoothly and multilingual would be a nice thing to have but it's not really that much necessary
+
+---
+
+## [10] ASSISTANT
+
+You're right, and that changes the plan. I assumed a personal machine could act as the server. A backend has to stay up while your laptop sleeps, and on an Intel Mac the 32 GB of system RAM can't help the 8 GB GPU anyway. So the backend has to live on hosted hardware, which for free means somebody's free tier.
+
+The free tiers I'm suggesting aren't trials. Modal's $30 a month and Kaggle's 30 hours a week renew with no end date. The only time-limited piece last time was Fish's free API, which ends on 30 November.
+
+**The setup I'd use:**
+
+**1. Main server: an Oracle Always Free Arm VM.**
+- It's a real Linux box you SSH into, it stays on, and it's free with no end date.
+- Since 15 June 2026 the allowance is 2 OCPU and 12 GB of RAM (it used to be 4 and 24). On Arm, one OCPU is one core.
+- You get 200 GB of block storage in total.
+- It runs your API, the job queue, the Opus cache and WireGuard.
+- Two known annoyances: creating an instance can fail with an out of capacity error until you retry, and Oracle can reclaim instances it considers idle.
+
+**2. GPU worker: your own Docker image on Modal.**
+- The image holds Ming-3.0-tts 0.5B (MIT), the director LLM and whisper.cpp.
+- The VM sends it chapter jobs, it renders them and writes the Opus files back, and it scales to zero between jobs.
+- Modal's free plan gives $30 of compute every month with no card, billed by the second. That's about 27 hours on an A10, far more than one reader needs with a 0.5B model.
+
+**3. Backup on the VM itself: MOSS-TTS-Nano.**
+- Apache 2.0, 100M parameters, built for CPU, and it clones from about 3 seconds of audio.
+- It keeps the reader working if Modal is unreachable or the credit runs out mid month.
+- On 2 Arm cores it will be slow, so it renders ahead through the queue like everything else.
+
+**Why this fits what you asked for:**
+- Every model and tool is FOSS. The only thing you don't own is the GPU time.
+- Modal runs your image unchanged, so you aren't locked in. The same container runs on Kaggle (30 free GPU hours a week, scriptable), on any rented GPU box, or on the machine you buy after university. Moving is a config change.
+- Your laptop does nothing.
+
+**The no GPU option:** run only the Oracle VM with MOSS-Nano. It's fully yours and free, but small CPU models read plain text without the director pass, so you lose most of the expression from context, which was your main requirement. I wouldn't do it.
+
+**Arabic stays optional.** If you want it later, add Chatterbox Multilingual V3 (MIT, 0.5B, 23 languages including Arabic) to the same image.
+
+Sources:
+- [Oracle Always Free cut (InfoQ)](https://infoq.com/news/2026/07/oracle-cloud-free-tier-limits/)
+- [Oracle free backend risks](https://braindetox.kr/en/posts/oracle_always_free_backend_2026.html)
+- [Oracle Arm OCPU note](https://cnx-software.com/?p=90856)
+- [Oracle storage limits](https://www.issoh.co.jp/tech/details/17531/)
+- [Modal free tier](https://aicreditmart.com/ai-credits-providers/modal-free-tier-how-to-get-30-month-in-compute-credits-2026/)
+- [Modal credit in GPU hours](https://toolfreebie.com/category/free-hosting/)
+- [Ming-3.0-tts release notes](https://www.orcarouter.ai/es/blog/ming-3-0-tts-0-5b-quiet-release)
+- [MOSS-TTS repo](https://github.com/OpenMOSS/MOSS-TTS)
+- [MOSS-TTS-Nano](https://tts.ai/voices/moss-tts-nano/?lang=nl)
+- [Chatterbox Multilingual V3](https://featherless.ai/models/ResembleAI/chatterbox)
+- [Kaggle limits](https://pypi.org/p/kgz)
+- [Fish free period end date](https://github.com/100yenadmin/fish-audio-hermes/releases)
+
+//
+
+---
+
+## [11] USER
+
+My account is banned on Oracle. I don't have another credit card.
+
+---
+
+## [12] ASSISTANT
+
+Then skip the server entirely. Without a card there's no free Linux box that stays on. Oracle is out, and Hugging Face now requires a paid plan to create Docker or Gradio Spaces, even on its free CPU hardware. So split the backend between your phone and a free GPU you trigger when you need it.
+
+**The phone is the backend.** The app holds the library, the queue, the chunker, the director prompts and the Opus cache. Nothing has to stay running anywhere else.
+
+**Kaggle is the render farm.** It needs no card, only phone verification for GPU access. You get 2× T4, about 30 GPU hours a week, with sessions up to 12 hours.
+
+How a render works:
+1. The phone pushes a kernel version through Kaggle's API, with the chapter's chunks embedded and `enable_gpu` set.
+2. The kernel loads Ming-3.0-tts 0.5B (MIT) on one T4 and the director LLM on the other. It renders, runs the whisper check and loudnorm, and writes Opus files to its output.
+3. The phone polls the run status and downloads the output.
+
+Two setup notes:
+- Store the model weights as a Kaggle model or dataset attached to the kernel, so runs don't download them each time.
+- Kaggle's API client is open source, so you can call the same REST endpoints from the app itself or from Termux.
+
+The cost of this design is wait time. Audio arrives a few minutes after you queue something, because each run starts a session and loads the model. That's fine for books and saved articles you queue ahead.
+
+**A voice on the phone, for instant and offline reading.** sherpa-onnx runs Piper voices offline on Android, and Piper is FOSS (GPL-3.0). It covers "read this now" while Kaggle renders, and any week the GPU quota runs out. On your A12, stick with Piper; heavier models will lag on that chip.
+
+**Optional faster GPU: Modal without a card.** Two sources say Modal gives $5 a month without a payment method and $30 only after you add one. $5 is roughly 8 T4 hours at Modal's rates, but its cold starts are much quicker than Kaggle's. Keep the render code as one Python package so it runs on Kaggle, on Modal, or on a box you own later.
+
+When you eventually have a GPU machine, point the app at it and Kaggle drops out. Nothing else changes.
+
+Sources:
+- [Hugging Face Spaces overview](https://huggingface.co/docs/hub/en/spaces-overview)
+- [Free GPU options 2026](https://www.gmicloud.ai/en/blog/best-free-gpu-cloud-options-for-ai-startups-and-researchers)
+- [Kaggle limits](https://pypi.org/p/kgz)
+- [Ming-3.0-tts release notes](https://www.orcarouter.ai/es/blog/ming-3-0-tts-0-5b-quiet-release)
+- [Piper licence](https://pasqualepillitteri.it/en/news/28184/local-voice-ai-text-to-speech-speech-to-text)
+- [Modal free tier without card](https://www.mintlify.com/cheahjs/free-llm-api-resources/providers/trial/modal)
+- [Modal credit tiers](https://moltchat-agent-commons.onrender.com/wiki/serverless-modal_skill_(ARIS))
+- [Modal credit in GPU hours](https://toolfreebie.com/category/free-hosting/)
+
+//
+
+---
+
+## [13] USER
+
+Gradial spaces are free on Hugging Face if you use the zero GPU. You can run up to two. I already have one running as a recommendation engine that learns from Thingy for a Netflix app, actual Netflix app. That is exact one-to-one. Anyways, I am falling into the loop of flexing my app.
+
+---
+
+## [14] ASSISTANT
+
+You're right. I treated ZeroGPU only as GPU minutes and missed that the free Space itself is a hosted container you control. Free personal accounts can host up to 2 Gradio Spaces on ZeroGPU. With your second slot, that becomes the backend.
+
+**Space #2 is the backend.**
+- It's a Gradio app that exposes API endpoints to the phone: queue, chunker, director, and Ming 0.5B rendering inside a `@spaces.GPU` function.
+- The GPU is a shared RTX PRO 6000 Blackwell, by default half a card with 48 GB.
+- The budget is small: 5 GPU minutes a day on a free account, a 60 second default GPU window per call, and no `torch.compile`. In April 2026, free accounts were also reported to be limited to about 3 runs a day. So batch each article into one GPU call, and use the Space for things you want to hear now.
+- Call it with your HF token. Authenticated requests draw on your account's quota; anonymous calls use a stricter shared pool.
+- Free Spaces sleep after 48 hours without use, and the next request wakes them. The 50 GB disk isn't persistent, so keep the audio cache on the phone.
+- Keep your reference voice clip in a private HF dataset and load it with a token stored as a Space secret, so it isn't sitting in the Space repo.
+
+**Kaggle handles bulk rendering.** Books and long queues go there: 2× T4, about 30 GPU hours a week, 12 hour sessions. The Space or the phone pushes the kernel runs.
+
+**The phone handles playback.** It keeps the Opus cache, plays audio, and runs Piper through sherpa-onnx as the offline fallback.
+
+So the split is: the Space for now, Kaggle for later, Piper for offline. All FOSS, no card, nothing running on your laptop. First job: time how much audio Ming renders per GPU minute on that card. That number tells you how much reading the 5 daily minutes cover.
+
+Sources:
+- [Hugging Face Spaces overview](https://huggingface.co/docs/hub/en/spaces-overview)
+- [Spaces hardware and sleep](https://huggingface.co/docs/hub/en/spaces-gpus)
+- [Free cloud GPUs 2026 (ZeroGPU limits)](https://gpuperhour.com/blog/free-cloud-gpus-and-credits)
+- [ZeroGPU run limit thread](https://discuss.huggingface.co/t/what-is-the-free-zerogpu-quota-for-1-space/178610)
+- [ZeroGPU quota and auth](https://discuss.huggingface.co/t/it-seems-use-60-sec-gpu-quota-instead-of-real-time-usage/175130)
+- [Kaggle limits](https://pypi.org/p/kgz)
+
+//
+
+---
+
+## [15] USER
+
+we can still make it fully Rust with multiple layers and stuff like that, and even front-end and back-end, and compile it and everything, and still can be on the gradio.
+
+---
+
+## [16] ASSISTANT
+
+Mostly, yes. There's one hard boundary on the Space: ZeroGPU only works with the Gradio SDK, and it's built for PyTorch. The model call has to be Python and PyTorch inside a `@spaces.GPU` function, on Python 3.10.13. Rust inference with candle won't get the GPU there. Everything around that call can be Rust.
+
+**Layers**
+
+1. **`reader-core`, a Rust library:**
+   - text extraction (EPUB, HTML)
+   - chunking
+   - checking the director's tags against the source text
+   - loudnorm (`ebur128` crate)
+   - Opus encoding
+   - the length and word check
+
+   Build it once and ship it two ways: a PyO3 wheel built with maturin (abi3, cp310, manylinux) for the Space and Kaggle, and a UniFFI or JNI library for Android.
+2. **Space:** a thin Python shell. Gradio exposes the endpoints, `reader-core` prepares the text, PyTorch runs Ming on the GPU, and `reader-core` finishes the audio. Commit the wheel to the repo, or point `requirements.txt` at a GitHub release URL.
+3. **Kaggle worker:** the same wheel and the same model module, for bulk jobs.
+4. **Android app:** Rust UI with Dioxus or Slint, Rust networking and Rust cache. Background playback with lock screen controls needs MediaSession and a foreground service, which are Java APIs. You can reach them from Rust through the `jni` and `ndk` crates. I'd write about 200 lines of Kotlin for the playback service instead; the JNI route costs more time on Android lifecycle than on the reader.
+5. **Later:** porting Ming to candle gives you full Rust inference on Kaggle or your own GPU. drama-rs shows it's doable. It never helps on ZeroGPU, so leave it until you own hardware.
+
+**The Space shell.** ZeroGPU wants the model moved to `cuda` at import time, outside the decorated function:
+
+```python
+# app.py
+import spaces, gradio as gr, numpy as np
+import reader_core                      # your Rust wheel
+from ming_backend import load, synth    # wrap Ming's cookbook calls here
+
+model = load(device="cuda")             # at import, per ZeroGPU rules
+
+@spaces.GPU(duration=120)
+def render(text: str, voice_id: str) -> str:
+    chunks = reader_core.plan(text)                       # Rust: chunk + tags
+    pcm = [synth(model, c, voice_id).astype(np.float32).tobytes() for c in chunks]
+    return reader_core.finish(pcm, 44100, "/tmp/out.opus")  # Rust: loudnorm + Opus
+
+with gr.Blocks() as demo:
+    t, v, o = gr.Textbox(), gr.Textbox(), gr.File()
+    gr.Button().click(render, [t, v], o, api_name="render")
+demo.queue().launch()
+```
+
+Pass the audio across the PyO3 boundary as raw f32 bytes (`Vec<Vec<u8>>`) and cast them with `bytemuck` in Rust. That avoids pulling in rust-numpy.
+
+**Rust client on the phone.** A Gradio API call is two requests: a POST that returns an `event_id`, then a GET that streams the result as server sent events. Send your HF token as a bearer token so the GPU time comes out of your account's quota.
+
+```rust
+// reqwest = { features = ["json", "stream"] }, futures-util, serde_json, anyhow
+use futures_util::StreamExt;
+use serde_json::{json, Value};
+
+pub async fn call_gradio(base: &str, api: &str, token: &str, data: Value) -> anyhow::Result<Value> {
+    let c = reqwest::Client::new();
+    let ev: Value = c.post(format!("{base}/gradio_api/call/{api}"))
+        .bearer_auth(token).json(&json!({ "data": data }))
+        .send().await?.error_for_status()?.json().await?;
+    let id = ev["event_id"].as_str().ok_or_else(|| anyhow::anyhow!("no event_id"))?;
+
+    let mut s = c.get(format!("{base}/gradio_api/call/{api}/{id}"))
+        .bearer_auth(token).send().await?.error_for_status()?.bytes_stream();
+    let (mut buf, mut event) = (String::new(), String::new());
+    while let Some(chunk) = s.next().await {
+        buf.push_str(&String::from_utf8_lossy(&chunk?));
+        while let Some(i) = buf.find('\n') {
+            let line: String = buf.drain(..=i).collect();
+            let line = line.trim_end();
+            if let Some(e) = line.strip_prefix("event: ") { event = e.into(); }
+            else if let Some(d) = line.strip_prefix("data: ") {
+                match event.as_str() {
+                    "complete" => return Ok(serde_json::from_str(d)?),
+                    "error" => anyhow::bail!("gradio: {d}"),
+                    _ => {}
+                }
+            }
+        }
+    }
+    anyhow::bail!("stream closed without a result")
+}
+```
+
+Call it as `call_gradio("https://<user>-<space>.hf.space", "render", &token, json!([text, "my_voice"]))`. The `complete` payload holds a file object with a URL; download it with the same bearer token.
+
+Sources:
+- [ZeroGPU docs](https://huggingface.co/docs/hub/en/spaces-zerogpu)
+- [ZeroGPU compilation note](https://huggingface.co/docs/hub/spaces-zerogpu)
+- [ZeroGPU usage example](https://huggingface.co/spaces/zero-gpu-explorers/README/blob/refs%2Fpr%2F25/README.md?code=true)
+- [Querying Gradio apps with curl](https://gradio.app/guides/querying-gradio-apps-with-curl)
+- [Gradio call endpoints](https://huggingface.co/datasets/John6666/forum2/commit/1e58ef9383c4153dec1859114cbb62306883571d)
+- [drama-rs](https://docs.rs/crate/drama-rs/0.3.0)
+
+//
+
+---
+
+## [17] USER
+
+How do I get this chats on PDF? Or actually something AI-friendly. the whole chat , so json or md
+
+(The user also pasted a browser console script that scrapes `div[data-message-author-role]`, `.message-content` and `article` elements, guesses roles by position, and downloads the result as `chat-export.json` or `chat-export.md`.)

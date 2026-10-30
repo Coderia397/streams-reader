@@ -1,0 +1,21 @@
+[package]
+name = "nolabs-core"
+description = "Pure domain logic and wire contracts shared by the nolabs Worker, server services and web app"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+hex.workspace = true
+thiserror.workspace = true
+unicode-segmentation = "1.12"
+
+[dev-dependencies]
+proptest = "1"
+
+[lints]
+workspace = true

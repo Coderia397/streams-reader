@@ -1,0 +1,13 @@
+[package]
+name = "nolabs-import"
+description = "Turns pasted text, Markdown, web pages, EPUB and PDF text into normalised blocks (runs in the browser)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+nolabs-core.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true
