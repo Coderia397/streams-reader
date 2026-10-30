@@ -23,6 +23,11 @@ Native apps for macOS, Windows, Linux, Android; self-updating; several users; Su
 | 5 Speed | on-device Kokoro (ONNX via `ort`) in native apps; Space streaming per segment + pipelined encode; ONNX Kokoro on Space CPU | `crates/tts-local`, `space/` | measured RTF before/after |
 | 6 Features | widget, Drive import, Kindle (exported files; no public Kindle API), notifications, browser extension, Kaggle bulk renderer, Arabic voice (Chatterbox Multilingual), export/backup | various | per feature |
 
+### Added 2026-10-30 (user, late evening)
+- Landing page v2 with ElevenReader-level richness in our design: hero product video, a row of library books, "available everywhere" (listen online, Android, desktop, add to Chrome), storytelling sections, small details. Brief: note 15 (research agent, in progress). Built after the first site version lands.
+- In-app "Explore" library of DRM-free public-domain books (Standard Ebooks CC0 editions first, Project Gutenberg second), one tap to add and listen. Licensing verified in note 15 before use.
+- Chrome extension ("Add to Chrome"): read the current page aloud through Streams Reader (phase 6, moved earlier if time allows).
+
 ## Open items
 - Phase order may change if milestone A testing on the Pixel shows playback problems (native Android player moves up).
 - Kindle: Amazon offers no import API; feasible only for user-exported files (assumed).
