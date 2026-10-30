@@ -4,6 +4,10 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D9. Native apps with Tauri 2, and all eight extra features are in scope
+- Decision: Tauri 2 apps for macOS, Windows, Linux, Android sharing the Leptos UI, with native playback, media controls, downloads and self-updating (note 11). In scope (user: "yes for all the eight things"): cross-device sync, offline downloads, share into the app / open files, lock-screen + headset + car controls, invite-only accounts with a fair split of expressive minutes, Arabic, whole books in the cloned voice overnight (Kaggle), library export/backup.
+- Decided by: user (features), assistant (Tauri).
+
 ### D8. Domain: listen.streams.watch
 - Decision: the app lives at `listen.streams.watch` (custom domain on the Worker `nolabs-api`, Cloudflare zone streams.watch). Supersedes the "name chosen later" part of D2.
 - Alternatives offered: `read.streams.watch`, `reader.streams.watch`.
