@@ -4,6 +4,11 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D15. Every component goes through a find-fix loop on the real thing
+- Decision: after each build phase, adversarial testers exercise the real rendered/running component (real browser, real audio, the phone over ADB), report only reproduced defects, a separate fixer repairs them at the root with tests, and the round repeats until no new defect is found. First applied to the player (workflow `wf_a6ae6ada-16b`, harness in `crates/player/harness/`).
+- Reason: the owner found seek and tracking problems on the Pixel that unit tests missed (Streams lesson: score the real page, not fixtures).
+- Decided by: user ("make sure you have a cycle of improve"), assistant (method).
+
 ### D14. Streams blue accent and one central brand token file
 - Decision: accent = Streams primary blue #2F6BFF (hover #4A82FF, active #2358D6, soft #6E9BFF, deep #1D4BBD, from `streams-frontend-rs/brand/colors.json`), surfaces near Streams' void #0B0B0C / panel #16161A / paper #F3F1EC; ember stays only for the word being spoken. Supersedes note 12's violet.
 - One source of truth: `brand/tokens.toml` → `brand/build.py` → `brand/dist/tokens/{_tokens.scss,tokens.css,tokens.json}`. Every colour, radius, spacing, type size, shadow, motion and component dimension (buttons, inputs, cards, sheets, chips, tap targets) comes from it; app icons and illustrations read their palette from it too. Web and site SCSS may not contain raw hex values (build check).
