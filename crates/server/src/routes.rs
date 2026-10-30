@@ -55,6 +55,12 @@ impl Route {
         let rest = path.strip_prefix("/api/")?;
         let parts: Vec<&str> = rest.split('/').collect();
         let id = |s: &str| ids::is_id(s).then(|| s.to_owned());
+        // The app addresses user voices by their catalogue id (`user:<id>`, colon raw or percent-encoded).
+        let voice = |s: &str| {
+            let bare =
+                s.strip_prefix("user:").or_else(|| s.strip_prefix("user%3A")).or_else(|| s.strip_prefix("user%3a"));
+            id(bare.unwrap_or(s))
+        };
         let route = match (method, parts.as_slice()) {
             ("POST", ["session"]) => Route::Login,
             ("DELETE", ["session"]) => Route::Logout,
@@ -69,9 +75,9 @@ impl Route {
             ("POST", ["documents", d, "progress"]) => Route::PutProgress { id: id(d)?, beacon: true },
             ("GET", ["voices"]) => Route::Voices,
             ("POST", ["voices"]) => Route::CreateVoice,
-            ("PUT", ["voices", v, "reference"]) => Route::PutVoiceReference { id: id(v)? },
-            ("POST", ["voices", v, "prepare"]) => Route::PrepareVoice { id: id(v)? },
-            ("DELETE", ["voices", v]) => Route::DeleteVoice { id: id(v)? },
+            ("PUT", ["voices", v, "reference"]) => Route::PutVoiceReference { id: voice(v)? },
+            ("POST", ["voices", v, "prepare"]) => Route::PrepareVoice { id: voice(v)? },
+            ("DELETE", ["voices", v]) => Route::DeleteVoice { id: voice(v)? },
             ("POST", ["render"]) => Route::Render,
             ("GET", ["render", "status"]) => Route::RenderStatus,
             ("GET" | "HEAD", ["audio", k]) => {
@@ -114,6 +120,10 @@ mod tests {
             ("POST", format!("/api/documents/{ID}/progress"), Some(Route::PutProgress { id: ID.into(), beacon: true })),
             ("PUT", format!("/api/documents/{ID}/progress"), Some(Route::PutProgress { id: ID.into(), beacon: false })),
             ("POST", format!("/api/voices/{ID}/prepare"), Some(Route::PrepareVoice { id: ID.into() })),
+            ("POST", format!("/api/voices/user:{ID}/prepare"), Some(Route::PrepareVoice { id: ID.into() })),
+            ("PUT", format!("/api/voices/user%3A{ID}/reference"), Some(Route::PutVoiceReference { id: ID.into() })),
+            ("DELETE", format!("/api/voices/user:{ID}"), Some(Route::DeleteVoice { id: ID.into() })),
+            ("DELETE", "/api/voices/user:nope".to_owned(), None),
             ("GET", "/api/render/status".to_owned(), Some(Route::RenderStatus)),
             ("GET", format!("/api/audio/{key}"), Some(Route::Audio { key: key.clone() })),
             ("GET", format!("/api/audio/{key}.webm"), Some(Route::Audio { key: key.clone() })),

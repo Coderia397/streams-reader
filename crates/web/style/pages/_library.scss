@@ -1,0 +1,74 @@
+// Library: the "Continue listening" hero.
+
+.hero {
+  position: relative;
+  padding: 16px;
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(140% 120% at 100% 0%, var(--accent-soft), transparent 55%),
+    var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-1);
+  animation: rise-in var(--dur-slow) var(--ease);
+}
+
+.hero--skeleton {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.hero__open {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+}
+
+.hero__text {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.hero__title {
+  font-family: var(--font-read);
+  font-size: 21px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hero__author {
+  color: var(--text-2);
+  font-size: 14px;
+}
+
+.hero__meta {
+  color: var(--text-2);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.hero__foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+
+  .bar {
+    flex: 1;
+  }
+
+  .play-btn {
+    width: 56px;
+    height: 56px;
+  }
+}

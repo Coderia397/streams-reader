@@ -1,8 +1,77 @@
 [package]
 name = "nolabs-web"
+description = "The nolabs phone app: Leptos CSR reader, player dock, library, voices and recording (wasm only, built with trunk)"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
 [dependencies]
 nolabs-core.workspace = true
+nolabs-import.workspace = true
+nolabs-player.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+leptos = { version = "=0.8.22", features = ["csr"] }
+leptos_router = "=0.8.17"
+console_error_panic_hook = "0.1.7"
+futures = { version = "0.3", default-features = false, features = ["std", "async-await"] }
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+js-sys = "0.3"
+web-sys = { version = "0.3", features = [
+    "AbortController",
+    "AbortSignal",
+    "Blob",
+    "BlobPropertyBag",
+    "Cache",
+    "CacheStorage",
+    "CssStyleDeclaration",
+    "Document",
+    "DomException",
+    "DomRect",
+    "DomStringList",
+    "DomTokenList",
+    "Element",
+    "Event",
+    "EventTarget",
+    "File",
+    "FileList",
+    "Headers",
+    "HtmlAudioElement",
+    "HtmlElement",
+    "HtmlInputElement",
+    "HtmlMediaElement",
+    "HtmlTextAreaElement",
+    "IdbDatabase",
+    "IdbFactory",
+    "IdbObjectStore",
+    "IdbOpenDbRequest",
+    "IdbRequest",
+    "IdbTransaction",
+    "IdbTransactionMode",
+    "IdbVersionChangeEvent",
+    "IntersectionObserver",
+    "IntersectionObserverEntry",
+    "IntersectionObserverInit",
+    "Location",
+    "MediaQueryList",
+    "Navigator",
+    "Request",
+    "RequestCredentials",
+    "RequestInit",
+    "Response",
+    "ScrollBehavior",
+    "ScrollIntoViewOptions",
+    "ScrollLogicalPosition",
+    "Storage",
+    "StorageEstimate",
+    "StorageManager",
+    "Url",
+    "UrlSearchParams",
+    "VisibilityState",
+    "Window",
+] }
+
+[lints]
+workspace = true

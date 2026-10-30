@@ -1,0 +1,121 @@
+// Record your voice.
+
+.tips {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 18px;
+  color: var(--text-2);
+}
+
+.lines {
+  display: grid;
+  gap: 12px;
+  counter-reset: line;
+}
+
+.line {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--r-l);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+
+  &.is-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+.line__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.line__num {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.line.is-done .line__num {
+  background: color-mix(in srgb, var(--success) 18%, transparent);
+  color: var(--success);
+}
+
+.line__mood {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.line__len {
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.line__text {
+  font-family: var(--font-read);
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+.line__issue {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--danger);
+  font-size: 13.5px;
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+  }
+
+  &.is-warn {
+    color: var(--warning);
+  }
+}
+
+.meter {
+  height: 6px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.meter__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--success), var(--accent) 70%, var(--warning) 92%, var(--danger));
+  transform-origin: left;
+  transition: transform 60ms linear;
+}
+
+.sticky-cta {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  gap: 8px;
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 24px var(--gutter) calc(14px + var(--safe-bottom));
+  background: linear-gradient(180deg, transparent, var(--bg) 30%);
+  text-align: center;
+}

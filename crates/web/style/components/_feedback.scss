@@ -1,0 +1,131 @@
+// Skeletons and empty states.
+
+.skel {
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--skel-a) 0%, var(--skel-b) 50%, var(--skel-a) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.skel--cover {
+  width: 48px;
+  height: 64px;
+  flex: none;
+}
+
+.skel--line {
+  height: 14px;
+  width: 80%;
+}
+
+.skel--short {
+  width: 46%;
+}
+
+.skel--hero {
+  height: 176px;
+  border-radius: var(--r-xl);
+}
+
+.skel--title {
+  height: 30px;
+  width: 70%;
+  margin: 24px 0 26px;
+}
+
+.skel--text {
+  height: 16px;
+  margin-bottom: 14px;
+}
+
+.skeleton-list .row {
+  min-height: 84px;
+  gap: 14px;
+}
+
+.row--skeleton .row__body {
+  gap: 10px;
+}
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 48px 12px 24px;
+  text-align: center;
+  animation: rise-in var(--dur-slow) var(--ease);
+
+  .btn {
+    margin-top: 14px;
+  }
+}
+
+.empty__mark {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+
+  .icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.empty__title {
+  font-family: var(--font-read);
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.empty__line {
+  max-width: 30ch;
+  color: var(--text-2);
+}
+
+.progress-card {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin-top: 40px;
+  padding: 32px 20px;
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  text-align: center;
+
+  h2 {
+    font-family: var(--font-read);
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .btn {
+    margin-top: 8px;
+  }
+}
+
+.done-mark {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--success) 16%, transparent);
+  color: var(--success);
+
+  .icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.done-mark--warn {
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--warning);
+}

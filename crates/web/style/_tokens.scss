@@ -1,0 +1,102 @@
+// Design tokens. Ink (dark) is the default; Paper is the light theme; System follows the OS.
+// Contrast (WCAG): Ink text 17:1, secondary 7.9:1; Paper text 15:1, secondary 6.1:1, accent 5.5:1.
+// Filled accent buttons use --accent-strong so white labels reach 5:1 in both themes.
+
+@mixin ink {
+  --bg: #0b0b0f;
+  --surface: #15151b;
+  --surface-2: #1c1c24;
+  --surface-3: #252530;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --text: #eeeef3;
+  --text-2: #a3a3b2;
+  --text-3: #74748a;
+  --accent: #7c6cff;
+  --accent-strong: #6655f0;
+  --accent-soft: rgba(124, 108, 255, 0.14);
+  --accent-glow: rgba(124, 108, 255, 0.35);
+  --on-accent: #ffffff;
+  --highlight: rgba(124, 108, 255, 0.14);
+  --success: #3dd6a6;
+  --warning: #f5b544;
+  --danger: #ff6b7a;
+  --danger-soft: rgba(255, 107, 122, 0.12);
+  --backdrop: rgba(4, 4, 8, 0.62);
+  --glass: rgba(11, 11, 15, 0.82);
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --cover-ring: rgba(255, 255, 255, 0.08);
+  --skel-a: #17171e;
+  --skel-b: #22222b;
+  color-scheme: dark;
+}
+
+@mixin paper {
+  --bg: #f6f2ea;
+  --surface: #fffdf8;
+  --surface-2: #efe9de;
+  --surface-3: #e6dfd2;
+  --line: rgba(28, 26, 22, 0.1);
+  --line-strong: rgba(28, 26, 22, 0.18);
+  --text: #1c1a16;
+  --text-2: #5f5a51;
+  --text-3: #8a8478;
+  --accent: #5a48e0;
+  --accent-strong: #5a48e0;
+  --accent-soft: rgba(90, 72, 224, 0.11);
+  --accent-glow: rgba(90, 72, 224, 0.28);
+  --on-accent: #ffffff;
+  --highlight: rgba(90, 72, 224, 0.13);
+  --success: #138a69;
+  --warning: #a86a00;
+  --danger: #c2283b;
+  --danger-soft: rgba(194, 40, 59, 0.09);
+  --backdrop: rgba(28, 26, 22, 0.32);
+  --glass: rgba(246, 242, 234, 0.86);
+  --shadow-1: 0 1px 2px rgba(28, 26, 22, 0.08);
+  --shadow-2: 0 14px 34px rgba(28, 26, 22, 0.16);
+  --cover-ring: rgba(28, 26, 22, 0.06);
+  --skel-a: #ece6da;
+  --skel-b: #e2dbcd;
+  color-scheme: light;
+}
+
+:root {
+  @include ink;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-read: "Literata", "Iowan Old Style", Georgia, serif;
+  --read-size: 19px;
+  --read-leading: 1.65;
+  --r-s: 10px;
+  --r-m: 14px;
+  --r-l: 18px;
+  --r-xl: 24px;
+  --gutter: 16px;
+  --tap: 48px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur: 180ms;
+  --dur-slow: 220ms;
+  --column: 760px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --tabbar-h: 62px;
+  --mini-h: 64px;
+  --dock-h: 232px;
+}
+
+:root[data-theme="paper"] {
+  @include paper;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="system"] {
+    @include paper;
+  }
+}
+
+@media (min-width: 400px) {
+  :root {
+    --gutter: 20px;
+  }
+}

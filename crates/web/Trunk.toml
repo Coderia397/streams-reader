@@ -1,0 +1,28 @@
+# Build: `trunk build` (debug) or `trunk build --release` from crates/web. Output: crates/web/dist.
+# Cargo uses the workspace target directory, so the wasm build shares artifacts with the rest of the workspace.
+
+[build]
+target = "index.html"
+dist = "dist"
+filehash = true
+# SRI attributes are added to the hashed script and wasm; the CSP below forbids inline scripts, so the post-build
+# hook moves trunk's inline loader into a hashed file.
+no_sri = false
+
+[tools]
+# dart-sass, downloaded and cached by trunk. Pinned to a release older than two weeks.
+sass = "1.105.1"
+
+[watch]
+ignore = ["dist", "tools"]
+
+# Moves trunk's inline module loader into /boot-<hash>.js (CSP: script-src 'self' without 'unsafe-inline') and writes
+# the service worker's precache list. Python runs through uv, with no dependencies.
+[[hooks]]
+stage = "post_build"
+command = "sh"
+command_arguments = ["-c", "uv run --no-project --python 3.12 --script \"$TRUNK_SOURCE_DIR/tools/postbuild.py\""]
+
+[serve]
+port = 8090
+open = false

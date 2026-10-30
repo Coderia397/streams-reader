@@ -1,0 +1,135 @@
+// Login and first-run screens.
+
+.login {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 24px var(--gutter) calc(24px + var(--safe-bottom));
+  background:
+    radial-gradient(80% 50% at 50% 0%, var(--accent-soft), transparent 70%),
+    var(--bg);
+}
+
+.login__card {
+  display: grid;
+  justify-items: center;
+  width: min(100%, 360px);
+  animation: rise-in var(--dur-slow) var(--ease);
+
+  .form {
+    width: 100%;
+    margin-top: 28px;
+  }
+}
+
+.login__name {
+  margin-top: 18px;
+  font-family: var(--font-read);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.login__tag {
+  margin-top: 4px;
+  color: var(--text-2);
+  font-family: var(--font-read);
+  font-style: italic;
+  font-size: 16px;
+}
+
+.welcome {
+  padding-bottom: calc(24px + var(--safe-bottom));
+}
+
+.welcome__hero {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 40px 0 26px;
+  text-align: center;
+}
+
+.welcome__title {
+  margin-top: 8px;
+  font-family: var(--font-read);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.welcome__lead {
+  max-width: 32ch;
+  color: var(--text-2);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 18px 16px;
+  border-radius: var(--r-l);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.step__num {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.step__body {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+.step__title {
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  padding-top: 5px;
+}
+
+.step__line {
+  color: var(--text-2);
+}
+
+.step__done {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--success);
+  font-weight: 600;
+}
+
+.step__list {
+  display: grid;
+  gap: 10px;
+
+  li {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    color: var(--accent);
+  }
+}
+
+.welcome__go {
+  margin-top: 10px;
+}

@@ -1,0 +1,246 @@
+// Bottom sheets and the option lists inside them.
+
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--backdrop);
+  animation: fade-in var(--dur) var(--ease);
+}
+
+.sheet {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  z-index: 41;
+  width: min(100%, var(--column));
+  max-height: 88dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px var(--gutter) calc(20px + var(--safe-bottom));
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  box-shadow: var(--shadow-2);
+  animation: sheet-in var(--dur-slow) var(--ease);
+}
+
+.sheet--tall {
+  height: 86dvh;
+}
+
+.sheet__grip {
+  width: 38px;
+  height: 4px;
+  margin: 4px auto 2px;
+  border-radius: 4px;
+  background: var(--line-strong);
+}
+
+.sheet__head {
+  position: sticky;
+  top: -6px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 -4px 8px 0;
+  background: var(--surface);
+}
+
+.sheet__title {
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.sheet-lead {
+  font-family: var(--font-read);
+  font-size: 17px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.sheet-section + .sheet-section {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.options {
+  display: grid;
+  gap: 2px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 54px;
+  padding: 0 14px;
+  border-radius: var(--r-m);
+  font-size: 16px;
+  font-weight: 550;
+  text-align: left;
+  transition: background-color var(--dur) var(--ease);
+
+  &:active {
+    background: var(--surface-2);
+  }
+
+  &.is-on {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+}
+
+.option--danger {
+  justify-content: flex-start;
+  color: var(--danger);
+}
+
+.chapters {
+  display: grid;
+  gap: 2px;
+}
+
+.chapter {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 12px;
+  border-radius: var(--r-m);
+  text-align: left;
+
+  &.is-on {
+    background: var(--accent-soft);
+
+    .chapter__title {
+      color: var(--accent);
+    }
+  }
+}
+
+.chapter__num {
+  color: var(--text-3);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.chapter__title {
+  font-family: var(--font-read);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.speed {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 6px;
+}
+
+.speed__value {
+  text-align: center;
+  font-family: var(--font-read);
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.speed__row {
+  display: grid;
+  grid-template-columns: var(--tap) 1fr var(--tap);
+  align-items: center;
+  gap: 6px;
+}
+
+.speed__sign {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.speed .chips {
+  justify-content: center;
+}
+
+.speed .hint {
+  text-align: center;
+}
+
+.sleep__left {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.busy {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 120px;
+  justify-content: center;
+  color: var(--text-2);
+  font-weight: 550;
+}
+
+.busy--card {
+  min-height: 64px;
+  margin-bottom: 16px;
+  border-radius: var(--r-l);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.drop {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 34px 16px;
+  border-radius: var(--r-l);
+  border: 1.5px dashed var(--line-strong);
+  background: var(--surface-2);
+  text-align: center;
+  cursor: pointer;
+
+  .icon {
+    width: 30px;
+    height: 30px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+}
+
+.drop__title {
+  font-weight: 650;
+  font-size: 16px;
+}
+
+.drop__hint {
+  color: var(--text-2);
+  font-size: 13.5px;
+}
+
+.cta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 14px;
+  border-radius: var(--r-m);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+
+  span {
+    flex: 1;
+  }
+}

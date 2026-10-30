@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="theme-color" content="#0B0B0F" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="Your library, read aloud." />
+    <meta name="referrer" content="same-origin" />
+    <title>nolabs</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
+    <link rel="preload" href="/assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/fonts/literata-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Applies the saved theme before the first paint (external file: the CSP allows no inline scripts). -->
+    <script src="/assets/theme-boot.js"></script>
+    <link data-trunk rel="scss" href="style/main.scss" />
+    <link data-trunk rel="rust" data-bin="nolabs-web" data-type="main" />
+    <link data-trunk rel="copy-dir" href="assets" />
+    <link data-trunk rel="copy-file" href="manifest.webmanifest" />
+    <link data-trunk rel="copy-file" href="sw.js" />
+  </head>
+  <body>
+    <noscript>
+      <p style="font-family: system-ui, sans-serif; padding: 24px">nolabs needs JavaScript and WebAssembly. Use a current version of Chrome.</p>
+    </noscript>
+  </body>
+</html>

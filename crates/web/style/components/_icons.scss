@@ -1,0 +1,59 @@
+// Line icons (Lucide style) and the app mark.
+
+.icon {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon--filled {
+  fill: currentColor;
+  stroke-width: 1;
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+.spin--large {
+  width: 36px;
+  height: 36px;
+  color: var(--accent);
+}
+
+.flip {
+  display: inline-flex;
+  transform: rotate(180deg);
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px var(--accent-glow);
+}
+
+.logo--large {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand__name {
+  font-family: var(--font-read);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}

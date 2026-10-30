@@ -1,0 +1,104 @@
+// App shell: centred column, safe areas, fixed chrome at the bottom.
+
+.app {
+  max-width: var(--column);
+  margin: 0 auto;
+  min-height: 100dvh;
+  padding-top: var(--safe-top);
+}
+
+.main {
+  padding-bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 24px);
+}
+
+.app:has(.mini) .main {
+  padding-bottom: calc(var(--tabbar-h) + var(--mini-h) + var(--safe-bottom) + 32px);
+}
+
+.app--immersive .main {
+  padding-bottom: 0;
+}
+
+.page {
+  padding: 0 var(--gutter);
+  animation: fade-in var(--dur) var(--ease);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 60px;
+}
+
+.page-title {
+  font-family: var(--font-read);
+  font-size: 34px;
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 6px 0 20px;
+}
+
+.page-title--bar {
+  font-size: 26px;
+  margin: 0;
+  flex: 1;
+}
+
+.page-lead {
+  color: var(--text-2);
+  margin: -2px 0 18px;
+}
+
+.section {
+  margin: 28px 0;
+}
+
+.list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--tap);
+  margin-top: 18px;
+}
+
+.center-spinner {
+  display: grid;
+  place-items: center;
+  min-height: 120px;
+  color: var(--text-2);
+}
+
+.colophon {
+  text-align: center;
+  color: var(--text-3);
+  font-family: var(--font-read);
+  font-style: italic;
+  font-size: 14px;
+  margin: 32px 0 8px;
+}
+
+// Bottom chrome (mini-player + tab bar), glass over the content.
+.chrome {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: min(100%, var(--column));
+  z-index: 20;
+  padding-bottom: var(--safe-bottom);
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 761px) {
+  .chrome {
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+  }
+}

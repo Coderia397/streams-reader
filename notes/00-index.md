@@ -17,4 +17,5 @@ Start with [NEXT-SESSION-PROMPT.md](../NEXT-SESSION-PROMPT.md) at the repo root,
 | [11-native-apps-and-accounts.md](11-native-apps-and-accounts.md) | plan | v3 delta: Tauri 2 native apps, self-updating, several users, managed auth (Supabase blocked on slot) |
 | [13-implementation-notes.md](13-implementation-notes.md) | reference | Build agents' decisions, pinned model revisions, assumptions to verify, deploy order |
 | [14-v3-plan.md](14-v3-plan.md) | plan | v3: Supabase accounts, 8 languages, landing + SEO, native apps, speed, features — six phases |
+| [12-design-benchmark.md](12-design-benchmark.md) | finding + plan | ElevenReader screen-by-screen benchmark, feature parity gaps, nolabs design brief (tokens, components, motion, landing, logo concepts) |
 | [raw/](raw/) | raw | Research and review panel outputs (JSON + rendered markdown) |
