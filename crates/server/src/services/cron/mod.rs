@@ -13,10 +13,9 @@ use crate::error::to_json;
 use crate::ports::JobMessage;
 use crate::repo::{CONFIG_SPACE_STATUS, JobKind, JobRow, JobUpdate, Repo};
 use crate::services::consumer::failed_cooldown_ms;
-use crate::services::gpu::admit_whole;
+use crate::services::gpu::{admit_whole, job_share};
 use crate::services::render::budget_error;
 use crate::space::is_healthy;
-use nolabs_core::budget::GpuUse;
 
 const MINUTE_MS: i64 = 60_000;
 const DAY_MS: i64 = 24 * 60 * MINUTE_MS;
@@ -172,18 +171,16 @@ impl App {
         if due.is_empty() {
             return Ok(());
         }
-        let mut history: Vec<GpuUse> = self.gpu_history(now, None).await?;
         for job in due {
             let mut requested_s = job.requested_s;
             if job.engine == Engine::Ming && job.kind == JobKind::Render {
                 let request: EngineRequest = serde_json::from_str(&job.request_json)
                     .map_err(|e| ApiError::internal(format!("stored engine request: {e}")))?;
                 let chars: Vec<usize> = request.items.iter().map(|i| i.text.chars().count()).collect();
-                match admit_whole(&self.config.gpu, &history, now, &chars) {
-                    Ok(request_s) => {
-                        requested_s = request_s;
-                        history.push(GpuUse { at_ms: now, requested_s: request_s, used_s: 0 });
-                    }
+                // Fresh per job: a job released a moment ago is queued now and counts as pending GPU time.
+                let history = self.gpu_history(now, &job.user_id, None).await?;
+                match admit_whole(&self.config.gpu, &history, job_share(&self.config.gpu, &job), now, &chars) {
+                    Ok(request_s) => requested_s = request_s,
                     Err(retry_at) => {
                         let to = job::Row { retry_at_ms: Some(retry_at), ..job.machine() };
                         let error = budget_error(retry_at, now);
@@ -240,7 +237,7 @@ impl App {
 
     async fn prune(&self, now: i64) -> Result<(), ApiError> {
         let repo = self.repo();
-        repo.prune_auth_failures(now - DAY_MS).await?;
+        repo.prune_owner_cache(now).await?;
         repo.prune_ledger(now - 2 * DAY_MS).await?;
         repo.prune_finished_jobs(now - 7 * DAY_MS).await?;
         Ok(())

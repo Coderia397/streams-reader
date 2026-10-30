@@ -1,9 +1,13 @@
 //! The service container: every port plus the configuration. Each service module adds its methods to [`App`] in its
 //! own `impl` block, so a route handler only needs one value.
 
+use std::rc::Rc;
+
 use nolabs_core::ids;
 use nolabs_core::proto::ApiError;
 
+use crate::accounts::Accounts;
+use crate::auth::jwks::JwksCache;
 use crate::config::Config;
 use crate::ports::{Blob, Clock, Db, Http, Queue, Rng};
 use crate::repo::Repo;
@@ -16,6 +20,10 @@ pub struct App {
     pub queue: Box<dyn Queue>,
     pub clock: Box<dyn Clock>,
     pub rng: Box<dyn Rng>,
+    /// The user's rows in Supabase, always reached with the user's own token.
+    pub accounts: Box<dyn Accounts>,
+    /// Supabase signing keys, shared by every request of a Worker isolate.
+    pub jwks: Rc<JwksCache>,
     pub config: Config,
 }
 

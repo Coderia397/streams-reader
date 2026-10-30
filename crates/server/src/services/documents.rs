@@ -1,16 +1,15 @@
-//! Documents: metadata rows in D1, bodies in R2. A body upload is two-phase: the row is created with `ready = false`,
-//! the Worker streams the PUT body to R2 with the declared length, then the row becomes ready. A crash in between
-//! leaves a row that is not ready, which the app can upload to again.
+//! Document bodies. The metadata row lives in Supabase (the app creates it with `ready = false` and the exact
+//! `body_bytes`); the body lives in R2 at `docs/<user_id>/<id>/body.json`. An upload is two-phase: the Worker checks
+//! the row with the caller's token, streams the PUT body to R2 with the declared length, then sets `ready`. A crash in
+//! between leaves a row that is not ready, which the app can upload to again.
 
 use nolabs_core::proto::ApiError;
-use nolabs_core::proto::api::{CreateDocument, DocumentMeta, DocumentSummary, Library, Progress};
+use nolabs_core::proto::api::MAX_BODY_BYTES;
 
 use crate::app::App;
+use crate::auth::AuthUser;
 use crate::error::{conflict, too_large};
-use crate::repo::DocumentRow;
-
-/// Largest document body accepted (normalised text as JSON; a long novel is about 2 MB).
-pub const MAX_BODY_BYTES: u64 = 32 * 1024 * 1024;
+use crate::repo::Owned;
 
 /// Where the Worker must stream an upload, and the exact length it must have.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -19,25 +18,9 @@ pub struct UploadTarget {
     pub length: u64,
 }
 
-pub fn body_key(id: &str) -> String {
-    format!("docs/{id}/body.json")
-}
-
-fn validate_meta(meta: &DocumentMeta) -> Result<(), ApiError> {
-    let title = meta.title.trim();
-    if title.is_empty() || title.chars().count() > 500 {
-        return Err(ApiError::bad_request("title must have 1 to 500 characters"));
-    }
-    if meta.author.as_ref().is_some_and(|a| a.chars().count() > 500) {
-        return Err(ApiError::bad_request("author is too long"));
-    }
-    if meta.source_url.as_ref().is_some_and(|u| u.len() > 4096) {
-        return Err(ApiError::bad_request("source_url is too long"));
-    }
-    if meta.language.is_empty() || meta.language.len() > 35 {
-        return Err(ApiError::bad_request("language must be a BCP 47 tag"));
-    }
-    Ok(())
+/// Bodies sit under the owner's id, so one user's keys can never name another's object.
+pub fn body_key(user_id: &str, id: &str) -> String {
+    format!("docs/{user_id}/{id}/body.json")
 }
 
 /// Check that a streamed upload declares exactly the expected length (R2 needs a known length up front).
@@ -52,85 +35,50 @@ pub fn check_length(content_length: Option<u64>, expected: u64) -> Result<(), Ap
 }
 
 impl App {
-    pub async fn create_document(&self, req: CreateDocument) -> Result<DocumentSummary, ApiError> {
-        validate_meta(&req.meta)?;
-        if req.body_bytes == 0 {
-            return Err(ApiError::bad_request("body_bytes must be positive"));
-        }
-        if req.body_bytes > MAX_BODY_BYTES {
-            return Err(too_large(format!("documents are limited to {MAX_BODY_BYTES} bytes")));
-        }
-        let now = self.now_ms();
-        let doc = DocumentRow {
-            id: self.new_id()?,
-            meta: req.meta,
-            body_bytes: req.body_bytes,
-            ready: false,
-            progress: None,
-            created_at_ms: now,
-            updated_at_ms: now,
-        };
-        self.repo().insert_document(&doc).await?;
-        Ok(doc.summary())
-    }
-
-    pub async fn library(&self) -> Result<Library, ApiError> {
-        let documents = self.repo().list_documents().await?.iter().map(DocumentRow::summary).collect();
-        Ok(Library { documents })
-    }
-
-    async fn document(&self, id: &str) -> Result<DocumentRow, ApiError> {
-        self.repo().get_document(id).await?.ok_or_else(|| ApiError::not_found("no such document"))
-    }
-
-    pub async fn get_document(&self, id: &str) -> Result<DocumentSummary, ApiError> {
-        Ok(self.document(id).await?.summary())
-    }
-
     /// Validate a body upload before the Worker streams it.
-    pub async fn begin_document_body(&self, id: &str, content_length: Option<u64>) -> Result<UploadTarget, ApiError> {
-        let doc = self.document(id).await?;
+    pub async fn begin_document_body(
+        &self,
+        user: &AuthUser,
+        id: &str,
+        content_length: Option<u64>,
+    ) -> Result<UploadTarget, ApiError> {
+        let doc =
+            self.accounts.document(user.token()?, id).await?.ok_or_else(|| ApiError::not_found("no such document"))?;
         if doc.ready {
             return Err(conflict("the body of this document was already uploaded"));
         }
+        if doc.body_bytes > MAX_BODY_BYTES {
+            return Err(too_large(format!("documents are limited to {MAX_BODY_BYTES} bytes")));
+        }
         check_length(content_length, doc.body_bytes)?;
-        Ok(UploadTarget { object_key: body_key(id), length: doc.body_bytes })
+        Ok(UploadTarget { object_key: body_key(&user.id, id), length: doc.body_bytes })
     }
 
     /// Mark the body uploaded after R2 accepted it.
-    pub async fn finish_document_body(&self, id: &str) -> Result<(), ApiError> {
-        if self.repo().set_document_ready(id, self.now_ms()).await? {
+    pub async fn finish_document_body(&self, user: &AuthUser, id: &str) -> Result<(), ApiError> {
+        if self.accounts.set_document_ready(user.token()?, id).await? {
             Ok(())
         } else {
             Err(ApiError::not_found("document deleted during upload"))
         }
     }
 
-    /// R2 key of a ready document's body.
-    pub async fn document_body_key(&self, id: &str) -> Result<String, ApiError> {
-        let doc = self.document(id).await?;
-        if !doc.ready {
-            return Err(conflict("the document body has not been uploaded yet"));
-        }
-        Ok(body_key(id))
+    /// R2 key of a ready document's body that the caller owns.
+    pub async fn document_body_key(&self, user: &AuthUser, id: &str) -> Result<String, ApiError> {
+        self.check_ready_document(user, id).await?;
+        Ok(body_key(&user.id, id))
     }
 
-    /// Delete the row first (the document disappears at once), then every object under `docs/<id>/`.
-    pub async fn delete_document(&self, id: &str) -> Result<(), ApiError> {
-        if !self.repo().delete_document(id).await? {
+    /// Delete the Supabase row first (the document disappears from every device at once; progress and bookmarks
+    /// cascade), then every object under the owner's `docs/<user_id>/<id>/`.
+    pub async fn delete_document(&self, user: &AuthUser, id: &str) -> Result<(), ApiError> {
+        if !self.accounts.delete_document(user.token()?, id).await? {
             return Err(ApiError::not_found("no such document"));
         }
-        let keys = self.blob.list_prefix(&format!("docs/{id}/")).await?;
+        self.repo().forget_owner(Owned::ReadyDocument, id).await?;
+        let keys = self.blob.list_prefix(&format!("docs/{}/{id}/", user.id)).await?;
         self.blob.delete_many(&keys).await?;
         Ok(())
-    }
-
-    /// Save reading progress. Older progress than what is stored is ignored (not an error).
-    pub async fn put_progress(&self, id: &str, progress: Progress) -> Result<(), ApiError> {
-        if self.repo().set_progress(id, progress).await? {
-            return Ok(());
-        }
-        self.document(id).await.map(|_| ())
     }
 }
 
@@ -139,91 +87,62 @@ mod tests {
     use super::*;
     use crate::testing::{TestEnv, run};
     use nolabs_core::proto::ErrorCode;
-    use nolabs_core::proto::api::SourceKind;
 
-    fn create(title: &str, bytes: u64) -> CreateDocument {
-        CreateDocument {
-            meta: DocumentMeta {
-                title: title.into(),
-                author: None,
-                source: SourceKind::Paste,
-                source_url: None,
-                language: "en".into(),
-                char_count: 100,
-                word_count: 20,
-                block_count: 2,
-            },
-            body_bytes: bytes,
-        }
-    }
+    const DOC: &str = "0123456789abcdef";
 
     #[test]
-    fn create_upload_and_read_back() {
+    fn upload_then_read_back() {
         let env = TestEnv::new();
+        let alice = env.user("alice");
+        env.accounts.add_document("alice", DOC, 42, false);
         run(async {
-            let doc = env.app.create_document(create("A book", 42)).await.unwrap();
-            assert!(!doc.ready);
-            assert_eq!(env.app.document_body_key(&doc.id).await.unwrap_err().code, ErrorCode::Conflict);
-            assert_eq!(env.app.begin_document_body(&doc.id, None).await.unwrap_err().code, ErrorCode::BadRequest);
-            assert!(env.app.begin_document_body(&doc.id, Some(41)).await.is_err());
-            let target = env.app.begin_document_body(&doc.id, Some(42)).await.unwrap();
-            assert_eq!(target, UploadTarget { object_key: format!("docs/{}/body.json", doc.id), length: 42 });
-            env.advance(5);
-            env.app.finish_document_body(&doc.id).await.unwrap();
-            let got = env.app.get_document(&doc.id).await.unwrap();
-            assert!(got.ready);
-            assert_eq!(got.updated_at_ms, env.now());
-            assert_eq!(env.app.document_body_key(&doc.id).await.unwrap(), target.object_key);
-            assert_eq!(env.app.begin_document_body(&doc.id, Some(42)).await.unwrap_err().code, ErrorCode::Conflict);
+            assert_eq!(env.app.document_body_key(&alice, DOC).await.unwrap_err().code, ErrorCode::Conflict);
+            assert_eq!(env.app.begin_document_body(&alice, DOC, None).await.unwrap_err().code, ErrorCode::BadRequest);
+            assert!(env.app.begin_document_body(&alice, DOC, Some(41)).await.is_err());
+            let target = env.app.begin_document_body(&alice, DOC, Some(42)).await.unwrap();
+            assert_eq!(target, UploadTarget { object_key: format!("docs/alice/{DOC}/body.json"), length: 42 });
+            env.app.finish_document_body(&alice, DOC).await.unwrap();
+            assert_eq!(env.app.document_body_key(&alice, DOC).await.unwrap(), target.object_key);
+            let e = env.app.begin_document_body(&alice, DOC, Some(42)).await.unwrap_err();
+            assert_eq!(e.code, ErrorCode::Conflict);
         });
     }
 
     #[test]
-    fn validation() {
+    fn other_users_documents_are_not_found() {
         let env = TestEnv::new();
+        let bob = env.user("bob");
+        env.accounts.add_document("alice", DOC, 42, true);
         run(async {
-            assert_eq!(env.app.create_document(create("  ", 1)).await.unwrap_err().code, ErrorCode::BadRequest);
-            assert_eq!(env.app.create_document(create("x", 0)).await.unwrap_err().code, ErrorCode::BadRequest);
-            let e = env.app.create_document(create("x", MAX_BODY_BYTES + 1)).await.unwrap_err();
-            assert_eq!(e.code, ErrorCode::PayloadTooLarge);
-            assert_eq!(env.app.get_document("0000000000000000").await.unwrap_err().code, ErrorCode::NotFound);
+            assert_eq!(env.app.begin_document_body(&bob, DOC, Some(42)).await.unwrap_err().code, ErrorCode::NotFound);
+            assert_eq!(env.app.document_body_key(&bob, DOC).await.unwrap_err().code, ErrorCode::NotFound);
+            assert_eq!(env.app.delete_document(&bob, DOC).await.unwrap_err().code, ErrorCode::NotFound);
+            assert_eq!(env.app.finish_document_body(&bob, DOC).await.unwrap_err().code, ErrorCode::NotFound);
         });
     }
 
     #[test]
-    fn library_orders_by_last_activity_and_progress_is_last_writer_by_time() {
+    fn delete_removes_row_objects_and_cached_ownership() {
         let env = TestEnv::new();
+        let alice = env.user("alice");
+        env.accounts.add_document("alice", DOC, 1, true);
+        env.blob.insert(&body_key("alice", DOC), "{}");
+        env.blob.insert("docs/alice/other0000000000/body.json", "{}");
         run(async {
-            let a = env.app.create_document(create("A", 1)).await.unwrap();
-            env.advance(1000);
-            let b = env.app.create_document(create("B", 1)).await.unwrap();
-            let lib = env.app.library().await.unwrap();
-            assert_eq!(lib.documents.iter().map(|d| d.meta.title.as_str()).collect::<Vec<_>>(), ["B", "A"]);
-
-            let p = Progress { char_offset: 10, updated_at_ms: env.now() + 5 };
-            env.app.put_progress(&a.id, p).await.unwrap();
-            env.app.put_progress(&a.id, Progress { char_offset: 3, updated_at_ms: env.now() }).await.unwrap();
-            let lib = env.app.library().await.unwrap();
-            assert_eq!(lib.documents[0].id, a.id);
-            assert_eq!(lib.documents[0].progress, Some(p));
-            assert_eq!(lib.documents[1].id, b.id);
-
-            let e = env.app.put_progress("0000000000000000", p).await.unwrap_err();
-            assert_eq!(e.code, ErrorCode::NotFound);
+            env.app.document_body_key(&alice, DOC).await.unwrap();
+            env.app.delete_document(&alice, DOC).await.unwrap();
+            assert_eq!(env.blob.keys(), vec!["docs/alice/other0000000000/body.json".to_owned()]);
+            assert_eq!(env.app.document_body_key(&alice, DOC).await.unwrap_err().code, ErrorCode::NotFound);
+            assert_eq!(env.app.delete_document(&alice, DOC).await.unwrap_err().code, ErrorCode::NotFound);
         });
     }
 
     #[test]
-    fn delete_removes_row_and_objects() {
+    fn oversized_rows_are_refused_before_streaming() {
         let env = TestEnv::new();
-        run(async {
-            let a = env.app.create_document(create("A", 1)).await.unwrap();
-            env.blob.insert(&body_key(&a.id), "{}");
-            env.blob.insert("docs/other/body.json", "{}");
-            env.app.delete_document(&a.id).await.unwrap();
-            assert_eq!(env.blob.keys(), vec!["docs/other/body.json".to_owned()]);
-            assert_eq!(env.app.get_document(&a.id).await.unwrap_err().code, ErrorCode::NotFound);
-            assert_eq!(env.app.delete_document(&a.id).await.unwrap_err().code, ErrorCode::NotFound);
-        });
+        let alice = env.user("alice");
+        env.accounts.add_document("alice", DOC, MAX_BODY_BYTES + 1, false);
+        let e = run(env.app.begin_document_body(&alice, DOC, Some(MAX_BODY_BYTES + 1))).unwrap_err();
+        assert_eq!(e.code, ErrorCode::PayloadTooLarge);
     }
 }

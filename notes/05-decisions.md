@@ -51,5 +51,7 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 - Reason: proven on the same accounts; the user maintains these patterns already.
 - Decided by: assistant.
 
+D10–D12 are in note 14; D13–D19 (accounts phase 1: no service key in the Worker, atomic invite redemption, no passwords, per-user GPU share, audio URL tokens, brand constant, Bearer + CORS) are in note 15.
+
 ## Open items
-- Subdomain name: waiting on the user.
+- Subdomain name: decided as `listen.streams.watch`, product name "Streams Reader" (owner, 2026-10-30).

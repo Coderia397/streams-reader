@@ -76,7 +76,7 @@ fn walk(root: &Path, dir: &Path, out: &mut Vec<Module>) -> Result<()> {
     Ok(())
 }
 
-/// Plain-text vars bound into the Worker (note 09).
+/// Plain-text vars bound into the Worker (note 09). None is secret: the Supabase publishable key ships in every app.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Vars {
     pub space_url: String,
@@ -84,6 +84,9 @@ pub struct Vars {
     pub kokoro_rev: String,
     pub ming_rev: String,
     pub app_version: String,
+    pub supabase_url: String,
+    pub supabase_anon_key: String,
+    pub site_url: String,
 }
 
 /// The `metadata` part of the script upload. Secrets are not here: they are set through the secrets endpoint and
@@ -102,6 +105,9 @@ pub fn metadata(d1_id: &str, vars: &Vars) -> Value {
             text("KOKORO_REV", &vars.kokoro_rev),
             text("MING_REV", &vars.ming_rev),
             text("APP_VERSION", &vars.app_version),
+            text("SUPABASE_URL", &vars.supabase_url),
+            text("SUPABASE_ANON_KEY", &vars.supabase_anon_key),
+            text("SITE_URL", &vars.site_url),
         ],
         "keep_bindings": ["secret_text"],
     })
@@ -119,6 +125,9 @@ mod tests {
             kokoro_rev: "hexgrad/Kokoro-82M@abc".into(),
             ming_rev: "inclusionAI/Ming-3.0-tts-0.5B@def".into(),
             app_version: "1a2b3c4".into(),
+            supabase_url: "https://ref.supabase.co".into(),
+            supabase_anon_key: "sb_publishable_x".into(),
+            site_url: "https://listen.streams.watch".into(),
         }
     }
 
@@ -146,7 +155,9 @@ mod tests {
         assert_eq!(find("APP_VERSION"), json!({"type":"plain_text","name":"APP_VERSION","text":"1a2b3c4"}));
         assert_eq!(find("KOKORO_REV")["text"], "hexgrad/Kokoro-82M@abc");
         assert_eq!(find("SPACE_URL")["text"], "https://ibrahimar397-nolabs-engine.hf.space");
-        assert_eq!(bindings.len(), 8);
+        assert_eq!(find("SUPABASE_URL")["text"], "https://ref.supabase.co");
+        assert_eq!(find("SITE_URL")["text"], "https://listen.streams.watch");
+        assert_eq!(bindings.len(), 11);
         // No secret ever travels in metadata.
         assert!(bindings.iter().all(|b| b["type"] != "secret_text"));
     }

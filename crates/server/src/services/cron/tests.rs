@@ -35,7 +35,7 @@ fn render(env: &TestEnv, voice: &str, text: &str) -> String {
         items: vec![RenderItem { text: text.into(), boundary: Boundary::Sentence, emotion: Emotion::Neutral }],
         priority: Priority::Background,
     };
-    run(env.app.render(req)).unwrap();
+    run(env.app.render(&env.user("alice"), req)).unwrap();
     env.db.scalar("SELECT id FROM jobs ORDER BY created_at_ms DESC, rowid DESC LIMIT 1").as_str().unwrap().to_owned()
 }
 

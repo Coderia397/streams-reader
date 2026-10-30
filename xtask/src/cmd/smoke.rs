@@ -1,22 +1,27 @@
-//! `smoke`: drives the deployed API the way the app does: log in, create a two-paragraph paste document, render it
-//! with Kokoro, wait for the audio, fetch and check the first clip, read `/api/status`, then delete the document.
-//! Each run's text carries a run number so the render is never a cache hit.
+//! `smoke`: drives the deployed system the way the app does, as a throwaway user ([`crate::test_user`]): check the
+//! session, create a two-paragraph paste document in Supabase, upload its body through the Worker, read it back,
+//! render it with Kokoro, wait for the audio, fetch the first clip with the access token and again with an audio-URL
+//! token, read `/api/status`, then delete the document. Each run's text carries a run number so the render is never
+//! a cache hit.
 
 use std::thread::sleep;
 use std::time::{Duration, Instant};
 
 use anyhow::{Context as _, Result, bail};
 use nolabs_core::cache_key::is_key;
-use nolabs_core::ids::is_id;
+use nolabs_core::ids;
 use nolabs_core::proto::api::{
-    Block, BlockKind, CreateDocument, DOCUMENT_BODY_VERSION, DocumentBody, DocumentMeta, DocumentSummary, Emotion,
-    Priority, RenderItem, RenderRequest, RenderResponse, RenderState, SessionInfo, SourceKind, SystemStatus,
+    AUDIO_TOKEN_PARAM, AudioToken, Block, BlockKind, DOCUMENT_BODY_VERSION, DocumentBody, DocumentMeta, DocumentRecord,
+    Emotion, Priority, RenderItem, RenderRequest, RenderResponse, RenderState, SessionInfo, SourceKind, SystemStatus,
 };
 use nolabs_core::text::{self, Segment, SegmentProfile};
 use nolabs_core::voices::DEFAULT_VOICE;
+use reqwest::Method;
+use serde_json::Value;
 
 use crate::api::{Api, Fetched};
-use crate::cmd::status::{login_passphrase, print_system_status, resolve_base};
+use crate::cmd::status::{print_system_status, resolve_base};
+use crate::test_user::{TestUser, with_test_user};
 use crate::timefmt;
 
 const RENDER_DEADLINE: Duration = Duration::from_secs(180);
@@ -47,38 +52,60 @@ impl Timings {
 
 pub fn run(base: Option<String>) -> Result<()> {
     let base = resolve_base(base)?;
-    let passphrase = login_passphrase()?;
-    let mut api = Api::new(&base)?;
-    let mut t = Timings::default();
-    println!("smoke test against {}", api.base());
-
-    let result = (|| -> Result<()> {
-        t.step("login", || api.login(&passphrase))?;
-        let session: SessionInfo = t.step("GET /api/session", || api.get_json("/api/session"))?;
-        println!("session expires at {} (unix ms)", session.expires_at_ms);
-
-        let blocks = text::normalise_blocks(smoke_blocks(timefmt::now_unix()));
-        let (create, body) = document_upload(&blocks)?;
-        let doc: DocumentSummary = t.step("POST /api/documents", || api.post_json("/api/documents", &create))?;
-        if !is_id(&doc.id) {
-            bail!("server returned a malformed document id {:?}", doc.id);
-        }
-        let doc_path = format!("/api/documents/{}", doc.id);
-        let exercised = exercise(&api, &mut t, &doc_path, body, &blocks);
-        let deleted = t.step("DELETE document", || api.delete(&doc_path));
-        exercised.and(deleted)
-    })();
-    if api.logout().is_err() {
-        eprintln!("warning: logout failed");
-    }
-    t.print();
-    result?;
+    with_test_user("smoke", |user| {
+        let api = Api::new(&base, &user.session.access_token)?;
+        let mut t = Timings::default();
+        println!("smoke test against {}", api.base());
+        let result = steps(&api, user, &mut t);
+        t.print();
+        result
+    })?;
     println!("smoke test passed");
     Ok(())
 }
 
-fn exercise(api: &Api, t: &mut Timings, doc_path: &str, body: Vec<u8>, blocks: &[Block]) -> Result<()> {
-    t.step("PUT body", || api.put_bytes(&format!("{doc_path}/body"), "application/json", body))?;
+fn steps(api: &Api, user: &TestUser, t: &mut Timings) -> Result<()> {
+    let session: SessionInfo = t.step("GET /api/session", || api.get_json("/api/session"))?;
+    if session.user_id != user.session.user_id {
+        bail!("the Worker sees user {}, Supabase signed in {}", session.user_id, user.session.user_id);
+    }
+    println!("session for {} expires at {} (unix ms)", user.email, session.expires_at_ms);
+
+    let blocks = text::normalise_blocks(smoke_blocks(timefmt::now_unix()));
+    let (record, body) = document_upload(new_id()?, &blocks)?;
+    let row = serde_json::to_value(&record)?;
+    t.step("insert row (PostgREST)", || {
+        user.project.rest(&user.session, Method::POST, "documents", Some(&row)).map(drop)
+    })?;
+    let doc_path = format!("/api/documents/{}", record.id);
+    let exercised = exercise(api, user, t, &record.id, body, &blocks);
+    let deleted = t.step("DELETE document", || api.delete(&doc_path));
+    let gone = rows(user, &record.id).and_then(|r| if r.is_empty() { Ok(()) } else { bail!("row still exists") });
+    exercised.and(deleted).and(gone)
+}
+
+/// The caller's view of one document row through PostgREST.
+fn rows(user: &TestUser, id: &str) -> Result<Vec<Value>> {
+    let v = user.project.rest(&user.session, Method::GET, &format!("documents?select=ready&id=eq.{id}"), None)?;
+    Ok(v.as_array().cloned().unwrap_or_default())
+}
+
+fn new_id() -> Result<String> {
+    let mut bytes = [0u8; 10];
+    getrandom::fill(&mut bytes).map_err(|e| anyhow::anyhow!("no OS randomness: {e}"))?;
+    Ok(ids::id_from_bytes(bytes))
+}
+
+fn exercise(api: &Api, user: &TestUser, t: &mut Timings, id: &str, body: Vec<u8>, blocks: &[Block]) -> Result<()> {
+    let doc_path = format!("/api/documents/{id}");
+    t.step("PUT body", || api.put_bytes(&format!("{doc_path}/body"), "application/json", body.clone()))?;
+    if rows(user, id)?.first().and_then(|r| r.get("ready")).and_then(Value::as_bool) != Some(true) {
+        bail!("the Worker did not mark the document ready in Supabase");
+    }
+    let back = t.step("GET body", || api.get_bytes(&format!("{doc_path}/body")))?;
+    if back.bytes != body {
+        bail!("the body read back differs from the upload");
+    }
 
     let segments = text::segment(blocks, SegmentProfile::KOKORO);
     let request = render_request(&segments);
@@ -94,6 +121,13 @@ fn exercise(api: &Api, t: &mut Timings, doc_path: &str, body: Vec<u8>, blocks: &
     let audio = t.step("GET /api/audio (first)", || api.get_bytes(&format!("/api/audio/{first}")))?;
     check_webm(&audio)?;
     println!("first clip: {} bytes, {}", audio.bytes.len(), audio.content_type);
+    let token: AudioToken =
+        t.step("POST /api/audio-token", || api.post_json("/api/audio-token", &serde_json::json!({})))?;
+    let signed = format!("/api/audio/{first}?{AUDIO_TOKEN_PARAM}={}", token.token);
+    let via_token = t.step("GET /api/audio?t= (no header)", || api.get_bytes_unauthenticated(&signed))?;
+    if via_token.bytes != audio.bytes {
+        bail!("audio fetched with the audio token differs");
+    }
 
     let status: SystemStatus = t.step("GET /api/status", || api.get_json("/api/status"))?;
     print_system_status(&status);
@@ -135,8 +169,8 @@ pub fn smoke_blocks(run: i64) -> Vec<Block> {
     ]
 }
 
-/// The create request and the exact body bytes it announces.
-pub fn document_upload(blocks: &[Block]) -> Result<(CreateDocument, Vec<u8>)> {
+/// The Supabase row and the exact body bytes it announces.
+pub fn document_upload(id: String, blocks: &[Block]) -> Result<(DocumentRecord, Vec<u8>)> {
     let body = serde_json::to_vec(&DocumentBody { v: DOCUMENT_BODY_VERSION, blocks: blocks.to_vec() })?;
     let reading = text::reading_text(blocks);
     let meta = DocumentMeta {
@@ -149,7 +183,7 @@ pub fn document_upload(blocks: &[Block]) -> Result<(CreateDocument, Vec<u8>)> {
         word_count: text::word_count(&reading) as u64,
         block_count: u32::try_from(blocks.len())?,
     };
-    Ok((CreateDocument { meta, body_bytes: body.len() as u64 }, body))
+    Ok((DocumentRecord::new(id, meta, body.len() as u64), body))
 }
 
 pub fn render_request(segments: &[Segment]) -> RenderRequest {
@@ -217,11 +251,14 @@ mod tests {
     #[test]
     fn document_upload_announces_exact_body_length() {
         let blocks = smoke_blocks(42);
-        let (create, body) = document_upload(&blocks).unwrap();
-        assert_eq!(create.body_bytes, body.len() as u64);
-        assert_eq!(create.meta.block_count, 2);
-        assert_eq!(create.meta.source, SourceKind::Paste);
-        assert_eq!(create.meta.char_count, text::reading_text(&blocks).chars().count() as u64);
+        let (record, body) = document_upload("0123456789abcdef".into(), &blocks).unwrap();
+        assert_eq!(record.body_bytes, body.len() as u64);
+        assert_eq!(record.block_count, 2);
+        assert_eq!(record.source, SourceKind::Paste);
+        assert!(!record.ready && record.user_id.is_none(), "the database fills user_id");
+        assert_eq!(record.char_count, text::reading_text(&blocks).chars().count() as u64);
+        let row = serde_json::to_value(&record).unwrap();
+        assert!(row.get("user_id").is_none() && row.get("created_at").is_none());
         let parsed: DocumentBody = serde_json::from_slice(&body).unwrap();
         assert_eq!(parsed.v, DOCUMENT_BODY_VERSION);
         assert_eq!(parsed.blocks, blocks);

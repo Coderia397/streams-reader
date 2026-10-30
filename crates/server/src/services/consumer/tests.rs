@@ -14,7 +14,7 @@ fn render(env: &TestEnv, voice: &str, texts: &[&str]) -> Vec<String> {
             .collect(),
         priority: Priority::Background,
     };
-    run(env.app.render(req)).unwrap();
+    run(env.app.render(&env.user("alice"), req)).unwrap();
     env.queue.take().into_iter().map(|(m, _)| m.job_id).collect()
 }
 
@@ -219,10 +219,11 @@ fn ming_budget_is_checked_again_before_the_call() {
 fn prepared_voice(env: &TestEnv) -> (String, String) {
     let id = "0123456789abcdef".to_owned();
     env.db.exec(&format!(
-        "INSERT INTO voices (id, name, state, transcript, reference_bytes, raw_uploaded, created_at_ms, \
-         updated_at_ms) VALUES ('{id}', 'Me', 'awaiting_reference', 'line one\nline two', 10, 1, 0, 0)"
+        "INSERT INTO voices (id, user_id, name, state, transcript, reference_bytes, raw_uploaded, created_at_ms, \
+         updated_at_ms) VALUES ('{id}', 'alice', 'Me', 'awaiting_reference', 'line one\nline two', 10, 1, 0, 0)"
     ));
-    run(env.app.prepare_voice(&id)).unwrap();
+    env.accounts.add_voice("alice", &id);
+    run(env.app.prepare_voice(&env.user("alice"), &id)).unwrap();
     let job_id = env.queue.take()[0].0.job_id.clone();
     (id, job_id)
 }
@@ -248,7 +249,7 @@ fn prepare_job_makes_the_voice_ready() {
         |_| Ok(response(500, &[], "")),
     );
     assert_eq!(handle(&env, &job_id), Outcome::Done);
-    let v = run(env.app.repo().get_voice(&id)).unwrap().unwrap();
+    let v = run(env.app.repo().get_voice(&id, "alice")).unwrap().unwrap();
     assert_eq!(v.state, VoiceState::Ready);
     assert_eq!(v.ref_transcript.as_deref(), Some("line two"));
     assert_eq!(v.ref_sha256, Some("ab".repeat(32)));
@@ -261,7 +262,7 @@ fn prepare_rejected_by_the_space_fails_the_voice() {
     let (id, job_id) = prepared_voice(&env);
     space_fails(&env, || Reply::Error("bad request: recording is silent".into()));
     assert!(matches!(handle(&env, &job_id), Outcome::Failed { .. }));
-    let v = run(env.app.repo().get_voice(&id)).unwrap().unwrap();
+    let v = run(env.app.repo().get_voice(&id, "alice")).unwrap().unwrap();
     assert_eq!(v.state, VoiceState::Failed);
     assert!(v.error.unwrap().contains("silent"));
 }

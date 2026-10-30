@@ -2,12 +2,15 @@
 //! cache key, claims the misses in D1 (so concurrent requests never render a segment twice), groups the claimed items
 //! into jobs, stores each job's full engine request and sends one queue message per job. The app then polls the
 //! status route and fetches `/api/audio/{key}` once an item is ready.
+//!
+//! The cache is global (content-addressed, shared by every user), but GPU time is charged to the user whose request
+//! claimed the miss: Ming jobs are admitted against the deployment's budget and the caller's daily share.
 
 pub mod plan;
 
 use std::collections::{HashMap, HashSet};
 
-use nolabs_core::budget::{self, Admission, DAY_MS, GpuUse};
+use nolabs_core::budget::{self, Admission, DAY_MS, GpuPolicy, GpuUse, Share};
 use nolabs_core::cache_key::{self, sha256_hex};
 use nolabs_core::proto::api::{Engine, RenderItemStatus, RenderRequest, RenderResponse, RenderState, VoiceState};
 use nolabs_core::proto::engine::{CONTRACT_VERSION, EngineRequest, EngineVoice};
@@ -15,10 +18,12 @@ use nolabs_core::proto::{ApiError, ErrorCode};
 use nolabs_core::voices::VoiceRef;
 
 use crate::app::App;
+use crate::auth::AuthUser;
 use crate::config::audio_profile;
 use crate::error::{conflict, to_json};
 use crate::ports::{JobMessage, Stmt};
 use crate::repo::{JobKind, NewClaim, NewJob, RenderRow, Repo};
+use crate::services::gpu::GpuHistory;
 use crate::services::gpu::max_chars_per_call;
 use crate::services::voices::user_voice_id;
 use plan::{PlannedItem, ResolvedVoice, kokoro_groups, ming_groups, plan_items};
@@ -73,8 +78,8 @@ fn validate(req: &RenderRequest) -> Result<(), ApiError> {
 }
 
 impl App {
-    /// Engine voice and fingerprint for a catalogue id. User voices must be prepared.
-    pub(crate) async fn resolve_voice(&self, id: &str) -> Result<ResolvedVoice, ApiError> {
+    /// Engine voice and fingerprint for a catalogue id. User voices must be the caller's and prepared.
+    pub(crate) async fn resolve_voice(&self, caller: &AuthUser, id: &str) -> Result<ResolvedVoice, ApiError> {
         let voice = VoiceRef::parse(id).ok_or_else(|| ApiError::bad_request(format!("unknown voice {id}")))?;
         let engine = voice.engine();
         match voice {
@@ -86,7 +91,7 @@ impl App {
                 is_user: false,
             }),
             VoiceRef::User(user) => {
-                let row = self.repo().get_voice(&user).await?.ok_or_else(|| ApiError::not_found("no such voice"))?;
+                let row = self.owned_voice(caller, &user).await?;
                 let (Some(ref_key), Some(transcript), Some(sha)) = (row.ref_key, row.ref_transcript, row.ref_sha256)
                 else {
                     return Err(conflict("this voice is not ready yet"));
@@ -105,9 +110,9 @@ impl App {
         }
     }
 
-    pub async fn render(&self, req: RenderRequest) -> Result<RenderResponse, ApiError> {
+    pub async fn render(&self, user: &AuthUser, req: RenderRequest) -> Result<RenderResponse, ApiError> {
         validate(&req)?;
-        let voice = self.resolve_voice(&req.voice).await?;
+        let voice = self.resolve_voice(user, &req.voice).await?;
         let planned = plan_items(&self.config, &voice, &req.items);
         let now = self.now_ms();
         let repo = self.repo();
@@ -140,15 +145,19 @@ impl App {
         let claimed: HashSet<String> = repo.claim_renders(&claims, now).await?.into_iter().collect();
         let to_render: Vec<PlannedItem> = misses.into_iter().filter(|p| claimed.contains(&p.key)).cloned().collect();
 
-        let jobs = match voice.engine {
-            Engine::Kokoro => self.kokoro_jobs(to_render, &req)?,
-            Engine::Ming => self.ming_jobs(to_render, now).await?,
+        let (jobs, share_s) = match voice.engine {
+            Engine::Kokoro => (self.kokoro_jobs(to_render, &req)?, 0),
+            Engine::Ming if to_render.is_empty() => (Vec::new(), 0),
+            Engine::Ming => {
+                let share_s = self.accounts.gpu_share(user.token()?, self.config.gpu.daily_cap_s).await?;
+                (self.ming_jobs(to_render, now, &user.id, share_s).await?, share_s)
+            }
         };
         let mut fresh: HashMap<String, RenderItemStatus> = HashMap::new();
         let mut stmts: Vec<Stmt> = Vec::new();
         for job in &jobs {
             let error = job.retry_at_ms.filter(|_| job.state == RenderState::Deferred).map(|at| budget_error(at, now));
-            stmts.push(Repo::insert_job_stmt(&self.new_job_row(&voice, job)?, now));
+            stmts.push(Repo::insert_job_stmt(&self.new_job_row(&voice, job, &user.id, share_s)?, now));
             for item in &job.items {
                 stmts.push(Repo::assign_render_stmt(
                     &item.key,
@@ -197,10 +206,17 @@ impl App {
             .collect()
     }
 
-    /// Admit Ming jobs in order against the GPU budget; once one does not fit, it and every later job wait.
-    async fn ming_jobs(&self, items: Vec<PlannedItem>, now: i64) -> Result<Vec<PlannedJob>, ApiError> {
+    /// Admit Ming jobs in order against the GPU budget and the user's share; once one does not fit, it and every
+    /// later job wait.
+    async fn ming_jobs(
+        &self,
+        items: Vec<PlannedItem>,
+        now: i64,
+        user_id: &str,
+        share_s: u32,
+    ) -> Result<Vec<PlannedJob>, ApiError> {
         let policy = self.config.gpu;
-        let mut history: Vec<GpuUse> = self.gpu_history(now, None).await?;
+        let mut history: GpuHistory = self.gpu_history(now, user_id, None).await?;
         let chars: Vec<usize> = items.iter().map(|p| p.chars).collect();
         let mut jobs = Vec::new();
         let mut blocked_until: Option<i64> = None;
@@ -230,7 +246,8 @@ impl App {
                     requested_s: request_s,
                 })
             };
-            match budget::admit(&policy, &history, now, group_chars) {
+            let share = Share { daily_s: share_s, history: &history.mine };
+            match budget::admit_for_user(&policy, &history.all, share, now, group_chars) {
                 Admission::Admit { request_s } => {
                     history.push(GpuUse { at_ms: now, requested_s: request_s, used_s: 0 });
                     jobs.push(queued(group, request_s)?);
@@ -239,7 +256,9 @@ impl App {
                     let n = n.clamp(1, group.len());
                     history.push(GpuUse { at_ms: now, requested_s: request_s, used_s: 0 });
                     jobs.push(queued(&group[..n], request_s)?);
-                    let until = budget::view(&policy, &history, now).resets_at_ms.unwrap_or(now + DAY_MS);
+                    let mine = budget::view(&GpuPolicy { daily_cap_s: share_s, ..policy }, &history.mine, now);
+                    let all = budget::view(&policy, &history.all, now);
+                    let until = mine.resets_at_ms.into_iter().chain(all.resets_at_ms).min().unwrap_or(now + DAY_MS);
                     if n < group.len() {
                         jobs.push(deferred(&group[n..], until)?);
                     }
@@ -254,7 +273,13 @@ impl App {
         Ok(jobs)
     }
 
-    fn new_job_row(&self, voice: &ResolvedVoice, job: &PlannedJob) -> Result<NewJob, ApiError> {
+    fn new_job_row(
+        &self,
+        voice: &ResolvedVoice,
+        job: &PlannedJob,
+        user_id: &str,
+        gpu_share_s: u32,
+    ) -> Result<NewJob, ApiError> {
         let request = EngineRequest {
             v: CONTRACT_VERSION,
             job_id: job.id.clone(),
@@ -276,6 +301,8 @@ impl App {
             requested_s: job.requested_s,
             retry_at_ms: job.retry_at_ms,
             error: None,
+            user_id: user_id.to_owned(),
+            gpu_share_s,
         })
     }
 

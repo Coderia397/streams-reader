@@ -6,44 +6,19 @@ use nolabs_core::ids;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Route {
-    Login,
-    Logout,
     Session,
-    Library,
-    CreateDocument,
-    GetDocument {
-        id: String,
-    },
-    DeleteDocument {
-        id: String,
-    },
-    PutDocumentBody {
-        id: String,
-    },
-    GetDocumentBody {
-        id: String,
-    },
-    /// `beacon` is true for the POST form used by `navigator.sendBeacon`, which cannot set headers.
-    PutProgress {
-        id: String,
-        beacon: bool,
-    },
+    AudioToken,
+    DeleteDocument { id: String },
+    PutDocumentBody { id: String },
+    GetDocumentBody { id: String },
     Voices,
     CreateVoice,
-    PutVoiceReference {
-        id: String,
-    },
-    PrepareVoice {
-        id: String,
-    },
-    DeleteVoice {
-        id: String,
-    },
+    PutVoiceReference { id: String },
+    PrepareVoice { id: String },
+    DeleteVoice { id: String },
     Render,
     RenderStatus,
-    Audio {
-        key: String,
-    },
+    Audio { key: String },
     Fetch,
     Status,
 }
@@ -56,17 +31,11 @@ impl Route {
         let parts: Vec<&str> = rest.split('/').collect();
         let id = |s: &str| ids::is_id(s).then(|| s.to_owned());
         let route = match (method, parts.as_slice()) {
-            ("POST", ["session"]) => Route::Login,
-            ("DELETE", ["session"]) => Route::Logout,
             ("GET", ["session"]) => Route::Session,
-            ("GET", ["library"]) => Route::Library,
-            ("POST", ["documents"]) => Route::CreateDocument,
-            ("GET", ["documents", d]) => Route::GetDocument { id: id(d)? },
+            ("POST", ["audio-token"]) => Route::AudioToken,
             ("DELETE", ["documents", d]) => Route::DeleteDocument { id: id(d)? },
             ("PUT", ["documents", d, "body"]) => Route::PutDocumentBody { id: id(d)? },
             ("GET", ["documents", d, "body"]) => Route::GetDocumentBody { id: id(d)? },
-            ("PUT", ["documents", d, "progress"]) => Route::PutProgress { id: id(d)?, beacon: false },
-            ("POST", ["documents", d, "progress"]) => Route::PutProgress { id: id(d)?, beacon: true },
             ("GET", ["voices"]) => Route::Voices,
             ("POST", ["voices"]) => Route::CreateVoice,
             ("PUT", ["voices", v, "reference"]) => Route::PutVoiceReference { id: id(v)? },
@@ -85,15 +54,16 @@ impl Route {
         Some(route)
     }
 
-    /// Everything except logging in (and out) needs a valid session.
-    pub fn needs_session(&self) -> bool {
-        !matches!(self, Route::Login | Route::Logout)
+    /// Audio accepts an audio-URL token instead of the access token (media elements cannot send headers); every
+    /// other route needs a Supabase access token.
+    pub fn accepts_audio_token(&self) -> bool {
+        matches!(self, Route::Audio { .. })
     }
 
     /// The version header is required except where the browser, not the app's fetch wrapper, makes the request:
-    /// login (an upgraded app must be able to log in), audio (media element / MSE fetches) and beacons.
+    /// audio (media element / MSE fetches).
     pub fn needs_version_header(&self) -> bool {
-        !matches!(self, Route::Login | Route::Audio { .. } | Route::PutProgress { beacon: true, .. })
+        !matches!(self, Route::Audio { .. })
     }
 }
 
@@ -107,12 +77,17 @@ mod tests {
     fn route_table() {
         let key = "a".repeat(64);
         let cases = [
-            ("POST", "/api/session".to_owned(), Some(Route::Login)),
-            ("DELETE", "/api/session".to_owned(), Some(Route::Logout)),
-            ("GET", "/api/library".to_owned(), Some(Route::Library)),
+            ("GET", "/api/session".to_owned(), Some(Route::Session)),
+            ("POST", "/api/audio-token".to_owned(), Some(Route::AudioToken)),
             ("PUT", format!("/api/documents/{ID}/body"), Some(Route::PutDocumentBody { id: ID.into() })),
-            ("POST", format!("/api/documents/{ID}/progress"), Some(Route::PutProgress { id: ID.into(), beacon: true })),
-            ("PUT", format!("/api/documents/{ID}/progress"), Some(Route::PutProgress { id: ID.into(), beacon: false })),
+            ("GET", format!("/api/documents/{ID}/body"), Some(Route::GetDocumentBody { id: ID.into() })),
+            ("DELETE", format!("/api/documents/{ID}"), Some(Route::DeleteDocument { id: ID.into() })),
+            // Moved to Supabase (PostgREST), no longer Worker routes.
+            ("POST", "/api/session".to_owned(), None),
+            ("GET", "/api/library".to_owned(), None),
+            ("POST", "/api/documents".to_owned(), None),
+            ("GET", format!("/api/documents/{ID}"), None),
+            ("PUT", format!("/api/documents/{ID}/progress"), None),
             ("POST", format!("/api/voices/{ID}/prepare"), Some(Route::PrepareVoice { id: ID.into() })),
             ("GET", "/api/render/status".to_owned(), Some(Route::RenderStatus)),
             ("GET", format!("/api/audio/{key}"), Some(Route::Audio { key: key.clone() })),
@@ -120,7 +95,7 @@ mod tests {
             ("GET", "/api/audio/ABC".to_owned(), None),
             ("GET", "/api/documents/../x".to_owned(), None),
             ("GET", "/api/documents/UPPERCASE0000000".to_owned(), None),
-            ("PATCH", "/api/library".to_owned(), None),
+            ("PATCH", "/api/status".to_owned(), None),
             ("GET", "/api/nothing".to_owned(), None),
             ("GET", "/library".to_owned(), None),
             ("GET", "/api/library/".to_owned(), None),
@@ -132,14 +107,10 @@ mod tests {
 
     #[test]
     fn guard_exemptions() {
-        assert!(!Route::Login.needs_session());
-        assert!(!Route::Login.needs_version_header());
-        assert!(Route::Logout.needs_version_header());
-        assert!(Route::Session.needs_session());
-        assert!(!Route::Audio { key: String::new() }.needs_version_header());
-        assert!(Route::Audio { key: String::new() }.needs_session());
-        assert!(!Route::PutProgress { id: ID.into(), beacon: true }.needs_version_header());
-        assert!(Route::PutProgress { id: ID.into(), beacon: false }.needs_version_header());
-        assert!(Route::Render.needs_version_header());
+        let audio = Route::Audio { key: String::new() };
+        assert!(!audio.needs_version_header() && audio.accepts_audio_token());
+        for r in [Route::Session, Route::AudioToken, Route::Render, Route::GetDocumentBody { id: ID.into() }] {
+            assert!(r.needs_version_header() && !r.accepts_audio_token(), "{r:?}");
+        }
     }
 }

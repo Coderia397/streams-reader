@@ -24,7 +24,8 @@ fn job_request(env: &TestEnv, job_id: &str) -> EngineRequest {
 #[test]
 fn kokoro_claims_misses_dedupes_and_groups_with_a_ramp() {
     let env = TestEnv::new();
-    let res = run(env.app.render(request("kokoro:af_heart", &["a", "b", "c", "a", "d", "e"]))).unwrap();
+    let res =
+        run(env.app.render(&env.user("alice"), request("kokoro:af_heart", &["a", "b", "c", "a", "d", "e"]))).unwrap();
     assert_eq!(res.items.len(), 6);
     assert_eq!(res.items[0].key, res.items[3].key);
     assert!(res.items.iter().all(|s| s.state == RenderState::Queued));
@@ -43,7 +44,7 @@ fn kokoro_claims_misses_dedupes_and_groups_with_a_ramp() {
     assert_eq!(env.db.scalar("SELECT count(*) FROM renders WHERE state = 'queued' AND job_id IS NOT NULL"), json!(5));
 
     // The same request again claims nothing.
-    let again = run(env.app.render(request("kokoro:af_heart", &["a", "b"]))).unwrap();
+    let again = run(env.app.render(&env.user("alice"), request("kokoro:af_heart", &["a", "b"]))).unwrap();
     assert!(again.items.iter().all(|s| s.state == RenderState::Queued));
     assert!(env.queue.take().is_empty());
 }
@@ -53,20 +54,20 @@ fn kokoro_ignores_emotion_in_the_key() {
     let env = TestEnv::new();
     let mut req = request("kokoro:af_heart", &["same", "same"]);
     req.items[1].emotion = Emotion::Happy;
-    let res = run(env.app.render(req)).unwrap();
+    let res = run(env.app.render(&env.user("alice"), req)).unwrap();
     assert_eq!(res.items[0].key, res.items[1].key);
 }
 
 #[test]
 fn ready_rows_are_returned_with_audio() {
     let env = TestEnv::new();
-    let res = run(env.app.render(request("kokoro:bf_emma", &["hello"]))).unwrap();
+    let res = run(env.app.render(&env.user("alice"), request("kokoro:bf_emma", &["hello"]))).unwrap();
     let key = &res.items[0].key;
     env.db.exec(&format!(
         "UPDATE renders SET state = 'ready', duration_ms = 1200, bytes = 4800, words_json = '[[0,500,0,5]]' \
          WHERE key = '{key}'"
     ));
-    let res = run(env.app.render(request("kokoro:bf_emma", &["hello"]))).unwrap();
+    let res = run(env.app.render(&env.user("alice"), request("kokoro:bf_emma", &["hello"]))).unwrap();
     assert_eq!(res.items[0].state, RenderState::Ready);
     assert_eq!(res.items[0].audio.as_ref().unwrap().bytes, 4800);
 }
@@ -74,7 +75,7 @@ fn ready_rows_are_returned_with_audio() {
 #[test]
 fn failed_rows_are_reclaimed_only_after_their_retry_time() {
     let env = TestEnv::new();
-    let res = run(env.app.render(request("kokoro:af_heart", &["x"]))).unwrap();
+    let res = run(env.app.render(&env.user("alice"), request("kokoro:af_heart", &["x"]))).unwrap();
     env.queue.take();
     let key = &res.items[0].key;
     let retry_at = env.now() + 60_000;
@@ -82,13 +83,13 @@ fn failed_rows_are_reclaimed_only_after_their_retry_time() {
         "UPDATE renders SET state = 'failed', error_code = 'engine_failed', error_message = 'boom', \
          retry_at_ms = {retry_at} WHERE key = '{key}'"
     ));
-    let res = run(env.app.render(request("kokoro:af_heart", &["x"]))).unwrap();
+    let res = run(env.app.render(&env.user("alice"), request("kokoro:af_heart", &["x"]))).unwrap();
     assert_eq!(res.items[0].state, RenderState::Failed);
     assert_eq!(res.items[0].error.as_ref().unwrap().retry_after_s, Some(60));
     assert!(env.queue.take().is_empty());
 
     env.advance(60_000);
-    let res = run(env.app.render(request("kokoro:af_heart", &["x"]))).unwrap();
+    let res = run(env.app.render(&env.user("alice"), request("kokoro:af_heart", &["x"]))).unwrap();
     assert_eq!(res.items[0].state, RenderState::Queued);
     assert_eq!(env.queue.take().len(), 1);
 }
@@ -98,7 +99,7 @@ fn ming_preset_job_is_admitted_against_the_budget() {
     let env = TestEnv::new();
     let mut req = request("ming:US_Emma", &["One paragraph.", "Another one."]);
     req.items[1].emotion = Emotion::Sad;
-    let res = run(env.app.render(req)).unwrap();
+    let res = run(env.app.render(&env.user("alice"), req)).unwrap();
     assert!(res.items.iter().all(|s| s.state == RenderState::Queued));
     let sent = env.queue.take();
     assert_eq!(sent.len(), 1, "one GPU call for the whole request");
@@ -120,7 +121,7 @@ fn ming_without_budget_is_deferred_with_retry_after() {
         "INSERT INTO gpu_ledger (job_id, attempt, at_ms, requested_s, used_s) VALUES \
          ('a', 1, {t}, 20, 20), ('b', 1, {t}, 20, 20), ('c', 1, {t}, 20, 20)"
     ));
-    let res = run(env.app.render(request("ming:UK_George", &["Wait for it."]))).unwrap();
+    let res = run(env.app.render(&env.user("alice"), request("ming:UK_George", &["Wait for it."]))).unwrap();
     let s = &res.items[0];
     assert_eq!(s.state, RenderState::Deferred);
     let e = s.error.as_ref().unwrap();
@@ -140,12 +141,12 @@ fn queued_ming_jobs_count_against_the_budget_before_they_run() {
     // Each request is near the per-call maximum; the scheduler factor makes two of them exceed the daily cap.
     let long: Vec<String> = (0..3).map(|i| format!("{i}{}", "x".repeat(899))).collect();
     let texts: Vec<&str> = long.iter().map(String::as_str).collect();
-    let first = run(env.app.render(request("ming:US_James", &texts))).unwrap();
+    let first = run(env.app.render(&env.user("alice"), request("ming:US_James", &texts))).unwrap();
     assert!(first.items.iter().all(|s| s.state == RenderState::Queued));
     assert_eq!(env.queue.take().len(), 1);
     let more: Vec<String> = (0..3).map(|i| format!("{i}{}", "y".repeat(899))).collect();
     let texts: Vec<&str> = more.iter().map(String::as_str).collect();
-    let second = run(env.app.render(request("ming:US_James", &texts))).unwrap();
+    let second = run(env.app.render(&env.user("alice"), request("ming:US_James", &texts))).unwrap();
     assert!(second.items.iter().all(|s| s.state == RenderState::Deferred), "{second:?}");
 }
 
@@ -154,16 +155,20 @@ fn user_voices_must_be_ready_and_use_their_reference() {
     let env = TestEnv::new();
     let id = "0123456789abcdef";
     env.db.exec(&format!(
-        "INSERT INTO voices (id, name, state, transcript, reference_bytes, created_at_ms, updated_at_ms) \
-         VALUES ('{id}', 'Me', 'preparing', 'script', 10, 0, 0)"
+        "INSERT INTO voices (id, user_id, name, state, transcript, reference_bytes, created_at_ms, updated_at_ms) \
+         VALUES ('{id}', 'alice', 'Me', 'preparing', 'script', 10, 0, 0)"
     ));
-    let e = run(env.app.render(request(&format!("user:{id}"), &["Hi."]))).unwrap_err();
+    env.accounts.add_voice("alice", id);
+    // Someone else cannot render with it.
+    let e = run(env.app.render(&env.user("bob"), request(&format!("user:{id}"), &["Hi."]))).unwrap_err();
+    assert_eq!(e.code, ErrorCode::NotFound);
+    let e = run(env.app.render(&env.user("alice"), request(&format!("user:{id}"), &["Hi."]))).unwrap_err();
     assert_eq!(e.code, ErrorCode::Conflict);
     env.db.exec(&format!(
         "UPDATE voices SET state = 'ready', ref_key = 'voices/{id}/ref.wav', ref_transcript = 'kept', \
          ref_sha256 = 'abc' WHERE id = '{id}'"
     ));
-    let res = run(env.app.render(request(&format!("user:{id}"), &["Hi."]))).unwrap();
+    let res = run(env.app.render(&env.user("alice"), request(&format!("user:{id}"), &["Hi."]))).unwrap();
     let sent = env.queue.take();
     let er = job_request(&env, &sent[0].0.job_id);
     assert_eq!(
@@ -173,15 +178,36 @@ fn user_voices_must_be_ready_and_use_their_reference() {
     assert_eq!(er.items[0].mode, Mode::Tts);
     // Same text with a re-recorded reference gets a different key.
     env.db.exec(&format!("UPDATE voices SET ref_sha256 = 'def' WHERE id = '{id}'"));
-    let res2 = run(env.app.render(request(&format!("user:{id}"), &["Hi."]))).unwrap();
+    let res2 = run(env.app.render(&env.user("alice"), request(&format!("user:{id}"), &["Hi."]))).unwrap();
     assert_ne!(res.items[0].key, res2.items[0].key);
     assert_eq!(env.db.scalar("SELECT voice FROM renders LIMIT 1"), json!(format!("user:{id}")));
 }
 
 #[test]
+fn ming_jobs_are_charged_to_the_caller_and_capped_by_their_share() {
+    let env = TestEnv::new();
+    env.accounts.set_share("bob", 60);
+    // 499 chars: 38 s requested, 57 s charged; bob's 60 s fit one such call, not two.
+    let long = "word ".repeat(99) + "end.";
+    let first = run(env.app.render(&env.user("bob"), request("ming:US_Emma", &[&long]))).unwrap();
+    assert_eq!(first.items[0].state, RenderState::Queued);
+    let sent = env.queue.take();
+    let job = run(env.app.repo().get_job(&sent[0].0.job_id)).unwrap().unwrap();
+    assert_eq!((job.user_id.as_str(), job.gpu_share_s), ("bob", 60));
+    let other = long.replace("end.", "fin.");
+    let second = run(env.app.render(&env.user("bob"), request("ming:US_Emma", &[&other]))).unwrap();
+    assert_eq!(second.items[0].state, RenderState::Deferred);
+    // Alice's share is separate: her own text is admitted. (Text bob already claimed is shared and stays deferred
+    // until bob's share resets: the cache is content-addressed, see notes/15.)
+    let hers = long.replace("end.", "too.");
+    let third = run(env.app.render(&env.user("alice"), request("ming:US_Emma", &[&hers]))).unwrap();
+    assert_eq!(third.items[0].state, RenderState::Queued);
+}
+
+#[test]
 fn request_validation() {
     let env = TestEnv::new();
-    let bad = |r: RenderRequest| run(env.app.render(r)).unwrap_err().code;
+    let bad = |r: RenderRequest| run(env.app.render(&env.user("alice"), r)).unwrap_err().code;
     assert_eq!(bad(request("kokoro:af_heart", &[])), ErrorCode::BadRequest);
     assert_eq!(bad(request("kokoro:af_heart", &["  "])), ErrorCode::BadRequest);
     assert_eq!(bad(request("kokoro:af_heart", &[&"x".repeat(MAX_ITEM_CHARS + 1)])), ErrorCode::BadRequest);
@@ -194,7 +220,7 @@ fn request_validation() {
 #[test]
 fn status_keeps_order_and_reports_unknown_keys() {
     let env = TestEnv::new();
-    let res = run(env.app.render(request("kokoro:af_heart", &["one"]))).unwrap();
+    let res = run(env.app.render(&env.user("alice"), request("kokoro:af_heart", &["one"]))).unwrap();
     let unknown = "f".repeat(64);
     let keys = vec![unknown.clone(), res.items[0].key.clone()];
     let st = run(env.app.render_status(&keys)).unwrap();

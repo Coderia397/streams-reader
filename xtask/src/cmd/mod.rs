@@ -4,12 +4,13 @@ pub mod bootstrap;
 pub mod build;
 pub mod deploy;
 pub mod migrate;
-pub mod passphrase;
+pub mod providers;
 pub mod resources;
 pub mod setup;
 pub mod smoke;
 pub mod space;
 pub mod status;
+pub mod supabase;
 
 use std::io::ErrorKind;
 use std::path::Path;

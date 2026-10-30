@@ -65,10 +65,6 @@ pub fn bool(row: &Row, col: &str) -> Result<bool, PortError> {
     Ok(i64(row, col)? != 0)
 }
 
-pub fn json<T: serde::de::DeserializeOwned>(row: &Row, col: &str) -> Result<T, PortError> {
-    serde_json::from_str(&str(row, col)?).map_err(|e| PortError::new(format!("column {col}: {e}")))
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
