@@ -4,6 +4,12 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D17. Brand icon direction v2: pixel-grid sibling mark + voxel mascot illustrations
+- Owner feedback on brand v1 (contact sheet): "a bit unprofessional … kinda like it, not fully". Assistant's diagnosis: the cursor-waveform mark reads as an X/bone and vanishes on a dark tile; spots look clip-art (heavy navy fills, uneven strokes, circle plates).
+- Decision: app icon = a Streams-family mark on the same 16×16 pixel grid as Streams' pixel-cube S (an open book whose pages become sound bars) on a Streams-blue tile, white mark, legible at 16 px; illustrations = the voxel character from the film as a recurring mascot, rendered from the same 3D scene as transparent PNG/WebP spots (20 presets, `media/spots/`); UI icons stay Remix Icon.
+- Reason: one world across logo family, film, landing and in-app illustrations; made once, reused; distinctive rather than stock.
+- Decided by: assistant (owner asked for a suggestion and delegated decisions); owner may veto.
+
 ### D16. Landing v2 open questions (note 15), decided by the assistant on the owner's delegation
 - Standard Ebooks: no Patrons Circle; source books and covers from the public GitHub repos (CC0) and the open Atom feed; honour HTTP 451 withdrawals; never follow their crawler-trap links.
 - A dated, factual comparison with ElevenReader (features, price, platforms) is included; no disparaging claims; date and sources on the section.
