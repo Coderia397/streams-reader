@@ -14,4 +14,5 @@ Start with [NEXT-SESSION-PROMPT.md](../NEXT-SESSION-PROMPT.md) at the repo root,
 | [08-measurements.md](08-measurements.md) | finding | Kokoro 2.5x realtime on Space CPU; Ming 1.07 s audio per GPU-second |
 | [09-build-spec.md](09-build-spec.md) | reference | Cross-component names, bindings, secrets, audio format, crate APIs |
 | [10-progress.md](10-progress.md) | progress log | Newest first |
+| [11-native-apps-and-accounts.md](11-native-apps-and-accounts.md) | plan | v3 delta: Tauri 2 native apps, self-updating, several users, managed auth (Supabase blocked on slot) |
 | [raw/](raw/) | raw | Research and review panel outputs (JSON + rendered markdown) |

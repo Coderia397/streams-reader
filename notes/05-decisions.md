@@ -4,6 +4,11 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D8. Domain: listen.streams.watch
+- Decision: the app lives at `listen.streams.watch` (custom domain on the Worker `nolabs-api`, Cloudflare zone streams.watch). Supersedes the "name chosen later" part of D2.
+- Alternatives offered: `read.streams.watch`, `reader.streams.watch`.
+- Decided by: user, 2026-10-30.
+
 ### D7. R2 credentials in the Space are bucket-scoped, not presigned URLs (for now)
 - Decision: the Space holds an S3 credential derived from a Cloudflare user token limited to Object Read + Write on `nolabs-media` only (token name "nolabs-engine-r2", created 2026-10-30). Presigned URLs from the Worker are phase 2.
 - Reason: the Space writes several objects per segment (audio + sidecar JSON + job marker); presigning each from the Worker adds a round trip per object. A bucket-scoped key cannot touch `pstream-data` or anything else.

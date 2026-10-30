@@ -1,3 +1,5 @@
+> Correction 2026-10-30: the user's phone is a **Google Pixel 8, Android 17 (SDK 37), Chrome installed**, verified over ADB (`adb devices -l`, `getprop`). The "A12" below came from the Claude chat and is superseded; Samsung One UI battery steps do not apply.
+
 # What the chats concluded, where they agree, and where the Claude chat was wrong
 
 Finding. Both chats end at the same shape: Rust for everything except a thin Python/PyTorch model call in the user's second free ZeroGPU Gradio Space. The Claude chat missed that Cloudflare (free, no card, already in use) can be the always-on backend and cache; the ChatGPT chat proposed Workers + R2. The plan merges both.

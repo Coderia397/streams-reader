@@ -22,6 +22,9 @@ All in `~/.config/streams/` on the Mac, mode 600, one `.env` file per service. N
 - Installed: rustc/cargo 1.98.1, rustup targets wasm32-unknown-unknown, aarch64-linux-android, trunk 0.21.14, worker-build 0.8.7, gh 2.100.0, uv 0.12.15, git 2.50.1, Python 3.9.6 (system).
 - Not installed: node/npm, wrangler, ffmpeg, docker, hf CLI.
 
+### Phone (verified over ADB, 2026-10-30)
+- Google Pixel 8 (`shiba`), Android 17, SDK 37, Chrome installed. adb: `~/Library/Android/sdk/platform-tools/adb`, USB serial 38151FDJH00ERU.
+
 ### Existing resources this project must not touch
 Space `streams-engine`, every existing Worker, bucket `pstream-data`, the `streams.watch` zone, existing Pages projects. New resources get a `nolabs-` prefix.
 
