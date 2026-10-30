@@ -40,7 +40,18 @@ Native layers so it is not a wrapper:
 7. Whole books in the cloned voice overnight (Kaggle bulk renderer).
 8. Export and backup of the library.
 
+### Supabase project created (verified 2026-10-30, ~19:50)
+- The user paused project `pstream-backend` (org "Kinemora Org"); the slot freed. Project **nolabs**, ref `atxbmgfuxjtcwmoaldqy`, region eu-west-2, org `pstream`, status ACTIVE_HEALTHY. URL, ref and DB password in `~/.config/nolabs/supabase.env` (mode 600). Free-plan limits are per project (500 MB database, 1 GB storage), so `pstream` is unaffected.
+- Free projects pause after 7 days without activity: the Worker cron touches the database daily.
+
+### Speed: architecture, not just caching (assistant plan, 2026-10-30)
+1. On-device Standard voice in the native apps: Kokoro-82M as ONNX (int8, about 90 MB) run by the `ort` crate on desktop and Android. Rendering moves to the listener's own CPU: no shared server queue, works offline, scales with users. The Space CPU stays for the web app and as fallback. Expected: desktop several times realtime; Pixel 8 to be measured.
+2. Streaming per segment: the Space reports each segment as soon as it is uploaded (Gradio generator, `generating` events) instead of at batch end, so the first audio starts after one short segment.
+3. Pipelining inside the Space: synthesis of segment N+1 overlaps encoding and upload of segment N (thread pool), removing encode/upload from the critical path.
+4. Kokoro on ONNX Runtime on the Space CPU too (int8 quantised), assumed 2-3x faster than PyTorch CPU; measure.
+5. Look-ahead scheduling: the client asks for the next chapter while the current one plays, using measured render speed to keep a fixed number of minutes ready.
+6. Expressive tier: GPU calls batch a whole chapter per run (fewest runs), and the Kaggle overnight job takes whole books.
+
 ## Open items
-- Supabase slot: user to pause/delete a project, or pick alternative (a) or (b).
 - Old laptop OS (Windows or Linux): not needed to proceed, both are built.
 - Android self-update without a prompt needs the app to be its own installer of record; verify on the Pixel.

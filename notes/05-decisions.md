@@ -6,6 +6,7 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ### D9. Native apps with Tauri 2, and all eight extra features are in scope
 - Decision: Tauri 2 apps for macOS, Windows, Linux, Android sharing the Leptos UI, with native playback, media controls, downloads and self-updating (note 11). In scope (user: "yes for all the eight things"): cross-device sync, offline downloads, share into the app / open files, lock-screen + headset + car controls, invite-only accounts with a fair split of expressive minutes, Arabic, whole books in the cloned voice overnight (Kaggle), library export/backup.
+- Also in scope (user, later the same evening): final name and logo; home-screen widget (resume/play); import from Google Drive and Kindle; notification when a long render finishes; "read this page" button for desktop browsers; several users on every platform.
 - Decided by: user (features), assistant (Tauri).
 
 ### D8. Domain: listen.streams.watch
