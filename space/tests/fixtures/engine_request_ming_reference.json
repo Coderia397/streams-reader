@@ -1,0 +1,43 @@
+{
+  "v": 1,
+  "job_id": "7q9vbxz2k4m6n8p0",
+  "engine": "ming",
+  "voice": {
+    "kind": "reference",
+    "id": "0123456789abcdef",
+    "ref_key": "voices/0123456789abcdef/ref.wav",
+    "transcript": "I have always loved the quiet hour before dawn."
+  },
+  "items": [
+    {
+      "key": "3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f",
+      "text": "Well [laughter] that went better than expected.",
+      "mode": "tts",
+      "emotion": "neutral",
+      "boundary": "sentence",
+      "object_key": "audio/ming/3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f.webm"
+    },
+    {
+      "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+      "text": "Get out.",
+      "mode": "emotion",
+      "emotion": "angry",
+      "boundary": "section",
+      "object_key": "audio/ming/0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c.webm"
+    }
+  ],
+  "audio": {
+    "id": 2,
+    "bitrate_kbps": 56,
+    "sample_rate": 48000,
+    "target_lufs": -16.0,
+    "max_correction_db": 2.0,
+    "peak_ceiling_dbfs": -1.5,
+    "pauses": {
+      "sentence_ms": 250,
+      "paragraph_ms": 600,
+      "section_ms": 1200
+    }
+  },
+  "marker_key": "jobs/7q9vbxz2k4m6n8p0.json"
+}

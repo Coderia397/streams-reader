@@ -1,0 +1,42 @@
+{
+  "v": 1,
+  "job_id": "7k3m9q2x4c8v1n5b",
+  "engine": "kokoro",
+  "voice": { "kind": "preset", "id": "af_heart" },
+  "items": [
+    {
+      "key": "972685d9e1235873c538f9d562908a84228e265b6831bcc845a488ce08e27313",
+      "text": "Chapter One",
+      "mode": "kokoro",
+      "emotion": "neutral",
+      "boundary": "section",
+      "object_key": "audio/kokoro/972685d9e1235873c538f9d562908a84228e265b6831bcc845a488ce08e27313.webm"
+    },
+    {
+      "key": "8cda2ddf913de4dbea88c8de3d01b436423e033b4acff528791270c0538d1e2d",
+      "text": "The lighthouse keeper counted the ships each morning. “Seven,” she said — never more, never fewer.",
+      "mode": "kokoro",
+      "emotion": "neutral",
+      "boundary": "sentence",
+      "object_key": "audio/kokoro/8cda2ddf913de4dbea88c8de3d01b436423e033b4acff528791270c0538d1e2d.webm"
+    },
+    {
+      "key": "9799186d52303e0523f450e8307deb6676868accb398bb4c18f2d054ea165ccb",
+      "text": "Nobody knew why…",
+      "mode": "kokoro",
+      "emotion": "neutral",
+      "boundary": "paragraph",
+      "object_key": "audio/kokoro/9799186d52303e0523f450e8307deb6676868accb398bb4c18f2d054ea165ccb.webm"
+    }
+  ],
+  "audio": {
+    "id": 1,
+    "bitrate_kbps": 32,
+    "sample_rate": 24000,
+    "target_lufs": -16.0,
+    "max_correction_db": 4.0,
+    "peak_ceiling_dbfs": -1.5,
+    "pauses": { "sentence_ms": 250, "paragraph_ms": 600, "section_ms": 1200 }
+  },
+  "marker_key": "jobs/7k3m9q2x4c8v1n5b.json"
+}

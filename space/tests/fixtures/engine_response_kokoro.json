@@ -1,0 +1,42 @@
+{
+  "v": 1,
+  "job_id": "7q9vbxz2k4m6n8p0",
+  "engine": "kokoro",
+  "items": [
+    {
+      "key": "3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f",
+      "ok": true,
+      "object_key": "audio/kokoro/3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f.webm",
+      "duration_ms": 2150,
+      "bytes": 8840,
+      "words": [
+        [
+          0,
+          410,
+          0,
+          7
+        ],
+        [
+          440,
+          820,
+          8,
+          11
+        ]
+      ]
+    },
+    {
+      "key": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "ok": false,
+      "object_key": "",
+      "duration_ms": 0,
+      "bytes": 0,
+      "words": [],
+      "error": {
+        "code": "synthesis_failed",
+        "message": "RuntimeError: Kokoro produced no audio"
+      }
+    }
+  ],
+  "elapsed_ms": 3120,
+  "gpu_ms": 0
+}

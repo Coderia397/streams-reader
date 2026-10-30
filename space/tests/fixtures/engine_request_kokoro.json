@@ -1,0 +1,41 @@
+{
+  "v": 1,
+  "job_id": "7q9vbxz2k4m6n8p0",
+  "engine": "kokoro",
+  "voice": {
+    "kind": "preset",
+    "id": "af_heart"
+  },
+  "items": [
+    {
+      "key": "3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f",
+      "text": "Chapter One",
+      "mode": "kokoro",
+      "emotion": "neutral",
+      "boundary": "section",
+      "object_key": "audio/kokoro/3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f.webm"
+    },
+    {
+      "key": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "text": "It was a bright cold day in April, and the clocks were striking thirteen. Café “naïve” — fine.",
+      "mode": "kokoro",
+      "emotion": "neutral",
+      "boundary": "paragraph",
+      "object_key": "audio/kokoro/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1.webm"
+    }
+  ],
+  "audio": {
+    "id": 1,
+    "bitrate_kbps": 32,
+    "sample_rate": 24000,
+    "target_lufs": -16.0,
+    "max_correction_db": 4.0,
+    "peak_ceiling_dbfs": -1.5,
+    "pauses": {
+      "sentence_ms": 250,
+      "paragraph_ms": 600,
+      "section_ms": 1200
+    }
+  },
+  "marker_key": "jobs/7q9vbxz2k4m6n8p0.json"
+}

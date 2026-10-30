@@ -1,0 +1,6 @@
+{
+  "v": 1,
+  "raw_key": "voices/0123456789abcdef/raw.wav",
+  "ref_key": "voices/0123456789abcdef/ref.wav",
+  "transcript": "The first line of the script.\nA second line, read a little faster!\nAnd a quiet third line."
+}

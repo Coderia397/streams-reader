@@ -1,0 +1,9 @@
+{
+  "v": 1,
+  "engines": { "kokoro": "ready", "ming": "ready" },
+  "storage_ok": true,
+  "model_revs": {
+    "kokoro": "hexgrad/Kokoro-82M@0123456789abcdef0123456789abcdef01234567",
+    "ming": "inclusionAI/Ming-3.0-tts-0.5B@89abcdef0123456789abcdef0123456789abcdef"
+  }
+}

@@ -59,22 +59,90 @@ pub enum Admission {
 /// Budget state at `now_ms`. The window is HF's: it starts at the earliest use within the last 24 h and resets 24 h
 /// after it; uses older than that are ignored. `used_s` counts `max(used_s, requested_s * duration_factor)` per call,
 /// because admission is charged on the request.
+///
+/// Uses recorded after `now_ms` (clock skew between Worker isolates) count as inside the window. This view never
+/// under-counts HF's own chained windows: every use in HF's current window is also within the last 24 h.
 pub fn view(policy: &GpuPolicy, history: &[GpuUse], now_ms: i64) -> BudgetView {
-    let _ = (policy, history, now_ms);
-    todo!("implemented in the core crate")
+    let since = now_ms.saturating_sub(DAY_MS);
+    let mut used_s = 0u32;
+    let mut runs_used = 0u32;
+    let mut first: Option<i64> = None;
+    for use_ in history.iter().filter(|u| u.at_ms > since) {
+        used_s = used_s.saturating_add(use_.used_s.max(charged(policy, use_.requested_s)));
+        runs_used = runs_used.saturating_add(1);
+        first = Some(first.map_or(use_.at_ms, |f| f.min(use_.at_ms)));
+    }
+    BudgetView {
+        used_s,
+        runs_used,
+        remaining_s: policy.daily_cap_s.saturating_sub(used_s),
+        runs_left: policy.runs_cap.saturating_sub(runs_used),
+        resets_at_ms: first.map(|f| f.saturating_add(DAY_MS)),
+    }
 }
 
 /// Requested seconds for a batch with this many input chars: `base_s + s_per_char * chars`, rounded up, capped at
 /// `max_call_s`.
 pub fn estimate_seconds(policy: &GpuPolicy, chars: usize) -> u32 {
-    let _ = (policy, chars);
-    todo!("implemented in the core crate")
+    clamp_seconds(raw_estimate(policy, chars).min(f64::from(policy.max_call_s)))
 }
 
 /// Decide what to submit given per-item char counts, in order. Admit when the whole batch fits both caps; otherwise the
 /// longest prefix whose `estimate * duration_factor` fits `remaining_s` (at least one item); otherwise Defer to
 /// `resets_at_ms` (or `now + DAY_MS` when unknown). No runs left also defers.
+///
+/// "Both caps" are the window's remaining seconds and `max_call_s`: a batch whose uncapped estimate exceeds
+/// `max_call_s` would run out of GPU time mid-batch, so only a prefix that fits within one call is admitted. A single
+/// item is the smallest unit and only has to fit the remaining seconds at its capped estimate. An empty batch is
+/// admitted with a zero request (there is nothing to run).
 pub fn admit(policy: &GpuPolicy, history: &[GpuUse], now_ms: i64, item_chars: &[usize]) -> Admission {
-    let _ = (policy, history, now_ms, item_chars);
-    todo!("implemented in the core crate")
+    let budget = view(policy, history, now_ms);
+    let defer = Admission::Defer { retry_at_ms: budget.resets_at_ms.unwrap_or(now_ms.saturating_add(DAY_MS)) };
+    if item_chars.is_empty() {
+        return Admission::Admit { request_s: 0 };
+    }
+    if budget.runs_left == 0 {
+        return defer;
+    }
+    let fits = |items: usize, chars: usize| {
+        let request_s = estimate_seconds(policy, chars);
+        let within_call = items == 1 || raw_estimate(policy, chars) <= f64::from(policy.max_call_s);
+        (within_call && charged(policy, request_s) <= budget.remaining_s).then_some(request_s)
+    };
+    let mut best = None;
+    let mut chars = 0usize;
+    for (i, &n) in item_chars.iter().enumerate() {
+        chars = chars.saturating_add(n);
+        // Estimates grow with chars, so the first prefix that does not fit ends the search.
+        match fits(i + 1, chars) {
+            Some(request_s) => best = Some((i + 1, request_s)),
+            None => break,
+        }
+    }
+    match best {
+        Some((items, request_s)) if items == item_chars.len() => Admission::Admit { request_s },
+        Some((items, request_s)) => Admission::Shrink { items, request_s },
+        None => defer,
+    }
 }
+
+/// Seconds the scheduler charges for a request: `requested_s * duration_factor`, rounded up.
+fn charged(policy: &GpuPolicy, requested_s: u32) -> u32 {
+    clamp_seconds(f64::from(requested_s) * f64::from(policy.duration_factor))
+}
+
+fn raw_estimate(policy: &GpuPolicy, chars: usize) -> f64 {
+    // usize -> f64 is exact below 2^53 chars, far beyond any batch.
+    f64::from(policy.base_s) + f64::from(policy.s_per_char) * chars as f64
+}
+
+/// Round up to whole seconds. `f32` policy values are not exact in binary (0.06 is 0.0599999986…), so the value is
+/// first rounded to the millisecond; otherwise 100 chars at 0.07 s/char would round 7.0000003 s up to 8 s.
+fn clamp_seconds(seconds: f64) -> u32 {
+    let seconds = (seconds * 1000.0).round() / 1000.0;
+    // `as` saturates: negative and NaN become 0, anything above u32::MAX becomes u32::MAX.
+    seconds.ceil() as u32
+}
+
+#[cfg(test)]
+mod tests;

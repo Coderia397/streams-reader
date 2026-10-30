@@ -1,117 +1,86 @@
 """nolabs engine: the speech models behind nolabs-reader, served as Gradio API endpoints on a ZeroGPU Space.
 
-Only the Cloudflare Worker calls this Space (it is private). Every endpoint takes and returns one JSON string; the contract
-lives in nolabs_engine/contracts.py. Audio is written to R2 directly, the responses only carry metadata.
+Only the Cloudflare Worker calls this Space (it is private). Every endpoint takes one JSON string and returns one JSON
+string; contract v1 lives in nolabs_engine/contracts.py (mirror of crates/core/src/proto/engine.rs). Audio is written
+to R2 directly; responses carry metadata only.
 """
-import spaces  # noqa: F401  - must be imported before torch so ZeroGPU can patch CUDA
+from nolabs_engine import runtime
 
-import json
-import os
-import platform
-import time
-import traceback
+# Size native thread pools from the container's CPU allowance before torch exists (os.cpu_count() reports the host).
+THREADS = runtime.cpu_allowance()
+runtime.configure_threads(THREADS)
 
-import gradio as gr
+import traceback  # noqa: E402
 
-from nolabs_engine import contracts, storage
-from nolabs_engine.service import Service
+import gradio as gr  # noqa: E402
+import spaces  # noqa: E402,F401 - must be imported before torch so ZeroGPU can patch CUDA
 
-BOOT = time.time()
-STATUS: dict = {"kokoro": "not loaded", "ming": "not loaded"}
+from nolabs_engine import storage  # noqa: E402
+from nolabs_engine.errors import FailureKind  # noqa: E402
+from nolabs_engine.handlers import EndpointFailure, Endpoints  # noqa: E402
+from nolabs_engine.service import Service  # noqa: E402
+
+STATUS: dict[str, str] = {"kokoro": "not loaded", "ming": "not loaded"}
 
 
 def _load_ming():
     try:
-        from nolabs_engine.engines import ming_engine
+        from nolabs_engine.engines import ming_gpu
 
-        ming_engine.load()
+        engine = ming_gpu.load()
         STATUS["ming"] = "ready"
-        return ming_engine
+        return engine
     except Exception as e:  # noqa: BLE001 - the standard tier keeps working without the GPU tier
-        STATUS["ming"] = f"failed: {type(e).__name__}: {e}"
+        STATUS["ming"] = f"failed: {type(e).__name__}: {e}"[:300]
         traceback.print_exc()
         return None
 
 
 def _load_kokoro():
     try:
+        import torch
+
         from nolabs_engine.engines.kokoro_engine import KokoroEngine
 
+        runtime.configure_torch(torch, THREADS)
         engine = KokoroEngine()
         STATUS["kokoro"] = "ready"
         return engine
     except Exception as e:  # noqa: BLE001
-        STATUS["kokoro"] = f"failed: {type(e).__name__}: {e}"
+        STATUS["kokoro"] = f"failed: {type(e).__name__}: {e}"[:300]
         traceback.print_exc()
         return None
 
 
 MING = _load_ming()  # ZeroGPU wants CUDA models built at import time
 KOKORO = _load_kokoro()
-SERVICE = Service(storage.from_env(), KOKORO, MING)
+print(f"nolabs engine: threads={THREADS} kokoro={STATUS['kokoro']} ming={STATUS['ming']}", flush=True)
+ENDPOINTS = Endpoints(Service(storage.from_env(), KOKORO, MING, statuses=STATUS), passthrough=(gr.Error,))
 
 
-def _guarded(fn):
+def _gradio(handler):
+    """Bind a handler to Gradio: bad requests and engine errors become gr.Error with the contract's prefixes; ZeroGPU
+    errors are re-raised as they came so the Worker can read their text."""
     def call(raw: str) -> str:
         try:
-            return fn(raw)
-        except contracts.ContractError as e:
-            raise gr.Error(f"bad request: {e}", print_exception=False)
-        except gr.Error:
-            raise
-        except Exception as e:  # noqa: BLE001
-            traceback.print_exc()
-            raise gr.Error(f"engine error: {type(e).__name__}: {e}")
-    call.__name__ = fn.__name__
+            return handler(raw)
+        except EndpointFailure as failure:
+            if failure.kind is FailureKind.PASSTHROUGH and isinstance(failure.original, gr.Error):
+                raise failure.original from None
+            raise gr.Error(failure.message, print_exception=failure.kind is FailureKind.ENGINE) from None
+    call.__name__ = handler.__name__
     return call
-
-
-@_guarded
-def render_cpu(raw: str) -> str:
-    req = contracts.parse_render(raw)
-    if req.engine != "kokoro":
-        raise contracts.ContractError("render_cpu only runs the kokoro engine")
-    return SERVICE.render_kokoro(req).to_json()
-
-
-@_guarded
-def render_gpu(raw: str) -> str:
-    req = contracts.parse_render(raw)
-    if req.engine != "ming":
-        raise contracts.ContractError("render_gpu only runs the ming engine")
-    return SERVICE.render_ming(req).to_json()
-
-
-@_guarded
-def design_voice(raw: str) -> str:
-    return json.dumps(SERVICE.design_voice(contracts.parse_design(raw)))
-
-
-@_guarded
-def catalog(_raw: str) -> str:
-    from nolabs_engine.engines.kokoro_engine import VOICES as KOKORO_VOICES
-
-    voices = [{"engine": "kokoro", "id": v.id, "name": v.name, "gender": v.gender, "accent": v.accent,
-               "grade": v.grade} for v in KOKORO_VOICES]
-    if MING is not None:
-        voices += [{"engine": "ming", "id": vid, "name": name, "gender": gender, "accent": accent, "grade": ""}
-                   for vid, (name, gender, accent) in MING.PRESETS.items()]
-    return json.dumps({"v": contracts.CONTRACT_VERSION, "voices": voices})
-
-
-@_guarded
-def health(_raw: str) -> str:
-    return json.dumps({"v": contracts.CONTRACT_VERSION, "engines": STATUS, "uptime_s": round(time.time() - BOOT),
-                       "python": platform.python_version(), "cpus": os.cpu_count()})
 
 
 with gr.Blocks(title="nolabs engine") as demo:
     gr.Markdown("Private speech engine for nolabs-reader. Use the API.")
     request, response = gr.Textbox(visible=False), gr.Textbox(visible=False)
-    for fn, queue in ((render_cpu, "cpu"), (render_gpu, "gpu"), (design_voice, "gpu"), (catalog, None),
-                      (health, None)):
-        gr.Button(fn.__name__, visible=False).click(
-            fn, request, response, api_name=fn.__name__,
+    # (handler, concurrency id): one CPU job at a time (Kokoro and reference preparation share 2 vCPU), one GPU job
+    # at a time, and health with no concurrency limit so it answers while a render runs.
+    for handler, queue in ((ENDPOINTS.render_cpu, "cpu"), (ENDPOINTS.render_gpu, "gpu"),
+                           (ENDPOINTS.prepare_reference, "cpu"), (ENDPOINTS.health, None)):
+        gr.Button(handler.__name__, visible=False).click(
+            _gradio(handler), request, response, api_name=handler.__name__,
             concurrency_limit=1 if queue else None, concurrency_id=queue,
         )
 

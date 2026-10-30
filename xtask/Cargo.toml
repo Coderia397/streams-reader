@@ -1,11 +1,31 @@
 [package]
 name = "xtask"
+description = "Build, deploy and operate nolabs-reader through the Cloudflare and Hugging Face HTTP APIs (no Node, no wrangler)"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+rust-version.workspace = true
 publish = false
 
 [dependencies]
+nolabs-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+hex.workspace = true
+thiserror.workspace = true
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+# 0.12 with rustls on ring: no OpenSSL and no cmake/aws-lc build on the laptop.
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "multipart", "rustls-tls"] }
+hmac = "0.12"
+getrandom = "0.4"
+zeroize = "1"
+toml = "1"
+flate2 = "1"
+
+[dev-dependencies]
+tempfile = "3"
 
 [lints]
 workspace = true

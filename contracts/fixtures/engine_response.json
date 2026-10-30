@@ -1,0 +1,37 @@
+{
+  "v": 1,
+  "job_id": "7k3m9q2x4c8v1n5b",
+  "engine": "kokoro",
+  "items": [
+    {
+      "key": "972685d9e1235873c538f9d562908a84228e265b6831bcc845a488ce08e27313",
+      "ok": true,
+      "object_key": "audio/kokoro/972685d9e1235873c538f9d562908a84228e265b6831bcc845a488ce08e27313.webm",
+      "duration_ms": 2140,
+      "bytes": 8562,
+      "words": [
+        [0, 520, 0, 7],
+        [560, 940, 8, 11]
+      ]
+    },
+    {
+      "key": "8cda2ddf913de4dbea88c8de3d01b436423e033b4acff528791270c0538d1e2d",
+      "ok": true,
+      "object_key": "audio/kokoro/8cda2ddf913de4dbea88c8de3d01b436423e033b4acff528791270c0538d1e2d.webm",
+      "duration_ms": 6870,
+      "bytes": 27480,
+      "words": []
+    },
+    {
+      "key": "9799186d52303e0523f450e8307deb6676868accb398bb4c18f2d054ea165ccb",
+      "ok": false,
+      "object_key": "",
+      "duration_ms": 0,
+      "bytes": 0,
+      "words": [],
+      "error": { "code": "engine_error", "message": "synthesis produced no audio" }
+    }
+  ],
+  "elapsed_ms": 4180,
+  "gpu_ms": 0
+}

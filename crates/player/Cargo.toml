@@ -5,14 +5,28 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+# The timeline, buffering, seek, sleep and state logic are pure Rust and build on the host, so `cargo test -p
+# nolabs-player` runs natively. Everything that touches the DOM lives in `src/web` and is compiled for wasm32 only.
 [dependencies]
 nolabs-core.workspace = true
 thiserror.workspace = true
 futures = { version = "0.3", default-features = false, features = ["std"] }
 wasm-bindgen = "0.2"
-wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
-web-sys = { version = "0.3", features = ["Window", "Document", "HtmlAudioElement", "HtmlMediaElement"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = [
+    "Document",
+    "Element",
+    "Event",
+    "EventTarget",
+    "HtmlAudioElement",
+    "HtmlElement",
+    "HtmlMediaElement",
+    "Node",
+    "Window",
+] }
 
 [lints]
 workspace = true

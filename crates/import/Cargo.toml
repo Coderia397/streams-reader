@@ -4,10 +4,19 @@ description = "Turns pasted text, Markdown, web pages, EPUB and PDF text into no
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+rust-version.workspace = true
 
 [dependencies]
 nolabs-core.workspace = true
 thiserror.workspace = true
+# Pure-Rust deflate (zlib-rs) so the reader compiles to wasm32-unknown-unknown; no other codecs are needed for EPUB.
+zip = { version = "9.1", default-features = false, features = ["deflate-flate2-zlib-rs"] }
+# escape-html: EPUB 2 XHTML often uses HTML named entities such as &nbsp; and &mdash;.
+quick-xml = { version = "0.42", features = ["escape-html"] }
+dom_smoothie = "0.19"
+# Same version dom_smoothie uses; walks the extracted article and the fallback page body.
+dom_query = { version = "0.29", default-features = false }
+pulldown-cmark = { version = "0.13", default-features = false }
 
 [lints]
 workspace = true

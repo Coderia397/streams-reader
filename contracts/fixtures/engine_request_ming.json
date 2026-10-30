@@ -1,0 +1,39 @@
+{
+  "v": 1,
+  "job_id": "h4d8w2r6t0y9p3za",
+  "engine": "ming",
+  "voice": {
+    "kind": "reference",
+    "id": "q1w2e3r4t5y6z7x8",
+    "ref_key": "voices/q1w2e3r4t5y6z7x8/ref.wav",
+    "transcript": "The morning light came through the window, and I could hear the kettle starting to sing."
+  },
+  "items": [
+    {
+      "key": "0aafe49bc86b6acd86b33a4881c5f1b232edc558f6ca78f42e0a31a6fa42cc70",
+      "text": "She opened the letter slowly. It was from her brother, the one who had left twenty years before.",
+      "mode": "tts",
+      "emotion": "neutral",
+      "boundary": "paragraph",
+      "object_key": "audio/ming/0aafe49bc86b6acd86b33a4881c5f1b232edc558f6ca78f42e0a31a6fa42cc70.webm"
+    },
+    {
+      "key": "d470d73ef339e9fb47d4b7b6c50248cb3a0d2b9260608d6f80d1db4b61fbd033",
+      "text": "“You came back!” she cried, and laughed until she could not stand.",
+      "mode": "emotion",
+      "emotion": "happy",
+      "boundary": "section",
+      "object_key": "audio/ming/d470d73ef339e9fb47d4b7b6c50248cb3a0d2b9260608d6f80d1db4b61fbd033.webm"
+    }
+  ],
+  "audio": {
+    "id": 2,
+    "bitrate_kbps": 56,
+    "sample_rate": 48000,
+    "target_lufs": -16.0,
+    "max_correction_db": 2.0,
+    "peak_ceiling_dbfs": -1.5,
+    "pauses": { "sentence_ms": 250, "paragraph_ms": 600, "section_ms": 1200 }
+  },
+  "marker_key": "jobs/h4d8w2r6t0y9p3za.json"
+}

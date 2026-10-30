@@ -1,0 +1,33 @@
+{
+  "v": 1,
+  "job_id": "7q9vbxz2k4m6n8p0",
+  "engine": "ming",
+  "voice": {
+    "kind": "preset",
+    "id": "US_Emma"
+  },
+  "items": [
+    {
+      "key": "3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f",
+      "text": "Hello.",
+      "mode": "tts",
+      "emotion": "neutral",
+      "boundary": "sentence",
+      "object_key": "audio/ming/3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f3f.webm"
+    }
+  ],
+  "audio": {
+    "id": 2,
+    "bitrate_kbps": 56,
+    "sample_rate": 48000,
+    "target_lufs": -16.0,
+    "max_correction_db": 2.0,
+    "peak_ceiling_dbfs": -1.5,
+    "pauses": {
+      "sentence_ms": 250,
+      "paragraph_ms": 600,
+      "section_ms": 1200
+    }
+  },
+  "marker_key": "jobs/7q9vbxz2k4m6n8p0.json"
+}
