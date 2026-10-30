@@ -10,3 +10,4 @@
 *.env
 /archive
 /notes/raw/design-private
+/.claude
