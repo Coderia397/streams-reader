@@ -371,3 +371,11 @@ Minimal MV3 extension ("Read this page with Streams Reader"):
 - Internet Archive terms not read (WebFetch returned only the page title). Unblocks by reading the terms in a browser, only if IA is ever needed.
 - Kokoro's reading languages for non-English shelves: re-check against note 03 before building those shelves.
 - Use-case and comparison SEO pages: write them only with real content. The owner decides whether to include comparisons.
+
+## 2026-10-30 — addendum: Netflix signed-out landing (owner's suggestion, verified)
+Checked with headless Chrome Beta at 1440 px on https://www.netflix.com/gb/ (screenshot kept in the scratchpad, not committed). Verified sections worth borrowing:
+- "More reasons to join": four equal rounded cards in one row, each a dark vertical gradient (deep navy at top to plum at the bottom), bold 2-line title, one short grey sentence, and a small glossy 3D icon in the bottom-right corner; no borders, no shadows. Ours: "More reasons to listen" with four cards on a Streams-blue → deep-indigo gradient from the brand tokens, each with a small voxel mascot render (media/dist/spots) in the corner. Topics: free and open source; your own voice; listen offline; every device. Stacks to 2×2 on tablets and a horizontal snap row on phones.
+- A soft curved glow line separating the hero from the content (Netflix: red arc). Ours: a thin arc in Streams blue with a faint bloom.
+- "Trending now": large outlined rank numbers overlapping the posters. Ours: "Classics to start with", numbered 1-10 over Standard Ebooks covers.
+- FAQ as full-width accordion rows and a repeated call to action before the footer (already in the plan).
+Status: verified (rendered page); adopted by the assistant for landing v2.
