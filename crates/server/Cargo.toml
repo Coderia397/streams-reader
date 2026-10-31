@@ -8,6 +8,7 @@ rust-version.workspace = true
 
 [dependencies]
 nolabs-core.workspace = true
+nolabs-mail.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 sha2.workspace = true
@@ -17,6 +18,8 @@ async-trait.workspace = true
 hmac = "0.12"
 base64 = "0.22"
 url = "2.5"
+# ES256 verification of Supabase access tokens; pure Rust, so the same code runs in the Worker (wasm32).
+p256 = { version = "0.13", default-features = false, features = ["ecdsa"] }
 
 [dev-dependencies]
 rusqlite = { version = "0.37", features = ["bundled"] }

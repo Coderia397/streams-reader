@@ -16,6 +16,8 @@ mod paths;
 mod secret;
 mod secrets_gen;
 mod state;
+mod supabase;
+mod test_user;
 mod timefmt;
 mod worker_bundle;
 
@@ -46,12 +48,46 @@ enum Command {
         #[arg(long)]
         dry_run: bool,
     },
-    /// Create (or reuse) the login passphrase and session key in ~/.config/nolabs/app.env.
-    Passphrase {
-        /// Generate a new passphrase even if one exists (the session key is kept).
+    /// Apply supabase/migrations/NNNN_*.sql to the Supabase project, tracked in private.nolabs_migrations.
+    SupabaseMigrate {
+        /// Show what would be applied without changing the database.
         #[arg(long)]
-        rotate: bool,
+        dry_run: bool,
     },
+    /// Set the project's sign-in settings (email codes, redirect URLs) and the sign-up and send-email hooks.
+    SupabaseAuth,
+    /// Create the admin account for this email (or promote an existing one) with the rest of the GPU budget.
+    SupabaseOwner {
+        #[arg(long)]
+        email: String,
+    },
+    /// Create an invite code for a new user.
+    Invite {
+        /// Days until the code expires (1 to 90).
+        #[arg(long, default_value_t = 14)]
+        days: u32,
+        /// Who the invite is for (kept with the invite, shown to admins only).
+        #[arg(long)]
+        note: Option<String>,
+        /// Bind the invite to this address (also lets that verified address sign up through Google or Microsoft).
+        #[arg(long)]
+        email: Option<String>,
+    },
+    /// Enable (or disable) an OAuth sign-in provider; the client secret is read from ~/.config/nolabs/oauth.env.
+    AuthProvider {
+        provider: cmd::providers::Provider,
+        /// The OAuth client id from the provider's console (public).
+        #[arg(long, required_unless_present = "disable")]
+        client_id: Option<String>,
+        /// Env file holding <PROVIDER>_CLIENT_SECRET (default ~/.config/nolabs/oauth.env); never passed in argv.
+        #[arg(long)]
+        secret_from: Option<std::path::PathBuf>,
+        /// Turn the provider off instead.
+        #[arg(long)]
+        disable: bool,
+    },
+    /// Check the Supabase project: RLS on every table, no exposed definer functions, security and performance advisors.
+    SupabaseCheck,
     /// Build the web app (trunk) and the Worker (worker-build) in release mode and report sizes.
     Build,
     /// Upload the Worker "nolabs-api" with its bindings, secrets, queue consumer, cron and workers.dev URL.
@@ -69,7 +105,8 @@ enum Command {
         #[arg(long)]
         no_wait: bool,
     },
-    /// End-to-end check against the deployed API: login, import, render, fetch audio, status, delete.
+    /// End-to-end check against the deployed API as a throwaway user: session, document row and body, render,
+    /// audio (token and signed URL), status, delete.
     Smoke {
         /// API origin; default: the URL recorded by `deploy` in deploy/state.toml.
         #[arg(long)]
@@ -89,7 +126,14 @@ fn main() -> ExitCode {
         Command::BootstrapToken { rotate } => cmd::bootstrap::run(rotate),
         Command::Setup => cmd::setup::run(),
         Command::Migrate { dry_run } => cmd::migrate::run(dry_run),
-        Command::Passphrase { rotate } => cmd::passphrase::run(rotate),
+        Command::SupabaseMigrate { dry_run } => cmd::supabase::migrate(dry_run),
+        Command::SupabaseAuth => cmd::supabase::auth(),
+        Command::SupabaseOwner { email } => cmd::supabase::owner(&email),
+        Command::Invite { days, note, email } => cmd::supabase::invite(days, note, email),
+        Command::AuthProvider { provider, client_id, secret_from, disable } => {
+            cmd::providers::run(provider, client_id.as_deref(), secret_from, disable)
+        }
+        Command::SupabaseCheck => cmd::supabase::check(),
         Command::Build => cmd::build::run(),
         Command::Deploy { kokoro_rev, ming_rev } => cmd::deploy::run(cmd::deploy::Options { kokoro_rev, ming_rev }),
         Command::Space { no_wait } => cmd::space::run(!no_wait),
@@ -124,6 +168,15 @@ mod tests {
         assert!(matches!(c.command, Command::Smoke { base: Some(ref b) } if b == "https://x.dev"));
         let c = Cli::try_parse_from(["xtask", "bootstrap-token"]).unwrap();
         assert!(matches!(c.command, Command::BootstrapToken { rotate: false }));
+        let c = Cli::try_parse_from(["xtask", "invite", "--days", "3"]).unwrap();
+        assert!(matches!(c.command, Command::Invite { days: 3, note: None, email: None }));
+        let c = Cli::try_parse_from(["xtask", "auth-provider", "azure", "--client-id", "abc"]).unwrap();
+        assert!(matches!(c.command, Command::AuthProvider { disable: false, .. }));
+        assert!(Cli::try_parse_from(["xtask", "auth-provider", "google"]).is_err());
+        assert!(Cli::try_parse_from(["xtask", "auth-provider", "apple", "--disable"]).is_ok());
+        assert!(Cli::try_parse_from(["xtask", "auth-provider", "github", "--disable"]).is_err());
+        assert!(Cli::try_parse_from(["xtask", "supabase-owner"]).is_err());
+        assert!(Cli::try_parse_from(["xtask", "passphrase"]).is_err());
         assert!(Cli::try_parse_from(["xtask", "nope"]).is_err());
     }
 }

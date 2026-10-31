@@ -45,6 +45,8 @@ fn build(req: &HttpRequest) -> Result<Request, HttpError> {
     init.with_method(match req.method {
         PortMethod::Get => Method::Get,
         PortMethod::Post => Method::Post,
+        PortMethod::Patch => Method::Patch,
+        PortMethod::Delete => Method::Delete,
     })
     .with_redirect(RequestRedirect::Manual)
     .with_headers(headers);

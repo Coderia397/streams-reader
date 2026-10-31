@@ -1,4 +1,4 @@
-//! GPU ledger, login failures and the config table.
+//! GPU ledger, the ownership cache and the config table.
 
 use nolabs_core::budget::GpuUse;
 
@@ -6,24 +6,54 @@ use super::row;
 use super::{Repo, sql};
 use crate::ports::{PortError, Stmt};
 
+/// A ledger entry and the user it is charged to (empty for calls from before accounts).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct LedgerUse {
+    pub user_id: String,
+    pub gpu: GpuUse,
+}
+
+/// What an ownership-cache entry vouches for.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Owned {
+    /// The user's document, with its body uploaded.
+    ReadyDocument,
+    Voice,
+}
+
+impl Owned {
+    fn kind(self) -> &'static str {
+        match self {
+            Owned::ReadyDocument => "doc",
+            Owned::Voice => "voice",
+        }
+    }
+}
+
 impl Repo<'_> {
     /// Ledger entries newer than `since_ms`, oldest first.
-    pub async fn gpu_uses_since(&self, since_ms: i64) -> Result<Vec<GpuUse>, PortError> {
+    pub async fn gpu_uses_since(&self, since_ms: i64) -> Result<Vec<LedgerUse>, PortError> {
         self.all(sql::LEDGER_SINCE, vec![since_ms.into()])
             .await?
             .iter()
             .map(|r| {
-                Ok(GpuUse {
-                    at_ms: row::i64(r, "at_ms")?,
-                    requested_s: row::u32(r, "requested_s")?,
-                    used_s: row::u32(r, "used_s")?,
+                Ok(LedgerUse {
+                    user_id: row::str(r, "user_id")?,
+                    gpu: GpuUse {
+                        at_ms: row::i64(r, "at_ms")?,
+                        requested_s: row::u32(r, "requested_s")?,
+                        used_s: row::u32(r, "used_s")?,
+                    },
                 })
             })
             .collect()
     }
 
-    pub fn ledger_insert_stmt(job_id: &str, attempt: u32, at_ms: i64, requested_s: u32) -> Stmt {
-        Stmt::new(sql::LEDGER_INSERT, vec![job_id.into(), attempt.into(), at_ms.into(), requested_s.into()])
+    pub fn ledger_insert_stmt(job_id: &str, attempt: u32, at_ms: i64, requested_s: u32, user_id: &str) -> Stmt {
+        Stmt::new(
+            sql::LEDGER_INSERT,
+            vec![job_id.into(), attempt.into(), at_ms.into(), requested_s.into(), user_id.into()],
+        )
     }
 
     pub fn ledger_used_stmt(job_id: &str, attempt: u32, used_s: u32) -> Stmt {
@@ -38,26 +68,40 @@ impl Repo<'_> {
         self.run(sql::LEDGER_PRUNE, vec![before_ms.into()]).await
     }
 
-    /// Number of failed logins after `since_ms` and the time of the oldest of them.
-    pub async fn auth_failures_since(&self, since_ms: i64) -> Result<(u32, Option<i64>), PortError> {
-        match self.all(sql::AUTH_FAILURES_SINCE, vec![since_ms.into()]).await?.first() {
-            Some(r) => Ok((row::u32(r, "n")?, row::opt_i64(r, "first_ms")?)),
-            None => Ok((0, None)),
-        }
+    /// True while a positive ownership answer for this user and object is cached.
+    pub async fn owner_cached(
+        &self,
+        what: Owned,
+        object_id: &str,
+        user_id: &str,
+        now_ms: i64,
+    ) -> Result<bool, PortError> {
+        let rows = self
+            .all(sql::OWNER_CACHE_HIT, vec![what.kind().into(), object_id.into(), user_id.into(), now_ms.into()])
+            .await?;
+        Ok(!rows.is_empty())
     }
 
-    pub async fn record_auth_failure(&self, at_ms: i64) -> Result<(), PortError> {
-        self.run(sql::AUTH_FAILURE_INSERT, vec![at_ms.into()]).await?;
+    pub async fn cache_owner(
+        &self,
+        what: Owned,
+        object_id: &str,
+        user_id: &str,
+        until_ms: i64,
+    ) -> Result<(), PortError> {
+        self.run(sql::OWNER_CACHE_PUT, vec![what.kind().into(), object_id.into(), user_id.into(), until_ms.into()])
+            .await?;
         Ok(())
     }
 
-    pub async fn clear_auth_failures(&self) -> Result<(), PortError> {
-        self.run(sql::AUTH_FAILURES_CLEAR, vec![]).await?;
+    /// Drop every cached answer about an object (it was deleted).
+    pub async fn forget_owner(&self, what: Owned, object_id: &str) -> Result<(), PortError> {
+        self.run(sql::OWNER_CACHE_FORGET, vec![what.kind().into(), object_id.into()]).await?;
         Ok(())
     }
 
-    pub async fn prune_auth_failures(&self, before_ms: i64) -> Result<u64, PortError> {
-        self.run(sql::AUTH_FAILURES_PRUNE, vec![before_ms.into()]).await
+    pub async fn prune_owner_cache(&self, now_ms: i64) -> Result<u64, PortError> {
+        self.run(sql::OWNER_CACHE_PRUNE, vec![now_ms.into()]).await
     }
 
     pub async fn config_get(&self, key: &str) -> Result<Option<String>, PortError> {
@@ -71,22 +115,6 @@ impl Repo<'_> {
         self.run(sql::CONFIG_PUT, vec![key.into(), value.into(), now_ms.into()]).await?;
         Ok(())
     }
-
-    /// The current session epoch (1 when never bumped).
-    pub async fn session_epoch(&self) -> Result<u64, PortError> {
-        Ok(self.config_get(CONFIG_SESSION_EPOCH).await?.and_then(|v| v.parse().ok()).unwrap_or(1))
-    }
-
-    /// Increment the session epoch, revoking every cookie issued before; returns the new epoch.
-    pub async fn bump_session_epoch(&self, now_ms: i64) -> Result<u64, PortError> {
-        let rows = self.all(sql::CONFIG_BUMP_EPOCH, vec![now_ms.into()]).await?;
-        rows.first()
-            .map(|r| row::str(r, "value"))
-            .transpose()?
-            .and_then(|v| v.parse().ok())
-            .ok_or_else(|| PortError::new("session epoch not returned"))
-    }
 }
 
-pub const CONFIG_SESSION_EPOCH: &str = "session_epoch";
 pub const CONFIG_SPACE_STATUS: &str = "space_status";

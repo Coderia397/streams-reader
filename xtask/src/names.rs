@@ -14,6 +14,17 @@ pub const SPACE_URL: &str = "https://ibrahimar397-nolabs-engine.hf.space";
 pub const KOKORO_REPO: &str = "hexgrad/Kokoro-82M";
 pub const MING_REPO: &str = "inclusionAI/Ming-3.0-tts-0.5B";
 
+/// The Supabase project `nolabs`. The access token also reaches other apps' projects (Streams' `pstream`); every
+/// Supabase request in this tool is built from this constant and nothing else.
+pub const SUPABASE_REF: &str = "atxbmgfuxjtcwmoaldqy";
+/// Where people use the app (the one brand constant); the auth site URL and the address in emails.
+pub const SITE_URL: &str = nolabs_core::brand::SITE_URL;
+
+/// The Worker route Supabase calls to send auth emails.
+pub fn send_email_hook_url() -> String {
+    format!("{SITE_URL}/hooks/auth-email")
+}
+
 pub const COMPATIBILITY_DATE: &str = "2026-10-01";
 pub const CRON: &str = "*/30 * * * *";
 /// Lifecycle: rendered Kokoro audio is cheap to re-render, so it expires; Ming audio and voices are kept.

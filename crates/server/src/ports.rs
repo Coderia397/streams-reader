@@ -125,6 +125,10 @@ pub trait Blob {
 pub enum Method {
     Get,
     Post,
+    /// PostgREST updates.
+    Patch,
+    /// PostgREST deletes.
+    Delete,
 }
 
 impl Method {
@@ -132,6 +136,8 @@ impl Method {
         match self {
             Method::Get => "GET",
             Method::Post => "POST",
+            Method::Patch => "PATCH",
+            Method::Delete => "DELETE",
         }
     }
 }

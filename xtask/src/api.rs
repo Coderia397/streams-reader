@@ -1,17 +1,14 @@
-//! Client for the deployed nolabs HTTP API (`crates/core/src/proto/api.rs`), used by `smoke` and `status`.
-//!
-//! The session cookie is handled by hand instead of a cookie store: `__Host-` cookies are `Secure`-only, which a
-//! cookie store would refuse to send to an `http://localhost` base during local testing. Writes carry an `Origin`
-//! header equal to the base URL because the Worker rejects cross-origin writes.
+//! Client for the deployed nolabs HTTP API (`crates/core/src/proto/api.rs`), used by `smoke` and `status`. It
+//! authenticates like the apps: `Authorization: Bearer <Supabase access token>`.
 
 use std::time::Duration;
 
 use anyhow::{Context as _, Result, bail};
 use nolabs_core::proto::ApiError;
-use nolabs_core::proto::api::{API_VERSION, API_VERSION_HEADER, LoginRequest, SESSION_COOKIE};
+use nolabs_core::proto::api::{API_VERSION, API_VERSION_HEADER};
 use reqwest::Method;
 use reqwest::blocking::{Client, RequestBuilder, Response};
-use reqwest::header::{CONTENT_TYPE, COOKIE, ORIGIN, SET_COOKIE};
+use reqwest::header::{AUTHORIZATION, CONTENT_TYPE};
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 
@@ -21,7 +18,7 @@ use crate::secret::{Redactor, Secret};
 pub struct Api {
     http: Client,
     base: String,
-    cookie: Option<Secret>,
+    token: Secret,
     redactor: Redactor,
 }
 
@@ -32,37 +29,14 @@ pub struct Fetched {
 }
 
 impl Api {
-    pub fn new(base: &str) -> Result<Self> {
+    pub fn new(base: &str, access_token: &Secret) -> Result<Self> {
         let base = normalise_base(base)?;
-        Ok(Self { http: http_client(Duration::from_secs(60))?, base, cookie: None, redactor: Redactor::new() })
+        let redactor = Redactor::new().with(access_token);
+        Ok(Self { http: http_client(Duration::from_secs(60))?, base, token: access_token.clone(), redactor })
     }
 
     pub fn base(&self) -> &str {
         &self.base
-    }
-
-    /// `POST /api/session`; keeps the session cookie for later calls.
-    pub fn login(&mut self, passphrase: &Secret) -> Result<()> {
-        self.redactor.add(passphrase);
-        let body = LoginRequest { passphrase: passphrase.expose().to_owned() };
-        let resp = self.send(Method::POST, "/api/session", |r| r.json(&body))?;
-        let value = resp
-            .headers()
-            .get_all(SET_COOKIE)
-            .iter()
-            .filter_map(|v| v.to_str().ok())
-            .find_map(|v| cookie_value(v, SESSION_COOKIE))
-            .with_context(|| format!("login succeeded but no {SESSION_COOKIE} cookie was set"))?;
-        let cookie = Secret::new(value);
-        self.redactor.add(&cookie);
-        self.cookie = Some(cookie);
-        Ok(())
-    }
-
-    pub fn logout(&mut self) -> Result<()> {
-        self.send(Method::DELETE, "/api/session", |r| r)?;
-        self.cookie = None;
-        Ok(())
     }
 
     pub fn get_json<T: DeserializeOwned>(&self, path: &str) -> Result<T> {
@@ -82,7 +56,16 @@ impl Api {
     }
 
     pub fn get_bytes(&self, path: &str) -> Result<Fetched> {
-        let resp = self.send(Method::GET, path, |r| r)?;
+        self.fetch_bytes(path, true)
+    }
+
+    /// GET without the `Authorization` header, as a media element fetches (the path carries `?t=`).
+    pub fn get_bytes_unauthenticated(&self, path: &str) -> Result<Fetched> {
+        self.fetch_bytes(path, false)
+    }
+
+    fn fetch_bytes(&self, path: &str, with_token: bool) -> Result<Fetched> {
+        let resp = self.send_as(Method::GET, path, with_token, |r| r)?;
         let content_type =
             resp.headers().get(CONTENT_TYPE).and_then(|v| v.to_str().ok()).unwrap_or_default().to_owned();
         let bytes = resp.bytes().with_context(|| format!("GET {path}: reading body"))?.to_vec();
@@ -95,13 +78,20 @@ impl Api {
         path: &str,
         build: impl FnOnce(RequestBuilder) -> RequestBuilder,
     ) -> Result<Response> {
+        self.send_as(method, path, true, build)
+    }
+
+    fn send_as(
+        &self,
+        method: Method,
+        path: &str,
+        with_token: bool,
+        build: impl FnOnce(RequestBuilder) -> RequestBuilder,
+    ) -> Result<Response> {
         let mut req = self.http.request(method.clone(), format!("{}{path}", self.base));
         req = req.header(API_VERSION_HEADER, API_VERSION.to_string());
-        if method != Method::GET && method != Method::HEAD {
-            req = req.header(ORIGIN, &self.base);
-        }
-        if let Some(c) = &self.cookie {
-            req = req.header(COOKIE, format!("{SESSION_COOKIE}={}", c.expose()));
+        if with_token {
+            req = req.header(AUTHORIZATION, format!("Bearer {}", self.token.expose()));
         }
         let resp = build(req)
             .send()
@@ -141,13 +131,6 @@ pub fn normalise_base(base: &str) -> Result<String> {
     Ok(trimmed.to_owned())
 }
 
-/// The value of cookie `name` in one `Set-Cookie` header, ignoring empty values (a cleared cookie).
-pub fn cookie_value(set_cookie: &str, name: &str) -> Option<String> {
-    let first = set_cookie.split(';').next()?.trim();
-    let (k, v) = first.split_once('=')?;
-    (k.trim() == name && !v.trim().is_empty()).then(|| v.trim().to_owned())
-}
-
 #[cfg(test)]
 #[allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
 mod tests {
@@ -165,18 +148,10 @@ mod tests {
     }
 
     #[test]
-    fn session_cookie_extraction() {
-        let h = "__Host-nolabs_s=abc.def; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=15552000";
-        assert_eq!(cookie_value(h, SESSION_COOKIE).as_deref(), Some("abc.def"));
-        assert_eq!(cookie_value("other=1; Path=/", SESSION_COOKIE), None);
-        assert_eq!(cookie_value("__Host-nolabs_s=; Max-Age=0", SESSION_COOKIE), None);
-        assert_eq!(cookie_value("garbage", SESSION_COOKIE), None);
-    }
-
-    #[test]
     fn rejects_bad_base_before_any_request() {
-        assert!(Api::new("http://evil.example").is_err());
-        let api = Api::new("https://a.b/").unwrap();
+        let t = Secret::new("token");
+        assert!(Api::new("http://evil.example", &t).is_err());
+        let api = Api::new("https://a.b/", &t).unwrap();
         assert_eq!(api.base(), "https://a.b");
     }
 }

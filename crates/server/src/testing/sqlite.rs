@@ -116,17 +116,37 @@ mod tests {
     #[test]
     fn batches_are_atomic() {
         let db = SqliteDb::migrated();
-        let ok = Stmt::new("INSERT INTO auth_failures (at_ms) VALUES (?)", vec![SqlValue::Int(1)]);
+        let ok = |n: i64| {
+            Stmt::new(
+                "INSERT INTO config (key, value, updated_at_ms) VALUES (?, 'v', 0)",
+                vec![SqlValue::Text(format!("k{n}"))],
+            )
+        };
         let bad = Stmt::new("INSERT INTO nowhere VALUES (1)", vec![]);
-        assert!(futures::executor::block_on(db.batch(&[ok.clone(), bad])).is_err());
-        assert_eq!(db.scalar("SELECT count(*) FROM auth_failures"), Value::from(0));
-        let res = futures::executor::block_on(db.batch(&[ok.clone(), ok])).unwrap();
+        assert!(futures::executor::block_on(db.batch(&[ok(1), bad])).is_err());
+        assert_eq!(db.scalar("SELECT count(*) FROM config"), Value::from(0));
+        let res = futures::executor::block_on(db.batch(&[ok(1), ok(2)])).unwrap();
         assert_eq!(res.iter().map(|r| r.changes).collect::<Vec<_>>(), vec![1, 1]);
     }
 
+    /// 0002 moved documents and the passphrase login out of D1 and added the per-user columns.
     #[test]
-    fn migration_seeds_the_session_epoch() {
+    fn migrations_leave_the_accounts_schema() {
         let db = SqliteDb::migrated();
-        assert_eq!(db.scalar("SELECT value FROM config WHERE key = 'session_epoch'"), Value::from("1"));
+        let tables = db.scalar(
+            "SELECT group_concat(name, ',') FROM (SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name)",
+        );
+        assert_eq!(tables, Value::from("config,gpu_ledger,jobs,owner_cache,renders,voices"));
+        assert_eq!(db.scalar("SELECT count(*) FROM config"), Value::from(0), "no session epoch any more");
+        for (table, column) in [
+            ("voices", "user_id"),
+            ("voices", "synced_state"),
+            ("jobs", "user_id"),
+            ("jobs", "gpu_share_s"),
+            ("gpu_ledger", "user_id"),
+        ] {
+            let n = db.scalar(&format!("SELECT count(*) FROM pragma_table_info('{table}') WHERE name = '{column}'"));
+            assert_eq!(n, Value::from(1), "{table}.{column}");
+        }
     }
 }

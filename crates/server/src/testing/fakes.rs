@@ -5,11 +5,168 @@ use std::collections::{BTreeMap, HashMap};
 use std::rc::Rc;
 
 use async_trait::async_trait;
+use nolabs_core::proto::api::VoiceState;
+use nolabs_core::proto::{ApiError, ErrorCode};
 
+use crate::accounts::{Accounts, DocumentAccess, NewVoice};
 use crate::ports::{
     Blob, ByteStream, Clock, Http, HttpError, HttpRequest, HttpResponse, JobMessage, Method, PortError, Queue, Rng,
     StreamResponse,
 };
+
+// ------------------------------------------------------------------------------------------------------------- accounts
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FakeDocument {
+    pub owner: String,
+    pub body_bytes: u64,
+    pub ready: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FakeVoice {
+    pub owner: String,
+    pub name: String,
+    pub state: VoiceState,
+    pub ref_sha256: Option<String>,
+}
+
+#[derive(Default)]
+pub struct AccountsState {
+    pub documents: BTreeMap<String, FakeDocument>,
+    pub voices: BTreeMap<String, FakeVoice>,
+    pub shares: HashMap<String, u32>,
+    pub calls: usize,
+}
+
+/// Supabase as RLS shows it to each caller: a row is visible only to its owner. Tokens are `token:<user id>`.
+#[derive(Clone, Default)]
+pub struct FakeAccounts {
+    pub state: Rc<RefCell<AccountsState>>,
+}
+
+impl FakeAccounts {
+    pub fn token_for(user_id: &str) -> String {
+        format!("token:{user_id}")
+    }
+
+    fn user(&self, token: &str) -> Result<String, ApiError> {
+        self.state.borrow_mut().calls += 1;
+        token
+            .strip_prefix("token:")
+            .map(str::to_owned)
+            .ok_or_else(|| ApiError::new(ErrorCode::Unauthorized, "bad token"))
+    }
+
+    pub fn add_document(&self, owner: &str, id: &str, body_bytes: u64, ready: bool) {
+        let doc = FakeDocument { owner: owner.into(), body_bytes, ready };
+        self.state.borrow_mut().documents.insert(id.into(), doc);
+    }
+
+    pub fn remove_document(&self, id: &str) {
+        self.state.borrow_mut().documents.remove(id);
+    }
+
+    pub fn add_voice(&self, owner: &str, id: &str) {
+        let v = FakeVoice {
+            owner: owner.into(),
+            name: "Me".into(),
+            state: VoiceState::AwaitingReference,
+            ref_sha256: None,
+        };
+        self.state.borrow_mut().voices.insert(id.into(), v);
+    }
+
+    pub fn voice(&self, id: &str) -> Option<FakeVoice> {
+        self.state.borrow().voices.get(id).cloned()
+    }
+
+    pub fn set_share(&self, user: &str, seconds: u32) {
+        self.state.borrow_mut().shares.insert(user.into(), seconds);
+    }
+
+    /// PostgREST calls made so far.
+    pub fn calls(&self) -> usize {
+        self.state.borrow().calls
+    }
+}
+
+#[async_trait(?Send)]
+impl Accounts for FakeAccounts {
+    async fn document(&self, token: &str, id: &str) -> Result<Option<DocumentAccess>, ApiError> {
+        let user = self.user(token)?;
+        let state = self.state.borrow();
+        Ok(state
+            .documents
+            .get(id)
+            .filter(|d| d.owner == user)
+            .map(|d| DocumentAccess { ready: d.ready, body_bytes: d.body_bytes }))
+    }
+
+    async fn set_document_ready(&self, token: &str, id: &str) -> Result<bool, ApiError> {
+        let user = self.user(token)?;
+        let mut state = self.state.borrow_mut();
+        Ok(state.documents.get_mut(id).filter(|d| d.owner == user).map(|d| d.ready = true).is_some())
+    }
+
+    async fn delete_document(&self, token: &str, id: &str) -> Result<bool, ApiError> {
+        let user = self.user(token)?;
+        let mut state = self.state.borrow_mut();
+        let mine = state.documents.get(id).is_some_and(|d| d.owner == user);
+        Ok(mine && state.documents.remove(id).is_some())
+    }
+
+    async fn voice_exists(&self, token: &str, id: &str) -> Result<bool, ApiError> {
+        let user = self.user(token)?;
+        Ok(self.state.borrow().voices.get(id).is_some_and(|v| v.owner == user))
+    }
+
+    async fn insert_voice(&self, token: &str, voice: &NewVoice<'_>) -> Result<(), ApiError> {
+        let user = self.user(token)?;
+        let row =
+            FakeVoice { owner: user, name: voice.name.into(), state: VoiceState::AwaitingReference, ref_sha256: None };
+        let mut state = self.state.borrow_mut();
+        if state.voices.contains_key(voice.id) {
+            return Err(ApiError::new(ErrorCode::Conflict, "duplicate key"));
+        }
+        state.voices.insert(voice.id.into(), row);
+        Ok(())
+    }
+
+    async fn set_voice_state(
+        &self,
+        token: &str,
+        id: &str,
+        voice_state: VoiceState,
+        ref_sha256: Option<&str>,
+    ) -> Result<bool, ApiError> {
+        let user = self.user(token)?;
+        let mut state = self.state.borrow_mut();
+        Ok(state
+            .voices
+            .get_mut(id)
+            .filter(|v| v.owner == user)
+            .map(|v| {
+                v.state = voice_state;
+                if let Some(sha) = ref_sha256 {
+                    v.ref_sha256 = Some(sha.into());
+                }
+            })
+            .is_some())
+    }
+
+    async fn delete_voice(&self, token: &str, id: &str) -> Result<bool, ApiError> {
+        let user = self.user(token)?;
+        let mut state = self.state.borrow_mut();
+        let mine = state.voices.get(id).is_some_and(|v| v.owner == user);
+        Ok(mine && state.voices.remove(id).is_some())
+    }
+
+    async fn gpu_share(&self, token: &str, daily_cap_s: u32) -> Result<u32, ApiError> {
+        let user = self.user(token)?;
+        Ok(self.state.borrow().shares.get(&user).copied().unwrap_or(daily_cap_s).min(daily_cap_s))
+    }
+}
 
 // ----------------------------------------------------------------------------------------------------------------- blob
 
@@ -212,6 +369,7 @@ pub fn fake_space(
                     }
                 }
             }
+            Method::Patch | Method::Delete => Ok(response(405, &[], "")),
             Method::Get => {
                 let id = path.rsplit('/').next().unwrap_or_default();
                 let sse = match pending.borrow_mut().remove(id) {

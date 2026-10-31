@@ -4,26 +4,17 @@
 
 pub const MAX_IN_PARAMS: usize = 90;
 
-// ---------------------------------------------------------------------------------------------------------- documents
-
-pub const DOC_INSERT: &str = "INSERT INTO documents (id, meta_json, body_bytes, ready, created_at_ms, updated_at_ms) \
-     VALUES (?, ?, ?, 0, ?, ?)";
-pub const DOC_GET: &str = "SELECT * FROM documents WHERE id = ?";
-/// Most recently touched (edited or read) first.
-pub const DOC_LIST: &str =
-    "SELECT * FROM documents ORDER BY max(updated_at_ms, coalesce(progress_at_ms, 0)) DESC, id LIMIT 2000";
-pub const DOC_SET_READY: &str = "UPDATE documents SET ready = 1, updated_at_ms = ? WHERE id = ?";
-pub const DOC_DELETE: &str = "DELETE FROM documents WHERE id = ?";
-/// Last writer by client timestamp wins, so a late beacon from another device never moves progress backwards in time.
-pub const DOC_SET_PROGRESS: &str = "UPDATE documents SET progress_offset = ?, progress_at_ms = ? \
-     WHERE id = ? AND (progress_at_ms IS NULL OR progress_at_ms <= ?)";
-
 // ------------------------------------------------------------------------------------------------------------- voices
 
-pub const VOICE_INSERT: &str = "INSERT INTO voices (id, name, kind, state, transcript, reference_bytes, raw_uploaded, \
-     created_at_ms, updated_at_ms) VALUES (?, ?, 'clone', 'awaiting_reference', ?, ?, 0, ?, ?)";
-pub const VOICE_GET: &str = "SELECT * FROM voices WHERE id = ?";
-pub const VOICE_LIST: &str = "SELECT * FROM voices ORDER BY created_at_ms, id";
+pub const VOICE_INSERT: &str = "INSERT INTO voices (id, user_id, name, kind, state, transcript, reference_bytes, \
+     raw_uploaded, synced_state, created_at_ms, updated_at_ms) \
+     VALUES (?, ?, ?, 'clone', 'awaiting_reference', ?, ?, 0, 'awaiting_reference', ?, ?)";
+/// A voice of one user: another user's id reads as missing.
+pub const VOICE_GET: &str = "SELECT * FROM voices WHERE id = ? AND user_id = ?";
+/// Any user's voice, for the queue consumer and the cron (no caller to check).
+pub const VOICE_GET_ANY: &str = "SELECT * FROM voices WHERE id = ?";
+pub const VOICE_LIST: &str = "SELECT * FROM voices WHERE user_id = ? ORDER BY created_at_ms, id";
+pub const VOICE_SET_SYNCED: &str = "UPDATE voices SET synced_state = ? WHERE id = ?";
 pub const VOICE_SET_RAW_UPLOADED: &str = "UPDATE voices SET raw_uploaded = 1, state = 'awaiting_reference', \
      error = NULL, updated_at_ms = ? WHERE id = ? AND state <> 'preparing'";
 pub const VOICE_SET_PREPARING: &str = "UPDATE voices SET state = 'preparing', error = NULL, updated_at_ms = ? \
@@ -79,8 +70,8 @@ pub const RENDER_RELEASE_ORPHANS: &str = "UPDATE renders SET state = 'failed', e
 // --------------------------------------------------------------------------------------------------------------- jobs
 
 pub const JOB_INSERT: &str = "INSERT INTO jobs (id, kind, engine, voice, state, request_json, chars, requested_s, \
-     attempts, retry_at_ms, error_code, error_message, created_at_ms, updated_at_ms) \
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?)";
+     attempts, retry_at_ms, error_code, error_message, user_id, gpu_share_s, created_at_ms, updated_at_ms) \
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?)";
 pub const JOB_GET: &str = "SELECT * FROM jobs WHERE id = ?";
 /// Compare-and-set on the state, so two consumers (a duplicate message) can never both start one job.
 pub const JOB_TRANSITION: &str = "UPDATE jobs SET state = ?, attempts = ?, lease_until_ms = ?, retry_at_ms = ?, \
@@ -98,35 +89,34 @@ pub const JOB_RECENT_FAILED_GPU: &str = "SELECT * FROM jobs WHERE kind = 'render
      AND state = 'failed' AND updated_at_ms > ? ORDER BY created_at_ms LIMIT 20";
 /// GPU work admitted but not started yet (not in the ledger).
 pub const JOB_PENDING_GPU: &str =
-    "SELECT id, requested_s FROM jobs WHERE kind = 'render' AND engine = 'ming' AND state = 'queued'";
+    "SELECT id, requested_s, user_id FROM jobs WHERE kind = 'render' AND engine = 'ming' AND state = 'queued'";
 pub const JOB_DELETE_BY_VOICE: &str = "DELETE FROM jobs WHERE voice = ?";
 pub const JOB_PRUNE_FINISHED: &str = "DELETE FROM jobs WHERE state IN ('ready', 'failed') AND updated_at_ms < ?";
 
 // ------------------------------------------------------------------------------------------------------------- ledger
 
-pub const LEDGER_SINCE: &str = "SELECT at_ms, requested_s, used_s FROM gpu_ledger WHERE at_ms > ? ORDER BY at_ms";
-pub const LEDGER_INSERT: &str = "INSERT INTO gpu_ledger (job_id, attempt, at_ms, requested_s, used_s) \
-     VALUES (?, ?, ?, ?, 0) ON CONFLICT (job_id, attempt) DO NOTHING";
+pub const LEDGER_SINCE: &str =
+    "SELECT at_ms, requested_s, used_s, user_id FROM gpu_ledger WHERE at_ms > ? ORDER BY at_ms";
+pub const LEDGER_INSERT: &str = "INSERT INTO gpu_ledger (job_id, attempt, at_ms, requested_s, used_s, user_id) \
+     VALUES (?, ?, ?, ?, 0, ?) ON CONFLICT (job_id, attempt) DO NOTHING";
 pub const LEDGER_SET_USED: &str = "UPDATE gpu_ledger SET used_s = ? WHERE job_id = ? AND attempt = ?";
 pub const LEDGER_DELETE: &str = "DELETE FROM gpu_ledger WHERE job_id = ? AND attempt = ?";
 pub const LEDGER_PRUNE: &str = "DELETE FROM gpu_ledger WHERE at_ms < ?";
 
-// --------------------------------------------------------------------------------------------------------------- auth
+// -------------------------------------------------------------------------------------------------------- owner cache
 
-pub const AUTH_FAILURES_SINCE: &str = "SELECT count(*) AS n, min(at_ms) AS first_ms FROM auth_failures WHERE at_ms > ?";
-pub const AUTH_FAILURE_INSERT: &str = "INSERT INTO auth_failures (at_ms) VALUES (?)";
-pub const AUTH_FAILURES_PRUNE: &str = "DELETE FROM auth_failures WHERE at_ms < ?";
-pub const AUTH_FAILURES_CLEAR: &str = "DELETE FROM auth_failures";
+pub const OWNER_CACHE_HIT: &str =
+    "SELECT 1 AS hit FROM owner_cache WHERE kind = ? AND object_id = ? AND user_id = ? AND expires_at_ms > ?";
+pub const OWNER_CACHE_PUT: &str = "INSERT INTO owner_cache (kind, object_id, user_id, expires_at_ms) VALUES (?, ?, ?, ?) \
+     ON CONFLICT (kind, object_id, user_id) DO UPDATE SET expires_at_ms = excluded.expires_at_ms";
+pub const OWNER_CACHE_FORGET: &str = "DELETE FROM owner_cache WHERE kind = ? AND object_id = ?";
+pub const OWNER_CACHE_PRUNE: &str = "DELETE FROM owner_cache WHERE expires_at_ms < ?";
 
 // ------------------------------------------------------------------------------------------------------------- config
 
 pub const CONFIG_GET: &str = "SELECT value FROM config WHERE key = ?";
 pub const CONFIG_PUT: &str = "INSERT INTO config (key, value, updated_at_ms) VALUES (?, ?, ?) \
      ON CONFLICT (key) DO UPDATE SET value = excluded.value, updated_at_ms = excluded.updated_at_ms";
-pub const CONFIG_BUMP_EPOCH: &str = "INSERT INTO config (key, value, updated_at_ms) VALUES ('session_epoch', '2', ?) \
-     ON CONFLICT (key) DO UPDATE SET value = CAST(CAST(value AS INTEGER) + 1 AS TEXT), \
-     updated_at_ms = excluded.updated_at_ms RETURNING value";
-
 fn placeholders(n: usize) -> String {
     vec!["?"; n.max(1)].join(", ")
 }

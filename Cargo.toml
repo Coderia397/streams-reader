@@ -1,8 +1,8 @@
 [workspace]
 resolver = "3"
-members = ["crates/core", "crates/import", "crates/server", "crates/worker", "crates/player", "crates/web", "xtask"]
+members = ["crates/core", "crates/import", "crates/mail", "crates/server", "crates/worker", "crates/player", "crates/web", "xtask"]
 # The worker and web crates only build for wasm32; `cargo test` / `cargo clippy` at the root cover the native crates.
-default-members = ["crates/core", "crates/import", "crates/server", "xtask"]
+default-members = ["crates/core", "crates/import", "crates/mail", "crates/server", "xtask"]
 
 [workspace.package]
 version = "0.1.0"
@@ -14,6 +14,7 @@ repository = "https://github.com/Coderia397/nolabs-reader"
 [workspace.dependencies]
 nolabs-core = { path = "crates/core" }
 nolabs-import = { path = "crates/import" }
+nolabs-mail = { path = "crates/mail" }
 nolabs-server = { path = "crates/server" }
 nolabs-player = { path = "crates/player" }
 serde = { version = "1", features = ["derive"] }

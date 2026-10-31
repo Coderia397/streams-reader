@@ -1,5 +1,6 @@
 //! The nolabs Cloudflare Worker: the HTTP API, the `nolabs-render` queue consumer and the 30-minute cron, all thin
-//! adapters over `nolabs-server`, plus the embedded web app. No CORS: the app is served from this same origin.
+//! adapters over `nolabs-server`, plus the embedded web app and Supabase's auth email hook. CORS is limited to the
+//! native apps' origins (the web app is same-origin).
 
 mod adapters;
 mod assets;
@@ -13,8 +14,11 @@ use worker::{Context, Env, MessageBatch, Request, Response, ScheduleContext, Sch
 #[event(fetch)]
 pub async fn fetch(req: Request, env: Env, _ctx: Context) -> worker::Result<Response> {
     let path = req.path();
+    let csp = respond::csp(env.var("SUPABASE_URL").ok().map(|v| v.to_string()).as_deref());
     let resp = if path == "/api" || path.starts_with("/api/") {
         router::api(req, &env).await
+    } else if path == "/hooks/auth-email" {
+        router::auth_email_hook(req, &env).await
     } else {
         match req.method() {
             worker::Method::Get | worker::Method::Head => {
@@ -24,7 +28,7 @@ pub async fn fetch(req: Request, env: Env, _ctx: Context) -> worker::Result<Resp
             _ => router::method_not_allowed(),
         }
     };
-    Ok(respond::secure(resp))
+    Ok(respond::secure(resp, &csp))
 }
 
 /// Consumer settings expected on the queue: `max_batch_size = 1`, `max_retries = 0` (retries are decided by

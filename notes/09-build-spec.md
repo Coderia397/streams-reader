@@ -22,8 +22,15 @@ Reference for every implementation agent. Each component owns its own directory;
 | `MING_REV` | var | `inclusionAI/Ming-3.0-tts-0.5B@<commit>` |
 | `APP_VERSION` | var | git short sha |
 | `HF_TOKEN` | secret | token used for `Authorization: Bearer` to the Space and the HF runtime API |
-| `SESSION_KEY` | secret | 64 hex chars (32 random bytes) |
-| `PASSPHRASE_HASH` | secret | hex HMAC-SHA256(key = SESSION_KEY bytes, message = passphrase UTF-8) |
+| `SUPABASE_URL` | var | `https://atxbmgfuxjtcwmoaldqy.supabase.co` |
+| `SUPABASE_ANON_KEY` | var | the project's publishable key (public) |
+| `SITE_URL` | var | `https://listen.streams.watch` (`nolabs_core::brand::SITE_URL`) |
+| `AUDIO_URL_KEY` | secret | 64 hex chars (32 random bytes), signs `?t=` audio tokens; generated into `~/.config/nolabs/app.env` |
+| `SEND_EMAIL_HOOK_SECRET` | secret | `v1,whsec_…` (Standard Webhooks), from `~/.config/nolabs/supabase.env` |
+| `BREVO_API_KEY` | secret | from `~/.config/streams/brevo.env` |
+| `SUPABASE_JWT_SECRET` | secret, optional | legacy HS256 secret, only if the project signs sessions with it (it does not: ES256) |
+
+Superseded 2026-10-30 by note 15: `SESSION_KEY` and `PASSPHRASE_HASH` (passphrase login removed; `deploy` deletes them).
 
 ### Audio
 - Container/codec: WebM Opus (`audio/webm; codecs="opus"`), mono. Kokoro 24 kHz source, 32 kbps, profile id 1. Ming 44.1 kHz source resampled to 48 kHz (soxr), 56 kbps, profile id 2. Both: `-application audio -vbr on -frame_duration 20`.

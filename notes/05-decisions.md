@@ -4,7 +4,12 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
-### D18. Mark v2: the pixel book (designer B, with the judges' fixes)
+### D25. The repository is public
+- Decision: `Coderia397/streams-reader` made public on 2026-10-30 (the landing page promises open source; public repos get unlimited free CI minutes incl. macOS). Before publishing, a scan of every commit on every branch for HF/Cloudflare/GitHub/Supabase/Brevo/Resend/Kaggle tokens, service-role JWTs, passphrases, session keys, R2 secrets and private keys found nothing; the owner's email is not in tracked files. README added; topics set.
+- Decided by: owner ("you can make it public"; reaffirmed with permission to use the GitHub admin token for account work).
+- Correction 2026-10-31: the first attempt to record this decision (commit 0df1908) did not write it, because its insertion anchor only existed on the accounts branch; recorded here instead.
+
+### D26. Mark v2: the pixel book (designer B, with the judges' fixes)
 - Correction 2026-10-30 (critic round, applied by the brand fixer): "at 32 px and below the bare blue mark" and "inner arc on rows 5-11" are superseded. The bare mark is now only for web favicons; every desktop/app icon is the tile at every size (16 and 32 px carry a 10x10 hand reduction, `brand/src/mark-small.txt`; 24 px the 16 grid on 1 px cells), matching Streams' desktop set. Inner arc is rows 4-11 (concentric with the outer arc, centre row 7.5). `cell_for` rounds ties up (64 px: 3 px cells, 192 px: 8). Android adaptive cells shrink to keep the corners inside the 66 dp safe zone (2/4/5/8/11 px). favicon.svg uses blue-400 under prefers-color-scheme: dark. OG faint mark is 288 px at (888, 156). macOS body is a superellipse (n = 5); open: check it in the macOS 26 Dock before shipping the icns. Verified: `brand/build.py` rebuild and `brand/tests` (33 tests) pass.
 - Decision: B's concept (a page stack drawn like the Streams cube's depth band, which bows into a sound arc) became the Streams Reader mark. Scores were A 199, B 206, C 0 (C submitted nothing). Applied fixes:
   - The silhouette closes at the bottom right with the cube's three-step diagonal, so it shares the cube's outline cells.
@@ -19,6 +24,8 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 - Rejected: B's folded corner (read as a Google Docs or file icon), the ember pixel on the tile (judges: it reads as a stray dot and breaks white-on-blue), B's 2.83 dp Android cells and the blur filter in the foreground layer, and A's book-and-equaliser (wide, flat, no cube silhouette).
 - Old mark and icons: `brand/archive/v1/`.
 - Decided by: assistant on the owner's delegation (D17); owner may veto.
+### D18–D24. Accounts phase 1 decisions
+- Recorded in [17-accounts-phase-1.md](17-accounts-phase-1.md) (Supabase schema and RLS, invite-only sign-up for every provider, email OTP only (no passwords), identity linking rules, per-user GPU share, JWT verification in the Worker, email hook through Brevo). Renumbered from the agent's D13–D19 when merged.
 
 ### D17. Brand icon direction v2: pixel-grid sibling mark + voxel mascot illustrations
 - Owner feedback on brand v1 (contact sheet): "a bit unprofessional … kinda like it, not fully". Assistant's diagnosis: the cursor-waveform mark reads as an X/bone and vanishes on a dark tile; spots look clip-art (heavy navy fills, uneven strokes, circle plates).
@@ -97,5 +104,7 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 - Reason: proven on the same accounts; the user maintains these patterns already.
 - Decided by: assistant.
 
+D10–D12 are in note 14; D13–D19 (accounts phase 1: no service key in the Worker, atomic invite redemption, no passwords, per-user GPU share, audio URL tokens, brand constant, Bearer + CORS) are in note 15.
+
 ## Open items
-- Subdomain name: waiting on the user.
+- Subdomain name: decided as `listen.streams.watch`, product name "Streams Reader" (owner, 2026-10-30).

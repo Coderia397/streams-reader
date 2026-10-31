@@ -8,6 +8,8 @@ use crate::ports::{PortError, Stmt};
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VoiceRow {
     pub id: String,
+    /// The owner (Supabase user id).
+    pub user_id: String,
     pub name: String,
     pub kind: VoiceKind,
     pub state: VoiceState,
@@ -19,6 +21,8 @@ pub struct VoiceRow {
     pub ref_sha256: Option<String>,
     pub ref_duration_ms: Option<u32>,
     pub error: Option<String>,
+    /// The state last mirrored to the owner's Supabase row.
+    pub synced_state: Option<VoiceState>,
     pub created_at_ms: i64,
     pub updated_at_ms: i64,
 }
@@ -27,6 +31,7 @@ impl VoiceRow {
     fn from_row(r: &Row) -> Result<Self, PortError> {
         Ok(VoiceRow {
             id: row::str(r, "id")?,
+            user_id: row::str(r, "user_id")?,
             name: row::str(r, "name")?,
             kind: parse_enum(&row::str(r, "kind")?)?,
             state: parse_enum(&row::str(r, "state")?)?,
@@ -38,6 +43,7 @@ impl VoiceRow {
             ref_sha256: row::opt_str(r, "ref_sha256")?,
             ref_duration_ms: row::opt_u32(r, "ref_duration_ms")?,
             error: row::opt_str(r, "error")?,
+            synced_state: row::opt_str(r, "synced_state")?.map(|s| parse_enum(&s)).transpose()?,
             created_at_ms: row::i64(r, "created_at_ms")?,
             updated_at_ms: row::i64(r, "updated_at_ms")?,
         })
@@ -48,6 +54,7 @@ impl Repo<'_> {
     pub async fn insert_voice(
         &self,
         id: &str,
+        user_id: &str,
         name: &str,
         transcript: &str,
         reference_bytes: u64,
@@ -55,18 +62,37 @@ impl Repo<'_> {
     ) -> Result<(), PortError> {
         self.run(
             sql::VOICE_INSERT,
-            vec![id.into(), name.into(), transcript.into(), reference_bytes.into(), now_ms.into(), now_ms.into()],
+            vec![
+                id.into(),
+                user_id.into(),
+                name.into(),
+                transcript.into(),
+                reference_bytes.into(),
+                now_ms.into(),
+                now_ms.into(),
+            ],
         )
         .await?;
         Ok(())
     }
 
-    pub async fn get_voice(&self, id: &str) -> Result<Option<VoiceRow>, PortError> {
-        self.all(sql::VOICE_GET, vec![id.into()]).await?.first().map(VoiceRow::from_row).transpose()
+    /// The voice if it belongs to `user_id`.
+    pub async fn get_voice(&self, id: &str, user_id: &str) -> Result<Option<VoiceRow>, PortError> {
+        self.all(sql::VOICE_GET, vec![id.into(), user_id.into()]).await?.first().map(VoiceRow::from_row).transpose()
     }
 
-    pub async fn list_voices(&self) -> Result<Vec<VoiceRow>, PortError> {
-        self.all(sql::VOICE_LIST, vec![]).await?.iter().map(VoiceRow::from_row).collect()
+    /// The voice whoever owns it (queue consumer and cron).
+    pub async fn get_voice_any(&self, id: &str) -> Result<Option<VoiceRow>, PortError> {
+        self.all(sql::VOICE_GET_ANY, vec![id.into()]).await?.first().map(VoiceRow::from_row).transpose()
+    }
+
+    pub async fn list_voices(&self, user_id: &str) -> Result<Vec<VoiceRow>, PortError> {
+        self.all(sql::VOICE_LIST, vec![user_id.into()]).await?.iter().map(VoiceRow::from_row).collect()
+    }
+
+    pub async fn set_voice_synced(&self, id: &str, state: VoiceState) -> Result<(), PortError> {
+        self.run(sql::VOICE_SET_SYNCED, vec![super::enum_text(&state).into(), id.into()]).await?;
+        Ok(())
     }
 
     /// Returns false when the voice is missing or being prepared.

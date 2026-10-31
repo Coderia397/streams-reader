@@ -1,7 +1,6 @@
 //! The D1 repository: typed reads and writes over [`Db`]. All SQL text lives in [`sql`]; this module and its children
 //! only bind parameters and decode rows. The tests run it on SQLite against `migrations/*.sql`.
 
-mod documents;
 mod jobs;
 mod misc;
 mod renders;
@@ -9,9 +8,8 @@ mod row;
 pub mod sql;
 mod voices;
 
-pub use documents::DocumentRow;
 pub use jobs::{JobKind, JobRow, JobUpdate, NewJob};
-pub use misc::{CONFIG_SESSION_EPOCH, CONFIG_SPACE_STATUS};
+pub use misc::{CONFIG_SPACE_STATUS, LedgerUse, Owned};
 pub use renders::{NewClaim, RenderRow, seconds_until};
 pub use voices::VoiceRow;
 

@@ -16,7 +16,7 @@ use nolabs_core::proto::{ApiError, ErrorCode};
 use crate::app::App;
 use crate::ports::{JobMessage, Stmt};
 use crate::repo::{JobKind, JobRow, JobUpdate, Repo, seconds_until};
-use crate::services::gpu::admit_whole;
+use crate::services::gpu::{admit_whole, job_share};
 use crate::services::render::{budget_error, marker_key};
 
 /// What happened to a job; the Worker logs it and acknowledges the message either way.
@@ -112,7 +112,7 @@ impl App {
         }
         let mut stmts = vec![Repo::renders_for_job_stmt(&job.id, RenderState::Rendering, None, None, now)];
         if job.engine == Engine::Ming && job.kind == JobKind::Render {
-            stmts.push(Repo::ledger_insert_stmt(&job.id, next.attempts, now, requested_s));
+            stmts.push(Repo::ledger_insert_stmt(&job.id, next.attempts, now, requested_s, &job.user_id));
         }
         repo.batch(&stmts).await?;
         Ok(Some(JobRow {
@@ -136,8 +136,8 @@ impl App {
                 return Ok(Outcome::AppliedMarker);
             }
             let chars: Vec<usize> = request.items.iter().map(|i| i.text.chars().count()).collect();
-            let history = self.gpu_history(now, Some(&job.id)).await?;
-            match admit_whole(&self.config.gpu, &history, now, &chars) {
+            let history = self.gpu_history(now, &job.user_id, Some(&job.id)).await?;
+            match admit_whole(&self.config.gpu, &history, job_share(&self.config.gpu, &job), now, &chars) {
                 Ok(request_s) => requested_s = request_s,
                 Err(retry_at_ms) => {
                     self.defer(&job, retry_at_ms, now).await?;

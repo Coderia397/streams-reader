@@ -1,5 +1,10 @@
 //! `deploy`: uploads the Worker built by `cargo xtask build`, sets its secrets, attaches it as the render Queue's
 //! consumer, sets the cron schedule, enables its workers.dev URL and records the result in `deploy/state.toml`.
+//!
+//! Secrets: `HF_TOKEN`, `AUDIO_URL_KEY` (generated once into app.env), `SEND_EMAIL_HOOK_SECRET` (written by
+//! `supabase-auth`), `BREVO_API_KEY` (Streams' Brevo account) and, only if the project file has one,
+//! `SUPABASE_JWT_SECRET`. The Supabase service-role key is never deployed. The secrets of the passphrase era
+//! (`SESSION_KEY`, `PASSPHRASE_HASH`) are deleted.
 
 use std::fs;
 
@@ -18,8 +23,10 @@ use crate::names::{CRON, KOKORO_REPO, MING_REPO, QUEUE, SPACE_REPO, SPACE_URL, W
 use crate::paths::{self, tilde};
 use crate::secret::Secret;
 use crate::state::{self, State};
+use crate::supabase::Management;
 use crate::timefmt;
 use crate::worker_bundle::{Module, Vars, collect_modules, metadata};
+use nolabs_core::brand;
 
 pub struct Options {
     pub kokoro_rev: Option<String>,
@@ -36,7 +43,9 @@ pub fn run(opts: Options) -> Result<()> {
     let modules = collect_modules(&paths::worker_crate().join("build"))?;
     let hf_token = hf::load_token()?;
     let mut secrets = vec![("HF_TOKEN", hf_token.clone())];
-    secrets.extend(load_login_secrets()?);
+    secrets.extend(load_app_secrets()?);
+    let mut mgmt = Management::from_env()?;
+    let publishable = mgmt.keys()?.publishable;
     let cf = Cf::from_deploy_env()?;
     let d1 = require_d1(&cf)?;
     let queue = require_queue(&cf)?;
@@ -50,6 +59,9 @@ pub fn run(opts: Options) -> Result<()> {
         kokoro_rev,
         ming_rev,
         app_version: git_short_sha(),
+        supabase_url: mgmt.project_url.clone(),
+        supabase_anon_key: publishable.expose().to_owned(),
+        site_url: brand::SITE_URL.to_owned(),
     };
 
     upload_script(&cf, &d1.uuid, &vars, &modules)?;
@@ -57,6 +69,9 @@ pub fn run(opts: Options) -> Result<()> {
         put_secret(&cf, name, value)?;
     }
     println!("secrets: {} set", secrets.iter().map(|(k, _)| *k).collect::<Vec<_>>().join(", "));
+    for name in RETIRED_SECRETS {
+        delete_secret(&cf, name)?;
+    }
     ensure_consumer(&cf, &queue)?;
     let _: Value = cf.mutate(
         WORKER,
@@ -91,17 +106,40 @@ pub fn run(opts: Options) -> Result<()> {
     Ok(())
 }
 
-/// The login secrets from app.env (`HF_TOKEN` comes from the Streams HF file).
-fn load_login_secrets() -> Result<Vec<(&'static str, Secret)>> {
-    let app_path = paths::app_env()?;
-    if !app_path.exists() {
-        bail!("{} not found: run `cargo xtask passphrase` first", tilde(&app_path));
+/// Worker secrets of the passphrase login, removed on deploy.
+pub const RETIRED_SECRETS: &[&str] = &["SESSION_KEY", "PASSPHRASE_HASH"];
+
+/// Every secret but `HF_TOKEN` (which comes from the Streams HF file).
+fn load_app_secrets() -> Result<Vec<(&'static str, Secret)>> {
+    let mut out = vec![(crate::secrets_gen::AUDIO_URL_KEY, crate::secrets_gen::audio_url_key()?)];
+    let project_path = paths::supabase_project_env()?;
+    let project = EnvFile::load(&project_path)?;
+    let hook = project.get("SEND_EMAIL_HOOK_SECRET").cloned().with_context(|| {
+        format!(
+            "SEND_EMAIL_HOOK_SECRET is missing from {}: run `cargo xtask supabase-auth` first",
+            tilde(&project_path)
+        )
+    })?;
+    out.push(("SEND_EMAIL_HOOK_SECRET", hook));
+    if let Some(legacy) = project.get("SUPABASE_JWT_SECRET") {
+        out.push(("SUPABASE_JWT_SECRET", legacy.clone()));
     }
-    let app = EnvFile::load(&app_path)?;
-    Ok(vec![
-        ("SESSION_KEY", app.secret("SESSION_KEY")?.clone()),
-        ("PASSPHRASE_HASH", app.secret("PASSPHRASE_HASH")?.clone()),
-    ])
+    let brevo = EnvFile::load(&paths::brevo_env()?)?.secret("BREVO_API_KEY")?.clone();
+    out.push(("BREVO_API_KEY", brevo));
+    Ok(out)
+}
+
+/// Remove a Worker secret; one that is already gone is fine.
+fn delete_secret(cf: &Cf, name: &str) -> Result<()> {
+    let path = cf.acct(&format!("/workers/scripts/{WORKER}/secrets/{name}"));
+    match cf.mutate::<Value>(WORKER, Method::DELETE, &path, Body::Empty) {
+        Ok(_) => {
+            println!("secret {name}: deleted (retired)");
+            Ok(())
+        }
+        Err(e) if e.downcast_ref::<crate::cf::CfError>().is_some_and(|c| c.status == 404) => Ok(()),
+        Err(e) => Err(e.context(format!("deleting retired secret {name}"))),
+    }
 }
 
 /// `repo@sha`: the override if given (a bare sha or a full `repo@sha`), else the model's current `main` head, which
