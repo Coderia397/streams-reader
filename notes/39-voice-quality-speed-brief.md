@@ -16,6 +16,11 @@ Search plan (workflow launched 2026-10-31):
 4. Measure the top light candidates on Kaggle T4 and locally (real-time factor, first-segment latency) and add their clips to the blind listening pack.
 5. Synthesis: a recommended engine plus architecture, with numbers, for the owner to approve after listening.
 
+## 2026-10-31 13:00: owner listening (bake-off clips, plain/untagged settings)
+- The owner judged on the plain (untagged) renders, passage "The lighthouse keeper finished his supper at seven…". Status: verified (owner's ears), informal, not blind.
+- Ranking: 1 Qwen3-TTS (clearly best); 2 Fish (likely); 3-4 Higgs and IndexTTS-2.5 (both good, order unsure); last Chatterbox ("definitely not").
+- Owner direction (guidance): a mixture of models may be best (different models for different jobs), possibly combined with several servers/services. The recommendation must weigh this ranking above the prosody index.
+
 ## Open items
 - Blind listening pack: waits for the bake-off and step 4.
 - Engine choice: waits for the owner's listening.
