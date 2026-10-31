@@ -1,0 +1,300 @@
+# Streams Reader website: Chinese (Simplified). Source: locales/en/site.ftl.
+
+## Brand
+brand-name = Streams Reader
+brand-parent = Streams
+brand-product = Reader
+
+## Navigation
+nav-skip = 跳到正文
+nav-label = 主导航
+nav-home-label = Streams Reader 首页
+nav-how = 使用方式
+nav-voices = 声音
+nav-download = 下载
+nav-help = 帮助
+nav-github = GitHub 上的源代码
+nav-open-app = 打开应用
+
+## Footer
+footer-tagline = 你想读的一切，都读给你听。
+footer-parent = 属于 { $streams } 旗下，一款电影应用。
+footer-product = 产品
+footer-legal = 法律
+footer-privacy = 隐私
+footer-terms = 条款
+footer-credits = 致谢
+footer-project = 项目
+footer-source = 源代码
+footer-security = 报告安全问题
+footer-language = 语言
+footer-credits-line = 声音来自 { $kokoro }（Apache-2.0）和 { $ming }（MIT）。
+footer-copyright = © { $year } Streams。基于 MIT 许可证开源。
+
+## Social card
+og-image-alt = 书中的一句话，正在朗读的词被高亮，来自 Streams Reader。
+
+## Landing page
+home-meta-title = Streams Reader：免费的自然人声朗读应用
+home-meta-description = 粘贴链接或打开一本书，用自然的声音听它朗读，每个词在读到时都会高亮。免费、私密、开源。
+
+hero-eyebrow = 免费 · 私密 · 开源
+hero-title = 你想读的，都可以听。
+hero-lede = 粘贴链接或打开一本书。自然的声音为你朗读，并在读到每个词时将它点亮。
+hero-cta-open = 打开 Streams Reader
+hero-cta-download = 获取应用
+hero-cta-download-macos = 下载 Mac 版
+hero-cta-download-windows = 下载 Windows 版
+hero-cta-download-linux = 下载 Linux 版
+hero-cta-download-android = 获取 Android 版
+hero-note = 现在即可在浏览器中使用。Android、Mac、Windows 和 Linux 应用即将推出。
+
+status-soon = 即将推出
+status-available = 现已可用
+
+demo-play = 播放示例
+demo-pause = 暂停示例
+demo-voice-label = 声音
+demo-speed-label = 播放速度
+demo-caption = 真实的英文示例，由 Kokoro-82M 朗读。选择一个声音，然后点击播放。
+demo-accent-us = 美式
+demo-accent-uk = 英式
+
+how-eyebrow = 使用方式
+how-title = 三步，然后只管听。
+how-1-title = 添加任何内容
+how-1-text = 粘贴链接，打开 PDF 或 EPUB，或放入你自己的笔记。
+how-2-title = 选择声音
+how-2-text = 二十八种自然声音、五种富有表现力的声音，或你自己的声音。
+how-3-title = 点击播放
+how-3-text = 读到哪个词，哪个词就亮起，页面也随之滚动。
+
+voices-eyebrow = 声音
+voices-title = 听起来像真人的声音。
+voices-lede = 两个引擎，都是开放模型，专为长时间收听而选。
+voices-standard-title = 标准
+voices-standard-text = 二十八种清晰自然的美式和英式英语声音，由 Kokoro-82M 生成。
+voices-standard-meta = 不限时长
+voices-expressive-title = 表现力
+voices-expressive-text = 五种更有感情的声音，适合故事和对话，由 Ming-3.0-tts 生成。
+voices-expressive-meta = 每人每天公平分配
+voices-own-title = 你自己的声音
+voices-own-text = 朗读八句短句，就能用你自己的声音听你的书和文章。
+voices-own-meta = 使用表现力声音的额度
+
+features-eyebrow = 为阅读而生
+features-title = 让长时间收听变得轻松的小细节。
+feature-highlight-title = 逐词高亮
+feature-highlight-text = 正在朗读的词会被高亮，眼睛可以跟随，也可以休息。
+feature-speed-title = 任意语速
+feature-speed-text = 从 0.5× 到 3×，细致调节，声音不失真。
+feature-sleep-title = 睡眠定时
+feature-sleep-text = 在 15、30、45 或 60 分钟后停止。
+feature-resume-title = 从上次停下的地方继续
+feature-resume-text = 每个文档都会记住你的位置。
+feature-screen-off-title = 熄屏也能听
+feature-screen-off-text = 手机锁屏或打开其他应用时，继续收听。
+feature-languages-title = 八种语言
+feature-languages-text = 应用支持英语、阿拉伯语、西班牙语、法语、德语、葡萄牙语、印地语和中文。
+
+trust-eyebrow = 我们的承诺
+trust-title = 免费、私密、开放。
+trust-free-title = 真正免费
+trust-free-text = 标准声音不计时长。无需绑卡，没有试用期，没有广告。
+trust-private-title = 隐私为先
+trust-private-text = 你的文档只保存在你的账户中。没有追踪器，也不出售任何数据。
+trust-open-title = 开源
+trust-open-text = 每一行代码都以 MIT 许可证公开。阅读它、fork 它、运行你自己的版本。
+
+platforms-eyebrow = 平台
+platforms-title = 你在哪块屏幕上阅读，它就在哪里。
+platforms-lede = 现在即可在任何现代浏览器中使用。原生应用将增加离线收听和锁屏控制。
+platforms-more = 全部下载
+platform-web = 网页版
+platform-web-meta = Chrome、Edge、Firefox、Safari
+platform-web-note = 无需安装。也可以添加到主屏幕或程序坞。
+platform-web-action = 打开
+platform-android = Android
+platform-android-meta = 手机和平板
+platform-android-note = 原生应用正在开发中。在此之前，可以通过 Chrome 安装网页应用。
+platform-macos = Mac
+platform-macos-meta = Apple 芯片和 Intel
+platform-macos-note = 支持媒体键和离线收听的原生应用正在开发中。
+platform-windows = Windows
+platform-windows-meta = Windows 10 和 11
+platform-windows-note = 支持媒体键和离线收听的原生应用正在开发中。
+platform-linux = Linux
+platform-linux-meta = AppImage 和 .deb
+platform-linux-note = 支持媒体键和离线收听的原生应用正在开发中。
+platform-watch = 关注版本发布
+platform-you = 你的设备
+
+faq-eyebrow = 常见问题
+faq-title = 你可能想知道。
+faq-more = 在帮助中心查看更多
+faq-q-free = 真的免费吗？
+faq-a-free = 是的。标准声音不限时长，也无需绑卡、没有试用期和广告。表现力声音运行在共享的图形硬件上，因此每个人每天都会获得公平的分钟数。
+faq-q-voices = 有哪些声音？
+faq-a-voices = 二十八种美式和英式英语标准声音、五种表现力声音，以及录制后你自己的声音。
+faq-q-own-voice = 能用我自己的声音朗读吗？
+faq-a-own-voice = 可以。在安静的房间里朗读八句短句，Streams Reader 就会用它们生成你的声音。只有你能使用它。
+faq-q-screen-off = 熄屏后还能继续播放吗？
+faq-a-screen-off = 可以，只要把它安装到主屏幕。原生应用还会加入锁屏和耳机控制。
+faq-q-files = 可以导入哪些内容？
+faq-a-files = 通过链接导入网页文章，PDF、EPUB、Markdown 和纯文本文件，以及你粘贴的任何内容。
+faq-q-data = 我的文档保存在哪里？
+faq-a-data = 保存在你的账户中，使用的服务列在我们的{ $privacy }政策里。我们不投放广告、不使用追踪器，也不出售数据。
+faq-q-languages = 支持朗读哪些语言？
+faq-a-languages = 目前声音朗读英语。应用界面支持八种语言，更多朗读语言正在计划中。
+
+link-app = 网页应用
+link-download = 下载页面
+
+cta-title = 你的待读清单，读给你听。
+cta-lede = 在浏览器中打开，点击播放。只需一分钟。
+cta-github = 在 GitHub 上点星
+
+## Download page
+download-eyebrow = 下载
+download-title = 获取 Streams Reader
+download-lede = 现在就在浏览器中收听。Android、Mac、Windows 和 Linux 原生应用正在开发中，并将自动更新。
+download-meta-description = 立即在浏览器中使用 Streams Reader，并了解 Android、Mac、Windows 和 Linux 应用的推出时间。
+download-list-label = 平台
+install-eyebrow = 今天就安装
+install-title = 把网页应用添加到你的设备。
+install-lede = 安装后，它会在独立窗口中打开，并在后台持续播放。
+install-android-title = Android
+install-android-text = 在 Chrome 中打开菜单，选择“添加到主屏幕”，然后点击“安装”。
+install-desktop-title = Windows、Linux 和 ChromeOS
+install-desktop-text = 在 Chrome 或 Edge 中，点击地址栏右侧的安装图标。
+install-apple-title = Mac、iPhone 和 iPad
+install-apple-text = 在 Safari 中点按“共享”，然后在 Mac 上选择“添加到程序坞”，在 iPhone 和 iPad 上选择“添加到主屏幕”。
+apps-eyebrow = 即将到来
+apps-title = 原生应用会带来什么。
+apps-screen = 锁屏、耳机和车载控制。
+apps-offline = 下载内容，离线收听。
+apps-files = 直接在应用中打开文件、分享网页。
+apps-updates = 自动安装的更新。
+
+## Help centre
+help-eyebrow = 帮助
+help-title = 帮助中心
+help-lede = 常见问题的简短解答。没找到你的问题？给我们写信。
+help-meta-description = 关于在 Streams Reader 中添加文档、声音、你自己的声音、账户和播放的解答。
+help-toc-label = 主题
+help-group-start = 入门
+help-group-voices = 声音与收听
+help-group-account = 账户与隐私
+help-group-trouble = 解决问题
+help-q-add = 如何添加要收听的内容？
+help-a-add = 打开{ $app }，选择“添加”，然后粘贴链接、选择文件或粘贴文本。它会出现在你的书库中，随时可以播放。
+help-q-files = 支持哪些文件？
+help-a-files = PDF、EPUB、Markdown、HTML 和纯文本文件，通过链接导入的网页文章，以及粘贴的文本。没有文字层的扫描版 PDF 暂时无法朗读。
+help-q-play = 如何从某一句开始播放？
+help-a-play = 在阅读器中点按那一句，然后选择“从这里播放”。
+help-q-install = 如何安装？
+help-a-install = 把网页应用添加到主屏幕或程序坞。各设备的步骤见{ $download }。
+help-q-change-voice = 如何更换声音？
+help-a-change-voice = 在播放器中点按声音名称，选择另一个。朗读会从当前句子继续。
+help-q-expressive = 为什么表现力声音有限额？
+help-a-expressive = 表现力声音和你自己的声音运行在有每日预算的共享图形硬件上，每个人都能获得公平的一份。标准声音没有限制。
+help-q-clone = 如何制作我自己的声音？
+help-a-clone = 进入“声音”，选择“录制你的声音”，朗读显示的八句话。安静的房间和与麦克风保持稳定的距离，效果最好。
+help-q-speed = 可以调节语速吗？
+help-a-speed = 可以，在播放器中从 0.5× 到 3×。睡眠定时就在旁边。
+help-q-account = 需要账户吗？
+help-a-account = 需要，这样你的书库、声音和进度才能在设备间同步。起步阶段，账户仅限邀请。
+help-q-data = 你们会保存我的哪些信息？
+help-a-data = 你的邮箱地址、你添加的文档、收听进度和设置，以及你制作声音时的录音。详情见我们的{ $privacy }政策。
+help-q-delete = 如何删除我的数据？
+help-a-delete = 在应用中删除任意文档或声音。要删除整个账户，请用注册时的邮箱写信至 { $email }。
+help-q-stops = 屏幕一关，播放就停止。
+help-a-stops = 把网页应用安装到主屏幕，并从那里播放。有些手机为了省电会停止后台音频，请允许 Streams Reader 在后台运行。
+help-q-no-audio = 我点了播放，但没有反应。
+help-a-no-audio = 新文档的第一分钟可能需要几秒钟准备。如果仍然没有声音，请检查网络连接后重试。表现力声音可能需要等待第二天的额度。
+help-q-wrong-text = 文本里多了菜单或广告之类的内容。
+help-a-wrong-text = 有些网页会把文章和其他内容混在一起。请直接粘贴文本，并把链接发给我们，帮助我们改进导入。
+help-contact-title = 还是没解决？
+help-contact-text = 给我们写信，会有真人回复你。
+
+## Legal pages
+legal-eyebrow = 法律
+legal-updated = 最后更新于 2026 年 10 月 30 日。
+
+privacy-title = 隐私
+privacy-lede = Streams Reader 保存什么、为什么保存，以及如何删除。写给人读的说明。
+privacy-meta-description = Streams Reader 保存哪些数据、由谁处理、保存多久，以及如何删除。
+privacy-summary-title = 简而言之
+privacy-summary-1 = 我们只保存应用为你朗读和在设备间同步所需的内容，仅此而已。没有广告，没有追踪器，不出售数据。
+privacy-store-title = 我们保存什么
+privacy-store-1 = 你的账户：你的邮箱地址，用于通过一次性验证码登录。
+privacy-store-2 = 你的书库：你添加的文档、书签、收听进度和设置。
+privacy-store-3 = 音频：由你的文档生成的语音，保存下来以便下次立即播放。
+privacy-store-4 = 你的声音（如果你制作了）：你朗读的录音以及由此生成的声音。只有你能使用它。
+privacy-not-title = 我们不做什么
+privacy-not-1 = 不投放广告，不使用第三方分析，不使用追踪像素，不出售或为营销目的共享你的数据。
+privacy-not-2 = 我们不会用你的文档或录音训练模型。
+privacy-processors-title = 谁来处理
+privacy-processors-1 = Cloudflare 托管网站和应用，并存储文档和音频。Supabase 存储账户和同步数据。Hugging Face 运行生成音频的语音模型。Brevo 发送登录邮件。
+privacy-processors-2 = 它们各自只为向我们提供该项服务而处理数据。
+privacy-keep-title = 保存多久
+privacy-keep-1 = 你的文档、进度和声音会一直保留，直到你删除它们或你的账户。
+privacy-keep-2 = 用标准声音生成的音频会在 90 天后自动删除，之后再次播放时会重新生成。
+privacy-cookies-title = Cookie 与存储
+privacy-cookies-1 = 应用会让你保持登录，并把音频存储在你的设备上，以便无需重新下载即可再次播放。本网站不设置任何 Cookie。
+privacy-rights-title = 你的选择
+privacy-rights-1 = 你可以随时在应用中查看、导出和删除你的文档和声音。
+privacy-rights-2 = 如需删除账户或询问与你的数据有关的任何问题，请写信至 { $email }。我们会在 30 天内回复。
+privacy-changes-title = 变更
+privacy-changes-1 = 如果本政策有变，我们会更新顶部的日期，并在应用中说明重要变更。完整历史记录见 { $github }。
+
+terms-title = 条款
+terms-lede = 使用 Streams Reader 的几条规则，用简单的话说清楚。
+terms-meta-description = Streams Reader 的使用条款：你的内容、你的声音、公平使用和开源许可证。
+terms-use-title = 使用 Streams Reader
+terms-use-1 = Streams Reader 是一项免费的文本收听服务。你需要一个账户，起步阶段账户仅限邀请。
+terms-use-2 = 请合法使用，不要试图破坏、超载或绕过它的限制。
+terms-content-title = 你的内容
+terms-content-1 = 你添加的内容仍归你所有。只添加你有权使用的内容，并仅供个人收听。
+terms-content-2 = 我们存储和处理你的内容，仅为了朗读给你听，详见隐私政策。
+terms-voices-title = 声音
+terms-voices-1 = 只用你自己的录音制作声音，或在说话者明确同意的情况下制作。
+terms-voices-2 = 不得用任何声音进行欺骗、冒充、骚扰或诈骗。以这种方式使用的声音会被我们删除。
+terms-fair-title = 公平使用
+terms-fair-1 = 表现力声音共享每日预算。对于远超公平份额的使用，我们可能会加以限制，以确保每个人都能使用。
+terms-open-title = 开源
+terms-open-1 = 代码以 MIT 许可证发布在 { $github } 上。语音模型保留各自的许可证，列在致谢页面中。
+terms-warranty-title = 不作担保
+terms-warranty-1 = 本服务按现状提供，不作任何担保。它可能变更、暂停或停止，声音也可能读错或念错文本。
+terms-warranty-2 = 在法律允许的范围内，我们不对因使用本服务造成的间接损失负责。
+terms-changes-title = 变更与联系
+terms-changes-1 = 我们可能会更新这些条款，并在顶部显示日期。如有问题，请写信至 { $email }。
+
+credits-title = 致谢
+credits-lede = Streams Reader 建立在开放的模型、库和字体之上。感谢所有创造它们的人。
+credits-meta-description = Streams Reader 背后的开放模型、库、字体和图标，以及它们的许可证。
+credits-group-models = 声音与语音
+credits-group-software = 软件
+credits-group-design = 字体、图标与文字
+credit-role-kokoro = 标准声音
+credit-role-ming = 表现力声音和你自己的声音
+credit-role-misaki = 为 Kokoro 把英文文本转换成读音
+credit-role-espeak = 备用发音
+credit-role-rust = 应用和服务器的编程语言
+credit-role-leptos = 网页应用的界面
+credit-role-workers = 运行在 Cloudflare 上的服务器
+credit-role-pdfjs = 读取 PDF 文件中的文字
+credit-role-fluent = 翻译
+credit-role-grass = 生成本网站的样式
+credit-role-torch = 运行语音模型
+credit-role-gradio = 语音引擎的服务器
+credit-role-inter = 界面字体
+credit-role-literata = 阅读字体
+credit-role-remix = 界面图标
+credit-role-austen = 首页上的示例段落
+credits-note = 每个许可证只适用于其对应的项目。Streams Reader 的代码采用 MIT 许可证。
+
+## Not found
+lost-title = 这个页面不在这里。
+lost-lede = 链接可能已过期或有拼写错误。其他内容都只需一次点击。
+lost-home = 返回首页

@@ -1,0 +1,74 @@
+{
+ "name": "welcome",
+ "description": "Waving hello with a book under the other arm",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 14
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "none",
+    "hold": "read"
+   }
+  ],
+  "ik": {
+   "L": [
+    0.2,
+    0.86,
+    0.22
+   ]
+  },
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "soft_smile"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand+wave"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "book",
+   "attach": "handL",
+   "pos": [
+    0,
+    0.02,
+    0.04
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ]
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}

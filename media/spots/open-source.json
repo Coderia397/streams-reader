@@ -1,0 +1,90 @@
+{
+ "name": "open-source",
+ "description": "With a wrench and a gear",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 16
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "none",
+    "hold": "read"
+   }
+  ],
+  "ik": {
+   "R": [
+    -0.24,
+    1.12,
+    0.32
+   ]
+  },
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "soft_smile"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "wrench",
+   "attach": "handR",
+   "pos": [
+    0,
+    0.02,
+    0.03
+   ],
+   "rot": [
+    0,
+    0,
+    20
+   ],
+   "scale": 1.1
+  },
+  {
+   "type": "gear",
+   "attach": "root",
+   "pos": [
+    0.48,
+    1.25,
+    0.15
+   ],
+   "rot": [
+    0,
+    -20,
+    15
+   ],
+   "scale": 1.5
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}

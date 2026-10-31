@@ -1,0 +1,29 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main",
+  "description": "The Streams Reader UI in the main window: Tauri core (events, window), and each app command of the streams-native-bridge contract. Plugins (updater, deep link, opener, streams-media) are driven from Rust only, so the webview gets none of their permissions.",
+  "windows": ["main"],
+  "platforms": ["macOS", "windows", "linux", "android"],
+  "permissions": [
+    "core:default",
+    "allow-app-info",
+    "allow-player-load",
+    "allow-player-control",
+    "allow-player-snapshot",
+    "allow-download-start",
+    "allow-download-cancel",
+    "allow-download-remove",
+    "allow-download-list",
+    "allow-storage-usage",
+    "allow-cache-clear",
+    "allow-auth-store",
+    "allow-auth-session",
+    "allow-auth-refresh",
+    "allow-auth-sign-out",
+    "allow-auth-open-browser",
+    "allow-update-check",
+    "allow-update-install",
+    "allow-open-take-pending",
+    "allow-file-read"
+  ]
+}

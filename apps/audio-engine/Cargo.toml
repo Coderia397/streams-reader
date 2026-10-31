@@ -1,0 +1,33 @@
+[package]
+name = "streams-audio"
+description = "Desktop audio engine for Streams Reader: gapless WebM/Opus segments, pitch-preserving rate, cpal output (macOS, Windows, Linux)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+# Versions verified on crates.io 2026-10-30 (notes/18-native-apps-architecture.md, "Desktop audio engine").
+[dependencies]
+# Demux only: Matroska/WebM. Opus decoding comes from the adapter below (symphonia 0.6 has no Opus decoder).
+symphonia = { version = "0.6.1", default-features = false, features = ["mkv"] }
+# libopus 1.6.1 built from source by opusic-sys (`bundled`, needs cmake + a C compiler; both are on GitHub's
+# hosted runners). Drops OpusHead pre-skip. Off with `--no-default-features` for a quick local check without cmake.
+symphonia-adapter-libopus = { version = "0.3.0", optional = true }
+# Speech time-stretch with pitch preserved (pure Rust port of Sonic). Fallback behind the same trait: signalsmith.
+libsonic = "0.1.0"
+signalsmith-stretch = { version = "0.1.3", optional = true }
+cpal = "0.18.2"
+# Wait-free SPSC ring between the decode thread and the audio callback.
+rtrb = "0.4.1"
+# Only used when the output device cannot run at 48 kHz.
+rubato = "5.0.1"
+thiserror.workspace = true
+
+[features]
+default = ["libopus"]
+libopus = ["dep:symphonia-adapter-libopus"]
+# A/B the spectral stretcher against Sonic by ear (needs a C++ compiler and libclang for bindgen).
+signalsmith = ["dep:signalsmith-stretch"]
+
+[lints]
+workspace = true

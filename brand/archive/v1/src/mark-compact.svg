@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Compact speaking cursor for 16 to 32 px: heavier stroke, outer wave dots
+       dropped so the shape stays open at favicon size. -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6">
+    <path id="cursor" class="s-blue" d="M4.6 3.4c3 0 5.5.95 7.4 3.05 1.9-2.1 4.4-3.05 7.4-3.05M4.6 20.6c3 0 5.5-.95 7.4-3.05 1.9 2.1 4.4 3.05 7.4 3.05M12 6.45v1.6M12 15.95v1.6"/>
+    <path id="wave" class="s-blue" d="M7.6 11v2M16.4 11v2"/>
+    <path id="word" class="s-ember" d="M12 10.4v3.2"/>
+  </g>
+</svg>

@@ -1,0 +1,34 @@
+{
+ "en": {
+  "status": "rendered",
+  "voice": "kokoro:af_heart"
+ },
+ "es": {
+  "status": "todo",
+  "voice": "kokoro:ef_dora (not in the app catalogue yet)"
+ },
+ "fr": {
+  "status": "todo",
+  "voice": "kokoro:ff_siwis (not in the app catalogue yet)"
+ },
+ "pt": {
+  "status": "todo",
+  "voice": "kokoro:pf_dora (not in the app catalogue yet)"
+ },
+ "hi": {
+  "status": "todo",
+  "voice": "kokoro:hf_alpha (not in the app catalogue yet)"
+ },
+ "zh": {
+  "status": "todo",
+  "voice": "kokoro:zf_xiaobei (not in the app catalogue yet)"
+ },
+ "de": {
+  "status": "todo",
+  "voice": "none in Kokoro; needs another engine"
+ },
+ "ar": {
+  "status": "todo",
+  "voice": "none in Kokoro; Arabic voice planned (note 14, phase 6)"
+ }
+}

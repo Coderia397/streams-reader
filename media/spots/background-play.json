@@ -1,0 +1,60 @@
+{
+ "name": "background-play",
+ "description": "Walking with headphones on, phone in hand",
+ "t": 0.35,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 55
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "phone",
+    "hold": "walk"
+   }
+  ],
+  "cable": true,
+  "walk": {
+   "speed": 0,
+   "amount": 1,
+   "cadence": 0.9,
+   "arms": 0.6
+  },
+  "phone_scale": 1.5,
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "calm"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand"
+   }
+  ]
+ },
+ "props": [],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}

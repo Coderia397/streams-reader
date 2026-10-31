@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!-- Spot illustration, 96 grid. f-/s-<name> classes map to [art.color] in tokens.toml;
+       data-stroke="spot" takes art.stroke. Edit here, then run brand/build.py. -->
+  <g stroke-linecap="round" stroke-linejoin="round" data-stroke="spot">
+    <circle class="f-plate" cx="48" cy="50" r="38"/>
+    <rect class="f-blue s-blue-deep" x="24" y="18" width="48" height="62" rx="8"/>
+    <rect class="f-white s-blue-deep" x="30" y="26" width="36" height="48" rx="4"/>
+    <rect class="f-blue-pale s-blue-deep" x="38" y="13" width="20" height="10" rx="4"/>
+    <path class="s-blue-pale" d="M37 38H59"/>
+    <path class="s-blue-pale" d="M37 45H59"/>
+    <rect class="f-ember" x="41.5" y="42.5" width="13" height="5" rx="2.5"/>
+    <path class="s-blue-pale" d="M37 52H55"/>
+    <path class="s-blue-pale" d="M37 59H51"/>
+    <path class="f-blue-soft" d="M80 17.5C80 20.74 81.26 22 84.5 22C81.26 22 80 23.26 80 26.5C80 23.26 78.74 22 75.5 22C78.74 22 80 20.74 80 17.5Z"/>
+    <path class="f-ember-pale" d="M16 63C16 65.16 16.84 66 19 66C16.84 66 16 66.84 16 69C16 66.84 15.16 66 13 66C15.16 66 16 65.16 16 63Z"/>
+  </g>
+</svg>

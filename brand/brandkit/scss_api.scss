@@ -1,0 +1,260 @@
+// ---- functions: return var(--…) so the active theme decides the value.
+// Unknown names fail the Sass build instead of producing a silent bad value.
+
+@function _check($map, $key, $kind) {
+  @if not map.has-key($map, "#{$key}") {
+    @error "unknown #{$kind} token: #{$key}";
+  }
+  @return true;
+}
+
+@function color($name) {
+  @if not list.index($color-names, "#{$name}") {
+    @error "unknown colour token: #{$name}";
+  }
+  @return var(--color-#{$name});
+}
+@function space($n) { $_: _check($space-values, $n, "space"); @return var(--space-#{$n}); }
+@function radius($n) { $_: _check($radius-values, $n, "radius"); @return var(--radius-#{$n}); }
+@function text($n) { $_: _check($text-values, $n, "text"); @return var(--text-#{$n}); }
+@function leading($n) { $_: _check($leading-values, $n, "leading"); @return var(--leading-#{$n}); }
+@function weight($n) { $_: _check($weight-values, $n, "weight"); @return var(--weight-#{$n}); }
+@function font($n) { $_: _check($font-values, $n, "font"); @return var(--font-#{$n}); }
+@function z($n) { $_: _check($z-values, $n, "z"); @return var(--z-#{$n}); }
+@function shadow($n) { @return var(--shadow-#{$n}); }
+@function dur($n) { $_: _check($motion-values, "dur-#{$n}", "motion"); @return var(--dur-#{$n}); }
+@function ease($n) { $_: _check($motion-values, "ease-#{$n}", "motion"); @return var(--ease-#{$n}); }
+@function size($n) { $_: _check($component-values, $n, "component"); @return var(--#{$n}); }
+
+// ---- layout helpers
+
+@mixin bp($name) {
+  @media (min-width: map.get($breakpoints, $name)) { @content; }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) { @content; }
+}
+
+@mixin transition($props...) {
+  transition-property: $props;
+  transition-duration: var(--dur-base);
+  transition-timing-function: var(--ease-out);
+  @include reduced-motion { transition-duration: 0.01ms; }
+}
+
+@mixin focus-ring {
+  &:focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+}
+
+@mixin tap-target {
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin truncate($lines: 1) {
+  overflow: hidden;
+  @if $lines == 1 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+  }
+}
+
+// ---- type roles (note 12 type scale)
+
+$type-roles: (
+  "display": ("3xl", "tight", "semibold", "display", "ui"),
+  "h1": ("2xl", "tight", "semibold", "title", "ui"),
+  "h2": ("xl", "snug", "semibold", "title", "ui"),
+  "title": ("lg", "snug", "semibold", "normal", "ui"),
+  "body": ("md", "normal", "regular", "normal", "ui"),
+  "label": ("sm", "snug", "medium", "normal", "ui"),
+  "caption": ("xs", "snug", "medium", "normal", "ui"),
+  "overline": ("xs", "snug", "semibold", "overline", "ui"),
+  "read": ("read", "read", "regular", "normal", "read"),
+);
+
+@mixin type($role) {
+  @if not map.has-key($type-roles, $role) { @error "unknown type role: #{$role}"; }
+  $r: map.get($type-roles, $role);
+  font-family: var(--font-#{list.nth($r, 5)});
+  font-size: var(--text-#{list.nth($r, 1)});
+  line-height: var(--leading-#{list.nth($r, 2)});
+  font-weight: var(--weight-#{list.nth($r, 3)});
+  letter-spacing: var(--tracking-#{list.nth($r, 4)});
+  @if $role == "overline" { text-transform: uppercase; }
+}
+
+// ---- surfaces
+
+@mixin surface($level: 1) {
+  background: var(--color-surface-#{$level});
+  color: var(--color-text);
+}
+
+@mixin card {
+  @include surface(1);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+}
+
+@mixin sheet {
+  @include surface(2);
+  border-radius: var(--sheet-radius) var(--sheet-radius) 0 0;
+  box-shadow: var(--shadow-3);
+}
+
+// ---- controls. One definition each; components @include these.
+
+@mixin button-base($size: md) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--button-radius);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  @if $size == sm {
+    height: var(--button-height-sm);
+    padding-inline: var(--button-padding-x-sm);
+  } @else {
+    height: var(--button-height);
+    padding-inline: var(--button-padding-x);
+  }
+  @include transition(background-color, border-color, color, transform);
+  @include focus-ring;
+  &:active:not(:disabled) { transform: scale(0.98); }
+  &:disabled,
+  &[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; }
+  svg { width: var(--icon-size); height: var(--icon-size); flex: none; }
+}
+
+// $variant: primary | secondary | soft | ghost | danger
+@mixin button($variant: primary, $size: md) {
+  @include button-base($size);
+  @if $variant == primary {
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+    &:hover:not(:disabled) { background: var(--color-brand-hover); }
+    &:active:not(:disabled) { background: var(--color-brand-active); }
+  } @else if $variant == secondary {
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    border-color: var(--color-border);
+    &:hover:not(:disabled) { background: var(--color-surface-3); }
+  } @else if $variant == soft {
+    background: var(--color-brand-soft);
+    color: var(--color-brand-text);
+    &:hover:not(:disabled) { border-color: var(--color-brand-text); }
+  } @else if $variant == ghost {
+    background: transparent;
+    color: var(--color-text-2);
+    &:hover:not(:disabled) { background: var(--color-surface-2); color: var(--color-text); }
+  } @else if $variant == danger {
+    background: transparent;
+    color: var(--color-danger);
+    border-color: var(--color-border-strong);
+    &:hover:not(:disabled) { border-color: var(--color-danger); }
+  } @else {
+    @error "unknown button variant: #{$variant}";
+  }
+}
+
+// Round icon-only button; $size is a component token name (tap-min, play-size, play-size-sm).
+@mixin icon-button($size: tap-min, $variant: ghost) {
+  @include button($variant);
+  width: var(--#{$size});
+  height: var(--#{$size});
+  padding: 0;
+  border-radius: var(--radius-pill);
+}
+
+@mixin chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: var(--chip-height);
+  padding-inline: var(--chip-padding-x);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--chip-radius);
+  background: transparent;
+  color: var(--color-text-2);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  @include transition(background-color, border-color, color);
+  @include focus-ring;
+  &:hover { color: var(--color-text); border-color: var(--color-border-strong); }
+  &[aria-pressed="true"],
+  &[aria-selected="true"],
+  &.is-selected {
+    background: var(--color-brand-soft);
+    border-color: transparent;
+    color: var(--color-brand-text);
+  }
+}
+
+@mixin input {
+  width: 100%;
+  height: var(--input-height);
+  padding-inline: var(--input-padding-x);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--input-radius);
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  @include transition(border-color, box-shadow);
+  &::placeholder { color: var(--color-text-3); }
+  &:hover { border-color: var(--color-border-strong); }
+  &:focus-visible {
+    outline: none;
+    border-color: var(--color-focus);
+    box-shadow: 0 0 0 1px var(--color-focus);
+  }
+}
+
+// The spoken word and its sentence (reader).
+@mixin sentence-wash {
+  background: var(--color-sentence-wash);
+  border-radius: var(--radius-xs);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+@mixin word-pill {
+  background: var(--color-word-pill);
+  border-radius: var(--radius-2xs);
+  box-shadow: inset 0 -2px 0 var(--color-ember);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}

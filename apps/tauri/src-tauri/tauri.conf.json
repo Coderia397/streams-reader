@@ -1,0 +1,140 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Streams Reader",
+  "mainBinaryName": "streams-reader",
+  "identifier": "watch.streams.reader",
+  "build": {
+    "frontendDist": "../frontend",
+    "devUrl": "http://localhost:8090/app/"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Streams Reader",
+        "url": "app/",
+        "width": 1100,
+        "height": 760,
+        "minWidth": 360,
+        "minHeight": 520,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": {
+        "default-src": "'none'",
+        "script-src": "'self' 'wasm-unsafe-eval'",
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data: blob: https://listen.streams.watch",
+        "media-src": "'self' blob: https://listen.streams.watch",
+        "connect-src": "'self' ipc: http://ipc.localhost https://listen.streams.watch https://atxbmgfuxjtcwmoaldqy.supabase.co wss://atxbmgfuxjtcwmoaldqy.supabase.co",
+        "font-src": "'self'",
+        "worker-src": "'self'",
+        "manifest-src": "'self'",
+        "base-uri": "'none'",
+        "form-action": "'none'",
+        "frame-ancestors": "'none'"
+      },
+      "dangerousDisableAssetCspModification": ["style-src"],
+      "assetProtocol": {
+        "enable": false
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "createUpdaterArtifacts": true,
+    "publisher": "Streams",
+    "copyright": "Copyright (c) 2026 Streams. MIT licence.",
+    "license": "MIT",
+    "homepage": "https://listen.streams.watch",
+    "category": "Productivity",
+    "shortDescription": "Listen to anything you want to read.",
+    "longDescription": "Streams Reader turns books, articles and documents into natural speech, with word-by-word highlighting, offline downloads and sync across your devices.",
+    "icon": [
+      "../../../brand/dist/tauri/32x32.png",
+      "../../../brand/dist/tauri/128x128.png",
+      "../../../brand/dist/tauri/128x128@2x.png",
+      "../../../brand/dist/tauri/icon.icns",
+      "../../../brand/dist/tauri/icon.ico"
+    ],
+    "fileAssociations": [
+      {
+        "ext": ["epub"],
+        "mimeType": "application/epub+zip",
+        "name": "EPUB book",
+        "description": "Open in Streams Reader",
+        "role": "Viewer",
+        "rank": "Alternate"
+      },
+      {
+        "ext": ["pdf"],
+        "mimeType": "application/pdf",
+        "name": "PDF document",
+        "description": "Listen with Streams Reader",
+        "role": "Viewer",
+        "rank": "Alternate"
+      },
+      {
+        "ext": ["txt"],
+        "mimeType": "text/plain",
+        "name": "Text file",
+        "description": "Listen with Streams Reader",
+        "role": "Viewer",
+        "rank": "Alternate"
+      },
+      {
+        "ext": ["md"],
+        "mimeType": "text/markdown",
+        "name": "Markdown document",
+        "description": "Listen with Streams Reader",
+        "role": "Viewer",
+        "rank": "Alternate"
+      }
+    ],
+    "macOS": {
+      "minimumSystemVersion": "14.2"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser"
+      },
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      }
+    },
+    "linux": {
+      "deb": {
+        "depends": ["libasound2"]
+      }
+    },
+    "android": {
+      "minSdkVersion": 24
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "REPLACE_WITH_UPDATER_PUBLIC_KEY (cargo tauri signer generate; see notes/18, Updater)",
+      "endpoints": [
+        "https://listen.streams.watch/updates/desktop/stable/latest.json"
+      ],
+      "requireSignedVersion": true,
+      "windows": {
+        "installMode": "passive"
+      }
+    },
+    "deep-link": {
+      "desktop": {
+        "schemes": ["nolabs"]
+      },
+      "mobile": [
+        {
+          "scheme": ["nolabs"],
+          "host": "auth"
+        }
+      ]
+    }
+  }
+}

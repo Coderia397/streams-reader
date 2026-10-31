@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><title>empty voices</title><g xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <circle cx="48" cy="50" r="38" fill="#2F6BFF" fill-opacity="0.14" />
+    <circle cx="38" cy="44" r="17" fill="#2F6BFF" stroke="#1D4BBD" />
+    <circle cx="32" cy="38" r="6" fill="#6E9BFF" />
+    <circle cx="30" cy="36" r="2" fill="#FFFFFF" />
+    <circle cx="63" cy="55" r="14" fill="none" stroke-dasharray="4 5" stroke="#6E9BFF" />
+    <path d="M63 49V61M57 55H69" stroke="#6E9BFF" />
+    <path d="M28 72.5V75.5" stroke="#2F6BFF" />
+    <path d="M33 71V77" stroke="#2F6BFF" />
+    <path d="M38 69.5V78.5" stroke="#FFB45C" />
+    <path d="M43 71V77" stroke="#2F6BFF" />
+    <path d="M48 72.5V75.5" stroke="#2F6BFF" />
+    <path d="M72 19C72 22.6 73.4 24 77 24C73.4 24 72 25.4 72 29C72 25.4 70.6 24 67 24C70.6 24 72 22.6 72 19Z" fill="#FFD29E" />
+    <path d="M18 59C18 61.16 18.84 62 21 62C18.84 62 18 62.84 18 65C18 62.84 17.16 62 15 62C17.16 62 18 61.16 18 59Z" fill="#6E9BFF" />
+  </g>
+</svg>

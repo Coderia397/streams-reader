@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Speaking cursor, 24-unit grid. A text I-beam whose stem opens into a
+       waveform; the ember bar is the word being spoken. Classes s-<name> map to
+       [art.color] in tokens.toml; data-stroke="mark" takes art.mark-stroke. -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" data-stroke="mark">
+    <path id="cursor" class="s-blue" d="M5 3.25c2.9 0 5.2.9 7 2.9 1.8-2 4.1-2.9 7-2.9M5 20.75c2.9 0 5.2-.9 7-2.9 1.8 2 4.1 2.9 7 2.9M12 6.15V8M12 16v1.85"/>
+    <path id="wave" class="s-blue" d="M9 10.75v2.5M15 10.75v2.5M6 11.5v1M18 11.5v1"/>
+    <path id="word" class="s-ember" d="M12 10v4"/>
+  </g>
+</svg>

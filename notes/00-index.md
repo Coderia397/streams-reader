@@ -20,3 +20,4 @@ Start with [NEXT-SESSION-PROMPT.md](../NEXT-SESSION-PROMPT.md) at the repo root,
 | [12-design-benchmark.md](12-design-benchmark.md) | finding + plan | ElevenReader screen-by-screen benchmark, feature parity gaps, nolabs design brief (tokens, components, motion, landing, logo concepts) |
 | [15-landing-v2-brief.md](15-landing-v2-brief.md) | plan + finding | Landing v2 spec (ElevenReader inventory, 12 Dribbble refs, Standard Ebooks/PG licences, classics row, Explore shelves, hero video plan, Available everywhere + MV3 extension) |
 | [raw/](raw/) | raw | Research and review panel outputs (JSON + rendered markdown) |
+| [16-film-studio.md](16-film-studio.md) | finding + reference | Voxel film studio in `media/`: Three.js scene, JSON shots, render.py, app screen capture, VO via our API, ACE-Step music on Kaggle, promo + hero loop + spots |

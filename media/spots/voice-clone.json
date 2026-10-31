@@ -1,0 +1,84 @@
+{
+ "name": "voice-clone",
+ "description": "Speaking into a microphone, sound waves",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 18
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "none",
+    "hold": "read"
+   }
+  ],
+  "ik": {
+   "R": [
+    -0.1,
+    1.12,
+    0.32
+   ]
+  },
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "speak"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "mic",
+   "attach": "handR",
+   "pos": [
+    0,
+    0.02,
+    0.02
+   ],
+   "rot": [
+    -20,
+    0,
+    0
+   ]
+  },
+  {
+   "type": "waves",
+   "attach": "root",
+   "pos": [
+    0.05,
+    1.3,
+    0.55
+   ],
+   "scale": 1.3
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}

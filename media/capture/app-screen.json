@@ -1,0 +1,10 @@
+{
+  "doc_title": "Alice’s Adventures in Wonderland",
+  "start_char": 0,
+  "voice_label": "Emma",
+  "seconds": 26,
+  "fps": 30,
+  "viewport": [390, 844],
+  "dpr": 2,
+  "out": "media/assets/screen/app-alice.webm"
+}

@@ -1,0 +1,321 @@
+// Page frame: width, top bar, sections, footer.
+@use "tokens" as t;
+
+// Site layout widths (page frame only; components take their sizes from tokens).
+$wrap-max: 1160px;
+$narrow-max: 820px;
+$topbar-height: calc(t.space(12) + t.space(4));
+$section-gap: calc(t.space(12) + t.space(6));
+$section-gap-wide: calc(t.space(12) * 2);
+
+.wrap {
+  width: 100%;
+  max-width: $wrap-max;
+  margin-inline: auto;
+  padding-inline: t.space(4);
+  @include t.bp(sm) {
+    padding-inline: t.space(6);
+  }
+  @include t.bp(md) {
+    padding-inline: t.space(8);
+  }
+}
+
+// ---- top bar
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: t.z(sticky);
+  background: t.color(glass);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border-bottom: t.size(border-width) solid color-mix(in srgb, t.color(border) 70%, transparent);
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  gap: t.space(4);
+  height: $topbar-height;
+}
+
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: t.space(2);
+  color: t.color(text);
+  text-decoration: none;
+  border-radius: t.radius(sm);
+  margin-inline-end: auto;
+}
+
+.lockup__mark {
+  display: grid;
+  place-items: center;
+  color: t.color(brand);
+  .mark {
+    width: t.space(7);
+    height: t.space(7);
+  }
+  .mark-word {
+    stroke: t.color(ember);
+  }
+  .mark-dot {
+    fill: t.color(ember);
+  }
+}
+
+.lockup__word {
+  font-size: t.text(lg);
+  letter-spacing: var(--tracking-title);
+  color: t.color(text);
+  white-space: nowrap;
+  b {
+    font-weight: t.weight(semibold);
+  }
+  i {
+    font-family: t.font(read);
+    font-weight: t.weight(regular);
+  }
+}
+
+.topbar__links {
+  display: none;
+  gap: t.space(1);
+  @include t.bp(md) {
+    display: flex;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    height: t.size(button-height-sm);
+    padding-inline: t.space(3);
+    border-radius: t.radius(pill);
+    color: t.color(text-2);
+    font-size: t.text(sm);
+    font-weight: t.weight(medium);
+    text-decoration: none;
+    @include t.transition(color, background-color);
+    &:hover,
+    &[aria-current="page"] {
+      color: t.color(text);
+      background: t.color(surface-2);
+    }
+  }
+}
+
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: t.space(2);
+  @include t.bp(md) {
+    margin-inline-start: t.space(4);
+  }
+}
+
+// ---- sections
+
+.section {
+  padding-block: $section-gap;
+  @include t.bp(md) {
+    padding-block: $section-gap-wide;
+  }
+}
+
+.section--tight {
+  padding-block-start: t.space(4);
+}
+
+// Narrow content keeps the page's start edge (aligned with the intro) and limits its line length.
+.section--narrow > * {
+  max-width: $narrow-max;
+}
+
+.section--band {
+  background: t.color(surface-1);
+  border-block: t.size(border-width) solid t.color(border);
+}
+
+.section__head {
+  max-width: 40rem;
+  margin-block-end: t.space(10);
+  @include t.bp(md) {
+    margin-block-end: t.space(12);
+  }
+}
+
+.eyebrow {
+  @include t.type(overline);
+  color: t.color(brand-text);
+  margin-block-end: t.space(3);
+}
+
+.section__title {
+  font-family: t.font(read);
+  font-size: calc(t.text(2xl) * 1.15);
+  line-height: t.leading(tight);
+  letter-spacing: var(--tracking-title);
+  font-weight: t.weight(semibold);
+  text-wrap: balance;
+  @include t.bp(md) {
+    font-size: calc(t.text(2xl) * 1.5);
+  }
+}
+
+.section__lede {
+  margin-block-start: t.space(4);
+  font-size: t.text(lg);
+  color: t.color(text-2);
+  text-wrap: pretty;
+}
+
+.section__more {
+  margin-block-start: t.space(8);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: t.space(2);
+  font-weight: t.weight(medium);
+  text-decoration: none;
+  .ri {
+    @include t.transition(transform);
+  }
+  &:hover .ri {
+    transform: translateX(t.space(1));
+  }
+  &:hover .ri-flip {
+    transform: translateX(t.space(1));
+  }
+}
+
+[dir="rtl"] .link-arrow:hover .ri-flip {
+  transform: scaleX(-1) translateX(t.space(1));
+}
+
+// ---- inner page intro
+
+.intro {
+  padding-block: calc(t.space(12) + t.space(4)) t.space(10);
+  @include t.bp(md) {
+    padding-block: calc(t.space(12) * 2) t.space(12);
+  }
+}
+
+.intro__title {
+  font-family: t.font(read);
+  font-size: calc(t.text(2xl) * 1.3);
+  line-height: t.leading(tight);
+  letter-spacing: var(--tracking-display);
+  font-weight: t.weight(semibold);
+  text-wrap: balance;
+  @include t.bp(md) {
+    font-size: calc(t.text(2xl) * 1.9);
+  }
+}
+
+.intro__lede {
+  margin-block-start: t.space(4);
+  max-width: 38rem;
+  font-size: t.text(lg);
+  color: t.color(text-2);
+  text-wrap: pretty;
+  @include t.bp(md) {
+    font-size: t.text(xl);
+  }
+}
+
+// ---- footer
+
+.footer {
+  border-top: t.size(border-width) solid t.color(border);
+  padding-block: t.space(12) t.space(8);
+  font-size: t.text(sm);
+}
+
+.footer__grid {
+  display: grid;
+  gap: t.space(10) t.space(6);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @include t.bp(md) {
+    grid-template-columns: 2fr repeat(4, minmax(0, 1fr));
+  }
+}
+
+.footer__brand {
+  grid-column: 1 / -1;
+  @include t.bp(md) {
+    grid-column: auto;
+  }
+}
+
+.footer__tagline {
+  margin-block-start: t.space(4);
+  color: t.color(text-2);
+  font-family: t.font(read);
+  font-size: t.text(lg);
+  font-style: italic;
+}
+
+.footer__parent {
+  margin-block-start: t.space(2);
+  color: t.color(text-3);
+}
+
+.footer__title {
+  @include t.type(overline);
+  color: t.color(text-3);
+  display: flex;
+  align-items: center;
+  gap: t.space(2);
+  margin-block-end: t.space(4);
+  .ri {
+    width: t.size(icon-size-sm);
+    height: t.size(icon-size-sm);
+  }
+}
+
+.footer__col li + li {
+  margin-block-start: t.space(3);
+}
+
+.footer__col a {
+  color: t.color(text-2);
+  text-decoration: none;
+  &:hover {
+    color: t.color(text);
+  }
+  &[aria-current="true"] {
+    color: t.color(text);
+    font-weight: t.weight(semibold);
+  }
+}
+
+.footer__langs ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: t.space(3) t.space(5);
+  li + li {
+    margin-block-start: 0;
+  }
+  @include t.bp(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: t.space(2) t.space(6);
+  margin-block-start: t.space(12);
+  padding-block-start: t.space(6);
+  border-top: t.size(border-width) solid t.color(border);
+  color: t.color(text-3);
+  font-size: t.text(xs);
+  a {
+    color: t.color(text-2);
+  }
+}

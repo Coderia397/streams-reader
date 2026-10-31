@@ -1,0 +1,435 @@
+// Landing page: hero and live demo, steps, voice tiers, promise pillars.
+@use "tokens" as t;
+
+// ---- hero
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  padding-block: calc(t.space(12) + t.space(2)) t.space(12);
+  text-align: center;
+  @include t.bp(md) {
+    padding-block: calc(t.space(12) * 2) calc(t.space(12) * 2);
+  }
+}
+
+// A soft blue light from above, with a faint ember warmth: the room the demo sits in.
+.hero__glow {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: t.radius(pill);
+    filter: blur(t.space(12));
+  }
+  &::before {
+    width: min(1100px, 140vw);
+    aspect-ratio: 2 / 1;
+    inset-inline-start: 50%;
+    top: -38%;
+    transform: translateX(-50%);
+    background: radial-gradient(closest-side, color-mix(in srgb, t.color(brand) 34%, transparent), transparent);
+  }
+  &::after {
+    width: min(520px, 80vw);
+    aspect-ratio: 1;
+    inset-inline-start: 58%;
+    top: 46%;
+    background: radial-gradient(closest-side, color-mix(in srgb, t.color(ember) 10%, transparent), transparent);
+  }
+}
+
+[dir="rtl"] .hero__glow::before {
+  transform: translateX(50%);
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: t.space(2);
+  height: t.size(chip-height);
+  padding-inline: t.space(3) t.space(4);
+  border: t.size(border-width) solid t.color(border);
+  border-radius: t.radius(pill);
+  background: color-mix(in srgb, t.color(surface-1) 70%, transparent);
+  color: t.color(text-2);
+  font-size: t.text(sm);
+  font-weight: t.weight(medium);
+  .ri {
+    width: t.size(icon-size-sm);
+    height: t.size(icon-size-sm);
+    color: t.color(ember);
+  }
+}
+
+.hero__title {
+  margin-block-start: t.space(6);
+  max-width: 13ch;
+  font-family: t.font(read);
+  font-size: t.text(3xl);
+  line-height: t.leading(tight);
+  letter-spacing: var(--tracking-display);
+  font-weight: t.weight(semibold);
+  text-wrap: balance;
+  @include t.bp(lg) {
+    font-size: calc(t.text(3xl) * 1.12);
+  }
+}
+
+.hero__lede {
+  margin-block-start: t.space(5);
+  max-width: 34rem;
+  color: t.color(text-2);
+  font-size: t.text(lg);
+  line-height: t.leading(normal);
+  text-wrap: pretty;
+  @include t.bp(md) {
+    font-size: t.text(xl);
+  }
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: t.space(3);
+  margin-block-start: t.space(8);
+}
+
+.hero__note {
+  margin-block-start: t.space(4);
+  color: t.color(text-3);
+  font-size: t.text(sm);
+  max-width: 30rem;
+}
+
+// ---- live demo
+
+.demo {
+  position: relative;
+  max-width: t.size(content-max);
+  margin: t.space(12) auto 0;
+  padding: t.space(5);
+  text-align: start;
+  border-radius: t.size(sheet-radius);
+  border: t.size(border-width) solid t.color(border);
+  background: t.color(surface-1);
+  box-shadow: t.shadow(3);
+  @include t.bp(sm) {
+    padding: t.space(8);
+  }
+  @include t.bp(md) {
+    margin-block-start: calc(t.space(12) + t.space(6));
+  }
+}
+
+.demo__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: t.space(3);
+}
+
+.demo__book {
+  display: flex;
+  align-items: center;
+  gap: t.space(2);
+  color: t.color(text-2);
+  font-size: t.text(sm);
+  min-width: 0;
+  .ri {
+    width: t.size(icon-size-sm);
+    height: t.size(icon-size-sm);
+    color: t.color(text-3);
+  }
+  cite {
+    font-family: t.font(read);
+    font-style: italic;
+    color: t.color(text);
+  }
+}
+
+.demo__author {
+  color: t.color(text-3);
+  &::before {
+    content: "·";
+    margin-inline: t.space(1) t.space(2);
+  }
+}
+
+.demo__voices {
+  display: flex;
+  gap: t.space(2);
+}
+
+.demo__text {
+  position: relative;
+  margin-block: t.space(6);
+  font-family: t.font(read);
+  font-size: t.text(xl);
+  line-height: t.leading(read);
+  color: t.color(text);
+  @include t.bp(sm) {
+    margin-block: t.space(8);
+    font-size: t.text(2xl);
+    line-height: t.leading(normal);
+  }
+  p {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.demo__sentence {
+  @include t.sentence-wash;
+  padding-block: 0.08em;
+  padding-inline: 0.12em;
+  margin-inline: -0.12em;
+}
+
+.w {
+  border-radius: t.radius(2xs);
+  @include t.transition(color);
+}
+
+.w.is-still {
+  @include t.word-pill;
+}
+
+// The spoken word's pill glides from word to word (moved by the script with transforms).
+.demo__pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  opacity: 0;
+  @include t.word-pill;
+  transition:
+    transform t.dur(fast) t.ease(out),
+    width t.dur(fast) t.ease(out),
+    opacity t.dur(fast) t.ease(out);
+  &.is-on {
+    opacity: 1;
+  }
+  &.is-jump {
+    transition: opacity t.dur(fast) t.ease(out);
+  }
+  @include t.reduced-motion {
+    transition: none;
+  }
+}
+
+.demo__controls {
+  display: flex;
+  align-items: center;
+  gap: t.space(4);
+}
+
+.demo__track {
+  position: relative;
+  flex: 1;
+  height: t.space(1);
+  border-radius: t.radius(pill);
+  background: t.color(surface-3);
+  overflow: hidden;
+}
+
+.demo__progress {
+  position: absolute;
+  inset: 0;
+  background: t.color(brand);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.chip--speed {
+  min-width: calc(t.size(chip-height) * 1.6);
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.demo__caption {
+  margin-block-start: t.space(5);
+  color: t.color(text-3);
+  font-size: t.text(xs);
+}
+
+// ---- how it works
+
+.steps {
+  display: grid;
+  gap: t.space(4);
+  counter-reset: step;
+  @include t.bp(md) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: t.space(5);
+  }
+}
+
+.step {
+  @include t.card;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: t.space(4);
+  align-items: start;
+  padding: t.space(4);
+  @include t.bp(md) {
+    display: block;
+    padding: t.space(6);
+  }
+}
+
+.step__art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-row: span 3;
+  width: calc(t.space(12) * 1.75);
+  height: calc(t.space(12) * 1.75);
+  border-radius: t.radius(md);
+  background:
+    radial-gradient(90% 80% at 50% 0%, t.color(brand-soft), transparent 70%),
+    t.color(surface-2);
+  overflow: hidden;
+  .spot {
+    width: calc(t.space(12) * 1.5);
+    height: calc(t.space(12) * 1.5);
+  }
+  @include t.bp(md) {
+    width: auto;
+    height: calc(t.space(12) * 3.5);
+    margin-block-end: t.space(6);
+    border-radius: t.radius(lg);
+    .spot {
+      width: calc(t.space(12) * 2.5);
+      height: calc(t.space(12) * 2.5);
+    }
+  }
+}
+
+.step__num {
+  display: grid;
+  place-items: center;
+  width: t.space(7);
+  height: t.space(7);
+  border-radius: t.radius(pill);
+  border: t.size(border-width) solid t.color(border-strong);
+  color: t.color(text-2);
+  font-size: t.text(xs);
+  font-weight: t.weight(semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.step__title {
+  margin-block-start: t.space(2);
+  font-size: t.text(xl);
+  font-weight: t.weight(semibold);
+  letter-spacing: var(--tracking-title);
+}
+
+.step__text {
+  margin-block-start: t.space(2);
+  color: t.color(text-2);
+  text-wrap: pretty;
+}
+
+// Spot illustrations (brand/spot), decorative.
+.spot {
+  width: calc(t.space(12) * 2);
+  height: calc(t.space(12) * 2);
+}
+
+.spot--tier,
+.spot--pillar {
+  width: calc(t.space(12) * 1.75);
+  height: calc(t.space(12) * 1.75);
+  margin-inline-start: calc(t.space(2) * -1);
+}
+
+// ---- voice tiers
+
+.tiers {
+  display: grid;
+  gap: t.space(4);
+  @include t.bp(md) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: t.space(5);
+  }
+}
+
+.tier {
+  @include t.card;
+  display: flex;
+  flex-direction: column;
+  padding: t.space(6);
+  @include t.bp(md) {
+    padding: t.space(8) t.space(6);
+  }
+}
+
+.tier--featured {
+  border-color: color-mix(in srgb, t.color(ember) 35%, t.color(border));
+  background:
+    radial-gradient(100% 70% at 100% 0%, color-mix(in srgb, t.color(ember) 12%, transparent), transparent 70%),
+    t.color(surface-1);
+}
+
+.tier__title {
+  margin-block-start: t.space(4);
+  font-size: t.text(xl);
+  font-weight: t.weight(semibold);
+  letter-spacing: var(--tracking-title);
+}
+
+.tier__text {
+  margin-block: t.space(2) t.space(6);
+  color: t.color(text-2);
+  text-wrap: pretty;
+}
+
+.tier__meta {
+  margin-block-start: auto;
+  padding-block-start: t.space(4);
+  border-top: t.size(border-width) solid t.color(border);
+  color: t.color(text-3);
+  font-size: t.text(sm);
+  font-weight: t.weight(medium);
+}
+
+// ---- promise pillars
+
+.pillars {
+  display: grid;
+  gap: t.space(10);
+  @include t.bp(md) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: t.space(8);
+  }
+}
+
+.pillar__title {
+  margin-block-start: t.space(4);
+  font-family: t.font(read);
+  font-size: t.text(2xl);
+  font-weight: t.weight(semibold);
+  letter-spacing: var(--tracking-title);
+}
+
+.pillar__text {
+  margin-block-start: t.space(3);
+  color: t.color(text-2);
+  font-size: t.text(lg);
+  text-wrap: pretty;
+}

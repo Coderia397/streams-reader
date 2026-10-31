@@ -1,0 +1,42 @@
+{
+ "lang": "en",
+ "voice": "kokoro:af_heart",
+ "note": "Line ids are shared by every language file (script.<lang>.json). Translate 'text' and 'cards'; 'emotion' is used by expressive (ming:*) voices only. Timing comes from the rendered clip length; shots place lines by id.",
+ "lines": [
+  {
+   "id": "late",
+   "text": "It's late. Your eyes are tired, but the story isn't finished.",
+   "emotion": "neutral"
+  },
+  {
+   "id": "readto",
+   "text": "So let it read to you.",
+   "emotion": "happy"
+  },
+  {
+   "id": "voice",
+   "text": "A natural voice, and every word lights up as it's spoken.",
+   "emotion": "neutral"
+  },
+  {
+   "id": "anywhere",
+   "text": "Then take it with you. Pick up right where you left off.",
+   "emotion": "happy"
+  },
+  {
+   "id": "tagline",
+   "text": "Your library, read aloud. Free. Open source. On every device.",
+   "emotion": "happy"
+  },
+  {
+   "id": "endcard",
+   "text": "Streams Reader.",
+   "emotion": "happy"
+  }
+ ],
+ "cards": {
+  "title": "Your library, read aloud.",
+  "sub": "Free · Open source · On every device",
+  "url": "listen.streams.watch"
+ }
+}

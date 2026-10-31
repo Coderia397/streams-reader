@@ -1,0 +1,63 @@
+{
+ "name": "languages",
+ "description": "Speech bubbles in different scripts",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 10
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "none",
+    "hold": "read"
+   }
+  ],
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "soft_smile"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand+arms_rest"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "bubbles",
+   "attach": "root",
+   "pos": [
+    0,
+    1.75,
+    0.1
+   ],
+   "scale": 1.15
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.25,
+   6.0
+  ],
+  "target": [
+   0,
+   1.05,
+   0
+  ],
+  "fov": 28
+ }
+}

@@ -1,0 +1,27 @@
+; Streams Reader mark, 16x16 pixel grid (sibling of the Streams pixel cube).
+; '#' lit pixel, 'o' the ember pixel (the spoken word; drawn like '#' in every
+; variant except streams-reader-mark-ember.svg), '.' empty. Row 0 is the top.
+;
+; Rows 0-2   back line and the cube's two-step top-left diagonal (as Streams)
+; Rows 3-15  front face, 13 rows (as Streams): a book, spine at column 2,
+;            three text lines 5-3-4 long
+; Col 15     back pages bow into the outer sound arc and close at the bottom
+;            right with the cube's three-step diagonal (as Streams)
+; Col 12-13  inner arc (the voice), rows 4-11, centred on row 7.5 like the outer
+;            arc, one empty column from the outer arc and from the page edge on every row
+...##########...
+..#..........#..
+.#............#.
+###########....#
+#.#.......#.#..#
+#.#.......#..#.#
+#.#.......#..#.#
+#.#.#####.#..#.#
+#.#.......#..o.#
+#.#.###...#..#.#
+#.#.......#..#.#
+#.#.####..#.#..#
+#.#.......#....#
+#.#.......#...#.
+#.#.......#..#..
+#############...

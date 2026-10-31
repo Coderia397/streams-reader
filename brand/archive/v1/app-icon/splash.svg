@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2732" height="2732" viewBox="0 0 2732 2732"><title>Streams Reader</title><defs><linearGradient id="bgp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16161A"/><stop offset="1" stop-color="#0B0B0C"/></linearGradient><radialGradient id="glowp" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#2F6BFF" stop-opacity="0.22"/><stop offset="1" stop-color="#2F6BFF" stop-opacity="0"/></radialGradient></defs><rect width="2732" height="2732" fill="#0B0B0C"/><circle cx="1366" cy="1366" r="601.04" fill="url(#glowp)"/><g transform="translate(1092.8 1092.8) scale(22.7667)"><g xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path id="cursor" d="M5 3.25c2.9 0 5.2.9 7 2.9 1.8-2 4.1-2.9 7-2.9M5 20.75c2.9 0 5.2-.9 7-2.9 1.8 2 4.1 2.9 7 2.9M12 6.15V8M12 16v1.85" stroke="#2F6BFF" />
+    <path id="wave" d="M9 10.75v2.5M15 10.75v2.5M6 11.5v1M18 11.5v1" stroke="#2F6BFF" />
+    <path id="word" d="M12 10v4" stroke="#FFB45C" />
+  </g>
+</g></svg>

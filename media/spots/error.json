@@ -1,0 +1,68 @@
+{
+ "name": "error",
+ "description": "Scratching the head next to a tipped-over book stack",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 10
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "none",
+    "hold": "read"
+   }
+  ],
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "curious"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand+scratch_head"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "book_stack_tipped",
+   "attach": "world",
+   "pos": [
+    0.62,
+    0.0,
+    0.2
+   ],
+   "rot": [
+    0,
+    20,
+    0
+   ],
+   "scale": 1.2
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}

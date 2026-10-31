@@ -1,0 +1,79 @@
+{
+ "name": "import-paste",
+ "description": "Holding up a sheet of paper",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 18
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "none",
+    "hold": "read"
+   }
+  ],
+  "ik": {
+   "R": [
+    -0.15,
+    0.98,
+    0.34
+   ],
+   "L": [
+    0.15,
+    0.98,
+    0.34
+   ]
+  },
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "soft_smile"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "paper",
+   "attach": "root",
+   "pos": [
+    0,
+    1.06,
+    0.38
+   ],
+   "rot": [
+    -8,
+    0,
+    0
+   ]
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}

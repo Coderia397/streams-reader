@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>Streams Reader</title><g xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path id="cursor" d="M5 3.25c2.9 0 5.2.9 7 2.9 1.8-2 4.1-2.9 7-2.9M5 20.75c2.9 0 5.2-.9 7-2.9 1.8 2 4.1 2.9 7 2.9M12 6.15V8M12 16v1.85" stroke="#FFFFFF" />
+    <path id="wave" d="M9 10.75v2.5M15 10.75v2.5M6 11.5v1M18 11.5v1" stroke="#FFFFFF" />
+    <path id="word" d="M12 10v4" stroke="#FFFFFF" />
+  </g>
+</svg>

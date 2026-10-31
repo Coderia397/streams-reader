@@ -1,0 +1,64 @@
+{
+ "name": "offline",
+ "description": "Sitting under a little cloud, reading a book",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 20
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "book",
+    "hold": "book_lap"
+   }
+  ],
+  "hipsY": -0.5,
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "calm"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "sit_floor"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "cloud",
+   "attach": "root",
+   "pos": [
+    0.05,
+    1.75,
+    0.0
+   ],
+   "scale": 1.2
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}

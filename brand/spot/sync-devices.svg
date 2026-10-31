@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><title>sync devices</title><g xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <circle cx="48" cy="50" r="38" fill="#2F6BFF" fill-opacity="0.14" />
+    <rect x="14" y="34" width="44" height="30" rx="4" fill="#FFFFFF" stroke="#1D4BBD" />
+    <path d="M9 64H63a1 1 0 0 1 1 1 4 4 0 0 1-4 4H12a4 4 0 0 1-4-4 1 1 0 0 1 1-1Z" fill="#B4CAFF" stroke="#1D4BBD" />
+    <path d="M20 43H44" stroke="#B4CAFF" />
+    <path d="M20 50H38" stroke="#B4CAFF" />
+    <rect x="18.5" y="47.5" width="11" height="5" rx="2.5" fill="#FFB45C" />
+    <path d="M20 57H42" stroke="#B4CAFF" />
+    <rect x="60" y="40" width="22" height="40" rx="5" fill="#2F6BFF" stroke="#1D4BBD" />
+    <path d="M65.5 52H76.5M65.5 59H76.5M65.5 66H72" stroke="#FFFFFF" />
+    <rect x="64" y="56.5" width="8" height="5" rx="2.5" fill="#FFB45C" />
+    <path fill="none" d="M36 24a20 20 0 0 1 30 4M66 21v7h-7" stroke="#6E9BFF" />
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><title>privacy</title><g xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <circle cx="48" cy="50" r="38" fill="#2F6BFF" fill-opacity="0.14" />
+    <path d="M48 12L74 22V44C74 61 63 73 48 80 33 73 22 61 22 44V22Z" fill="#2F6BFF" stroke="#1D4BBD" />
+    <path d="M48 17.5V74.5C35.5 68 27.5 57.5 27.5 44V25.5Z" fill-opacity="0.6" fill="#6E9BFF" />
+    <circle cx="48" cy="41" r="6.5" fill="#FFFFFF" />
+    <path d="M44.5 45h7l2 13a2 2 0 0 1-2 2.3h-7a2 2 0 0 1-2-2.3Z" fill="#FFFFFF" />
+    <path d="M78 13C78 16.6 79.4 18 83 18C79.4 18 78 19.4 78 23C78 19.4 76.6 18 73 18C76.6 18 78 16.6 78 13Z" fill="#FFB45C" />
+    <path d="M16 62.5C16 65.02 16.98 66 19.5 66C16.98 66 16 66.98 16 69.5C16 66.98 15.02 66 12.5 66C15.02 66 16 65.02 16 62.5Z" fill="#6E9BFF" />
+  </g>
+</svg>

@@ -1,0 +1,236 @@
+{
+ "name": "first-look",
+ "fps": 30,
+ "duration": 4,
+ "resolution": [
+  1280,
+  720
+ ],
+ "seed": 11,
+ "encode": {
+  "webm": {
+   "codec": "av1",
+   "crf": 36
+  },
+  "mp4": {
+   "crf": 23
+  }
+ },
+ "poster_t": 2.5,
+ "segments": [
+  {
+   "start": 0,
+   "end": 2,
+   "environment": {
+    "preset": "room"
+   },
+   "character": {
+    "anchor": "seat",
+    "headphones": "neck",
+    "poses": [
+     {
+      "t": 0,
+      "pose": "sit_relaxed"
+     }
+    ],
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "absorbed"
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "phone",
+      "hold": "read_one"
+     }
+    ],
+    "hold_yaw": 28
+   },
+   "screen": {
+    "clip": "assets/screen/app-alice.webm",
+    "in": 3.0
+   },
+   "camera": {
+    "handheld": 0,
+    "focus": [
+     {
+      "t": 0,
+      "on": "face"
+     },
+     {
+      "t": 1,
+      "on": "face",
+      "ease": "step"
+     },
+     {
+      "t": 2,
+      "on": "phone",
+      "ease": "step"
+     },
+     {
+      "t": 3,
+      "on": "face",
+      "ease": "step"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "pos": [
+       2.5,
+       1.55,
+       2.4
+      ],
+      "target": [
+       -0.15,
+       0.95,
+       -1.3
+      ],
+      "fov": 38
+     },
+     {
+      "t": 1,
+      "orbit": [
+       30,
+       2,
+       1.75
+      ],
+      "target": "face",
+      "shift": [
+       0,
+       -0.12,
+       0
+      ],
+      "fov": 32,
+      "ease": "step"
+     }
+    ]
+   },
+   "lighting": {
+    "screen_glow": 0.35
+   }
+  },
+  {
+   "start": 2,
+   "end": 3,
+   "environment": {
+    "preset": "room"
+   },
+   "character": {
+    "anchor": "seat",
+    "headphones": "neck",
+    "poses": [
+     {
+      "t": 0,
+      "pose": "sit_relaxed"
+     }
+    ],
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "absorbed"
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "phone",
+      "hold": "read_one"
+     }
+    ],
+    "hold_yaw": 0,
+    "pov": true
+   },
+   "screen": {
+    "clip": "assets/screen/app-alice.webm",
+    "in": 3.0
+   },
+   "camera": {
+    "handheld": 0,
+    "focus": [
+     {
+      "t": 0,
+      "on": "phone"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "pos": "eye",
+      "offset": [
+       0.0,
+       0.06,
+       0.04
+      ],
+      "target": "phone",
+      "fov": 30
+     }
+    ]
+   },
+   "lighting": {
+    "screen_glow": 0.35
+   }
+  },
+  {
+   "start": 3,
+   "end": 4,
+   "environment": {
+    "preset": "room"
+   },
+   "character": {
+    "anchor": "seat",
+    "headphones": "neck",
+    "poses": [
+     {
+      "t": 0,
+      "pose": "sit_relaxed"
+     }
+    ],
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "absorbed"
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "phone",
+      "hold": "read_one"
+     }
+    ],
+    "hold_yaw": 0
+   },
+   "screen": {
+    "clip": "assets/screen/app-alice.webm",
+    "in": 3.0
+   },
+   "camera": {
+    "handheld": 0,
+    "focus": [
+     {
+      "t": 0,
+      "on": "face"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "orbit": [
+       -35,
+       12,
+       1.3
+      ],
+      "target": "face",
+      "fov": 28
+     }
+    ]
+   },
+   "lighting": {
+    "screen_glow": 0.35
+   }
+  }
+ ]
+}

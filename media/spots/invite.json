@@ -1,0 +1,75 @@
+{
+ "name": "invite",
+ "description": "Holding out an envelope",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 14
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "none",
+    "hold": "read"
+   }
+  ],
+  "ik": {
+   "R": [
+    -0.16,
+    1.02,
+    0.4
+   ]
+  },
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "soft_smile"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "envelope",
+   "attach": "handR",
+   "pos": [
+    0,
+    -0.02,
+    0.04
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.1
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}

@@ -1,0 +1,300 @@
+# Streams Reader website: Arabic (right to left). Source: locales/en/site.ftl.
+
+## Brand
+brand-name = Streams Reader
+brand-parent = Streams
+brand-product = Reader
+
+## Navigation
+nav-skip = انتقل إلى المحتوى
+nav-label = الرئيسية
+nav-home-label = الصفحة الرئيسية لـ Streams Reader
+nav-how = كيف يعمل
+nav-voices = الأصوات
+nav-download = التنزيل
+nav-help = المساعدة
+nav-github = الشيفرة المصدرية على GitHub
+nav-open-app = افتح التطبيق
+
+## Footer
+footer-tagline = كل ما تودّ قراءته، يُقرأ لك.
+footer-parent = جزء من { $streams }، تطبيق الأفلام.
+footer-product = المنتج
+footer-legal = قانوني
+footer-privacy = الخصوصية
+footer-terms = الشروط
+footer-credits = الشكر والتراخيص
+footer-project = المشروع
+footer-source = الشيفرة المصدرية
+footer-security = الإبلاغ عن مشكلة أمنية
+footer-language = اللغة
+footer-credits-line = الأصوات من { $kokoro } (Apache-2.0) و{ $ming } (MIT).
+footer-copyright = © { $year } Streams. مفتوح المصدر بترخيص MIT.
+
+## Social card
+og-image-alt = جملة من كتاب تُبرز فيها الكلمة المنطوقة، على Streams Reader.
+
+## Landing page
+home-meta-title = Streams Reader: تطبيق مجاني للقراءة بصوت طبيعي
+home-meta-description = الصق رابطًا أو افتح كتابًا واستمع إليه بصوت طبيعي، مع إبراز كل كلمة لحظة نطقها. مجاني وخاص ومفتوح المصدر.
+
+hero-eyebrow = مجاني · خاص · مفتوح المصدر
+hero-title = استمع إلى كل ما تودّ قراءته.
+hero-lede = الصق رابطًا أو افتح كتابًا. صوت طبيعي يقرؤه لك ويُضيء كل كلمة لحظة نطقها.
+hero-cta-open = افتح Streams Reader
+hero-cta-download = احصل على التطبيقات
+hero-cta-download-macos = نزّله لنظام Mac
+hero-cta-download-windows = نزّله لنظام Windows
+hero-cta-download-linux = نزّله لنظام Linux
+hero-cta-download-android = احصل عليه لأندرويد
+hero-note = يعمل في متصفحك اليوم. تطبيقات أندرويد وMac وWindows وLinux في الطريق.
+
+status-soon = قريبًا
+status-available = متاح الآن
+
+demo-play = شغّل العيّنة
+demo-pause = أوقف العيّنة مؤقتًا
+demo-voice-label = الصوت
+demo-speed-label = سرعة التشغيل
+demo-caption = عيّنة حقيقية بصوت Kokoro-82M، باللغة الإنجليزية. اختر صوتًا واضغط تشغيل.
+demo-accent-us = أمريكي
+demo-accent-uk = بريطاني
+
+how-eyebrow = كيف يعمل
+how-title = ثلاث خطوات، ثم استمع فقط.
+how-1-title = أضف أي شيء
+how-1-text = الصق رابطًا، أو افتح ملف PDF أو EPUB، أو أضف ملاحظاتك.
+how-2-title = اختر صوتًا
+how-2-text = ثمانية وعشرون صوتًا طبيعيًا، وخمسة أصوات معبّرة، أو صوتك أنت.
+how-3-title = اضغط تشغيل
+how-3-text = تُضيء كل كلمة عند قراءتها، وتتبعها الصفحة.
+
+voices-eyebrow = الأصوات
+voices-title = أصوات تشبه البشر.
+voices-lede = محرّكان، كلاهما نموذج مفتوح، اخترناهما للاستماع الطويل.
+voices-standard-title = قياسية
+voices-standard-text = ثمانية وعشرون صوتًا واضحًا وطبيعيًا بالإنجليزية الأمريكية والبريطانية، مصنوعة بـ Kokoro-82M.
+voices-standard-meta = بلا حدّ للساعات
+voices-expressive-title = معبّرة
+voices-expressive-text = خمسة أصوات بمشاعر أكثر للقصص والحوارات، مصنوعة بـ Ming-3.0-tts.
+voices-expressive-meta = حصة يومية عادلة للجميع
+voices-own-title = صوتك أنت
+voices-own-text = اقرأ ثمانية أسطر قصيرة بصوت عالٍ، ثم استمع إلى كتبك ومقالاتك بصوتك.
+voices-own-meta = يستخدم الحصة المعبّرة
+
+features-eyebrow = صُنع للقراءة
+features-title = تفاصيل صغيرة تجعل الاستماع الطويل سهلًا.
+feature-highlight-title = كلمة بكلمة
+feature-highlight-text = تُبرز الكلمة المنطوقة، فتتابعها عيناك أو تستريحان.
+feature-speed-title = بالسرعة التي تريد
+feature-speed-text = من 0.5× إلى 3× بخطوات صغيرة، دون أن يتشوّه الصوت.
+feature-sleep-title = مؤقّت النوم
+feature-sleep-text = يتوقف بعد 15 أو 30 أو 45 أو 60 دقيقة.
+feature-resume-title = يكمل من حيث توقفت
+feature-resume-text = كل مستند يتذكّر موضعك.
+feature-screen-off-title = والشاشة مطفأة
+feature-screen-off-text = واصل الاستماع وهاتفك مقفل أو وأنت في تطبيق آخر.
+feature-languages-title = ثماني لغات
+feature-languages-text = التطبيق متاح بالإنجليزية والعربية والإسبانية والفرنسية والألمانية والبرتغالية والهندية والصينية.
+
+trust-eyebrow = وعدنا
+trust-title = مجاني وخاص ومفتوح.
+trust-free-title = مجاني فعلًا
+trust-free-text = لا عدّاد ساعات للأصوات القياسية. لا بطاقة، ولا فترة تجريبية، ولا إعلانات.
+trust-private-title = الخصوصية في التصميم
+trust-private-text = مستنداتك تبقى في حسابك. لا أدوات تتبّع، ولا نبيع شيئًا.
+trust-open-title = مفتوح المصدر
+trust-open-text = كل سطر منشور بترخيص MIT. اقرأه، انسخه، شغّل نسختك الخاصة.
+
+platforms-eyebrow = المنصّات
+platforms-title = على كل شاشة تقرأ عليها.
+platforms-lede = استخدمه اليوم في أي متصفح حديث. التطبيقات الأصلية تضيف الاستماع دون اتصال وأزرار شاشة القفل.
+platforms-more = كل التنزيلات
+platform-web = الويب
+platform-web-meta = Chrome وEdge وFirefox وSafari
+platform-web-note = لا شيء لتثبيته. ويمكنك إضافته إلى الشاشة الرئيسية أو شريط التطبيقات.
+platform-web-action = افتح
+platform-android = أندرويد
+platform-android-meta = الهواتف والأجهزة اللوحية
+platform-android-note = التطبيق الأصلي قيد الإنشاء. حتى ذلك الحين، ثبّت تطبيق الويب من Chrome.
+platform-macos = Mac
+platform-macos-meta = معالجات Apple وIntel
+platform-macos-note = تطبيق أصلي مع أزرار الوسائط والاستماع دون اتصال قيد الإنشاء.
+platform-windows = Windows
+platform-windows-meta = Windows 10 و11
+platform-windows-note = تطبيق أصلي مع أزرار الوسائط والاستماع دون اتصال قيد الإنشاء.
+platform-linux = Linux
+platform-linux-meta = AppImage و‎.deb
+platform-linux-note = تطبيق أصلي مع أزرار الوسائط والاستماع دون اتصال قيد الإنشاء.
+platform-watch = تابع الإصدارات
+platform-you = جهازك
+
+faq-eyebrow = أسئلة
+faq-title = من المفيد أن تعرف.
+faq-more = المزيد من الإجابات في المساعدة
+faq-q-free = هل هو مجاني فعلًا؟
+faq-a-free = نعم. الأصوات القياسية بلا حدّ للساعات، ولا بطاقة ولا فترة تجريبية ولا إعلانات. الأصوات المعبّرة تعمل على عتاد رسومي مشترك، لذا يحصل كل شخص على حصة عادلة من الدقائق كل يوم.
+faq-q-voices = ما الأصوات المتاحة؟
+faq-a-voices = ثمانية وعشرون صوتًا قياسيًا بالإنجليزية الأمريكية والبريطانية، وخمسة أصوات معبّرة، وصوتك أنت بعد أن تسجّله.
+faq-q-own-voice = هل يمكنه القراءة بصوتي؟
+faq-a-own-voice = نعم. اقرأ ثمانية أسطر قصيرة في غرفة هادئة، وسيبني Streams Reader صوتك منها. لا يستخدمه أحد غيرك.
+faq-q-screen-off = هل يواصل التشغيل والشاشة مطفأة؟
+faq-a-screen-off = نعم، بعد تثبيته على الشاشة الرئيسية. وستضيف التطبيقات الأصلية أزرار شاشة القفل وسماعات الرأس.
+faq-q-files = ماذا يمكنني أن أستورد؟
+faq-a-files = مقالات الويب عبر الرابط، وملفات PDF وEPUB وMarkdown والنصوص العادية، وأي نص تلصقه.
+faq-q-data = أين تُحفظ مستنداتي؟
+faq-a-data = في حسابك، على الخدمات المذكورة في سياسة { $privacy }. لا نعرض إعلانات ولا نستخدم أدوات تتبّع، ولا نبيع البيانات.
+faq-q-languages = ما اللغات التي يقرأ بها؟
+faq-a-languages = تقرأ الأصوات بالإنجليزية اليوم. التطبيق نفسه متاح بثماني لغات، ونخطط لإضافة لغات قراءة أخرى.
+
+link-app = تطبيق الويب
+link-download = صفحة التنزيل
+
+cta-title = قائمة قراءتك، تُقرأ لك.
+cta-lede = افتحه في متصفحك واضغط تشغيل. الأمر يستغرق دقيقة.
+cta-github = ضع نجمة على GitHub
+
+## Download page
+download-eyebrow = التنزيل
+download-title = احصل على Streams Reader
+download-lede = استمع في متصفحك اليوم. تطبيقات أندرويد وMac وWindows وLinux قيد الإنشاء، وستحدّث نفسها بنفسها.
+download-meta-description = استخدم Streams Reader في متصفحك الآن، وتابع موعد وصول تطبيقات أندرويد وMac وWindows وLinux.
+download-list-label = المنصّات
+install-eyebrow = ثبّته اليوم
+install-title = أضف تطبيق الويب إلى جهازك.
+install-lede = بعد تثبيته يفتح في نافذته الخاصة ويواصل التشغيل في الخلفية.
+install-android-title = أندرويد
+install-android-text = في Chrome، افتح القائمة واختر «الإضافة إلى الشاشة الرئيسية» ثم «تثبيت».
+install-desktop-title = Windows وLinux وChromeOS
+install-desktop-text = في Chrome أو Edge، انقر أيقونة التثبيت في طرف شريط العنوان.
+install-apple-title = Mac وiPhone وiPad
+install-apple-text = في Safari، اضغط «مشاركة» ثم «إضافة إلى Dock» على Mac أو «إضافة إلى الشاشة الرئيسية» على iPhone وiPad.
+apps-eyebrow = القادم
+apps-title = ما تضيفه التطبيقات الأصلية.
+apps-screen = أزرار شاشة القفل وسماعات الرأس والسيارة.
+apps-offline = تنزيلات للاستماع دون اتصال.
+apps-files = فتح الملفات ومشاركة الصفحات مباشرة إلى التطبيق.
+apps-updates = تحديثات تُثبَّت تلقائيًا.
+
+## Help centre
+help-eyebrow = المساعدة
+help-title = مركز المساعدة
+help-lede = إجابات قصيرة عن الأسئلة الشائعة. لم تجد سؤالك؟ راسلنا.
+help-meta-description = إجابات عن إضافة المستندات والأصوات وصوتك الخاص وحسابك والتشغيل في Streams Reader.
+help-toc-label = المواضيع
+help-group-start = البداية
+help-group-voices = الأصوات والاستماع
+help-group-account = الحساب والخصوصية
+help-group-trouble = حلّ المشكلات
+help-q-add = كيف أضيف شيئًا للاستماع إليه؟
+help-a-add = افتح { $app }، واختر «إضافة»، ثم الصق رابطًا أو اختر ملفًا أو الصق نصًا. سيظهر في مكتبتك جاهزًا للتشغيل.
+help-q-files = ما الملفات المدعومة؟
+help-a-files = ملفات PDF وEPUB وMarkdown وHTML والنصوص العادية، ومقالات الويب عبر الرابط، والنص الملصوق. لا يمكن بعدُ قراءة ملفات PDF الممسوحة ضوئيًا التي لا تحتوي طبقة نص.
+help-q-play = كيف أبدأ من جملة معيّنة؟
+help-a-play = اضغط على الجملة في القارئ، ثم اختر «شغّل من هنا».
+help-q-install = كيف أثبّته؟
+help-a-install = أضف تطبيق الويب إلى الشاشة الرئيسية أو شريط التطبيقات. خطوات كل جهاز موجودة في { $download }.
+help-q-change-voice = كيف أغيّر الصوت؟
+help-a-change-voice = اضغط على اسم الصوت في المشغّل واختر صوتًا آخر. تستمر القراءة من الجملة الحالية.
+help-q-expressive = لماذا هناك حدّ للأصوات المعبّرة؟
+help-a-expressive = الأصوات المعبّرة وصوتك الخاص تعمل على عتاد رسومي مشترك بميزانية يومية، ويحصل كل شخص على حصة عادلة منها. الأصوات القياسية بلا حدود.
+help-q-clone = كيف أصنع صوتي الخاص؟
+help-a-clone = اذهب إلى «الأصوات»، واختر «سجّل صوتك»، واقرأ الأسطر الثمانية المعروضة. الغرفة الهادئة والمسافة الثابتة من الميكروفون تعطيان أفضل نتيجة.
+help-q-speed = هل يمكنني تغيير السرعة؟
+help-a-speed = نعم، من 0.5× إلى 3× في المشغّل. ومؤقّت النوم بجانبها.
+help-q-account = هل أحتاج إلى حساب؟
+help-a-account = نعم، لكي ترافقك مكتبتك وأصواتك وتقدّمك بين أجهزتك. في هذه المرحلة الأولى، الحسابات بالدعوة.
+help-q-data = ماذا تحفظون عنّي؟
+help-a-data = عنوان بريدك الإلكتروني، والمستندات التي تضيفها، وتقدّمك في الاستماع وإعداداتك، وتسجيلات صوتك إن صنعت صوتًا. التفاصيل في سياسة { $privacy }.
+help-q-delete = كيف أحذف بياناتي؟
+help-a-delete = احذف أي مستند أو صوت من داخل التطبيق. ولحذف حسابك بالكامل، راسل { $email } من العنوان الذي سجّلت به.
+help-q-stops = يتوقف التشغيل عندما تنطفئ الشاشة.
+help-a-stops = ثبّت تطبيق الويب على الشاشة الرئيسية وشغّل منه. بعض الهواتف توقف الصوت في الخلفية لتوفير البطارية، فاسمح لـ Streams Reader بالعمل في الخلفية.
+help-q-no-audio = ضغطت تشغيل ولم يحدث شيء.
+help-a-no-audio = قد تحتاج الدقيقة الأولى من مستند جديد بضع ثوانٍ للتحضير. إن بقي صامتًا، تحقّق من اتصالك وحاول مجددًا. وقد تنتظر الأصوات المعبّرة الحصة اليومية التالية.
+help-q-wrong-text = النص فيه أجزاء زائدة، مثل القوائم أو الإعلانات.
+help-a-wrong-text = بعض الصفحات تخلط المقال بمحتوى آخر. الصق النص مباشرة بدلًا من ذلك، وأرسل لنا الرابط لنحسّن الاستيراد.
+help-contact-title = ما زلت عالقًا؟
+help-contact-text = راسلنا وسيردّ عليك شخص حقيقي.
+
+## Legal pages
+legal-eyebrow = قانوني
+legal-updated = آخر تحديث: 30 أكتوبر 2026.
+
+privacy-title = الخصوصية
+privacy-lede = ما يحفظه Streams Reader، ولماذا، وكيف تحذفه. مكتوبة لتُقرأ.
+privacy-meta-description = ما يحفظه Streams Reader، ومن يعالجه، ومدة حفظه، وكيف تحذفه.
+privacy-summary-title = باختصار
+privacy-summary-1 = نحفظ ما يحتاجه التطبيق ليقرأ لك ويزامن بين أجهزتك، لا أكثر. لا إعلانات، ولا أدوات تتبّع، ولا بيع للبيانات.
+privacy-store-title = ما نحفظه
+privacy-store-1 = حسابك: عنوان بريدك الإلكتروني، ويُستخدم لتسجيل الدخول برمز لمرة واحدة.
+privacy-store-2 = مكتبتك: المستندات التي تضيفها، وعلاماتك المرجعية، وتقدّمك في الاستماع، وإعداداتك.
+privacy-store-3 = الصوت: الكلام المُنشأ من مستنداتك، ونحفظه ليُشغَّل فورًا في المرة التالية.
+privacy-store-4 = صوتك، إن صنعت واحدًا: التسجيلات التي تقرؤها والصوت المبني منها. لا يستخدمه أحد غيرك.
+privacy-not-title = ما لا نفعله
+privacy-not-1 = لا إعلانات، ولا تحليلات من أطراف ثالثة، ولا بكسلات تتبّع، ولا بيع لبياناتك أو مشاركتها لأغراض تسويقية.
+privacy-not-2 = لا نستخدم مستنداتك أو تسجيلاتك لتدريب النماذج.
+privacy-processors-title = من يتعامل معها
+privacy-processors-1 = تستضيف Cloudflare الموقع والتطبيق وتخزّن المستندات والصوت. وتخزّن Supabase الحسابات وبيانات المزامنة. وتشغّل Hugging Face نماذج الصوت التي تُنشئ الكلام. وترسل Brevo رسائل تسجيل الدخول.
+privacy-processors-2 = يعالج كلٌّ منها البيانات فقط لتقديم تلك الخدمة لنا.
+privacy-keep-title = مدة الحفظ
+privacy-keep-1 = تبقى مستنداتك وتقدّمك وصوتك حتى تحذفها أو تحذف حسابك.
+privacy-keep-2 = الصوت المُنشأ بالأصوات القياسية يُحذف تلقائيًا بعد 90 يومًا، ويُنشأ من جديد إن شغّلته لاحقًا.
+privacy-cookies-title = ملفات تعريف الارتباط والتخزين
+privacy-cookies-1 = يُبقيك التطبيق مسجّل الدخول ويخزّن الصوت على جهازك ليُشغَّل مجددًا دون تنزيل. هذا الموقع لا يضع أي ملفات تعريف ارتباط.
+privacy-rights-title = خياراتك
+privacy-rights-1 = يمكنك عرض مستنداتك وأصواتك وتصديرها وحذفها من التطبيق في أي وقت.
+privacy-rights-2 = لحذف حسابك أو للسؤال عن أي شيء يخص بياناتك، راسل { $email }. نردّ خلال 30 يومًا.
+privacy-changes-title = التغييرات
+privacy-changes-1 = إن تغيّرت هذه السياسة، نحدّث التاريخ في الأعلى ونشرح التغييرات المهمة داخل التطبيق. السجل الكامل على { $github }.
+
+terms-title = الشروط
+terms-lede = القواعد القليلة لاستخدام Streams Reader، بكلمات بسيطة.
+terms-meta-description = شروط استخدام Streams Reader: محتواك، وصوتك، والاستخدام العادل، وترخيص المصدر المفتوح.
+terms-use-title = استخدام Streams Reader
+terms-use-1 = Streams Reader خدمة مجانية للاستماع إلى النصوص. تحتاج إلى حساب، وفي هذه المرحلة الأولى الحسابات بالدعوة.
+terms-use-2 = استخدمه بشكل قانوني، ولا تحاول تعطيله أو إثقاله أو التحايل على حدوده.
+terms-content-title = محتواك
+terms-content-1 = ما تضيفه يبقى ملكك. أضف فقط محتوى يحق لك استخدامه، وأبقِ الاستماع إليه شخصيًا.
+terms-content-2 = نخزّن محتواك ونعالجه فقط لنقرأه لك، كما توضّح سياسة الخصوصية.
+terms-voices-title = الأصوات
+terms-voices-1 = اصنع صوتًا من تسجيلاتك أنت فقط، أو بإذن واضح من صاحب الصوت.
+terms-voices-2 = لا تستخدم أي صوت للخداع أو انتحال الشخصية أو المضايقة أو الاحتيال. نحذف الأصوات المستخدمة بهذه الطريقة.
+terms-fair-title = الاستخدام العادل
+terms-fair-1 = تتشارك الأصوات المعبّرة ميزانية يومية. قد نحدّ من الاستخدام الذي يتجاوز الحصة العادلة كثيرًا، ليبقى الوصول متاحًا للجميع.
+terms-open-title = المصدر المفتوح
+terms-open-1 = الشيفرة منشورة بترخيص MIT على { $github }. ولنماذج الصوت تراخيصها الخاصة، المذكورة في صفحة الشكر والتراخيص.
+terms-warranty-title = بلا ضمانات
+terms-warranty-1 = تُقدَّم الخدمة كما هي، دون ضمانات. قد تتغيّر أو تتوقف مؤقتًا أو نهائيًا، وقد تخطئ الأصوات في نطق النص أو قراءته.
+terms-warranty-2 = في الحدود التي يسمح بها القانون، لسنا مسؤولين عن الخسائر غير المباشرة الناتجة عن استخدامه.
+terms-changes-title = التغييرات والتواصل
+terms-changes-1 = قد نحدّث هذه الشروط وسنعرض التاريخ في الأعلى. أرسل أسئلتك إلى { $email }.
+
+credits-title = الشكر والتراخيص
+credits-lede = يقوم Streams Reader على نماذج ومكتبات وخطوط مفتوحة. شكرًا لكل من صنعها.
+credits-meta-description = النماذج والمكتبات والخطوط والأيقونات المفتوحة التي يقوم عليها Streams Reader، مع تراخيصها.
+credits-group-models = الأصوات والكلام
+credits-group-software = البرمجيات
+credits-group-design = الخطوط والأيقونات والنصوص
+credit-role-kokoro = الأصوات القياسية
+credit-role-ming = الأصوات المعبّرة وصوتك الخاص
+credit-role-misaki = يحوّل النص الإنجليزي إلى أصوات لـ Kokoro
+credit-role-espeak = نطق احتياطي
+credit-role-rust = لغة التطبيق والخادم
+credit-role-leptos = واجهة تطبيق الويب
+credit-role-workers = الخادم على Cloudflare
+credit-role-pdfjs = يقرأ النص من ملفات PDF
+credit-role-fluent = الترجمات
+credit-role-grass = يبني أنماط هذا الموقع
+credit-role-torch = يشغّل نماذج الصوت
+credit-role-gradio = خادم محرّك الصوت
+credit-role-inter = خط الواجهة
+credit-role-literata = خط القراءة
+credit-role-remix = أيقونات الواجهة
+credit-role-austen = المقطع التجريبي في الصفحة الرئيسية
+credits-note = كل ترخيص يسري على مشروعه. شيفرة Streams Reader بترخيص MIT.
+
+## Not found
+lost-title = هذه الصفحة غير موجودة.
+lost-lede = ربما الرابط قديم أو فيه خطأ. كل شيء آخر على بُعد نقرة.
+lost-home = العودة إلى الصفحة الرئيسية

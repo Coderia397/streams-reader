@@ -1,0 +1,62 @@
+{
+ "name": "done",
+ "description": "Thumbs up with a few sparkles",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 12
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "none",
+    "hold": "read"
+   }
+  ],
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "soft_smile"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand+thumbs_up"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "sparkles",
+   "attach": "root",
+   "pos": [
+    0.45,
+    1.55,
+    0.1
+   ]
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}

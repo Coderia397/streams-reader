@@ -1,0 +1,316 @@
+# Streams Reader design tokens: the single source of truth.
+#
+# Every colour, radius, spacing step, type size, shadow, motion value and
+# component dimension of the web app, the landing site, the emails and the
+# native apps comes from this file. Edit a value, then run
+#
+#     uv run --script brand/build.py
+#
+# and brand/dist/tokens/{_tokens.scss,tokens.css,tokens.json}, every icon,
+# illustration and PNG export are regenerated.
+#
+# References: a string "{table.key}" points at another token; colours accept
+# "{palette.name/0.30}" for the same colour at 30 % opacity. The build fails if
+# a contrast pair listed under [contrast] drops below its WCAG minimum.
+
+[meta]
+name = "Streams Reader"
+version = "1.0.0"
+default_theme = "ink"   # :root without data-theme
+light_theme = "paper"   # used for prefers-color-scheme: light when no data-theme is set
+themes = ["ink", "paper", "night"]
+
+# Raw colours. Blue is the Streams family (streams-frontend-rs/brand/colors.json).
+[palette]
+blue-100 = "#DCE6FF"
+blue-200 = "#B4CAFF"
+blue-300 = "#8AAEFF"
+blue-400 = "#6E9BFF"   # Streams "soft"
+blue-450 = "#4A82FF"   # Streams hover (non-text use only: white on it is 3.5:1)
+blue-500 = "#2F6BFF"   # Streams primary (artwork)
+blue-ui = "#2F6AFF"    # Streams primary, one green step down so a white label passes AA (4.54 vs 4.50)
+blue-550 = "#2A62F0"
+blue-600 = "#2358D6"   # Streams active
+blue-700 = "#1D4BBD"   # Streams deep
+blue-800 = "#163A93"
+blue-900 = "#0F275F"
+ember-300 = "#FFD29E"
+ember-400 = "#FFB45C"  # the spoken word
+ember-500 = "#F29A33"
+ember-700 = "#A85400"
+void = "#0B0B0C"       # Streams void
+panel = "#16161A"      # Streams panel
+paper = "#F3F1EC"      # Streams paper
+white = "#FFFFFF"
+black = "#000000"
+mint-400 = "#3DD6A6"
+mint-700 = "#0C6E52"
+amber-400 = "#F5B544"
+amber-700 = "#8F4A06"
+rose-400 = "#FF6B7A"
+rose-700 = "#B42336"
+
+# ---------------------------------------------------------------- themes
+# brand        filled buttons, play, active states (white label: on-brand)
+# brand-hover  hover fill (keeps the white label at AA)
+# brand-active pressed fill
+# brand-soft   tinted fill for selected chips, soft buttons, badges
+# brand-text   brand-coloured text, links and icons on any surface (AA)
+# ember        the word being spoken (underline, caret); nothing else
+# word-pill    fill behind the spoken word; sentence-wash behind its sentence
+
+[theme.ink.color]
+brand = "{palette.blue-ui}"
+brand-hover = "{palette.blue-550}"
+brand-active = "{palette.blue-600}"
+brand-soft = "{palette.blue-500/0.16}"
+brand-text = "{palette.blue-400}"
+on-brand = "{palette.white}"
+ember = "{palette.ember-400}"
+on-ember = "{palette.void}"
+bg = "{palette.void}"
+surface-1 = "{palette.panel}"
+surface-2 = "#1E1E24"
+surface-3 = "#27272F"
+border = "#26262D"
+border-strong = "#383842"
+text = "#EDEDF0"
+text-2 = "#A7A7B0"
+text-3 = "#8F8F9A"
+success = "{palette.mint-400}"
+warning = "{palette.amber-400}"
+danger = "{palette.rose-400}"
+focus = "{palette.blue-400}"
+sentence-wash = "{palette.blue-500/0.14}"
+word-pill = "{palette.ember-400/0.26}"
+scrim = "{palette.black/0.60}"
+glass = "#16161AD9"
+
+[theme.ink.shadow]
+1 = "0 1px 2px rgba(0, 0, 0, 0.40)"
+2 = "0 8px 24px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.40)"
+3 = "0 20px 48px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.40)"
+
+[theme.paper.color]
+brand = "{palette.blue-ui}"
+brand-hover = "{palette.blue-550}"
+brand-active = "{palette.blue-600}"
+brand-soft = "{palette.blue-500/0.10}"
+brand-text = "{palette.blue-600}"
+on-brand = "{palette.white}"
+ember = "{palette.ember-700}"
+on-ember = "{palette.void}"
+bg = "{palette.paper}"
+surface-1 = "#FBFAF7"
+surface-2 = "#EAE7E0"
+surface-3 = "#E1DDD5"
+border = "#DDD9D0"
+border-strong = "#C6C1B6"
+text = "#141416"
+text-2 = "#55545C"
+text-3 = "#5F5D66"
+success = "{palette.mint-700}"
+warning = "{palette.amber-700}"
+danger = "{palette.rose-700}"
+focus = "{palette.blue-600}"
+sentence-wash = "{palette.blue-500/0.10}"
+word-pill = "{palette.ember-400/0.42}"
+scrim = "{palette.black/0.32}"
+glass = "#FBFAF7D9"
+
+[theme.paper.shadow]
+1 = "0 1px 2px rgba(40, 32, 20, 0.08), 0 1px 1px rgba(40, 32, 20, 0.04)"
+2 = "0 8px 24px rgba(40, 32, 20, 0.10), 0 1px 2px rgba(40, 32, 20, 0.06)"
+3 = "0 20px 48px rgba(40, 32, 20, 0.14), 0 2px 6px rgba(40, 32, 20, 0.06)"
+
+[theme.night.color]
+brand = "{palette.blue-ui}"
+brand-hover = "{palette.blue-550}"
+brand-active = "{palette.blue-600}"
+brand-soft = "{palette.blue-500/0.18}"
+brand-text = "{palette.blue-400}"
+on-brand = "{palette.white}"
+ember = "{palette.ember-400}"
+on-ember = "{palette.void}"
+bg = "{palette.black}"
+surface-1 = "#0E0E10"
+surface-2 = "#17171B"
+surface-3 = "#202026"
+border = "#1F1F25"
+border-strong = "#30303A"
+text = "#E4E4E8"
+text-2 = "#A2A2AB"
+text-3 = "#8A8A95"
+success = "{palette.mint-400}"
+warning = "{palette.amber-400}"
+danger = "{palette.rose-400}"
+focus = "{palette.blue-400}"
+sentence-wash = "{palette.blue-500/0.16}"
+word-pill = "{palette.ember-400/0.26}"
+scrim = "{palette.black/0.70}"
+glass = "#0E0E10D9"
+
+[theme.night.shadow]
+1 = "0 0 0 1px rgba(255, 255, 255, 0.04)"
+2 = "0 8px 24px rgba(0, 0, 0, 0.60), 0 0 0 1px rgba(255, 255, 255, 0.05)"
+3 = "0 20px 48px rgba(0, 0, 0, 0.70), 0 0 0 1px rgba(255, 255, 255, 0.06)"
+
+# WCAG checks run on every build, per theme. Alpha colours are composited on
+# the "over" colour (default: bg) first. min 4.5 = text, 3.0 = UI elements.
+[[contrast]]
+fg = ["text", "text-2", "text-3", "brand-text", "success", "warning", "danger"]
+bg = ["bg", "surface-1", "surface-2", "surface-3"]
+min = 4.5
+
+[[contrast]]
+fg = ["on-brand"]
+bg = ["brand", "brand-hover", "brand-active"]
+min = 4.5
+
+[[contrast]]
+fg = ["brand", "focus", "ember"]
+bg = ["bg", "surface-1", "surface-2"]
+min = 3.0
+
+[[contrast]]
+fg = ["text"]
+bg = ["word-pill", "sentence-wash", "brand-soft"]
+min = 7.0
+
+# ---------------------------------------------------------------- scales
+[radius]
+2xs = "4px"
+xs = "6px"
+sm = "10px"
+md = "14px"
+lg = "18px"
+xl = "24px"
+pill = "999px"
+
+[space]
+1 = "4px"
+2 = "8px"
+3 = "12px"
+4 = "16px"
+5 = "20px"
+6 = "24px"
+7 = "28px"
+8 = "32px"
+9 = "36px"
+10 = "40px"
+11 = "44px"
+12 = "48px"
+
+[font]
+ui = "\"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif"
+read = "\"Literata\", \"Iowan Old Style\", Georgia, serif"
+mono = "ui-monospace, \"SF Mono\", Menlo, Consolas, monospace"
+
+[text]
+xs = "0.75rem"       # 12 caption, meta
+sm = "0.875rem"      # 14 label, button
+md = "0.9375rem"     # 15 body
+lg = "1.0625rem"     # 17 title, row title
+xl = "1.25rem"       # 20 section
+2xl = "1.75rem"      # 28 page title
+3xl = "clamp(2.5rem, 6.5vw, 4.5rem)"  # landing display
+read = "1.1875rem"   # 19 reading default
+
+[leading]
+tight = "1.1"
+snug = "1.3"
+normal = "1.5"
+read = "1.65"
+
+[weight]
+regular = "450"
+medium = "550"
+semibold = "620"
+
+[tracking]
+display = "-0.03em"
+title = "-0.015em"
+normal = "0"
+overline = "0.08em"
+
+[motion]
+dur-fast = "120ms"
+dur-base = "180ms"
+dur-slow = "280ms"
+ease-out = "cubic-bezier(0.2, 0.8, 0.2, 1)"
+ease-in = "cubic-bezier(0.4, 0, 1, 1)"
+ease-inout = "cubic-bezier(0.65, 0, 0.35, 1)"
+
+# Component dimensions: every button, input, card, sheet and chip reads these.
+[component]
+button-height = "44px"
+button-height-sm = "36px"
+button-radius = "{radius.pill}"
+button-padding-x = "{space.5}"
+button-padding-x-sm = "{space.4}"
+input-height = "44px"
+input-radius = "{radius.md}"
+input-padding-x = "{space.4}"
+card-radius = "{radius.lg}"
+card-padding = "{space.4}"
+sheet-radius = "{radius.xl}"
+chip-height = "32px"
+chip-radius = "{radius.pill}"
+chip-padding-x = "{space.3}"
+tap-min = "44px"
+icon-size = "20px"
+icon-size-sm = "16px"
+play-size = "64px"
+play-size-sm = "40px"
+border-width = "1px"
+focus-width = "2px"
+focus-offset = "2px"
+content-max = "760px"
+
+[z]
+base = "0"
+sticky = "10"
+dock = "20"
+sheet = "40"
+toast = "50"
+
+# SCSS only: media query breakpoints (min-width).
+[breakpoint]
+sm = "600px"
+md = "900px"
+lg = "1200px"
+
+# ---------------------------------------------------------------- artwork
+# Icons and illustrations are coloured from here; class names in
+# brand/src/**/*.svg (f-<name> = fill, s-<name> = stroke) map to these keys.
+[art.color]
+ink = "{palette.void}"
+panel = "{palette.panel}"
+blue = "{palette.blue-500}"
+blue-soft = "{palette.blue-400}"
+blue-pale = "{palette.blue-200}"
+blue-mist = "{palette.blue-100}"
+blue-deep = "{palette.blue-700}"
+blue-night = "{palette.blue-900}"
+ember = "{palette.ember-400}"
+ember-pale = "{palette.ember-300}"
+ember-deep = "{palette.ember-500}"
+paper = "{palette.paper}"
+white = "{palette.white}"
+plate = "{palette.blue-500/0.14}"
+# App icon tile (D17): Streams blue with a faint top-to-bottom gradient (lightness
+# +1.2 % / -1.2 % around blue-500, 2.4 % in all, so it sits beside the flat
+# Streams tile), a quarter-cell offset shadow under the pixels and a hairline
+# top-light rim. The mark itself is always flat white.
+tile = "{palette.blue-500}"
+tile-top = "#356FFF"
+tile-bottom = "#2967FF"
+tile-shadow = "{palette.blue-800/0.32}"
+tile-rim = "{palette.white/0.14}"
+
+[art]
+spot-grid = 96
+stroke = 3          # illustration line weight on the 96 grid
+mark-grid = 16      # the mark is a 16x16 pixel grid (src/mark.txt), like the Streams cube
+mark-on-tile = 0.625  # mark side / tile side: 40 px cells on the 1024 tile (whole pixels at 1024/512/256/128)
+shadow-offset = 0.25  # pixel shadow offset in cells, down and right; drawn only when a cell is >= 4 px

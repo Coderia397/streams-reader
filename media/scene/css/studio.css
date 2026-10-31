@@ -1,0 +1,16 @@
+@font-face { font-family: "Inter"; src: url("../fonts/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata-latin-wght-normal.woff2") format("woff2"); font-weight: 200 900; }
+html, body { margin: 0; padding: 0; background: transparent; overflow: hidden; }
+#frame { position: relative; width: var(--w, 1280px); height: var(--h, 720px); }
+#stage { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#overlay { position: absolute; inset: 0; pointer-events: none; font-family: "Inter", sans-serif; color: #F3F1EC; }
+.ov { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.ov--center { top: 50%; transform: translateY(-50%); }
+.ov--lower { bottom: calc(110px * var(--u)); }
+.ov--upper { top: calc(110px * var(--u)); }
+.ov__text { font-family: "Literata", serif; font-weight: 560; font-size: calc(64px * var(--u)); letter-spacing: -0.01em; text-shadow: 0 2px 24px rgba(0,0,0,.55); line-height: 1.15; padding: 0 6%; }
+.ov__sub { margin-top: calc(18px * var(--u)); font-size: calc(30px * var(--u)); font-weight: 500; letter-spacing: 0.02em; color: #FFD29E; text-shadow: 0 2px 16px rgba(0,0,0,.6); }
+.ov--endcard { inset: 0; justify-content: center; }
+.ov__logo { height: calc(230px * var(--u)); width: auto; }
+.ov__tag { margin-top: calc(34px * var(--u)); font-family: "Literata", serif; font-size: calc(44px * var(--u)); font-weight: 500; }
+.ov__url { margin-top: calc(18px * var(--u)); font-size: calc(34px * var(--u)); color: #8AAEFF; letter-spacing: 0.04em; font-weight: 600; }

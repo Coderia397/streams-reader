@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><title>invite</title><g xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <circle cx="48" cy="50" r="38" fill="currentColor" fill-opacity="0.07" />
+    <rect x="16" y="40" width="64" height="40" rx="7" fill="currentColor" stroke="currentColor" />
+    <rect x="26" y="18" width="44" height="40" rx="5" style="fill:var(--color-surface-1, Canvas);" stroke="currentColor" />
+    <path d="M48 41.5c-6-3.6-9-6.9-9-10.2a4.5 4.5 0 0 1 9-1.5 4.5 4.5 0 0 1 9 1.5c0 3.3-3 6.6-9 10.2Z" style="fill:var(--color-ember, #FFB45C);" />
+    <path d="M16 46L48 64 80 46V73a7 7 0 0 1-7 7H23a7 7 0 0 1-7-7Z" fill="currentColor" fill-opacity="0.55" stroke="currentColor" />
+    <path d="M82 15.5C82 18.74 83.26 20 86.5 20C83.26 20 82 21.26 82 24.5C82 21.26 80.74 20 77.5 20C80.74 20 82 18.74 82 15.5Z" fill="currentColor" fill-opacity="0.55" />
+    <path d="M14 22.5C14 25.02 14.98 26 17.5 26C14.98 26 14 26.98 14 29.5C14 26.98 13.02 26 10.5 26C13.02 26 14 25.02 14 22.5Z" style="fill:var(--color-ember, #FFB45C);fill-opacity:0.5;" />
+  </g>
+</svg>

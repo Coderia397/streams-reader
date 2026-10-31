@@ -1,0 +1,16 @@
+; Streams Reader mark, 10x10 hand reduction for the 16 and 32 px desktop tiles
+; (as Streams redraws its cube for its 16 px desktop icon). Drawn at 1 px cells
+; on the 16 tile (3 px margin) and 2 px cells on the 32 tile (62.5 %).
+; Kept: back line and top-left diagonal, front face with the spine (col 2),
+; two text lines (2 and 1 px), the outer arc on col 9 with one-step corners,
+; symmetric about row 4.5. Dropped: the inner voice arc and the third line.
+..######..
+.#......#.
+########.#
+#.#....#.#
+#.#.##.#.#
+#.#....#.#
+#.#.#..#.#
+#.#....#.#
+#.#....##.
+########..

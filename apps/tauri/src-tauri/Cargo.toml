@@ -1,0 +1,69 @@
+[package]
+name = "streams-reader-app"
+description = "Streams Reader native app (Tauri 2): macOS, Windows, Linux, Android shells around the Leptos UI with native playback, downloads, keystore sessions and self-update"
+# The app has its own version: releases bump it without touching the server crates. tauri.conf.json reads it.
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+default-run = "streams-reader"
+
+# Workspace member but NOT in default-members: `cargo test` / `cargo clippy` at the root never build Tauri.
+# Build with the Tauri CLI in CI (.github/workflows/release.yml); see notes/18-native-apps-architecture.md.
+
+[lib]
+# Android loads the app as a shared library; desktop links the rlib into the binary below.
+name = "streams_reader_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "streams-reader"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2.7.4", features = [] }
+streams-native-bridge = { path = "../../bridge" }
+
+# Versions verified on crates.io 2026-10-30.
+[dependencies]
+tauri = { version = "2.12.5", features = [] }
+tauri-plugin-deep-link = "2.6.3"
+tauri-plugin-opener = "2.7.2"
+tauri-plugin-streams-media = { path = "../../android-plugin" }
+streams-native-bridge = { path = "../../bridge" }
+nolabs-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio = { version = "1.54", features = ["fs", "io-util", "sync", "time"] }
+# Same reqwest line as tauri-plugin-updater 2.14 (0.13, rustls without a bundled provider; ring installed at start).
+reqwest = { version = "0.13", default-features = false, features = ["json", "stream", "http2", "rustls-no-provider"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std"] }
+# Verifies the minisign signature of Android APKs (desktop bundles are verified by tauri-plugin-updater itself).
+minisign-verify = "0.3.0"
+semver = "1.0.28"
+# OS keystores behind one API: keychain (macOS), Credential Manager (Windows), Secret Service (Linux).
+# Android uses the Kotlin SecretStore in tauri-plugin-streams-media instead.
+keyring-core = "1.0.1"
+
+[target.'cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))'.dependencies]
+streams-audio = { path = "../../audio-engine" }
+souvlaki = { version = "0.9.3", default-features = false, features = ["use_zbus"] }
+tauri-plugin-updater = "2.14.1"
+tauri-plugin-single-instance = { version = "2.5.5", features = ["deep-link"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+apple-native-keyring-store = { version = "1.0.2", features = ["keychain"] }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows-native-keyring-store = "1.1.0"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+zbus-secret-service-keyring-store = { version = "1.0.1", features = ["rt-tokio-crypto-rust"] }
+
+# No `[lints] workspace = true`: `tauri::mobile_entry_point` and `generate_context!` expand to unsafe code, which the
+# workspace's `forbid(unsafe_code)` would reject. Our own modules still deny it at the top of lib.rs.
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "warn"
+dbg_macro = "deny"

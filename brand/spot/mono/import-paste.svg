@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><title>import paste</title><g xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <circle cx="48" cy="50" r="38" fill="currentColor" fill-opacity="0.07" />
+    <rect x="24" y="18" width="48" height="62" rx="8" fill="currentColor" stroke="currentColor" />
+    <rect x="30" y="26" width="36" height="48" rx="4" style="fill:var(--color-surface-1, Canvas);" stroke="currentColor" />
+    <rect x="38" y="13" width="20" height="10" rx="4" fill="currentColor" fill-opacity="0.28" stroke="currentColor" />
+    <path d="M37 38H59" stroke="currentColor" stroke-opacity="0.28" />
+    <path d="M37 45H59" stroke="currentColor" stroke-opacity="0.28" />
+    <rect x="41.5" y="42.5" width="13" height="5" rx="2.5" style="fill:var(--color-ember, #FFB45C);" />
+    <path d="M37 52H55" stroke="currentColor" stroke-opacity="0.28" />
+    <path d="M37 59H51" stroke="currentColor" stroke-opacity="0.28" />
+    <path d="M80 17.5C80 20.74 81.26 22 84.5 22C81.26 22 80 23.26 80 26.5C80 23.26 78.74 22 75.5 22C78.74 22 80 20.74 80 17.5Z" fill="currentColor" fill-opacity="0.55" />
+    <path d="M16 63C16 65.16 16.84 66 19 66C16.84 66 16 66.84 16 69C16 66.84 15.16 66 13 66C15.16 66 16 65.16 16 63Z" style="fill:var(--color-ember, #FFB45C);fill-opacity:0.5;" />
+  </g>
+</svg>

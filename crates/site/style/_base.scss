@@ -1,0 +1,135 @@
+// Fonts, reset and page defaults.
+@use "tokens" as t;
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/inter-latin-wght-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Literata";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("/assets/fonts/literata-latin-wght-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Literata";
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("/assets/fonts/literata-latin-wght-italic.woff2") format("woff2");
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(t.space(12) + t.space(8));
+  @include t.reduced-motion {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: t.color(bg);
+  color: t.color(text);
+  font-family: t.font(ui);
+  font-size: t.text(md);
+  line-height: t.leading(normal);
+  font-weight: t.weight(regular);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: t.color(brand-text);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  @include t.focus-ring;
+}
+
+button {
+  font: inherit;
+}
+
+summary {
+  @include t.focus-ring;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+.ri {
+  width: t.size(icon-size);
+  height: t.size(icon-size);
+  flex: none;
+}
+
+[dir="rtl"] .ri-flip {
+  transform: scaleX(-1);
+}
+
+::selection {
+  background: t.color(brand-soft);
+  color: t.color(text);
+}
+
+main:focus {
+  outline: none;
+}
+
+.skip {
+  @include t.button(primary, sm);
+  position: absolute;
+  inset-inline-start: t.space(4);
+  top: t.space(2);
+  z-index: t.z(toast);
+  transform: translateY(-200%);
+  &:focus-visible {
+    transform: none;
+  }
+}
+
+// Languages whose scripts the Latin fonts don't cover keep the system fonts and natural letter spacing.
+:lang(ar),
+:lang(hi),
+:lang(zh) {
+  --tracking-display: 0;
+  --tracking-title: 0;
+}

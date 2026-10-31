@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><title>done</title><g xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <circle cx="48" cy="50" r="38" fill="currentColor" fill-opacity="0.07" />
+    <circle cx="48" cy="50" r="24" fill="currentColor" stroke="currentColor" />
+    <path stroke-width="5" fill="none" d="M37 50.5l8 8 15-16" style="stroke:var(--color-surface-1, Canvas);" />
+    <path d="M20 19C20 22.6 21.4 24 25 24C21.4 24 20 25.4 20 29C20 25.4 18.6 24 15 24C18.6 24 20 22.6 20 19Z" style="fill:var(--color-ember, #FFB45C);" />
+    <path d="M78 16C78 18.88 79.12 20 82 20C79.12 20 78 21.12 78 24C78 21.12 76.88 20 74 20C76.88 20 78 18.88 78 16Z" fill="currentColor" fill-opacity="0.55" />
+    <path d="M80 70.5C80 73.02 80.98 74 83.5 74C80.98 74 80 74.98 80 77.5C80 74.98 79.02 74 76.5 74C79.02 74 80 73.02 80 70.5Z" style="fill:var(--color-ember, #FFB45C);fill-opacity:0.5;" />
+    <rect x="15" y="66" width="6" height="6" rx="1.5" transform="rotate(20 18 69)" fill="currentColor" fill-opacity="0.28" />
+    <circle cx="30" cy="82" r="2.5" style="fill:var(--color-ember, #FFB45C);fill-opacity:0.5;" />
+    <circle cx="86" cy="50" r="2.5" fill="currentColor" fill-opacity="0.55" />
+  </g>
+</svg>

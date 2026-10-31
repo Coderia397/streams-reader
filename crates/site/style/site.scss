@@ -1,0 +1,8 @@
+// Streams Reader website. Every colour, radius, size, type value and motion value comes from the brand tokens
+// (brand/tokens.toml → brand/dist/tokens/_tokens.scss). `site-gen --check` rejects raw colours and radii here.
+
+@use "base";
+@use "layout";
+@use "components";
+@use "home";
+@use "pages";

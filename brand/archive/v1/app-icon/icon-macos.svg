@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><title>Streams Reader</title><defs><linearGradient id="bgm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16161A"/><stop offset="1" stop-color="#0B0B0C"/></linearGradient><radialGradient id="glowm" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#2F6BFF" stop-opacity="0.22"/><stop offset="1" stop-color="#2F6BFF" stop-opacity="0"/></radialGradient><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity="0.3"/></filter></defs><g filter="url(#sh)"><rect x="100" y="100" width="824" height="824" rx="185.4" fill="#0B0B0C"/></g><rect x="100" y="100" width="824" height="824" rx="185.4" fill="url(#bgm)"/><circle cx="512" cy="512" r="346.08" fill="url(#glowm)"/><g transform="translate(215.36 215.36) scale(24.72)"><g xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path id="cursor" d="M5 3.25c2.9 0 5.2.9 7 2.9 1.8-2 4.1-2.9 7-2.9M5 20.75c2.9 0 5.2-.9 7-2.9 1.8 2 4.1 2.9 7 2.9M12 6.15V8M12 16v1.85" stroke="#2F6BFF" />
+    <path id="wave" d="M9 10.75v2.5M15 10.75v2.5M6 11.5v1M18 11.5v1" stroke="#2F6BFF" />
+    <path id="word" d="M12 10v4" stroke="#FFB45C" />
+  </g>
+</g></svg>

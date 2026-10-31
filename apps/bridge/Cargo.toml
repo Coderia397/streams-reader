@@ -1,0 +1,23 @@
+[package]
+name = "streams-native-bridge"
+description = "Contract between the Streams Reader UI (crates/web) and the native shells (apps/tauri): IPC names, payloads, the NativeBridge trait and its Tauri implementation for wasm32"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+# The proto types and the trait build on every target, so the Tauri app (native) and the web app (wasm32) share them.
+# `tauri` (the wasm32 implementation that calls window.__TAURI__) builds for wasm32 only.
+[dependencies]
+nolabs-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+js-sys = "0.3"
+
+[lints]
+workspace = true

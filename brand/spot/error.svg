@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><title>error</title><g xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <circle cx="48" cy="50" r="38" fill="#2F6BFF" fill-opacity="0.14" />
+    <path d="M30 14H62a4 4 0 0 1 4 4V62l-6 6-6-6-6 6-6-6-6 6-6-6-4 4V18a4 4 0 0 1 4-4Z" fill="#FFFFFF" stroke="#1D4BBD" />
+    <path d="M33 26H57" stroke="#B4CAFF" />
+    <path d="M33 33H59" stroke="#B4CAFF" />
+    <path d="M33 40H51" stroke="#B4CAFF" />
+    <circle cx="68" cy="66" r="12" fill="#FFB45C" stroke="#1D4BBD" />
+    <path d="M68 60V67" stroke="#1D4BBD" />
+    <circle cx="68" cy="72" r="1.9" fill="#1D4BBD" />
+    <path d="M16 26.5C16 29.02 16.98 30 19.5 30C16.98 30 16 30.98 16 33.5C16 30.98 15.02 30 12.5 30C15.02 30 16 29.02 16 26.5Z" fill="#6E9BFF" />
+  </g>
+</svg>

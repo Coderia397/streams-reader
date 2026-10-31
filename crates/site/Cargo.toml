@@ -1,0 +1,23 @@
+[package]
+name = "nolabs-site"
+description = "site-gen: builds the public Streams Reader website (landing, download, help and policy pages in 8 languages, SEO files) as static files"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "site-gen"
+path = "src/main.rs"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+grass = { version = "0.13.4", default-features = false }
+fluent-bundle = "0.16"
+fluent-syntax = "0.12"
+unic-langid = "0.9"
+
+[lints]
+workspace = true

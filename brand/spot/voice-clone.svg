@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><title>voice clone</title><g xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <circle cx="48" cy="50" r="38" fill="#2F6BFF" fill-opacity="0.14" />
+    <path fill="none" d="M31 42a17 17 0 0 0 34 0M48 59V69M40 71H56" stroke="#1D4BBD" />
+    <rect x="38" y="14" width="20" height="38" rx="10" fill="#2F6BFF" stroke="#1D4BBD" />
+    <path d="M44 22V32" stroke="#6E9BFF" />
+    <circle cx="48" cy="44" r="3" fill="#FFB45C" />
+    <path d="M12 42V46" stroke="#6E9BFF" />
+    <path d="M18 39V49" stroke="#6E9BFF" />
+    <path d="M24 36V52" stroke="#6E9BFF" />
+    <path d="M72 36V52" stroke="#2F6BFF" />
+    <path d="M78 39V49" stroke="#2F6BFF" />
+    <path d="M84 42V46" stroke="#2F6BFF" />
+    <path d="M76 14C76 16.88 77.12 18 80 18C77.12 18 76 19.12 76 22C76 19.12 74.88 18 72 18C74.88 18 76 16.88 76 14Z" fill="#FFD29E" />
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+{
+ "lang": "en",
+ "voice": "ming:US_Emma",
+ "lines": {
+  "late": {
+   "text": "It's late. Your eyes are tired, but the story isn't finished.",
+   "file": "late.webm",
+   "key": "5a9dd32e7bda01480c29d2f5307acb43f54cb6ae0f4823c8d735c1bd87c98e18",
+   "duration_ms": 4324,
+   "words": []
+  },
+  "readto": {
+   "text": "So let it read to you.",
+   "file": "readto.webm",
+   "key": "f08a5c80c9753207f68b66cc50e04b1ab9b9b1c19b972e4b65ec6d4bbba4f76b",
+   "duration_ms": 1659,
+   "words": []
+  },
+  "voice": {
+   "text": "A natural voice, and every word lights up as it's spoken.",
+   "file": "voice.webm",
+   "key": "7f570288d8448fadc3549f02b4d29d871a7b67f2c1b7c84f731ebd669cc4744b",
+   "duration_ms": 4064,
+   "words": []
+  },
+  "anywhere": {
+   "text": "Then take it with you. Pick up right where you left off.",
+   "file": "anywhere.webm",
+   "key": "f7a3dce49386d2468c73f51ffefb2467d9c3b7b18bc9889e7cdc1a3d5ff77aa6",
+   "duration_ms": 3587,
+   "words": []
+  },
+  "tagline": {
+   "text": "Your library, read aloud. Free. Open source. On every device.",
+   "file": "tagline.webm",
+   "key": "ea3e6d97e8c03ae3b78aa2596292493d860fcd1545643519fe55d583b9eb48c0",
+   "duration_ms": 5014,
+   "words": []
+  },
+  "endcard": {
+   "text": "Streams Reader.",
+   "file": "endcard.webm",
+   "key": "8c40faf510294fd38a959c01134f6c7b0bd6e0f46efa35f6eabd3894ea181ced",
+   "duration_ms": 1586,
+   "words": []
+  }
+ },
+ "emotions": {
+  "late": "neutral",
+  "readto": "happy",
+  "voice": "neutral",
+  "anywhere": "happy",
+  "tagline": "happy",
+  "endcard": "happy"
+ }
+}

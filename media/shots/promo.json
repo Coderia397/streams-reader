@@ -1,0 +1,740 @@
+{
+ "name": "promo",
+ "fps": 30,
+ "duration": 41.0,
+ "resolution": [
+  1920,
+  1080
+ ],
+ "seed": 11,
+ "poster_t": 14.0,
+ "encode": {
+  "webm": {
+   "codec": "av1",
+   "crf": 34,
+   "preset": 6
+  },
+  "mp4": {
+   "crf": 23,
+   "preset": "slow",
+   "maxrate": "3500k",
+   "bufsize": "7000k"
+  }
+ },
+ "segments": [
+  {
+   "start": 0,
+   "end": 7.4,
+   "environment": {
+    "preset": "room"
+   },
+   "lighting": {
+    "screen_glow": 0
+   },
+   "fade": [
+    {
+     "t": 0,
+     "v": 1
+    },
+    {
+     "t": 1.6,
+     "v": 0,
+     "ease": "out"
+    }
+   ],
+   "character": {
+    "anchor": "seat",
+    "headphones": "neck",
+    "phone_scale": 1.6,
+    "poses": [
+     {
+      "t": 0,
+      "pose": "sit_relaxed"
+     },
+     {
+      "t": 3.4,
+      "pose": "sit_relaxed+look_down",
+      "blend": 1.4
+     },
+     {
+      "t": 4.3,
+      "pose": "sit_relaxed",
+      "blend": 0.35
+     },
+     {
+      "t": 6.2,
+      "pose": "sit_relaxed+look_down",
+      "blend": 1.2
+     }
+    ],
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "tired"
+     },
+     {
+      "t": 3.2,
+      "expr": "sleepy",
+      "blend": 1.0
+     },
+     {
+      "t": 4.3,
+      "expr": "tired",
+      "blend": 0.3
+     },
+     {
+      "t": 6.0,
+      "expr": "sleepy",
+      "blend": 0.8
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "book",
+      "hold": "book_read"
+     }
+    ]
+   },
+   "camera": {
+    "handheld": 0.3,
+    "focus": [
+     {
+      "t": 0,
+      "on": "face"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "pos": [
+       2.7,
+       1.65,
+       2.6
+      ],
+      "target": [
+       -0.15,
+       0.95,
+       -1.3
+      ],
+      "fov": 38
+     },
+     {
+      "t": 7.4,
+      "pos": [
+       1.55,
+       1.35,
+       0.95
+      ],
+      "target": [
+       -0.2,
+       1.0,
+       -1.3
+      ],
+      "fov": 33,
+      "ease": "inout"
+     }
+    ]
+   }
+  },
+  {
+   "start": 7.4,
+   "end": 11.4,
+   "environment": {
+    "preset": "room"
+   },
+   "lighting": {
+    "screen_glow": 0.3,
+    "screen_area": 5
+   },
+   "character": {
+    "anchor": "seat",
+    "headphones": "neck",
+    "phone_scale": 1.6,
+    "poses": [
+     {
+      "t": 0,
+      "pose": "sit_relaxed"
+     }
+    ],
+    "hold_yaw": 24,
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "tired"
+     },
+     {
+      "t": 1.3,
+      "expr": "calm",
+      "blend": 0.8
+     },
+     {
+      "t": 3.0,
+      "expr": "absorbed",
+      "blend": 0.8
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "phone",
+      "hold": "read_one"
+     }
+    ]
+   },
+   "screen": {
+    "clip": "assets/screen/app-alice.webm",
+    "in": 0.0,
+    "on": [
+     {
+      "t": 0,
+      "v": [
+       0.15
+      ]
+     },
+     {
+      "t": 0.5,
+      "v": [
+       1
+      ]
+     }
+    ]
+   },
+   "camera": {
+    "handheld": 0.25,
+    "focus": [
+     {
+      "t": 0,
+      "on": "face"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "orbit": [
+       30,
+       2,
+       1.95
+      ],
+      "target": "face",
+      "shift": [
+       0,
+       -0.1,
+       0
+      ],
+      "fov": 32
+     },
+     {
+      "t": 4,
+      "orbit": [
+       26,
+       2,
+       1.55
+      ],
+      "target": "face",
+      "shift": [
+       0,
+       -0.1,
+       0
+      ],
+      "fov": 31,
+      "ease": "linear"
+     }
+    ]
+   }
+  },
+  {
+   "start": 11.4,
+   "end": 19.0,
+   "environment": {
+    "preset": "room"
+   },
+   "lighting": {
+    "screen_glow": 0.3,
+    "screen_area": 4
+   },
+   "character": {
+    "anchor": "seat",
+    "headphones": "neck",
+    "phone_scale": 1.6,
+    "pov": true,
+    "poses": [
+     {
+      "t": 0,
+      "pose": "sit_relaxed"
+     }
+    ],
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "absorbed"
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "phone",
+      "hold": "read_one"
+     }
+    ]
+   },
+   "screen": {
+    "clip": "assets/screen/app-alice.webm",
+    "in": 3.0
+   },
+   "camera": {
+    "handheld": 0.35,
+    "focus": [
+     {
+      "t": 0,
+      "on": "phone"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "pos": "eye",
+      "offset": [
+       0.0,
+       0.07,
+       0.05
+      ],
+      "target": "phone",
+      "fov": 33
+     },
+     {
+      "t": 7.6,
+      "pos": "eye",
+      "offset": [
+       0.0,
+       0.05,
+       0.08
+      ],
+      "target": "phone",
+      "fov": 27,
+      "ease": "linear"
+     }
+    ]
+   }
+  },
+  {
+   "start": 19.0,
+   "end": 22.6,
+   "environment": {
+    "preset": "room"
+   },
+   "lighting": {
+    "screen_glow": 0.3,
+    "screen_area": 5
+   },
+   "character": {
+    "anchor": "seat",
+    "headphones": "neck",
+    "phone_scale": 1.6,
+    "poses": [
+     {
+      "t": 0,
+      "pose": "sit_relaxed"
+     },
+     {
+      "t": 1.0,
+      "pose": "sit_relaxed+look_up",
+      "blend": 0.9
+     }
+    ],
+    "hold_yaw": 24,
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "absorbed"
+     },
+     {
+      "t": 1.0,
+      "expr": "look_up_calm",
+      "blend": 0.8
+     },
+     {
+      "t": 2.2,
+      "expr": "soft_smile",
+      "blend": 0.8
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "phone",
+      "hold": "read_one"
+     }
+    ]
+   },
+   "screen": {
+    "clip": "assets/screen/app-alice.webm",
+    "in": 10.6
+   },
+   "camera": {
+    "handheld": 0.25,
+    "focus": [
+     {
+      "t": 0,
+      "on": "face"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "orbit": [
+       -28,
+       4,
+       1.7
+      ],
+      "target": "face",
+      "shift": [
+       0,
+       -0.08,
+       0
+      ],
+      "fov": 32
+     },
+     {
+      "t": 3.6,
+      "orbit": [
+       -40,
+       6,
+       1.45
+      ],
+      "target": "face",
+      "shift": [
+       0,
+       -0.05,
+       0
+      ],
+      "fov": 30,
+      "ease": "in"
+     }
+    ]
+   }
+  },
+  {
+   "start": 22.6,
+   "end": 30.6,
+   "environment": {
+    "preset": "park",
+    "options": {
+     "time": "golden"
+    }
+   },
+   "transition_in": {
+    "type": "whip",
+    "duration": 0.8,
+    "direction": [
+     1,
+     0
+    ]
+   },
+   "lighting": {
+    "screen_glow": 0.05,
+    "screen_area": 1
+   },
+   "character": {
+    "anchor": "path_start",
+    "headphones": "ears",
+    "cable": true,
+    "phone_scale": 1.5,
+    "keys": [
+     {
+      "t": 0,
+      "pos": [
+       0,
+       0,
+       0.15
+      ],
+      "rotY": 90
+     }
+    ],
+    "walk": {
+     "speed": 0.85,
+     "heading": 90,
+     "cadence": 0.85,
+     "arms": 0.45
+    },
+    "poses": [
+     {
+      "t": 0,
+      "pose": "stand"
+     }
+    ],
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "calm"
+     },
+     {
+      "t": 4.0,
+      "expr": "soft_smile",
+      "blend": 1.0
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "phone",
+      "hold": "walk"
+     }
+    ]
+   },
+   "screen": {
+    "clip": "assets/screen/app-alice.webm",
+    "in": 14.0
+   },
+   "camera": {
+    "follow": true,
+    "handheld": 0.45,
+    "focus": [
+     {
+      "t": 0,
+      "on": "face"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "orbit": [
+       -72,
+       4,
+       3.0
+      ],
+      "target": "chest",
+      "aim": [
+       0.25,
+       0.32,
+       0
+      ],
+      "fov": 30
+     },
+     {
+      "t": 8,
+      "orbit": [
+       -58,
+       7,
+       2.3
+      ],
+      "target": "chest",
+      "aim": [
+       0.15,
+       0.3,
+       0
+      ],
+      "fov": 30,
+      "ease": "linear"
+     }
+    ]
+   }
+  },
+  {
+   "start": 30.6,
+   "end": 41.0,
+   "environment": {
+    "preset": "park",
+    "options": {
+     "time": "golden"
+    }
+   },
+   "lighting": {
+    "screen_glow": 0.05,
+    "screen_area": 1
+   },
+   "fade": [
+    {
+     "t": 0,
+     "v": 0
+    },
+    {
+     "t": 5.4,
+     "v": 0
+    },
+    {
+     "t": 6.4,
+     "v": 0.82,
+     "ease": "inout"
+    }
+   ],
+   "character": {
+    "anchor": "path_start",
+    "headphones": "ears",
+    "cable": true,
+    "phone_scale": 1.5,
+    "keys": [
+     {
+      "t": 0,
+      "pos": [
+       8.0,
+       0,
+       0.15
+      ],
+      "rotY": 90
+     }
+    ],
+    "walk": {
+     "speed": 0.8,
+     "heading": 90,
+     "cadence": 0.85,
+     "arms": 0.45
+    },
+    "poses": [
+     {
+      "t": 0,
+      "pose": "stand"
+     }
+    ],
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "soft_smile"
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "phone",
+      "hold": "walk"
+     }
+    ]
+   },
+   "screen": {
+    "clip": "assets/screen/app-alice.webm",
+    "in": 20.0
+   },
+   "camera": {
+    "follow": true,
+    "handheld": 0.2,
+    "focus": [
+     {
+      "t": 0,
+      "on": "face"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "orbit": [
+       -40,
+       8,
+       4.2
+      ],
+      "target": "chest",
+      "aim": [
+       0.6,
+       0.2,
+       0
+      ],
+      "fov": 34
+     },
+     {
+      "t": 10.4,
+      "orbit": [
+       -25,
+       24,
+       7.5
+      ],
+      "target": "chest",
+      "aim": [
+       1.4,
+       0.6,
+       0
+      ],
+      "fov": 34,
+      "ease": "inout"
+     }
+    ]
+   }
+  }
+ ],
+ "overlays": [
+  {
+   "start": 31.2,
+   "end": 36.5,
+   "type": "title",
+   "text": "Your library, read aloud.",
+   "sub": "Free · Open source · On every device",
+   "position": "upper",
+   "text_id": "title",
+   "sub_id": "sub"
+  },
+  {
+   "start": 36.6,
+   "end": 41.2,
+   "type": "endcard",
+   "logo": "brand/wordmark/streams-reader-stacked-on-dark.svg",
+   "text": "",
+   "sub": "listen.streams.watch",
+   "fade": 0.7,
+   "sub_id": "url"
+  }
+ ],
+ "audio": {
+  "music": {
+   "file": "assets/music/bed.ogg",
+   "gain_db": -2,
+   "in": 0,
+   "fade_in": 2.0,
+   "fade_out": 3.0,
+   "duck_threshold": 0.025,
+   "duck_ratio": 5
+  },
+  "vo": [
+   {
+    "id": "late",
+    "at": 1.5
+   },
+   {
+    "id": "readto",
+    "at": 8.3
+   },
+   {
+    "id": "voice",
+    "at": 14.9
+   },
+   {
+    "id": "anywhere",
+    "at": 19.5
+   },
+   {
+    "id": "tagline",
+    "at": 31.2
+   },
+   {
+    "id": "endcard",
+    "at": 37.3
+   }
+  ],
+  "narration": [
+   {
+    "file": "assets/screen/app-alice.narration.webm",
+    "at": 11.4,
+    "in": 3.0,
+    "dur": 3.7,
+    "gain_db": 0,
+    "fade": 0.25
+   },
+   {
+    "file": "assets/screen/app-alice.narration.webm",
+    "at": 15.1,
+    "in": 6.7,
+    "dur": 4.0,
+    "gain_db": -11,
+    "fade": 0.3
+   },
+   {
+    "file": "assets/screen/app-alice.narration.webm",
+    "at": 23.4,
+    "in": 14.8,
+    "dur": 6.8,
+    "gain_db": -15,
+    "fade": 0.8
+   }
+  ],
+  "loudness": -16,
+  "true_peak": -1.5,
+  "vo_set": "{lang}-ming"
+ }
+}

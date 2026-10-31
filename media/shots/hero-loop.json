@@ -1,0 +1,159 @@
+{
+ "name": "hero-loop",
+ "fps": 30,
+ "duration": 10,
+ "loop": true,
+ "resolution": [
+  1280,
+  720
+ ],
+ "seed": 11,
+ "poster_t": 4.0,
+ "encode": {
+  "webm": {
+   "codec": "av1",
+   "crf": 35,
+   "preset": 5,
+   "gop": 300
+  },
+  "mp4": {
+   "crf": 23,
+   "maxrate": "1150k",
+   "bufsize": "2300k",
+   "preset": "slow"
+  }
+ },
+ "segments": [
+  {
+   "start": 0,
+   "end": 10,
+   "environment": {
+    "preset": "room"
+   },
+   "lighting": {
+    "screen_glow": 0.3,
+    "screen_area": 5
+   },
+   "look": {
+    "grade": {
+     "grain": 0.012,
+     "vignette": 0.45
+    }
+   },
+   "character": {
+    "anchor": "seat",
+    "headphones": "neck",
+    "phone_scale": 1.6,
+    "hold_yaw": 20,
+    "poses": [
+     {
+      "t": 0,
+      "pose": "sit_relaxed"
+     },
+     {
+      "t": 4.2,
+      "pose": "sit_relaxed",
+      "joints": {
+       "head": [
+        3,
+        4,
+        2
+       ]
+      },
+      "blend": 1.6
+     },
+     {
+      "t": 7.6,
+      "pose": "sit_relaxed",
+      "blend": 1.8
+     },
+     {
+      "t": 10,
+      "pose": "sit_relaxed"
+     }
+    ],
+    "expressions": [
+     {
+      "t": 0,
+      "expr": "absorbed"
+     },
+     {
+      "t": 5.2,
+      "expr": "calm",
+      "blend": 1.2
+     },
+     {
+      "t": 8.8,
+      "expr": "absorbed",
+      "blend": 1.2
+     }
+    ],
+    "hold": [
+     {
+      "t": 0,
+      "item": "phone",
+      "hold": "read_one"
+     }
+    ]
+   },
+   "screen": {
+    "clip": "assets/screen/app-alice.webm",
+    "in": 3.3,
+    "loop_xfade": 0.8
+   },
+   "camera": {
+    "handheld": 0.25,
+    "focus": [
+     {
+      "t": 0,
+      "on": "face"
+     }
+    ],
+    "keys": [
+     {
+      "t": 0,
+      "pos": [
+       1.3,
+       1.3,
+       0.45
+      ],
+      "target": [
+       -0.12,
+       1.0,
+       -1.3
+      ],
+      "fov": 33
+     },
+     {
+      "t": 5,
+      "pos": [
+       1.0,
+       1.24,
+       0.72
+      ],
+      "target": [
+       -0.16,
+       0.98,
+       -1.3
+      ],
+      "fov": 32
+     },
+     {
+      "t": 10,
+      "pos": [
+       1.3,
+       1.3,
+       0.45
+      ],
+      "target": [
+       -0.12,
+       1.0,
+       -1.3
+      ],
+      "fov": 33
+     }
+    ]
+   }
+  }
+ ]
+}

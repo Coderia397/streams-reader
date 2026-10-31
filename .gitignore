@@ -11,3 +11,12 @@
 /archive
 /notes/raw/design-private
 /.claude
+
+# Generated outputs (rebuilt by their tools; published artefacts live on R2 / GitHub Releases)
+/media/dist/
+/crates/site/dist/
+/crates/player/harness/dist/
+/crates/player/harness/out/
+/apps/tauri/gen/
+/apps/tauri/target/
+*.crate

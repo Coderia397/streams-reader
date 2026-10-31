@@ -1,0 +1,75 @@
+{
+ "name": "empty-library",
+ "description": "Looking at an empty shelf, hand at the chin",
+ "t": 0.5,
+ "character": {
+  "keys": [
+   {
+    "t": 0,
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "rotY": 40
+   }
+  ],
+  "headphones": "ears",
+  "hold": [
+   {
+    "t": 0,
+    "item": "none",
+    "hold": "read"
+   }
+  ],
+  "ik": {
+   "R": [
+    -0.08,
+    1.12,
+    0.3
+   ]
+  },
+  "expressions": [
+   {
+    "t": 0,
+    "expr": "curious"
+   }
+  ],
+  "poses": [
+   {
+    "t": 0,
+    "pose": "stand+look_up"
+   }
+  ]
+ },
+ "props": [
+  {
+   "type": "shelf_empty",
+   "attach": "world",
+   "pos": [
+    0.95,
+    0.5,
+    -0.4
+   ],
+   "rot": [
+    0,
+    -30,
+    0
+   ],
+   "scale": 0.9
+  }
+ ],
+ "camera": {
+  "pos": [
+   0.0,
+   1.0,
+   4.6
+  ],
+  "target": [
+   0,
+   0.86,
+   0
+  ],
+  "fov": 27
+ }
+}
