@@ -4,6 +4,12 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D33. Motion: product motion design for the hero, Blender for the character film
+- Decision: the landing hero is product motion design of the real UI (the live interactive demo in crates/site, plus a code-driven motion reel and feature loops in media/motion rendered through headless Chrome with brand tokens and real fonts); the voxel character film is the emotional piece and moves to Blender (scripted bpy: real armature with IK, PBR lighting, depth of field, motion blur), rendered on Kaggle's free GPU (media/blender). The three.js film stays as v1.
+- Reason: the owner asked for "a bit more professional"; leading brands lead with crisp UI motion; Blender gives correct rigs and cinema lighting for free, scriptable and reproducible; nothing heavy runs on the laptop.
+- Rejected: Blender for UI motion (worse type and brand fidelity); Unreal (heavy, not headless-friendly); paid AI video.
+- Decided by: assistant on the owner's question, 2026-10-31.
+
 ### D27–D31. Native apps architecture
 - Recorded in [18-native-apps-architecture.md](18-native-apps-architecture.md): `apps/` is its own Cargo workspace (D27); the Rust core owns playback, render-ahead, downloads, session and updates while the webview only displays (D28); Sonic for pitch-preserving speed on desktop, signalsmith as fallback (D29); Android plays local files fed ≥ 3 min ahead (D30); release artefacts in R2 bucket `streams-reader-releases`, one minisign updater key (D31). Accepted by the assistant 2026-10-31.
 
