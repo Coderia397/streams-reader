@@ -68,6 +68,10 @@ pub fn supabase_project_env() -> Result<PathBuf> {
     Ok(home()?.join(".config/nolabs/supabase.env"))
 }
 
+pub fn site_crate() -> PathBuf {
+    repo_root().join("crates/site")
+}
+
 pub fn web_crate() -> PathBuf {
     repo_root().join("crates/web")
 }

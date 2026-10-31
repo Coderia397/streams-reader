@@ -1,5 +1,5 @@
-//! `build`: the web app first (the Worker embeds `crates/web/dist`), then the Worker. Reports artefact sizes,
-//! including the gzip size Cloudflare checks against the Worker size limit.
+//! `build`: the landing site (`site-gen`), the web app (`trunk build --release`), then the Worker, which embeds both
+//! (`crates/worker/build.rs`). Reports each build's size and the Worker's modules against Cloudflare's size limit.
 
 use std::fs;
 use std::io::Write as _;
@@ -13,34 +13,62 @@ use crate::cmd::run_tool;
 use crate::paths::{self, tilde};
 use crate::worker_bundle::collect_modules;
 
-/// Workers Free plan limit on the compressed script (assumed current; Paid is 10 MiB).
-const FREE_PLAN_GZIP_LIMIT: u64 = 3 * 1024 * 1024;
+/// Worker size limit on every plan: 64 MiB uncompressed; there is no compressed limit (verified 2026-10-31 on
+/// developers.cloudflare.com/workers/platform/limits, page dated 2026-10-29). gzip is printed for reference.
+const WORKER_SIZE_LIMIT: u64 = 64 * 1024 * 1024;
+/// Above this the bundle still uploads, but startup (1 s limit) and memory (128 MB per isolate) deserve a look.
+const WORKER_SIZE_WARN: u64 = 32 * 1024 * 1024;
 
 pub fn run() -> Result<()> {
+    let cargo = std::env::var("CARGO").unwrap_or_else(|_| "cargo".to_owned());
+    run_tool(&cargo, &["run", "-q", "-p", "nolabs-site", "--bin", "site-gen"], &paths::repo_root(), &[])?;
+    report_dir("site", &paths::site_crate().join("dist"))?;
+
     let web = paths::web_crate();
     run_tool("trunk", &["build", "--release"], &web, &[])?;
-    let dist = web.join("dist");
-    let (files, bytes) = dir_size(&dist)?;
-    println!("web: {} in {files} files ({})", tilde(&dist), human(bytes));
+    report_dir("web", &web.join("dist"))?;
 
     let worker = paths::worker_crate();
     run_tool("worker-build", &["--release"], &worker, &[])?;
-    let build = worker.join("build");
-    let modules = collect_modules(&build)?;
-    let mut total_gz = 0;
+    let modules = collect_modules(&worker.join("build"))?;
+    let (mut total, mut total_gz) = (0, 0);
     for m in &modules {
         let raw = fs::read(&m.path).with_context(|| format!("cannot read {}", tilde(&m.path)))?;
         let gz = gzip_len(&raw)?;
+        total += raw.len() as u64;
         total_gz += gz;
         println!("worker: {:<40} {:>10}  gzip {:>10}  {}", m.name, human(raw.len() as u64), human(gz), m.content_type);
     }
-    println!("worker: total gzip {}", human(total_gz));
-    if total_gz > FREE_PLAN_GZIP_LIMIT {
-        eprintln!(
-            "warning: over the {} Workers Free plan limit; the upload will be rejected",
-            human(FREE_PLAN_GZIP_LIMIT)
+    println!(
+        "worker: total {} of the {} limit (gzip {}, not limited)",
+        human(total),
+        human(WORKER_SIZE_LIMIT),
+        human(total_gz)
+    );
+    check_size(total)
+}
+
+/// Fails over the limit (the upload would be rejected); warns past half of it.
+fn check_size(total: u64) -> Result<()> {
+    if total > WORKER_SIZE_LIMIT {
+        anyhow::bail!(
+            "the Worker is {} and over the {} limit; the upload would be rejected",
+            human(total),
+            human(WORKER_SIZE_LIMIT)
         );
     }
+    if total > WORKER_SIZE_WARN {
+        eprintln!(
+            "warning: the Worker is past {}; check startup time and memory after deploy",
+            human(WORKER_SIZE_WARN)
+        );
+    }
+    Ok(())
+}
+
+fn report_dir(label: &str, dir: &Path) -> Result<()> {
+    let (files, bytes) = dir_size(dir)?;
+    println!("{label}: {} in {files} files ({})", tilde(dir), human(bytes));
     Ok(())
 }
 
@@ -96,6 +124,13 @@ mod tests {
     fn gzip_shrinks_repetitive_input() {
         let n = gzip_len(&vec![b'a'; 10_000]).unwrap();
         assert!(n > 0 && n < 200, "{n}");
+    }
+
+    #[test]
+    fn size_check_fails_only_over_the_limit() {
+        assert!(check_size(WORKER_SIZE_LIMIT).is_ok());
+        assert!(check_size(WORKER_SIZE_WARN + 1).is_ok());
+        assert!(check_size(WORKER_SIZE_LIMIT + 1).unwrap_err().to_string().contains("over the"));
     }
 
     #[test]

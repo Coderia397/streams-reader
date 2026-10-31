@@ -12,9 +12,11 @@ pub mod gradio;
 pub mod ports;
 pub mod repo;
 pub mod routes;
+pub mod security_headers;
 pub mod services;
 pub mod space;
 pub mod static_assets;
+pub mod static_routes;
 
 #[cfg(test)]
 pub(crate) mod testing;

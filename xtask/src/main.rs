@@ -88,7 +88,7 @@ enum Command {
     },
     /// Check the Supabase project: RLS on every table, no exposed definer functions, security and performance advisors.
     SupabaseCheck,
-    /// Build the web app (trunk) and the Worker (worker-build) in release mode and report sizes.
+    /// Build the landing site (site-gen), the web app (trunk) and the Worker that embeds both, and report sizes.
     Build,
     /// Upload the Worker "nolabs-api" with its bindings, secrets, queue consumer, cron and workers.dev URL.
     Deploy {
@@ -100,9 +100,7 @@ enum Command {
         ming_rev: Option<String>,
     },
     /// Attach one of this project's hostnames (reader.streams.watch, listen.streams.watch) to the Worker.
-    Domain {
-        hostname: String,
-    },
+    Domain { hostname: String },
     /// Upload space/ to the Hugging Face Space and wait until the new build is RUNNING.
     Space {
         /// Return right after the upload.

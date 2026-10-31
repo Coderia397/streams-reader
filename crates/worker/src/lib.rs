@@ -1,5 +1,5 @@
 //! The nolabs Cloudflare Worker: the HTTP API, the `nolabs-render` queue consumer and the 30-minute cron, all thin
-//! adapters over `nolabs-server`, plus the embedded web app and Supabase's auth email hook. CORS is limited to the
+//! adapters over `nolabs-server`, plus the embedded landing site and web app and Supabase's auth email hook. CORS is limited to the
 //! native apps' origins (the web app is same-origin).
 
 mod adapters;
@@ -9,26 +9,39 @@ mod router;
 mod streams;
 
 use nolabs_server::ports::JobMessage;
+use nolabs_server::security_headers::{self, Surface};
 use worker::{Context, Env, MessageBatch, Request, Response, ScheduleContext, ScheduledEvent, event};
 
 #[event(fetch)]
 pub async fn fetch(req: Request, env: Env, _ctx: Context) -> worker::Result<Response> {
     let path = req.path();
-    let csp = respond::csp(env.var("SUPABASE_URL").ok().map(|v| v.to_string()).as_deref());
+    let supabase_url = env.var("SUPABASE_URL").ok().map(|v| v.to_string());
+    let headers = security_headers::headers(Surface::of(&path), supabase_url.as_deref());
     let resp = if path == "/api" || path.starts_with("/api/") {
         router::api(req, &env).await
     } else if path == "/hooks/auth-email" {
         router::auth_email_hook(req, &env).await
     } else {
         match req.method() {
-            worker::Method::Get | worker::Method::Head => {
-                let etag = req.headers().get("if-none-match").ok().flatten();
-                assets::serve(&path, req.method() == worker::Method::Head, etag.as_deref())
-            }
+            worker::Method::Get | worker::Method::Head => static_file(&req, &path),
             _ => router::method_not_allowed(),
         }
     };
-    Ok(respond::secure(resp, &csp))
+    Ok(respond::secure(resp, &headers))
+}
+
+/// The landing site or the web app (see `assets`).
+fn static_file(req: &Request, path: &str) -> Response {
+    let header = |name: &str| req.headers().get(name).ok().flatten();
+    let (if_none_match, range) = (header("if-none-match"), header("range"));
+    let url = req.url().ok();
+    assets::serve(&assets::StaticRequest {
+        path,
+        query: url.as_ref().and_then(|u| u.query()),
+        head: req.method() == worker::Method::Head,
+        if_none_match: if_none_match.as_deref(),
+        range: range.as_deref(),
+    })
 }
 
 /// Consumer settings expected on the queue: `max_batch_size = 1`, `max_retries = 0` (retries are decided by

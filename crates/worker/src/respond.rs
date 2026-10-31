@@ -1,22 +1,9 @@
-//! Response helpers: JSON bodies, the API error body, and the security headers every response carries.
+//! Response helpers: JSON bodies, the API error body, and setting the security headers every response carries
+//! (`nolabs_server::security_headers`).
 
 use nolabs_core::proto::ApiError;
 use serde::Serialize;
 use worker::{Headers, Response};
-
-/// Only our own origin for scripts (plus wasm compilation), styles, media and fetches, and the Supabase project
-/// for the app's direct PostgREST, Auth and Realtime (WebSocket) calls (decision D10).
-pub fn csp(supabase_url: Option<&str>) -> String {
-    let supabase = supabase_url
-        .filter(|u| u.starts_with("https://"))
-        .map(|u| format!(" {u} {}", u.replacen("https://", "wss://", 1)))
-        .unwrap_or_default();
-    format!(
-        "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; \
-         img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'{supabase}; worker-src 'self'; \
-         manifest-src 'self'; font-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
-    )
-}
 
 /// Convert a binding error into a 500.
 pub fn internal(e: worker::Error) -> ApiError {
@@ -55,15 +42,10 @@ pub fn error(e: &ApiError) -> Response {
     resp
 }
 
-/// Add the security headers to any response (API, assets and errors alike).
-pub fn secure(mut resp: Response, csp: &str) -> Response {
+/// Add the security headers of the request's surface to any response (API, assets and errors alike).
+pub fn secure(mut resp: Response, headers: &[(&str, String)]) -> Response {
     let h = resp.headers_mut();
-    for (k, v) in [
-        ("content-security-policy", csp),
-        ("x-content-type-options", "nosniff"),
-        ("referrer-policy", "no-referrer"),
-        ("permissions-policy", "microphone=(self)"),
-    ] {
+    for (k, v) in headers {
         let _ = h.set(k, v);
     }
     resp
