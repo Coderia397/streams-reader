@@ -15,7 +15,7 @@ sha2.workspace = true
 hex.workspace = true
 thiserror.workspace = true
 async-trait.workspace = true
-hmac = "0.12"
+hmac = "0.13"
 base64 = "0.22"
 url = "2.5"
 # ES256 verification of Supabase access tokens; pure Rust, so the same code runs in the Worker (wasm32).
