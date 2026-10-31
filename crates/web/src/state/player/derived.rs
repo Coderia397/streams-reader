@@ -34,6 +34,21 @@ impl PlayerBridge {
         })
     }
 
+    /// Estimated seconds left in the current chapter at the current speed.
+    pub fn chapter_seconds_left(&self) -> f64 {
+        let offset = self.offset();
+        let segment = self.segment.get();
+        let rate = self.rate.get();
+        self.doc.with(|d| match (d, offset) {
+            (Some(d), Some(o)) => d.model.chapter_seconds_left(segment, o, rate),
+            _ => 0.0,
+        })
+    }
+
+    pub fn has_chapters(&self) -> bool {
+        self.doc.with(|d| d.as_ref().is_some_and(|d| !d.model.chapters.is_empty()))
+    }
+
     pub fn title(&self) -> String {
         self.doc.with(|d| d.as_ref().map(|d| d.summary.meta.title.clone()).unwrap_or_default())
     }

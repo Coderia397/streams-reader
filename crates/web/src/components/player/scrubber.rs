@@ -1,5 +1,6 @@
 //! Position over the whole document, estimated from char counts (audio length is unknown until rendered). Dragging
-//! previews the target; releasing jumps to the segment under it.
+//! previews the target; releasing jumps to the segment under it. The times row shows how far in, time left in the
+//! document and time left in the chapter.
 
 use leptos::prelude::*;
 
@@ -24,6 +25,11 @@ pub fn Scrubber() -> impl IntoView {
         None => format::time_left(player.seconds_left()),
     };
     let percent = move || format!("{:.0}%", shown() * 100.0);
+    let chapter_left = move || {
+        player
+            .has_chapters()
+            .then(|| t!("player-chapter-left", time = format::duration_short(player.chapter_seconds_left())))
+    };
     let commit = move || {
         if let Some(f) = dragging.get_untracked() {
             let target = player.doc.with_untracked(|d| d.as_ref().map(|d| d.model.segment_for_fraction(f)));
@@ -34,14 +40,15 @@ pub fn Scrubber() -> impl IntoView {
         dragging.set(None);
     };
     view! {
-        <div class="scrubber">
+        <div class="scrubber" class:is-dragging=move || dragging.get().is_some()>
             <input
-                class="scrubber__range"
+                class="slider scrubber__range"
                 type="range"
                 min="0"
                 max=STEPS.to_string()
                 step="1"
-                aria-label="Position in document"
+                aria-label=t!("player-position")
+                aria-valuetext=percent
                 prop:value=move || (shown() * STEPS).round().to_string()
                 style:--fill=move || format!("{:.2}%", shown() * 100.0)
                 on:input=move |e| {
@@ -50,9 +57,10 @@ pub fn Scrubber() -> impl IntoView {
                 }
                 on:change=move |_| commit()
             />
-            <div class="scrubber__labels">
+            <div class="scrubber__times">
                 <span>{percent}</span>
-                <span>{left_label}</span>
+                <span class="scrubber__left">{left_label}</span>
+                <span>{chapter_left}</span>
             </div>
         </div>
     }

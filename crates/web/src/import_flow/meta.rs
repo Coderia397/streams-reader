@@ -2,7 +2,7 @@
 
 use nolabs_core::proto::api::{Block, DOCUMENT_BODY_VERSION, DocumentBody, DocumentMeta, SourceKind};
 use nolabs_core::text::{reading_text, word_count};
-use nolabs_import::Imported;
+use nolabs_web_import::Parsed as Imported;
 
 const MAX_TITLE_CHARS: usize = 200;
 

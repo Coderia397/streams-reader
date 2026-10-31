@@ -30,7 +30,7 @@ pub async fn submit(name: String, takes: Takes, phase: RwSignal<Phase>) {
 }
 
 async fn run(name: String, takes: Takes, phase: RwSignal<Phase>) -> Result<String, String> {
-    let wav = takes.wav().ok_or_else(|| "Record every line first.".to_owned())?;
+    let wav = takes.wav().ok_or_else(|| t!("record-every-line"))?;
     let req = CreateVoice { name, transcript: transcript(), reference_bytes: wav.len() as u64 };
     let friendly = |e: ClientError| e.friendly();
     let voice = voices::create(&req).await.map_err(friendly)?;
@@ -44,13 +44,11 @@ async fn run(name: String, takes: Takes, phase: RwSignal<Phase>) -> Result<Strin
         match catalog.voices.iter().find(|v| v.id == voice.id).map(|v| v.state) {
             Some(VoiceState::Ready) => return Ok(voice.id),
             Some(VoiceState::Failed) => {
-                return Err(
-                    "The recording couldn't be turned into a voice. Try recording again somewhere quieter.".into()
-                );
+                return Err(t!("record-prepare-failed"));
             }
             Some(_) => {}
-            None => return Err("The voice disappeared while it was being prepared.".into()),
+            None => return Err(t!("record-vanished")),
         }
     }
-    Err("Still preparing. It will appear under My voices when it's ready.".into())
+    Err(t!("record-still-preparing"))
 }

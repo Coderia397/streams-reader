@@ -1,0 +1,24 @@
+// Progress bars (document progress, budgets).
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.progress {
+  position: relative;
+  flex: 1;
+  height: t.space(1);
+  overflow: hidden;
+  border-radius: t.radius("pill");
+  background: t.color("surface-3");
+
+  &__fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: t.color("brand");
+  }
+
+  &--thin {
+    height: calc(#{t.space(1)} * 0.75);
+    margin-block-start: t.space(2);
+    max-width: calc(#{t.space(12)} * 3);
+  }
+}

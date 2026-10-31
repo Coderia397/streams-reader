@@ -45,10 +45,21 @@ pub fn viewport_height() -> f64 {
     window().and_then(|w| w.inner_height().ok()).and_then(|v| v.as_f64()).unwrap_or(800.0)
 }
 
-/// Scrolls the element to the vertical centre of the viewport.
-pub fn scroll_into_center(el: &web_sys::Element, smooth: bool) {
-    let opts = web_sys::ScrollIntoViewOptions::new();
-    opts.set_block(web_sys::ScrollLogicalPosition::Center);
+/// The first element matching a CSS selector.
+pub fn query(selector: &str) -> Option<web_sys::Element> {
+    document()?.query_selector(selector).ok().flatten()
+}
+
+/// Scrolls the page by `dy` px.
+pub fn scroll_by(dy: f64, smooth: bool) {
+    let Some(w) = window() else { return };
+    let opts = web_sys::ScrollToOptions::new();
+    opts.set_top(dy);
     opts.set_behavior(if smooth { web_sys::ScrollBehavior::Smooth } else { web_sys::ScrollBehavior::Instant });
-    el.scroll_into_view_with_scroll_into_view_options(&opts);
+    w.scroll_by_with_scroll_to_options(&opts);
+}
+
+/// Whether the device has a fine pointer and a keyboard is likely (desktop).
+pub fn is_desktop() -> bool {
+    media_matches("(hover: hover) and (pointer: fine)")
 }

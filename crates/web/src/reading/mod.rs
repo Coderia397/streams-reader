@@ -4,6 +4,7 @@
 pub mod doc;
 pub mod pieces;
 pub mod resume;
+pub mod search;
 pub mod window;
 
 #[cfg(test)]

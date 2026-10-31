@@ -1,141 +1,175 @@
-// Reader: the reading column, live highlight, top bar.
+// Reader: the text column, the spoken sentence and word, the overlays and the listen-only view.
+@use "../../../../brand/dist/tokens/tokens" as t;
 
 .reader {
+  --read-size: var(--text-read);
   min-height: 100dvh;
-}
+  padding-block-end: calc(#{t.space(12)} * 6 + var(--safe-bottom));
 
-.reader__bar {
-  position: sticky;
-  top: 0;
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 56px;
-  padding: var(--safe-top) 6px 0;
-  margin-top: calc(-1 * var(--safe-top));
-  background: var(--glass);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--line);
-}
+  &__bar {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: t.z("sticky");
+    display: flex;
+    align-items: center;
+    gap: t.space(2);
+    height: calc(var(--safe-top) + #{t.space(12)} + #{t.space(2)});
+    padding: var(--safe-top) t.space(2) 0;
+    background: t.color("glass");
+    @include t.glass;
+  }
 
-.reader__bar-title {
-  flex: 1;
-  min-width: 0;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-2);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.reading {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 8px 22px calc(var(--dock-h) + var(--safe-bottom) + 72px);
-  font-family: var(--font-read);
-  font-size: var(--read-size);
-  line-height: var(--read-leading);
-  font-optical-sizing: auto;
-  color: var(--text);
-  hyphens: auto;
-  overflow-wrap: break-word;
-  overflow-anchor: auto;
-}
-
-.reading__head {
-  padding: 28px 0 22px;
-  margin-bottom: 26px;
-  border-bottom: 1px solid var(--line);
-}
-
-.reading__title {
-  font-size: 30px;
-  line-height: 1.18;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-}
-
-.reading__author {
-  margin-top: 10px;
-  font-family: var(--font-ui);
-  font-size: 14px;
-  color: var(--text-2);
-}
-
-.reading__end {
-  text-align: center;
-  color: var(--text-3);
-  letter-spacing: 0.4em;
-  margin: 40px 0 8px;
-}
-
-.reading--skeleton {
-  font-family: var(--font-ui);
-}
-
-.r-p {
-  margin: 0 0 1.05em;
-}
-
-.r-h {
-  margin: 1.8em 0 0.7em;
-  font-size: 1.28em;
-  line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.r-q {
-  margin: 0 0 1.05em;
-  padding-left: 1em;
-  border-left: 2px solid var(--line-strong);
-  color: var(--text-2);
-  font-style: italic;
-}
-
-.r-li {
-  position: relative;
-  margin: 0 0 0.6em;
-  padding-left: 1.2em;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0.25em;
-    top: 0.72em;
-    width: 0.32em;
-    height: 0.32em;
-    border-radius: 50%;
-    background: var(--text-3);
+  &__bar-title {
+    flex: 1;
+    color: t.color("text-2");
+    font-size: t.text("sm");
+    font-weight: t.weight("medium");
+    text-align: center;
+    @include t.truncate;
   }
 }
 
-// One tappable segment. The current one gets a soft violet field; box-decoration-break keeps it neat across lines.
-.seg {
-  border-radius: 6px;
-  cursor: pointer;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  transition: background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+.reading {
+  max-width: calc(var(--content-max) - #{t.space(12)});
+  margin-inline: auto;
+  padding: t.space(6) t.space(5) t.space(10);
+  font-family: t.font("read");
+  font-size: var(--read-size);
+  line-height: t.leading("read");
+  font-optical-sizing: auto;
+  hanging-punctuation: first;
+  hyphens: auto;
+  animation: fade var(--dur-slow) var(--ease-out);
+
+  &__head {
+    margin-block-end: t.space(8);
+  }
+
+  &__title {
+    font-family: t.font("ui");
+    @include t.type("h1");
+  }
+
+  &__author {
+    margin-block-start: t.space(2);
+    color: t.color("text-2");
+    font-family: t.font("ui");
+    font-size: t.text("md");
+  }
+
+  &__end {
+    margin-block-start: t.space(10);
+    color: t.color("text-3");
+    font-family: t.font("ui");
+    font-size: t.text("sm");
+    text-align: center;
+  }
 }
 
-.seg.is-current {
-  background: var(--highlight);
-  box-shadow: 0 0 0 3px var(--highlight);
+.r-p,
+.r-li {
+  margin-block-end: 0.85em;
+}
+
+.r-li {
+  padding-inline-start: 1.2em;
+  text-indent: -0.8em;
+
+  &::before {
+    content: "·  ";
+    color: t.color("text-3");
+  }
+}
+
+.r-h {
+  margin-block: 1.6em 0.6em;
+  font-family: t.font("ui");
+  font-size: 1.1em; // tokens-ok: relative to the reader's chosen text size
+  font-weight: t.weight("semibold");
+  line-height: t.leading("snug");
+  letter-spacing: var(--tracking-title);
+}
+
+.r-q {
+  margin-block-end: 0.85em;
+  padding-inline-start: 1em;
+  border-inline-start: 2px solid t.color("border-strong");
+  color: t.color("text-2");
+  font-style: italic;
+}
+
+.seg {
+  border-radius: t.radius("xs");
+  cursor: pointer;
+  transition: background-color t.dur("fast") t.ease("out"), text-decoration-color t.dur("fast") t.ease("out");
+
+  &.is-current {
+    @include t.sentence-wash;
+    // Closes the gaps between the wrapped lines so the wash reads as one shape.
+    padding-block: 0.2em;
+  }
+
+  // Tapped, waiting for "Play from here": one thin brand underline that runs on across the wrapped lines, with no
+  // fill, so it never looks like the spoken sentence's wash. A per-line outline read as a ladder of boxes on long
+  // sentences (D38, supersedes the outline in note 12).
+  &.is-picked:not(.is-current) {
+    padding: 0;
+    margin: 0;
+    background: none;
+    box-shadow: none;
+    text-decoration: underline var(--border-width) t.color("brand-text");
+    text-underline-offset: 0.28em;
+    text-decoration-skip-ink: none;
+  }
 }
 
 .word {
-  text-decoration-line: underline;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--accent);
-  text-underline-offset: 0.24em;
-  text-decoration-skip-ink: none;
+  @include t.word-pill;
+  padding-inline: 0.06em;
+  margin-inline: -0.06em;
 }
 
 .sentinel {
-  height: 1px;
+  height: var(--border-width);
+
+  &.is-off {
+    display: none;
+  }
+}
+
+.reading--skeleton {
+  padding-block-start: t.space(10);
+}
+
+.play-here {
+  position: fixed;
+  inset-inline: 0;
+  z-index: t.z("sticky");
+  width: max-content;
+  margin-inline: auto;
+}
+
+.back-to-voice {
+  position: fixed;
+  inset-inline-end: t.space(4);
+  inset-block-end: calc(#{t.space(12)} * 5 + var(--safe-bottom));
+  z-index: t.z("sticky");
+}
+
+.listen-only {
+  display: grid;
+  justify-items: center;
+  gap: t.space(3);
+  padding: t.space(10) t.space(5);
+  text-align: center;
+  animation: fade var(--dur-slow) var(--ease-out);
+
+  &__title {
+    margin-block-start: t.space(4);
+    @include t.type("h2");
+  }
+
+  &__meta {
+    color: t.color("text-2");
+  }
 }

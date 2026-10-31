@@ -1,0 +1,88 @@
+// First run: illustration, two numbered steps, one button.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.welcome {
+  padding-block-end: t.space(10);
+
+  &__hero {
+    display: grid;
+    justify-items: center;
+    gap: t.space(3);
+    padding-block: t.space(8) t.space(6);
+    text-align: center;
+  }
+
+  &__title {
+    @include t.type("h1");
+  }
+
+  &__lead {
+    max-width: calc(#{t.space(12)} * 7);
+    color: t.color("text-2");
+  }
+
+  &__go {
+    margin-block-start: t.space(6);
+  }
+}
+
+.step {
+  display: flex;
+  gap: t.space(4);
+  padding-block: t.space(5);
+
+  & + & {
+    border-block-start: var(--border-width) solid t.color("border");
+  }
+
+  &__num {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: t.space(8);
+    height: t.space(8);
+    border-radius: t.radius("pill");
+    background: t.color("brand-soft");
+    color: t.color("brand-text");
+    font-weight: t.weight("semibold");
+  }
+
+  &__body {
+    display: grid;
+    gap: t.space(3);
+    justify-items: start;
+    flex: 1;
+  }
+
+  &__title {
+    @include t.type("title");
+  }
+
+  &__line {
+    color: t.color("text-2");
+
+    &--sub {
+      margin-block-start: t.space(2);
+    }
+  }
+
+  &__done {
+    display: flex;
+    align-items: center;
+    gap: t.space(2);
+    color: t.color("success");
+    font-weight: t.weight("medium");
+  }
+
+  &__list {
+    display: grid;
+    gap: t.space(2);
+    padding-inline-start: t.space(5);
+    list-style: decimal;
+    color: t.color("text");
+
+    li::marker {
+      color: t.color("text-3");
+    }
+  }
+}

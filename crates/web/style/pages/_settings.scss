@@ -1,0 +1,6 @@
+// Settings: groups and rows come from components; only the page's own spacing lives here.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.page .group:first-of-type {
+  margin-block-start: t.space(2);
+}

@@ -1,0 +1,167 @@
+// Reset, document defaults, shared typography and motion.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: t.color("bg");
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: t.color("bg");
+  color: t.color("text");
+  @include t.type("body");
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+  @include t.transition(background-color, color);
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+ul,
+dl,
+dd,
+blockquote,
+figure {
+  margin: 0;
+}
+
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  touch-action: manipulation;
+}
+
+a {
+  color: t.color("brand-text");
+  text-decoration: none;
+  @include t.focus-ring;
+}
+
+img,
+svg {
+  display: block;
+}
+
+bdi {
+  unicode-bidi: isolate;
+}
+
+:focus-visible {
+  outline: var(--focus-width) solid t.color("focus");
+  outline-offset: var(--focus-offset);
+}
+
+::selection {
+  background: t.color("brand-soft");
+}
+
+.visually-hidden {
+  @include t.visually-hidden;
+}
+
+.noscript {
+  padding: t.space(6);
+}
+
+// Typography helpers.
+.overline {
+  @include t.type("overline");
+  color: t.color("text-3");
+}
+
+.page-title {
+  @include t.type("h1");
+}
+
+.page-lead,
+.section-hint {
+  color: t.color("text-2");
+}
+
+.section-hint {
+  @include t.type("label");
+  font-weight: t.weight("regular");
+  margin-block-end: t.space(3);
+}
+
+.tabular,
+.scrubber__times,
+.speed__value,
+.stepper__value {
+  font-variant-numeric: tabular-nums;
+}
+
+kbd {
+  display: inline-block;
+  min-width: t.space(6);
+  padding: 0 t.space(2);
+  border: var(--border-width) solid t.color("border-strong");
+  border-radius: t.radius("xs");
+  background: t.color("surface-2");
+  font-family: t.font("ui");
+  font-size: t.text("xs");
+  font-weight: t.weight("medium");
+  line-height: 1.8;
+  text-align: center;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(t.space(2));
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@include t.reduced-motion {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important; // tokens-ok: reduced motion turns animation off
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important; // tokens-ok: reduced motion turns transitions off
+    scroll-behavior: auto !important;
+  }
+}

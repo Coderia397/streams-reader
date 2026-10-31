@@ -11,19 +11,19 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::Closure;
 use web_sys::{IntersectionObserver, IntersectionObserverEntry, IntersectionObserverInit};
 
+use super::ReaderCtx;
 use super::block::BlockView;
-use super::follow::Follow;
 use crate::reading::window::Window;
 use crate::state::player::OpenDoc;
 use crate::state::use_app;
 
 #[component]
-fn ChunkView(doc: Arc<OpenDoc>, chunk: usize, current: Selector<u32>, follow: Follow) -> impl IntoView {
+fn ChunkView(doc: Arc<OpenDoc>, chunk: usize, current: Selector<u32>) -> impl IntoView {
     let Some(c) = doc.model.chunks.get(chunk).copied() else { return ().into_any() };
     view! {
-        <div class="chunk" data-chunk=chunk>
+        <div data-chunk=chunk>
             {(c.first_block..c.end_block)
-                .map(|b| view! { <BlockView doc=Arc::clone(&doc) block=b current=current.clone() follow=follow /> })
+                .map(|b| view! { <BlockView doc=Arc::clone(&doc) block=b current=current.clone() /> })
                 .collect_view()}
         </div>
     }
@@ -31,8 +31,10 @@ fn ChunkView(doc: Arc<OpenDoc>, chunk: usize, current: Selector<u32>, follow: Fo
 }
 
 #[component]
-pub fn TextView(doc: Arc<OpenDoc>, follow: Follow) -> impl IntoView {
+pub fn TextView(doc: Arc<OpenDoc>) -> impl IntoView {
     let player = use_app().player;
+    let ctx = expect_context::<ReaderCtx>();
+    let follow = ctx.follow;
     let total = doc.model.chunks.len();
     let start_chunk = doc.model.chunk_of_segment(player.segment.get_untracked());
     let window = RwSignal::new(Window::around(start_chunk, total));
@@ -51,19 +53,26 @@ pub fn TextView(doc: Arc<OpenDoc>, follow: Follow) -> impl IntoView {
         }
     });
 
-    // Keep the current sentence in view after the DOM has updated.
+    // Keep the spoken line in its band after the DOM has updated (on every sentence and every word).
     Effect::new(move |prev: Option<u32>| {
         let seg = player.segment.get();
+        let _ = player.word.get();
         if follow.on.get() {
             let first = prev.is_none();
-            set_timeout(move || follow.scroll_to(seg, first), Duration::from_millis(if first { 60 } else { 30 }));
+            set_timeout(move || follow.keep_in_band(seg, first), Duration::from_millis(if first { 60 } else { 30 }));
         }
         seg
     });
 
-    // Manual scrolling hands control to the user.
-    let touch = window_event_listener(ev::touchmove, move |_| follow.user_moved());
-    let wheel = window_event_listener(ev::wheel, move |_| follow.user_moved());
+    // Manual scrolling hands control to the reader and drops a pending "Play from here".
+    let touch = window_event_listener(ev::touchmove, move |_| {
+        follow.user_moved();
+        ctx.picked.set(None);
+    });
+    let wheel = window_event_listener(ev::wheel, move |_| {
+        follow.user_moved();
+        ctx.picked.set(None);
+    });
     on_cleanup(move || {
         touch.remove();
         wheel.remove();
@@ -100,9 +109,10 @@ pub fn TextView(doc: Arc<OpenDoc>, follow: Follow) -> impl IntoView {
         let _ = window.get();
         set_timeout(
             move || {
-                observer.with_value(|o| {
-                    if let (Some((obs, _)), Some(top), Some(bottom)) =
-                        (o, top_ref.get_untracked(), bottom_ref.get_untracked())
+                // The reader may have closed since (its values are disposed then).
+                let _ = observer.try_with_value(|o| {
+                    if let (Some((obs, _)), Some(Some(top)), Some(Some(bottom))) =
+                        (o, top_ref.try_get_untracked(), bottom_ref.try_get_untracked())
                     {
                         obs.unobserve(&top);
                         obs.unobserve(&bottom);
@@ -123,10 +133,11 @@ pub fn TextView(doc: Arc<OpenDoc>, follow: Follow) -> impl IntoView {
     });
 
     let title = doc.summary.meta.title.clone();
+    let lang = doc.summary.meta.language.clone();
     let author = doc.summary.meta.author.clone();
     let chunks_doc = Arc::clone(&doc);
     view! {
-        <article class="reading" lang="en">
+        <article class="reading" lang=lang dir="auto">
             <Show when=move || window.get().at_top()>
                 <header class="reading__head">
                     <h1 class="reading__title">{title.clone()}</h1>
@@ -139,11 +150,11 @@ pub fn TextView(doc: Arc<OpenDoc>, follow: Follow) -> impl IntoView {
                 key=|c| *c
                 let:chunk
             >
-                <ChunkView doc=Arc::clone(&chunks_doc) chunk=chunk current=current.clone() follow=follow />
+                <ChunkView doc=Arc::clone(&chunks_doc) chunk=chunk current=current.clone() />
             </For>
             <div class="sentinel" node_ref=bottom_ref class:is-off=move || window.get().at_bottom(total)></div>
             <Show when=move || window.get().at_bottom(total)>
-                <p class="reading__end" aria-hidden="true">"·  ·  ·"</p>
+                <p class="reading__end">{t!("reader-end")}</p>
             </Show>
         </article>
     }

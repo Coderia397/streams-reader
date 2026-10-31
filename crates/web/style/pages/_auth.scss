@@ -1,0 +1,66 @@
+// Sign-in and the auth callback: one calm column, the mark, the form.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.auth {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: calc(var(--safe-top) + #{t.space(8)}) t.space(5) t.space(8);
+
+  &__panel {
+    display: grid;
+    gap: t.space(5);
+    width: 100%;
+    max-width: calc(#{t.space(12)} * 8);
+    animation: rise var(--dur-slow) var(--ease-out);
+
+    > .spot {
+      margin-inline: auto;
+    }
+  }
+
+  &__head {
+    display: grid;
+    justify-items: center;
+    gap: t.space(2);
+    margin-block-end: t.space(4);
+    text-align: center;
+  }
+
+  &__title {
+    margin-block-start: t.space(3);
+    @include t.type("h1");
+  }
+
+  &__lead {
+    color: t.color("text-2");
+  }
+
+  // The address the code went to, inside the lead: the one part to check.
+  &__email {
+    color: t.color("text");
+    font-weight: t.weight("medium");
+  }
+
+  &__sent {
+    display: grid;
+    gap: t.space(1);
+    text-align: center;
+  }
+
+  &__step-title {
+    @include t.type("h2");
+  }
+
+  &__step-line {
+    color: t.color("text-2");
+    overflow-wrap: anywhere;
+  }
+
+  &__legal {
+    margin-block-start: t.space(4);
+    color: t.color("text-3");
+    font-size: t.text("xs");
+    text-align: center;
+  }
+}

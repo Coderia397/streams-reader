@@ -8,7 +8,9 @@ use leptos::prelude::*;
 use leptos::task::spawn_local;
 
 use crate::audio::analysis::meter;
-use crate::components::icons::{I, Icon, Spinner};
+use crate::components::icon::{I, Icon, Spinner};
+use crate::components::spot::Spot;
+use crate::i18n;
 use crate::interop::recorder::{self, Recording};
 use crate::state::use_app;
 use crate::util::format;
@@ -32,10 +34,10 @@ fn LineCard(
         <li class="line" class:is-active=is_active class:is-done=move || info().is_some_and(|t| t.usable())>
             <div class="line__head">
                 <span class="line__num">{idx + 1}</span>
-                <span class="line__mood">{line.mood}</span>
+                <span class="line__mood">{i18n::tr(line.mood, &[])}</span>
                 {move || info().map(|t| view! { <span class="line__len">{format::clock(t.duration_ms)}</span> })}
             </div>
-            <p class="line__text">{line.text}</p>
+            <p class="line__text" lang="en" dir="ltr">{line.text}</p>
             <Show when=is_active>
                 <div class="meter" aria-hidden="true">
                     <div class="meter__fill" style:transform=move || format!("scaleX({:.3})", level.get())></div>
@@ -45,19 +47,19 @@ fn LineCard(
                 <p class="line__issue" class:is-warn=!i.blocking()><Icon icon=I::Alert />{i.message()}</p>
             }).collect_view())}
             <button
-                class="btn"
-                class:btn--record=move || !is_active()
-                class:btn--stop=is_active
+                class="btn btn--sm"
+                class:btn--secondary=move || !is_active()
+                class:btn--record=is_active
                 type="button"
                 disabled=busy_elsewhere
                 on:click=move |_| on_toggle.run(idx)
             >
                 {move || if is_active() {
-                    view! { <Icon icon=I::Stop /><span>"Stop"</span> }.into_any()
+                    view! { <Icon icon=I::Stop /><span>{t!("record-stop")}</span> }.into_any()
                 } else if info().is_some() {
-                    view! { <Icon icon=I::Refresh /><span>"Record again"</span> }.into_any()
+                    view! { <Icon icon=I::Refresh /><span>{t!("record-again")}</span> }.into_any()
                 } else {
-                    view! { <Icon icon=I::Mic /><span>"Record"</span> }.into_any()
+                    view! { <Icon icon=I::Mic /><span>{t!("record-start")}</span> }.into_any()
                 }}
             </button>
         </li>
@@ -68,7 +70,7 @@ fn LineCard(
 pub fn RecordPage() -> impl IntoView {
     let app = use_app();
     let takes = Takes::new();
-    let name = RwSignal::new(String::from("My voice"));
+    let name = RwSignal::new(t!("record-default-name"));
     let active = RwSignal::new(None::<usize>);
     let level = RwSignal::new(0.0f32);
     let phase = RwSignal::new(Phase::Recording);
@@ -90,10 +92,10 @@ pub fn RecordPage() -> impl IntoView {
                 Ok(take) => {
                     let info = takes.set(idx, take);
                     if info.usable() && info.issues.is_empty() {
-                        app.toasts.success(format!("Line {} sounds good.", idx + 1));
+                        app.toasts.success(t!("record-line-good", line = idx + 1));
                     }
                 }
-                Err(e) => app.toasts.error(format!("Recording failed: {e}")),
+                Err(e) => app.toasts.error(t!("record-failed", detail = e.to_string())),
             }
         });
     };
@@ -116,11 +118,11 @@ pub fn RecordPage() -> impl IntoView {
     });
     let create = move |_| {
         let n = name.get_untracked().trim().to_owned();
-        let n = if n.is_empty() { "My voice".to_owned() } else { n };
+        let n = if n.is_empty() { t!("record-default-name") } else { n };
         spawn_local(submit(n, takes, phase));
     };
     let use_voice = move |voice_id: String| {
-        app.settings.voice.set(voice_id);
+        app.settings.use_voice(&voice_id);
         spawn_local(app.voices.refresh(app.toasts));
         app.nav.go("/voices");
     };
@@ -128,19 +130,20 @@ pub fn RecordPage() -> impl IntoView {
     view! {
         <div class="page page--record">
             <header class="topbar">
-                <button class="icon-btn" type="button" aria-label="Back" on:click=move |_| app.nav.go("/voices")>
-                    <Icon icon=I::ChevronLeft />
+                <button class="icon-btn" type="button" aria-label=t!("action-back") on:click=move |_| app.nav.go("/voices")>
+                    <Icon icon=I::Back />
                 </button>
-                <h1 class="page-title page-title--bar">"Record your voice"</h1>
+                <h1 class="topbar__title">{t!("record-title")}</h1>
                 <span class="icon-btn-spacer"></span>
             </header>
             {move || match phase.get() {
                 Phase::Recording => view! {
                     <section class="tips">
-                        <p>"Find a quiet room, hold the phone about a hand's width from your mouth and read each line the way it feels."</p>
-                        <label class="field-label">
-                            <span>"Name"</span>
-                            <input class="field" type="text" maxlength="40"
+                        <Spot icon=I::Mic />
+                        <p class="tips__line">{t!("record-tips")}</p>
+                        <label class="field">
+                            <span class="field__label">{t!("record-name")}</span>
+                            <input class="input" type="text" maxlength="40"
                                 prop:value=move || name.get()
                                 on:input=move |e| name.set(event_target_value(&e)) />
                         </label>
@@ -151,37 +154,37 @@ pub fn RecordPage() -> impl IntoView {
                         }).collect_view()}
                     </ol>
                     <div class="sticky-cta">
-                        <p class="hint">{move || format!("{} of {} lines recorded", takes.count(), SCRIPT.len())}</p>
-                        <button class="btn btn--primary btn--wide" type="button"
+                        <p class="sticky-cta__count">{move || t!("record-progress", done = takes.count(), total = SCRIPT.len())}</p>
+                        <button class="btn btn--primary btn--block" type="button"
                             disabled=move || !takes.all_usable() || active.get().is_some()
                             on:click=create>
-                            "Create voice"
+                            {t!("record-create")}
                         </button>
                     </div>
                 }.into_any(),
                 Phase::Uploading | Phase::Preparing => view! {
                     <div class="progress-card" role="status">
-                        <Spinner class="spin spin--large" />
-                        <h2>{move || if phase.get() == Phase::Uploading { "Uploading your recording…" } else { "Preparing your voice…" }}</h2>
-                        <p class="hint">"This takes a minute or two. You can leave this screen; it continues on the server."</p>
+                        <Spinner class="spin spin--lg" />
+                        <h2>{move || if phase.get() == Phase::Uploading { t!("record-uploading") } else { t!("record-preparing") }}</h2>
+                        <p class="progress-card__line">{t!("record-wait")}</p>
                     </div>
                 }.into_any(),
                 Phase::Ready { voice_id } => view! {
                     <div class="progress-card">
-                        <span class="done-mark"><Icon icon=I::Check /></span>
-                        <h2>"Your voice is ready"</h2>
-                        <p class="hint">"It reads with the expressive engine, which uses the daily GPU budget."</p>
-                        <button class="btn btn--primary btn--wide" type="button" on:click=move |_| use_voice(voice_id.clone())>
-                            "Use my voice"
+                        <Spot icon=I::CheckCircle />
+                        <h2>{t!("record-ready")}</h2>
+                        <p class="progress-card__line">{t!("record-ready-line")}</p>
+                        <button class="btn btn--primary btn--block" type="button" on:click=move |_| use_voice(voice_id.clone())>
+                            {t!("record-use")}
                         </button>
                     </div>
                 }.into_any(),
                 Phase::Failed(msg) => view! {
                     <div class="progress-card">
-                        <span class="done-mark done-mark--warn"><Icon icon=I::Alert /></span>
-                        <h2>"That didn't work"</h2>
-                        <p class="hint">{msg}</p>
-                        <button class="btn btn--wide" type="button" on:click=move |_| phase.set(Phase::Recording)>"Back to recording"</button>
+                        <Spot icon=I::Alert />
+                        <h2>{t!("record-failed-title")}</h2>
+                        <p class="progress-card__line">{msg}</p>
+                        <button class="btn btn--secondary btn--block" type="button" on:click=move |_| phase.set(Phase::Recording)>{t!("record-back")}</button>
                     </div>
                 }.into_any(),
             }}

@@ -1,25 +1,26 @@
 //! One module per route.
 
+pub mod auth_callback;
 pub mod library;
-pub mod login;
 pub mod reader;
 pub mod record;
 pub mod settings;
+pub mod sign_in;
 pub mod voices;
 pub mod welcome;
 
 use leptos::prelude::*;
 use leptos_router::components::A;
 
-use crate::components::icons::I;
-use crate::components::skeleton::Empty;
+use crate::components::icon::I;
+use crate::components::spot::Empty;
 
 #[component]
 pub fn NotFound() -> impl IntoView {
     view! {
         <div class="page">
-            <Empty icon=I::Book title="Nothing here" line="That page doesn't exist.">
-                <A href="/" attr:class="btn">"Back to the library"</A>
+            <Empty icon=I::BookOpen title=t!("not-found-title") line=t!("not-found-line")>
+                <A href="/" attr:class="btn btn--secondary">{t!("not-found-back")}</A>
             </Empty>
         </div>
     }

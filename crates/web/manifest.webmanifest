@@ -1,25 +1,59 @@
 {
-  "id": "/",
-  "name": "nolabs",
-  "short_name": "nolabs",
-  "description": "Your library, read aloud.",
+  "id": "/app/",
+  "name": "Streams Reader",
+  "short_name": "Reader",
+  "description": "Your documents, articles and books, read aloud in natural voices.",
   "lang": "en",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/app/",
+  "scope": "/app/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0B0B0F",
-  "theme_color": "#0B0B0F",
-  "categories": ["books", "education", "productivity"],
+  "background_color": "__THEME_BG__",
+  "theme_color": "__THEME_BG__",
+  "categories": [
+    "books",
+    "education",
+    "productivity"
+  ],
   "icons": [
-    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/assets/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "/assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/app/assets/brand/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app/assets/brand/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app/assets/brand/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/app/assets/brand/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/app/assets/brand/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
   ],
   "share_target": {
-    "action": "/",
+    "action": "/app/",
     "method": "GET",
-    "params": { "title": "title", "text": "text", "url": "url" }
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
   }
 }

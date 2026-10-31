@@ -1,0 +1,141 @@
+// Segmented choice, switch, slider and stepper.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.segmented {
+  display: flex;
+  gap: t.space(1);
+  padding: t.space(1);
+  border-radius: t.radius("pill");
+  background: t.color("surface-2");
+
+  &__opt {
+    @include t.hit-area;
+    flex: 1;
+    height: calc(var(--chip-height) + #{t.space(1)});
+    padding-inline: t.space(2);
+    border-radius: t.radius("pill");
+    color: t.color("text-2");
+    font-size: t.text("sm");
+    font-weight: t.weight("medium");
+    white-space: nowrap;
+    @include t.transition(background-color, color, box-shadow);
+    @include t.focus-ring;
+
+    &[aria-checked="true"] {
+      background: t.color("surface-1");
+      color: t.color("text");
+      box-shadow: t.shadow(1);
+    }
+  }
+}
+
+.switch {
+  position: relative;
+  flex: none;
+  width: t.space(11);
+  height: t.space(6);
+  border-radius: t.radius("pill");
+  background: t.color("surface-3");
+  @include t.transition(background-color);
+
+  &__knob {
+    position: absolute;
+    inset-block-start: t.space(1);
+    inset-inline-start: t.space(1);
+    width: t.space(4);
+    height: t.space(4);
+    border-radius: t.radius("pill");
+    background: t.color("text-2");
+    @include t.transition(transform, background-color);
+  }
+
+  [aria-checked="true"] > & {
+    background: t.color("brand");
+
+    .switch__knob {
+      background: t.color("on-brand");
+      transform: translateX(t.space(5));
+    }
+  }
+
+  [dir="rtl"] [aria-checked="true"] > & .switch__knob {
+    transform: translateX(calc(-1 * #{t.space(5)}));
+  }
+}
+
+// Range inputs: a thin track filled to --fill, a round thumb.
+.slider {
+  --fill: 0%;
+  flex: 1;
+  width: 100%;
+  height: var(--tap-min);
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  @include t.focus-ring;
+
+  &::-webkit-slider-runnable-track {
+    height: t.space(1);
+    border-radius: t.radius("pill");
+    background: linear-gradient(to right, t.color("brand") var(--fill), t.color("surface-3") var(--fill));
+  }
+
+  &::-moz-range-track {
+    height: t.space(1);
+    border-radius: t.radius("pill");
+    background: t.color("surface-3");
+  }
+
+  &::-moz-range-progress {
+    height: t.space(1);
+    border-radius: t.radius("pill");
+    background: t.color("brand");
+  }
+
+  &::-webkit-slider-thumb {
+    width: t.space(4);
+    height: t.space(4);
+    margin-block-start: calc(-1 * #{t.space(1)} * 1.5);
+    border: 0;
+    border-radius: t.radius("pill");
+    background: t.color("text");
+    box-shadow: t.shadow(1);
+    appearance: none;
+  }
+
+  &::-moz-range-thumb {
+    width: t.space(4);
+    height: t.space(4);
+    border: 0;
+    border-radius: t.radius("pill");
+    background: t.color("text");
+  }
+}
+
+// A slider inside a right-to-left page fills from the right, like the native control.
+[dir="rtl"] .slider:not(.scrubber__range)::-webkit-slider-runnable-track {
+  background: linear-gradient(to left, t.color("brand") var(--fill), t.color("surface-3") var(--fill));
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: t.space(1);
+
+  &__value {
+    min-width: t.space(6);
+    text-align: center;
+    color: t.color("text-2");
+  }
+
+  &__a {
+    font-family: t.font("read");
+    font-size: t.text("xl");
+    line-height: 1;
+
+    &--small {
+      font-size: t.text("sm");
+    }
+  }
+}

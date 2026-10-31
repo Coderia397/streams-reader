@@ -1,14 +1,14 @@
-//! The round accent play/pause button, with a ring spinner while audio is loading.
+//! The round brand play/pause button, with a ring spinner while audio is loading.
 
 use leptos::prelude::*;
 
-use crate::components::icons::{I, Icon};
+use crate::components::icon::{I, Icon};
 use crate::state::use_app;
 
 #[component]
 pub fn PlayButton(#[prop(optional)] small: bool) -> impl IntoView {
     let player = use_app().player;
-    let label = move || if player.shows_pause() { "Pause" } else { "Play" };
+    let label = move || if player.shows_pause() { t!("player-pause") } else { t!("player-play") };
     view! {
         <button
             class="play-btn"

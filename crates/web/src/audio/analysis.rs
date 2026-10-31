@@ -29,12 +29,12 @@ pub enum Issue {
 }
 
 impl Issue {
-    pub fn message(self) -> &'static str {
+    pub fn message(self) -> String {
         match self {
-            Issue::Clipping => "Too loud: it distorted. Move back a little and read it again.",
-            Issue::Noisy => "There's background noise. Find a quieter spot if you can.",
-            Issue::TooQuiet => "Very quiet. Hold the phone a little closer.",
-            Issue::TooShort => "That was very short. Read the whole line.",
+            Issue::Clipping => t!("record-issue-clipping"),
+            Issue::Noisy => t!("record-issue-noisy"),
+            Issue::TooQuiet => t!("record-issue-quiet"),
+            Issue::TooShort => t!("record-issue-short"),
         }
     }
 

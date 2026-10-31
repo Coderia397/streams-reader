@@ -27,10 +27,6 @@ impl ClientError {
         }
     }
 
-    pub fn is_unauthorized(&self) -> bool {
-        self.code() == Some(ErrorCode::Unauthorized)
-    }
-
     pub fn is_not_found(&self) -> bool {
         self.code() == Some(ErrorCode::NotFound)
     }
@@ -42,9 +38,9 @@ impl ClientError {
     /// One calm sentence for a toast.
     pub fn friendly(&self) -> String {
         match self {
-            ClientError::Network(_) => "You're offline. Check your connection and try again.".to_owned(),
-            ClientError::Decode(_) => "The server sent something unexpected. Try again in a moment.".to_owned(),
-            ClientError::Browser(msg) => format!("Your browser refused: {msg}"),
+            ClientError::Network(_) => t!("error-offline"),
+            ClientError::Decode(_) => t!("error-unexpected"),
+            ClientError::Browser(msg) => t!("error-browser", detail = msg.clone()),
             ClientError::Api(e) => friendly_api(e),
         }
     }
@@ -52,40 +48,34 @@ impl ClientError {
 
 fn friendly_api(e: &ApiError) -> String {
     match e.code {
-        ErrorCode::BadRequest => "That request wasn't quite right. Try again.".to_owned(),
-        ErrorCode::Unauthorized => "Please sign in again.".to_owned(),
-        ErrorCode::Forbidden => "That isn't allowed.".to_owned(),
-        ErrorCode::NotFound => "That item no longer exists.".to_owned(),
-        ErrorCode::Conflict => "That changed somewhere else. Refresh and try again.".to_owned(),
-        ErrorCode::PayloadTooLarge => "That's too large to upload.".to_owned(),
+        ErrorCode::BadRequest => t!("error-bad-request"),
+        ErrorCode::Unauthorized => t!("error-unauthorized"),
+        ErrorCode::Forbidden => t!("error-forbidden"),
+        ErrorCode::NotFound => t!("error-not-found"),
+        ErrorCode::Conflict => t!("error-conflict"),
+        ErrorCode::PayloadTooLarge => t!("error-too-large"),
         ErrorCode::RateLimited => match e.retry_after_s {
-            Some(s) => format!("Too many attempts. Try again in {}.", wait_phrase(s)),
-            None => "Too many attempts. Wait a little and try again.".to_owned(),
+            Some(s) => t!("error-rate-limited-wait", wait = wait_phrase(s)),
+            None => t!("error-rate-limited"),
         },
         ErrorCode::GpuBudget => match e.retry_after_s {
-            Some(s) => format!("Today's expressive voice time is used up. It frees up in {}.", wait_phrase(s)),
-            None => "Today's expressive voice time is used up. Try a Standard voice.".to_owned(),
+            Some(s) => t!("error-gpu-budget-wait", wait = wait_phrase(s)),
+            None => t!("error-gpu-budget"),
         },
-        ErrorCode::EngineUnavailable => "The voice engine is waking up. This can take a minute.".to_owned(),
-        ErrorCode::EngineFailed => "The voice engine couldn't read that part.".to_owned(),
-        ErrorCode::UpstreamFetch => "Couldn't load that page. Check the link or paste the text instead.".to_owned(),
-        ErrorCode::UpgradeRequired => "A new version is available. Reloading…".to_owned(),
-        ErrorCode::Internal => "Something went wrong on the server. Try again.".to_owned(),
+        ErrorCode::EngineUnavailable => t!("error-engine-waking"),
+        ErrorCode::EngineFailed => t!("error-engine-failed"),
+        ErrorCode::UpstreamFetch => t!("error-upstream"),
+        ErrorCode::UpgradeRequired => t!("error-upgrade"),
+        ErrorCode::Internal => t!("error-internal"),
     }
 }
 
-/// `"about 20 seconds"`, `"3 minutes"`, `"2 hours"`.
+/// `"under a minute"`, `"3 minutes"`, `"about 2 hours"`.
 pub fn wait_phrase(seconds: u64) -> String {
     match seconds {
-        0..=59 => "under a minute".to_owned(),
-        60..=3599 => {
-            let m = seconds.div_ceil(60);
-            if m == 1 { "a minute".to_owned() } else { format!("{m} minutes") }
-        }
-        _ => {
-            let h = (seconds as f64 / 3600.0).round() as u64;
-            if h <= 1 { "about an hour".to_owned() } else { format!("about {h} hours") }
-        }
+        0..=59 => t!("wait-under-minute"),
+        60..=3599 => t!("wait-minutes", minutes = seconds.div_ceil(60)),
+        _ => t!("wait-hours", hours = ((seconds as f64 / 3600.0).round() as u64).max(1)),
     }
 }
 
@@ -145,7 +135,7 @@ mod tests {
     #[test]
     fn predicates() {
         let e = ClientError::Api(ApiError::new(ErrorCode::Unauthorized, "x"));
-        assert!(e.is_unauthorized());
+        assert_eq!(e.code(), Some(ErrorCode::Unauthorized));
         assert!(!e.is_offline());
         assert!(ClientError::Api(ApiError::not_found("x")).is_not_found());
     }

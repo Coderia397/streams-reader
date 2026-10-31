@@ -1,74 +1,160 @@
-// Library: the "Continue listening" hero.
+// Library: the continue card, document rows.
+@use "../../../../brand/dist/tokens/tokens" as t;
 
 .hero {
-  position: relative;
-  padding: 16px;
-  border-radius: var(--r-xl);
-  background:
-    radial-gradient(140% 120% at 100% 0%, var(--accent-soft), transparent 55%),
-    var(--surface);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-1);
-  animation: rise-in var(--dur-slow) var(--ease);
-}
-
-.hero--skeleton {
-  padding: 0;
-  border: 0;
-  background: none;
-  box-shadow: none;
-}
-
-.hero__open {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  width: 100%;
-  text-align: left;
-}
-
-.hero__text {
   display: grid;
-  gap: 4px;
-  min-width: 0;
-  padding-top: 2px;
-}
+  gap: t.space(4);
+  margin-block-end: t.space(4);
+  padding: t.space(4);
+  border: var(--border-width) solid t.color("border");
+  border-radius: var(--card-radius);
+  background: t.color("surface-1");
+  animation: rise var(--dur-slow) var(--ease-out);
 
-.hero__title {
-  font-family: var(--font-read);
-  font-size: 21px;
-  line-height: 1.25;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.hero__author {
-  color: var(--text-2);
-  font-size: 14px;
-}
-
-.hero__meta {
-  color: var(--text-2);
-  font-size: 13px;
-  margin-top: 4px;
-}
-
-.hero__foot {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 16px;
-
-  .bar {
-    flex: 1;
+  &--skeleton {
+    padding: 0;
+    border: 0;
   }
 
-  .play-btn {
-    width: 56px;
-    height: 56px;
+  &__open {
+    display: flex;
+    gap: t.space(4);
+    text-align: start;
+    // The ring follows rounded corners and clears the cover art, like every other ring in the app.
+    border-radius: t.radius("md");
+    @include t.focus-ring;
+  }
+
+  &__text {
+    display: grid;
+    align-content: start;
+    gap: t.space(1);
+    min-width: 0;
+  }
+
+  &__title {
+    @include t.type("h2");
+    @include t.truncate(2);
+  }
+
+  &__author {
+    color: t.color("text-2");
+    font-size: t.text("sm");
+    @include t.truncate;
+  }
+
+  &__meta {
+    margin-block-start: t.space(1);
+    color: t.color("text-3");
+    font-size: t.text("sm");
+  }
+
+  &__foot {
+    display: flex;
+    align-items: center;
+    gap: t.space(4);
+  }
+}
+
+.doc-list {
+  display: grid;
+}
+
+.doc-row {
+  border-block-end: var(--border-width) solid t.color("border");
+
+  &:last-child {
+    border-block-end: 0;
+  }
+
+  &__line,
+  &--skeleton {
+    display: flex;
+    align-items: center;
+    gap: t.space(1);
+  }
+
+  &__main {
+    display: flex;
+    align-items: center;
+    gap: t.space(4);
+    flex: 1;
+    min-width: 0;
+    padding-block: t.space(3);
+    text-align: start;
+    border-radius: t.radius("md");
+    @include t.focus-ring;
+  }
+
+  &__body {
+    display: grid;
+    gap: t.space(1);
+    flex: 1;
+    min-width: 0;
+  }
+
+  // `dir="auto"` on the title: an English title in Arabic keeps its start and loses its end to the ellipsis, while
+  // the physical alignment keeps it on the page's side (`start` would follow the title).
+  &__title {
+    @include t.type("title");
+    font-size: t.text("md");
+    text-align: left;
+    @include t.truncate(2);
+
+    [dir="rtl"] & {
+      text-align: right;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: t.space(2);
+    color: t.color("text-3");
+    font-size: t.text("xs");
+
+    > span:last-child {
+      @include t.truncate;
+    }
+  }
+
+  &__done {
+    color: t.color("success");
+  }
+
+  &__pending {
+    display: inline-flex;
+    color: t.color("text-3");
+  }
+
+  &__failed {
+    color: t.color("danger");
+    font-weight: t.weight("medium");
+  }
+
+  // Retry and Delete for an upload that was cut off, aligned with the title (cover width + gap).
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: t.space(2);
+    padding-block-end: t.space(3);
+    padding-inline-start: calc(#{t.space(12)} + #{t.space(4)}); // the small cover (space 12) and the row gap
+  }
+
+  &__delete {
+    color: t.color("danger");
+  }
+
+  &.is-finished .doc-row__title {
+    color: t.color("text-2");
+  }
+
+  &--skeleton {
+    border: 0;
+    padding-block: t.space(2);
+
+    .doc-row__body {
+      gap: t.space(2);
+    }
   }
 }

@@ -112,6 +112,25 @@ impl DocModel {
         i.checked_sub(1)
     }
 
+    /// Char range `start..end` of chapter `i`: from its heading to the next heading (or the end).
+    pub fn chapter_range(&self, i: usize) -> Option<(u32, u32)> {
+        let start_of = |c: &Chapter| self.block_offsets.get(c.block as usize).copied().unwrap_or(0);
+        let start = start_of(self.chapters.get(i)?);
+        let end = self.chapters.get(i + 1).map_or(self.total_chars, start_of);
+        Some((start, end.max(start)))
+    }
+
+    /// Estimated listening time of chapter `i` at `rate`.
+    pub fn chapter_seconds(&self, i: usize, rate: f64) -> f64 {
+        self.chapter_range(i).map_or(0.0, |(s, e)| seconds_for_chars(u64::from(e - s), rate))
+    }
+
+    /// Estimated time left in the chapter containing `offset` (whole document when there are no chapters).
+    pub fn chapter_seconds_left(&self, segment: u32, offset: u32, rate: f64) -> f64 {
+        let end = self.chapter_at(segment).and_then(|i| self.chapter_range(i)).map_or(self.total_chars, |r| r.1);
+        seconds_for_chars(u64::from(end.saturating_sub(offset)), rate)
+    }
+
     /// Segments of one block.
     pub fn segments_of_block(&self, block: u32) -> &[Segment] {
         match self.block_segments.get(block as usize) {
@@ -227,6 +246,16 @@ pub(crate) mod tests {
         assert!((m.fraction_at(35) - 1.0).abs() < f64::EPSILON);
         assert_eq!(m.chapter_at(1), Some(0));
         assert_eq!(m.chapter_at(3), Some(1));
+    }
+
+    #[test]
+    fn chapter_ranges_and_times() {
+        let m = model();
+        assert_eq!(m.chapter_range(0), Some((0, 19)));
+        assert_eq!(m.chapter_range(1), Some((19, 35)));
+        assert_eq!(m.chapter_range(2), None);
+        assert!((m.chapter_seconds(1, 1.0) - 16.0 / CHARS_PER_SECOND).abs() < 1e-9);
+        assert!((m.chapter_seconds_left(3, 30, 1.0) - 5.0 / CHARS_PER_SECOND).abs() < 1e-9);
     }
 
     #[test]

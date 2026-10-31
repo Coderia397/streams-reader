@@ -1,0 +1,28 @@
+// The quiet mark for empty, success and onboarding states: one line icon in a soft disc (D40).
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.spot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: calc(#{t.space(8)} * 2);
+  height: calc(#{t.space(8)} * 2);
+  border-radius: t.radius("pill");
+  background: t.color("brand-soft");
+  color: t.color("brand-text");
+
+  .icon {
+    width: t.space(7);
+    height: t.space(7);
+  }
+
+  &--small {
+    width: t.space(11);
+    height: t.space(11);
+
+    .icon {
+      width: t.space(5);
+      height: t.space(5);
+    }
+  }
+}

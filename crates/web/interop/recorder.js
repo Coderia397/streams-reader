@@ -11,7 +11,7 @@ export async function startRecording(onLevel) {
   });
   const ctx = new AudioContext();
   try {
-    await ctx.audioWorklet.addModule("/assets/worklets/recorder-worklet.js");
+    await ctx.audioWorklet.addModule("/app/assets/worklets/recorder-worklet.js");
     const source = ctx.createMediaStreamSource(stream);
     const node = new AudioWorkletNode(ctx, "nolabs-recorder", {
       numberOfInputs: 1,

@@ -5,9 +5,8 @@
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
 
-use crate::api::ClientError;
-use crate::api::client::{Body, js_error_text, read_bytes, send};
-use crate::api::render::audio_url;
+use crate::api::client::{js_error_text, read_bytes};
+use crate::api::{ClientError, audio};
 use crate::config::AUDIO_CACHE;
 use crate::util::dom;
 
@@ -24,7 +23,8 @@ async fn cached(cache: &web_sys::Cache, url: &str) -> Option<web_sys::Response> 
 
 /// Clip bytes from the cache, or from the Worker (then stored). A cache failure never blocks playback.
 pub async fn fetch(key: &str) -> Result<js_sys::Uint8Array, ClientError> {
-    let url = audio_url(key);
+    // Cached by the token-free path, so a renewed token still hits the cache.
+    let url = audio::clip_path(key);
     let cache = open().await;
     if let Some(cache) = &cache
         && let Some(resp) = cached(cache, &url).await
@@ -32,7 +32,7 @@ pub async fn fetch(key: &str) -> Result<js_sys::Uint8Array, ClientError> {
     {
         return Ok(bytes);
     }
-    let resp = send("GET", &url, Body::Empty).await?;
+    let resp = audio::fetch(key).await?;
     if let Some(cache) = &cache
         && let Ok(copy) = resp.clone()
     {

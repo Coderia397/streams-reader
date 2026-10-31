@@ -7,6 +7,8 @@ use crate::util::dom;
 
 pub const SETTINGS: &str = "nolabs.settings";
 pub const WELCOMED: &str = "nolabs.welcomed";
+/// Route to open after an OAuth round trip that started inside the app (linking a sign-in method).
+pub const AFTER_AUTH: &str = "nolabs.after_auth";
 
 pub fn get<T: DeserializeOwned>(key: &str) -> Option<T> {
     let text = dom::local_storage()?.get_item(key).ok().flatten()?;

@@ -1,12 +1,16 @@
 //! The document list, with local progress laid over the server's (local is written more often).
 
 use std::collections::HashMap;
+use std::time::Duration;
 
 use leptos::prelude::*;
-use nolabs_core::proto::api::{DocumentSummary, Progress};
+use leptos::task::spawn_local;
 
-use super::toast::Toasts;
+use crate::model::{DocumentSummary, Progress};
+
+use super::toast::{SHOW_WITH_ACTION_FOR, Toasts};
 use crate::api::{ClientError, documents};
+use crate::db;
 use crate::storage::{bodies, progress};
 
 #[derive(Clone, Copy)]
@@ -15,6 +19,8 @@ pub struct LibraryState {
     pub docs: RwSignal<Option<Vec<DocumentSummary>>>,
     pub loading: RwSignal<bool>,
     pub failed: RwSignal<bool>,
+    /// Documents removed from the list whose deletion waits for the Undo window to close.
+    pending_delete: StoredValue<Vec<String>>,
 }
 
 /// Newest first by last activity (progress or upload).
@@ -47,17 +53,22 @@ fn overlay(mut docs: Vec<DocumentSummary>, local: &HashMap<String, Progress>) ->
 
 impl LibraryState {
     pub fn new() -> LibraryState {
-        LibraryState { docs: RwSignal::new(None), loading: RwSignal::new(false), failed: RwSignal::new(false) }
+        LibraryState {
+            docs: RwSignal::new(None),
+            loading: RwSignal::new(false),
+            failed: RwSignal::new(false),
+            pending_delete: StoredValue::new(Vec::new()),
+        }
     }
 
     pub async fn refresh(self, toasts: Toasts) {
         self.loading.set(true);
-        let result = documents::library().await;
+        let result = db::library::list().await;
         let local: HashMap<String, Progress> =
             progress::all().await.into_iter().map(|p| (p.doc_id.clone(), p.progress())).collect();
         match result {
             Ok(lib) => {
-                self.docs.set(Some(overlay(lib.documents, &local)));
+                self.docs.set(Some(overlay(lib, &local)));
                 self.failed.set(false);
             }
             Err(e) => {
@@ -88,15 +99,85 @@ impl LibraryState {
         });
     }
 
-    pub async fn delete(self, id: String) -> Result<(), ClientError> {
-        documents::delete(&id).await?;
+    /// Removes the document from the list at once and deletes it for real when the Undo window closes, unless
+    /// Undo puts it back first.
+    pub fn delete_with_undo(self, doc: DocumentSummary, toasts: Toasts) {
+        let id = doc.id.clone();
+        let index = self.docs.with_untracked(|d| d.as_ref().and_then(|d| d.iter().position(|x| x.id == id)));
+        let Some(index) = index else { return };
         self.docs.update(|d| {
             if let Some(d) = d.as_mut() {
-                d.retain(|x| x.id != id);
+                d.remove(index);
             }
         });
-        bodies::remove(&id).await;
-        progress::remove(&id).await;
+        self.pending_delete.update_value(|p| p.push(id.clone()));
+        let restore = doc.clone();
+        toasts.undoable(t!("library-removed", title = doc.meta.title.clone()), move || {
+            self.pending_delete.update_value(|p| p.retain(|x| *x != restore.id));
+            self.docs.update(|d| {
+                let list = d.get_or_insert_with(Vec::new);
+                list.insert(index.min(list.len()), restore.clone());
+            });
+        });
+        set_timeout(
+            move || {
+                let still = self.pending_delete.try_with_value(|p| p.contains(&id)).unwrap_or(false);
+                if !still {
+                    return;
+                }
+                self.pending_delete.update_value(|p| p.retain(|x| *x != id));
+                spawn_local(async move {
+                    if let Err(e) = self.delete_now(&doc.id).await {
+                        toasts.api_error(&e);
+                        self.docs.update(|d| {
+                            let list = d.get_or_insert_with(Vec::new);
+                            list.insert(index.min(list.len()), doc.clone());
+                        });
+                    }
+                });
+            },
+            SHOW_WITH_ACTION_FOR + Duration::from_millis(300),
+        );
+    }
+
+    /// Finishes an import whose body never reached the Worker: re-sends the copy cached on this device, or, when
+    /// there is none, asks the server whether another device finished it. Returns `false` when it is still stuck.
+    pub async fn retry_upload(self, id: &str, toasts: Toasts) -> bool {
+        let result = match bodies::load(id).await {
+            Some(body) => match serde_json::to_vec(&body) {
+                Ok(bytes) => documents::put_body(id, &bytes).await.map(|()| true),
+                Err(e) => Err(ClientError::Decode(e.to_string())),
+            },
+            None => db::library::get_one(id).await.map(|d| d.ready),
+        };
+        match result {
+            Ok(true) => {
+                self.mark_ready(id);
+                true
+            }
+            Ok(false) => {
+                toasts.error(t!("library-retry-gone"));
+                false
+            }
+            Err(e) => {
+                toasts.api_error(&e);
+                false
+            }
+        }
+    }
+
+    fn mark_ready(&self, id: &str) {
+        self.docs.update(|d| {
+            if let Some(doc) = d.as_mut().and_then(|d| d.iter_mut().find(|x| x.id == id)) {
+                doc.ready = true;
+            }
+        });
+    }
+
+    async fn delete_now(self, id: &str) -> Result<(), ClientError> {
+        documents::delete(id).await?;
+        bodies::remove(id).await;
+        progress::remove(id).await;
         Ok(())
     }
 }

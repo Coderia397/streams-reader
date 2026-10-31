@@ -1,9 +1,12 @@
-// Service worker. tools/postbuild.py replaces __VERSION__ and __PRECACHE__ at build time.
+// Service worker. tools/postbuild.py fills in the version and the precache list below at build time.
 //
 // - install: caches the hashed app shell (index, JS, wasm, CSS, fonts, icons); waits until the page asks to update.
-// - navigations: network first (4 s), falling back to the cached shell, so the app opens offline.
+// Scope: /app/ (the landing site at / is not controlled by this worker).
+// - navigations under /app/: network first (4 s), falling back to the cached shell, so the app opens offline.
 // - /api/*: never touched; rendered audio is cached by the app itself (Cache API "nolabs-audio-v1").
-// - /assets/vendor/*: cache first, filled on first use (pdf.js is large and only needed for PDF imports).
+// - /app/assets/vendor/*: cache first, filled on first use (pdf.js is large and only needed for PDF imports).
+// - /app/import/*: the import worker (hashed names), cache first into this version's shell cache on first use, so
+//   it is not downloaded at install and goes away with the shell it belongs to.
 
 const VERSION = "__VERSION__";
 const SHELL = "nolabs-shell-" + VERSION;
@@ -31,7 +34,7 @@ self.addEventListener("activate", (event) => {
 
 async function cachedShell() {
   const cache = await caches.open(SHELL);
-  return (await cache.match("/")) || (await cache.match("/index.html"));
+  return (await cache.match("/app/")) || (await cache.match("/app/index.html"));
 }
 
 async function networkFirst(request) {
@@ -61,13 +64,17 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET") return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.startsWith("/api/")) return;
+  if (url.pathname.startsWith("/api/") || !url.pathname.startsWith("/app")) return;
   if (request.mode === "navigate") {
     event.respondWith(networkFirst(request));
     return;
   }
-  if (url.pathname.startsWith("/assets/vendor/")) {
+  if (url.pathname.startsWith("/app/assets/vendor/")) {
     event.respondWith(cacheFirst(request, RUNTIME));
+    return;
+  }
+  if (url.pathname.startsWith("/app/import/")) {
+    event.respondWith(cacheFirst(request, SHELL));
     return;
   }
   event.respondWith(caches.match(request).then((hit) => hit || fetch(request)));

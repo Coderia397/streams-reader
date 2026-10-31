@@ -1,57 +1,82 @@
-// Generated covers: gradient from the title hash, initials in the reading face, a spine shadow.
+// Generated covers: one deep hue (Rust sets --hue-a from the title) with a soft glow of a neighbouring hue
+// (--hue-b) in the top corner, a spine shadow and a hairline top light, and the title's first letter as a monogram
+// in the reading face. Lightness and chroma come from the brand's [generative] tokens, so every cover sits in the
+// same calm range.
+@use "../../../../brand/dist/tokens/tokens" as t;
 
 .cover {
   position: relative;
   display: grid;
   place-items: center;
   flex: none;
-  aspect-ratio: 3 / 4;
   overflow: hidden;
-  color: rgba(255, 255, 255, 0.94);
-  box-shadow: inset 0 0 0 1px var(--cover-ring), 0 6px 16px -6px rgba(0, 0, 0, 0.45);
-}
+  border-radius: t.radius("xs");
+  background:
+    radial-gradient(
+      110% 80% at 100% 0%,
+      oklch(t.gen("cover-glow-l") t.gen("cover-glow-c") var(--hue-b) / t.gen("cover-glow-alpha")),
+      transparent 62%
+    ),
+    linear-gradient(
+      170deg,
+      oklch(t.gen("cover-l-top") t.gen("cover-c-top") var(--hue-a)),
+      oklch(t.gen("cover-l-bottom") t.gen("cover-c-bottom") var(--hue-a))
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, t.color("on-brand") 14%, transparent),
+    inset 0 0 0 var(--border-width) color-mix(in srgb, t.color("on-brand") 6%, transparent);
+  color: color-mix(in srgb, t.color("on-brand") 88%, transparent);
+  isolation: isolate;
 
-.cover::after {
-  // soft top light
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 38%);
-  pointer-events: none;
-}
-
-.cover__spine {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 7%;
-  width: 1.5px;
-  background: rgba(0, 0, 0, 0.18);
-  box-shadow: 1.5px 0 0 rgba(255, 255, 255, 0.08);
-}
-
-.cover__initials {
-  position: relative;
-  font-family: var(--font-read);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-}
-
-.cover--s {
-  width: 48px;
-  border-radius: 7px;
-
-  .cover__initials {
-    font-size: 17px;
+  &__monogram {
+    font-family: t.font("read");
+    font-style: italic;
+    font-weight: t.weight("regular");
+    line-height: 1;
+    transform: translateY(-4%);
   }
-}
 
-.cover--l {
-  width: 96px;
-  border-radius: 12px;
+  // The book's spine: a darker band with a hairline highlight, on the reading side of the cover.
+  &__spine {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 7%;
+    min-width: 3px;
+    background: linear-gradient(90deg, t.color("scrim"), transparent);
+    opacity: 0.55;
+  }
 
-  .cover__initials {
-    font-size: 32px;
+  &--xs {
+    width: t.space(10);
+    height: t.space(10);
+    border-radius: t.radius("2xs");
+    font-size: t.text("lg");
+  }
+
+  &--s {
+    width: t.space(12);
+    height: calc(#{t.space(12)} * 1.5);
+    font-size: t.text("xl");
+  }
+
+  &--l {
+    width: calc(#{t.space(12)} * 1.5);
+    height: calc(#{t.space(12)} * 2.25);
+    border-radius: t.radius("sm");
+    font-size: t.text("2xl");
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, t.color("on-brand") 14%, transparent),
+      t.shadow(2);
+  }
+
+  &--xl {
+    width: calc(#{t.space(12)} * 4);
+    height: calc(#{t.space(12)} * 6);
+    border-radius: t.radius("lg");
+    font-size: t.text("3xl");
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, t.color("on-brand") 14%, transparent),
+      t.shadow(3);
   }
 }

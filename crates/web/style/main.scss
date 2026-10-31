@@ -1,21 +1,33 @@
-// Entry stylesheet, compiled by trunk (dart-sass). Order: tokens, fonts, base, layout, components, pages.
+// Entry stylesheet, compiled by trunk (dart-sass). Every value comes from the central brand tokens
+// (brand/dist/tokens/_tokens.scss, generated from brand/tokens.toml); tools/check_style.py fails the build on a
+// hard-coded colour, radius or font size. Order: base, layout, components, pages.
 
-@use "tokens";
-@use "fonts";
-@use "base";
-@use "layout";
-@use "components/icons";
-@use "components/buttons";
-@use "components/forms";
+@use "base/fonts";
+@use "base/reset";
+@use "base/layout";
+@use "components/icon";
+@use "components/button";
+@use "components/chip";
+@use "components/input";
+@use "components/controls";
+@use "components/card";
+@use "components/list";
 @use "components/sheet";
 @use "components/toast";
 @use "components/cover";
-@use "components/chrome";
-@use "components/dock";
-@use "components/lists";
+@use "components/orb";
+@use "components/progress";
 @use "components/feedback";
+@use "components/spot";
+@use "components/mark";
+@use "components/player";
+@use "components/dock";
+@use "components/mini";
+@use "components/tabbar";
+@use "pages/auth";
+@use "pages/welcome";
 @use "pages/library";
 @use "pages/reader";
 @use "pages/voices";
 @use "pages/record";
-@use "pages/entry";
+@use "pages/settings";

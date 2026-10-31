@@ -1,0 +1,174 @@
+// Fields: text inputs, text areas, the one-time-code box, labels, hints and form errors.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.input {
+  @include t.input;
+
+  &--area {
+    height: auto;
+    min-height: calc(#{t.space(12)} * 3);
+    padding-block: t.space(3);
+    line-height: t.leading("normal");
+    resize: vertical;
+  }
+
+  &--code {
+    height: calc(var(--input-height) + #{t.space(4)});
+    font-size: t.text("xl");
+    font-weight: t.weight("semibold");
+    letter-spacing: 0.4em;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Codes people copy by hand (the invite code): every character distinct.
+  &--mono {
+    font-family: t.font("mono");
+    letter-spacing: 0.04em;
+
+    // The hint stays in the interface face; only what is typed is monospaced.
+    &::placeholder {
+      font-family: t.font("ui");
+      letter-spacing: normal;
+    }
+  }
+}
+
+.field {
+  display: grid;
+  gap: t.space(2);
+
+  &__label {
+    @include t.type("label");
+    color: t.color("text-2");
+  }
+
+  &__hint {
+    color: t.color("text-3");
+    font-size: t.text("xs");
+  }
+
+  // What is wrong with this field's value, right under it (tied to it with aria-describedby).
+  &__error {
+    display: flex;
+    align-items: flex-start;
+    gap: t.space(1);
+    color: t.color("danger");
+    font-size: t.text("xs");
+    line-height: t.leading("snug");
+    animation: fade var(--dur-base) var(--ease-out);
+
+    .icon {
+      flex: none;
+      width: var(--icon-size-sm);
+      height: var(--icon-size-sm);
+    }
+  }
+
+  // A field that appears after a step (the invite code for a new account) rises in instead of popping.
+  &--reveal {
+    animation: rise var(--dur-base) var(--ease-out);
+  }
+}
+
+.form {
+  display: grid;
+  gap: t.space(4);
+
+  &__hint {
+    color: t.color("text-3");
+    font-size: t.text("sm");
+    text-align: center;
+  }
+
+  &__error,
+  &__note {
+    display: flex;
+    align-items: flex-start;
+    gap: t.space(2);
+    color: t.color("danger");
+    font-size: t.text("sm");
+    line-height: t.leading("snug");
+
+    .icon {
+      flex: none;
+      width: var(--icon-size-sm);
+      height: var(--icon-size-sm);
+      margin-block-start: 1px;
+    }
+  }
+
+  // A hint that needs no alarm: brand tint, like a selected chip.
+  &__note {
+    padding: t.space(3);
+    border-radius: t.radius("md");
+    background: t.color("brand-soft");
+    color: t.color("text");
+
+    .icon {
+      color: t.color("brand-text");
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: t.space(2);
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: t.space(1);
+  }
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: t.space(2);
+  height: var(--input-height);
+  margin-block-end: t.space(4);
+  padding-inline: t.space(4);
+  border: var(--border-width) solid t.color("border");
+  border-radius: t.radius("pill");
+  background: t.color("surface-1");
+  color: t.color("text-3");
+  animation: fade var(--dur-base) var(--ease-out);
+
+  &:focus-within {
+    border-color: t.color("focus");
+  }
+
+  &__input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: none;
+    color: t.color("text");
+    font-size: t.text("md");
+    outline: none;
+
+    &::placeholder {
+      color: t.color("text-3");
+    }
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: t.space(3);
+  margin-block: t.space(5);
+  color: t.color("text-3");
+  font-size: t.text("xs");
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: var(--border-width);
+    background: t.color("border");
+  }
+}

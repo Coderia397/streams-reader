@@ -1,0 +1,202 @@
+// App frame: page column, page header, the fixed chrome (tab bar, mini-player) and the splash.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+// Heights the fixed chrome reserves (built from spacing tokens).
+:root {
+  --tabbar-h: calc(#{t.space(12)} + #{t.space(4)});
+  --mini-h: calc(#{t.space(12)} + #{t.space(4)});
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --rail-w: calc(#{t.space(12)} * 2);
+}
+
+// Keyboard focus never lands under the fixed tab bar and mini-player (WCAG 2.4.11): scrolling into view stops this
+// far above the bottom edge. On :root the mini-player always counts at full height, which only adds a little
+// space when nothing is loaded.
+html {
+  scroll-padding-block-end: calc(var(--tabbar-h) + var(--mini-h) + var(--safe-bottom) + #{t.space(2)});
+}
+
+.app {
+  min-height: 100dvh;
+}
+
+// Nothing loaded, so no mini-player: the page and the toasts stop reserving its height.
+.app--no-mini {
+  --mini-h: 0px;
+}
+
+.main {
+  padding-block-end: calc(var(--tabbar-h) + var(--mini-h) + #{t.space(6)} + var(--safe-bottom));
+}
+
+.app--immersive .main {
+  padding-block-end: 0;
+}
+
+.page {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: t.space(4);
+  padding-block-start: calc(var(--safe-top) + #{t.space(4)});
+  animation: fade var(--dur-base) var(--ease-out);
+
+  @include t.bp("sm") {
+    padding-inline: t.space(6);
+  }
+}
+
+.page--narrow {
+  max-width: calc(#{t.space(12)} * 10);
+}
+
+.page-head {
+  display: flex;
+  align-items: center;
+  gap: t.space(2);
+  min-height: var(--tap-min);
+  margin-block: t.space(4) t.space(5);
+
+  .page-title {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: t.space(1);
+  }
+}
+
+.page-lead {
+  margin-block: calc(-1 * #{t.space(3)}) t.space(6);
+}
+
+.section {
+  margin-block-end: t.space(8);
+
+  > .overline {
+    display: block;
+    margin-block-end: t.space(3);
+  }
+}
+
+.list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block: t.space(8) t.space(2);
+}
+
+// Simple top bar for sub-screens (recording).
+.topbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: t.z("sticky");
+  display: flex;
+  align-items: center;
+  gap: t.space(2);
+  min-height: calc(#{t.space(12)} + #{t.space(2)});
+  margin-inline: calc(-1 * #{t.space(4)});
+  padding-inline: t.space(2);
+  padding-block-start: var(--safe-top);
+  background: t.color("glass");
+  @include t.glass;
+
+  // On wide screens the bar spans the window, like the reader's bar and the sticky footer, while its controls stay
+  // on the page column.
+  @include t.bp("md") {
+    margin-inline: calc(50% - 50vw);
+    padding-inline: calc(50vw - 50% + #{t.space(2)});
+  }
+
+  &__title {
+    flex: 1;
+    @include t.type("title");
+    text-align: center;
+    @include t.truncate;
+  }
+}
+
+.icon-btn-spacer {
+  width: var(--tap-min);
+  flex: none;
+}
+
+.chrome {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: calc(var(--tabbar-h) + var(--safe-bottom));
+  z-index: t.z("dock");
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+}
+
+.splash {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  animation: fade var(--dur-slow) var(--ease-out);
+}
+
+.center-stack {
+  display: grid;
+  justify-items: center;
+  gap: t.space(3);
+  padding: t.space(8) t.space(4);
+  color: t.color("text-2");
+  text-align: center;
+}
+
+.stack {
+  display: grid;
+  // One column that never grows past the container: a long one-line label (a bookmark's sentence) truncates
+  // instead of widening every row.
+  grid-template-columns: minmax(0, 1fr);
+  gap: t.space(3);
+
+  &--tight {
+    gap: 0;
+  }
+
+  // Separate buttons stacked closely (sign-in providers).
+  &--snug {
+    gap: t.space(2);
+  }
+}
+
+.colophon {
+  margin-block: t.space(8);
+  color: t.color("text-3");
+  font-size: t.text("xs");
+  text-align: center;
+}
+
+.tip {
+  margin-block-start: t.space(6);
+  color: t.color("text-3");
+  font-size: t.text("sm");
+  text-align: center;
+}
+
+// Wide screens: the tab bar becomes a rail at the inline start.
+@include t.bp("md") {
+  // The tab bar is a rail here; only the floating mini-player covers the bottom.
+  html {
+    scroll-padding-block-end: calc(var(--mini-h) + #{t.space(8)});
+  }
+
+  .app:not(.app--immersive) .main {
+    margin-inline-start: var(--rail-w);
+    padding-block-end: calc(var(--mini-h) + #{t.space(8)});
+  }
+
+  .chrome {
+    inset-block-end: t.space(4);
+    inset-inline-start: var(--rail-w);
+  }
+}

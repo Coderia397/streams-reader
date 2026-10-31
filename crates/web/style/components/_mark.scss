@@ -1,0 +1,55 @@
+// The pixel book mark (D26). Sizes are whole multiples of the 16-cell grid so every pixel lands on a
+// device pixel; the mark is flat colour, depth belongs to the tile.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.mark {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: t.color("brand-text");
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &--lg {
+    width: 48px;
+    height: 48px;
+  }
+
+  // The app tile: white mark on Streams blue, the mark at 75 % of the tile (the brand's cell rule at 64 px).
+  &--tile {
+    width: 64px;
+    height: 64px;
+    border-radius: t.radius("lg");
+    background: t.color("brand");
+    color: t.color("on-brand");
+    box-shadow: t.shadow("2");
+
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+}
+
+.splash .mark {
+  animation: breathe 1.6s t.ease("inout") infinite alternate;
+
+  @include t.reduced-motion {
+    animation: none;
+  }
+}
+
+@keyframes breathe {
+  to {
+    opacity: 0.55;
+    transform: scale(0.97);
+  }
+}
+

@@ -12,7 +12,8 @@ use nolabs_player::{MediaInfo, Player, PlayerState};
 
 use super::{Active, OpenDoc, PlayerBridge};
 use crate::api::documents;
-use crate::config::APP_NAME;
+use crate::config::{APP_NAME, asset};
+use crate::db;
 use crate::provider::RenderSession;
 use crate::reading::doc::DocModel;
 use crate::reading::resume::resume_offset;
@@ -70,7 +71,7 @@ impl PlayerBridge {
 
     async fn load(self, req: OpenRequest, voice: String, engine: Engine, app: AppState) -> Result<(), String> {
         let id = req.doc_id;
-        let summary = match documents::get(&id).await {
+        let summary = match db::library::get_one(&id).await {
             Ok(s) => s,
             Err(e) => app.library.get(&id).ok_or_else(|| e.friendly())?,
         };
@@ -84,7 +85,7 @@ impl PlayerBridge {
         };
         let segments = segment(&body.blocks, SegmentProfile::for_engine(engine));
         if segments.is_empty() {
-            return Err("This document has no readable text.".to_owned());
+            return Err(t!("reader-no-text"));
         }
         let model = DocModel::new(body.blocks, segments);
         let offset = match req.at_offset {
@@ -107,13 +108,14 @@ impl PlayerBridge {
             title: summary.meta.title.clone(),
             artist: summary.meta.author.clone().unwrap_or_else(|| APP_NAME.to_owned()),
             album: APP_NAME.to_owned(),
-            artwork_url: Some("/assets/icons/icon-512.png".to_owned()),
+            artwork_url: Some(asset("brand/icons/icon-512.png")),
         };
         let words = session.words(start);
         self.replace_active(Some(Rc::new(Active { player, session })));
         self.doc.set(Some(Arc::new(OpenDoc { summary, voice, engine, model })));
         self.segment.set(start);
         self.word.set(None);
+        self.words_for.set_value((!words.is_empty()).then_some(start));
         self.words.set(words);
         self.state.set(PlayerState::Idle);
         self.error.set(None);

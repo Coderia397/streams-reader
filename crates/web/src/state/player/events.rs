@@ -16,6 +16,15 @@ fn set_if_changed<T: PartialEq + Send + Sync + 'static>(signal: RwSignal<T>, val
     }
 }
 
+/// The player reports `segment 3: could not load audio: <reason>`; the reason is already a friendly, translated line
+/// from the render session, so only that part is shown. Anything else becomes a generic line.
+pub fn listener_message(raw: &str) -> String {
+    match raw.rsplit_once("could not load audio: ") {
+        Some((_, reason)) if !reason.trim().is_empty() => reason.trim().to_owned(),
+        _ => t!("player-error"),
+    }
+}
+
 impl PlayerBridge {
     pub(super) fn event_handler(self, app: AppState) -> Rc<dyn Fn(PlayerEvent)> {
         Rc::new(move |event| self.on_event(event, app))
@@ -32,24 +41,33 @@ impl PlayerBridge {
             PlayerEvent::SleepFired => {
                 self.sleep.set(SleepChoice::Off);
                 self.sleep_left_ms.set(None);
-                app.toasts.info("Sleep timer ended. Sleep well.");
+                app.toasts.info(t!("sleep-ended"));
                 spawn_local(async move { self.sync(app).await });
             }
             PlayerEvent::Error(msg) => {
                 set_if_changed(self.wants_play, false);
+                let msg = listener_message(&msg);
                 self.error.set(Some(msg.clone()));
                 app.toasts.error(msg);
             }
         }
     }
 
+    /// Follows the segment the player reports and keeps [`PlayerBridge::words`] for it. Timings are reloaded when
+    /// they belong to another segment or came back empty (the segment was still rendering), so the highlight never
+    /// runs on the previous segment's words.
     fn enter_segment(self, segment: u32) {
         if self.segment.get_untracked() != segment {
             self.segment.set(segment);
             set_if_changed(self.word, None);
-            let words = self.session().map(|s| s.words(segment)).unwrap_or_default();
-            self.words.set(words);
         }
+        let loaded = self.words_for.get_value();
+        if !needs_words(loaded, segment, self.words.with_untracked(Vec::is_empty)) {
+            return;
+        }
+        let words = self.session().map(|s| s.words(segment)).unwrap_or_default();
+        self.words_for.set_value((!words.is_empty()).then_some(segment));
+        set_if_changed(self.words, words);
     }
 
     fn apply_snapshot(self, s: Snapshot) {
@@ -75,5 +93,32 @@ impl PlayerBridge {
         set_if_changed(self.rate, s.rate);
         // The countdown shows whole seconds; finer updates would only cost renders.
         set_if_changed(self.sleep_left_ms, s.sleep_left_ms.map(|ms| ms / 1000 * 1000));
+    }
+}
+
+/// Whether the word timings must be (re)loaded for `segment`.
+pub(super) fn needs_words(loaded_for: Option<u32>, segment: u32, list_empty: bool) -> bool {
+    loaded_for != Some(segment) || list_empty
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn words_reload_for_a_new_segment_or_an_empty_list() {
+        assert!(needs_words(None, 0, true));
+        assert!(needs_words(Some(3), 4, false));
+        assert!(needs_words(Some(4), 4, true));
+        assert!(!needs_words(Some(4), 4, false));
+    }
+
+    #[test]
+    fn player_errors_keep_only_the_friendly_reason() {
+        assert_eq!(
+            listener_message("segment 2: could not load audio: The engine is waking up."),
+            "The engine is waking up."
+        );
+        assert_eq!(listener_message("decode failed"), "Playback stopped unexpectedly. Press play to try again.");
     }
 }

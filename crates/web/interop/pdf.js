@@ -2,7 +2,7 @@
 // Loaded lazily on the first PDF import: the library is ~0.5 MB and its worker ~1.3 MB.
 // isEvalSupported:false keeps pdf.js from compiling code at runtime, which the CSP forbids anyway.
 
-const BASE = "/assets/vendor/pdfjs/";
+const BASE = "/app/assets/vendor/pdfjs/";
 let pdfjs = null;
 
 async function load() {
@@ -68,6 +68,7 @@ export async function extractPdf(bytes) {
     }
     return { title, pages };
   } finally {
-    await doc.destroy();
+    // The loading task owns the document and its worker port (pdf.js 6 has no PDFDocumentProxy.destroy()).
+    await task.destroy();
   }
 }

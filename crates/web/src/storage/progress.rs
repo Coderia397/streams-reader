@@ -1,7 +1,7 @@
 //! Listening position kept on the phone. Written every few seconds while playing (cheap, survives a killed tab) and
-//! synced to the Worker less often; whichever copy is newer wins when a document opens.
+//! synced to Supabase less often; whichever copy is newer wins when a document opens.
 
-use nolabs_core::proto::api::Progress;
+use crate::model::Progress;
 use serde::{Deserialize, Serialize};
 
 use super::idb;
@@ -12,7 +12,7 @@ pub struct LocalProgress {
     pub doc_id: String,
     pub char_offset: u64,
     pub updated_at_ms: i64,
-    /// False until the Worker has acknowledged this position.
+    /// False until Supabase has acknowledged this position.
     pub synced: bool,
 }
 

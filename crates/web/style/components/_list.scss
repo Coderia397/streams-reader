@@ -1,0 +1,190 @@
+// Rows: settings rows (.row-item), bookmark rows, choice rows in sheets (.choice), and the dividers between them.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.row-item {
+  display: flex;
+  align-items: center;
+  gap: t.space(3);
+  width: 100%;
+  min-height: calc(var(--tap-min) + #{t.space(3)});
+  padding: t.space(2) t.space(4);
+  color: t.color("text");
+  text-align: start;
+  @include t.transition(background-color);
+  // Rows fill a card that clips its children, so the ring is drawn inside the row (the card's first and last rows
+  // follow its corners, see _card.scss).
+  @include t.focus-ring-inset;
+
+  & + & {
+    border-block-start: var(--border-width) solid t.color("border");
+  }
+
+  &:is(button):hover {
+    background: t.color("surface-2");
+  }
+
+  &--static {
+    cursor: default;
+  }
+
+  &--stack {
+    display: grid;
+    gap: t.space(3);
+    padding-block: t.space(3);
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: t.space(3);
+  }
+
+  &__icon {
+    display: inline-flex;
+    justify-content: center;
+    flex: none;
+    width: var(--icon-size);
+    color: t.color("text-2");
+  }
+
+  &__text {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__label {
+    flex: 1;
+    font-weight: t.weight("medium");
+  }
+
+  // Two lines before the ellipsis: hints run longer in German and French than in English.
+  &__hint {
+    color: t.color("text-3");
+    font-size: t.text("xs");
+    @include t.truncate(2);
+  }
+
+  &__value {
+    color: t.color("text-3");
+    font-size: t.text("sm");
+    text-align: end;
+    @include t.truncate;
+    max-width: 50%;
+  }
+
+  &__chev {
+    color: t.color("text-3");
+  }
+
+  &__check {
+    color: t.color("brand-text");
+  }
+
+  &--danger,
+  &--danger .row-item__icon {
+    color: t.color("danger");
+  }
+}
+
+// Rows that stand on their own in a stack (the reader's More sheet, Appearance), not in a card: the ring and the
+// hover follow rounded corners like every other control.
+.stack > .row-item {
+  border-radius: t.radius("md");
+}
+
+// A saved place in the reader's More sheet: the jump button fills the row like a .row-item (icon in the same column,
+// label on the same line), and the remove button sits at the inline end.
+.bookmark {
+  gap: t.space(2);
+  padding-inline-end: t.space(2);
+
+  &__jump {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    gap: t.space(3);
+    min-height: var(--tap-min);
+    border-radius: t.radius("sm");
+    color: t.color("text");
+    text-align: start;
+    @include t.focus-ring;
+  }
+
+  &__text {
+    min-width: 0;
+    @include t.truncate;
+  }
+}
+
+.choice-list {
+  display: grid;
+  gap: t.space(1);
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: t.space(4);
+  width: 100%;
+  padding: t.space(3) t.space(2);
+  border-radius: t.radius("md");
+  color: t.color("text");
+  text-align: start;
+  cursor: pointer;
+  @include t.transition(background-color);
+  @include t.focus-ring;
+
+  &:hover {
+    background: t.color("surface-3");
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: var(--tap-min);
+    height: var(--tap-min);
+    border-radius: t.radius("pill");
+    background: t.color("brand-soft");
+    color: t.color("brand-text");
+  }
+
+  &__text {
+    display: grid;
+    gap: t.space(1);
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__label {
+    font-weight: t.weight("medium");
+  }
+
+  &__hint {
+    color: t.color("text-3");
+    font-size: t.text("sm");
+  }
+
+  &__chev {
+    color: t.color("text-3");
+  }
+}
+
+.keys {
+  display: grid;
+  gap: t.space(2);
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: t.space(3);
+    font-size: t.text("sm");
+    color: t.color("text-2");
+
+    dt {
+      min-width: calc(#{t.space(12)} * 2);
+    }
+  }
+}

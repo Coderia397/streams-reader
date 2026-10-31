@@ -1,131 +1,148 @@
-// Skeletons and empty states.
-
-.skel {
-  border-radius: 8px;
-  background: linear-gradient(90deg, var(--skel-a) 0%, var(--skel-b) 50%, var(--skel-a) 100%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s linear infinite;
-}
-
-.skel--cover {
-  width: 48px;
-  height: 64px;
-  flex: none;
-}
-
-.skel--line {
-  height: 14px;
-  width: 80%;
-}
-
-.skel--short {
-  width: 46%;
-}
-
-.skel--hero {
-  height: 176px;
-  border-radius: var(--r-xl);
-}
-
-.skel--title {
-  height: 30px;
-  width: 70%;
-  margin: 24px 0 26px;
-}
-
-.skel--text {
-  height: 16px;
-  margin-bottom: 14px;
-}
-
-.skeleton-list .row {
-  min-height: 84px;
-  gap: 14px;
-}
-
-.row--skeleton .row__body {
-  gap: 10px;
-}
+// Empty states, loading skeletons, busy lines, the now-playing equaliser and status dots.
+@use "../../../../brand/dist/tokens/tokens" as t;
 
 .empty {
   display: grid;
   justify-items: center;
-  gap: 8px;
-  padding: 48px 12px 24px;
+  gap: t.space(2);
+  padding: t.space(10) t.space(4) t.space(6);
   text-align: center;
-  animation: rise-in var(--dur-slow) var(--ease);
+  animation: rise var(--dur-slow) var(--ease-out);
 
-  .btn {
-    margin-top: 14px;
+  &__title {
+    margin-block-start: t.space(4);
+    @include t.type("h2");
+  }
+
+  &__line {
+    max-width: calc(#{t.space(12)} * 7);
+    color: t.color("text-2");
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: t.space(3);
+    width: 100%;
+    margin-block-start: t.space(5);
   }
 }
 
-.empty__mark {
-  display: grid;
-  place-items: center;
-  width: 72px;
-  height: 72px;
-  margin-bottom: 8px;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent);
+.busy {
+  display: flex;
+  align-items: center;
+  gap: t.space(3);
+  padding: t.space(4);
+  color: t.color("text-2");
 
   .icon {
-    width: 30px;
-    height: 30px;
+    color: t.color("brand-text");
+  }
+
+  &--card {
+    margin-block-end: t.space(4);
+    border: var(--border-width) solid t.color("border");
+    border-radius: var(--card-radius);
+    background: t.color("surface-1");
   }
 }
 
-.empty__title {
-  font-family: var(--font-read);
-  font-size: 23px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+.skel {
+  border-radius: t.radius("xs");
+  background: linear-gradient(90deg, t.color("surface-1") 25%, t.color("surface-2") 50%, t.color("surface-1") 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+
+  &--cover {
+    width: t.space(12);
+    height: calc(#{t.space(12)} * 1.5);
+    flex: none;
+  }
+
+  &--line {
+    height: t.space(3);
+    width: 70%;
+  }
+
+  &--short {
+    width: 40%;
+  }
+
+  &--hero {
+    height: calc(#{t.space(12)} * 3.5);
+    border-radius: var(--card-radius);
+  }
+
+  &--title {
+    height: t.space(8);
+    width: 60%;
+    margin-block-end: t.space(6);
+  }
+
+  &--text {
+    height: t.space(4);
+    margin-block-end: t.space(3);
+  }
 }
 
-.empty__line {
-  max-width: 30ch;
-  color: var(--text-2);
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
 }
 
-.progress-card {
+.skeleton-list {
   display: grid;
-  justify-items: center;
-  gap: 12px;
-  margin-top: 40px;
-  padding: 32px 20px;
-  border-radius: var(--r-xl);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  text-align: center;
+  gap: t.space(2);
+  margin-block-start: t.space(6);
+}
 
-  h2 {
-    font-family: var(--font-read);
-    font-size: 22px;
-    font-weight: 600;
-  }
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: t.space(3);
 
-  .btn {
-    margin-top: 8px;
+  i {
+    width: 2px;
+    height: 100%;
+    border-radius: t.radius("pill");
+    background: t.color("brand-text");
+    animation: eq 0.9s var(--ease-inout) infinite alternate;
+
+    &:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: -0.6s;
+    }
   }
 }
 
-.done-mark {
-  display: grid;
-  place-items: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--success) 16%, transparent);
-  color: var(--success);
-
-  .icon {
-    width: 30px;
-    height: 30px;
+@keyframes eq {
+  from {
+    transform: scaleY(0.3);
   }
 }
 
-.done-mark--warn {
-  background: color-mix(in srgb, var(--warning) 16%, transparent);
-  color: var(--warning);
+.dot {
+  display: inline-block;
+  width: t.space(2);
+  height: t.space(2);
+  margin-inline: t.space(1);
+  border-radius: t.radius("pill");
+
+  &--ok {
+    background: t.color("success");
+  }
+
+  &--warn {
+    background: t.color("warning");
+  }
+
+  &--bad {
+    background: t.color("danger");
+  }
 }

@@ -10,10 +10,11 @@ use std::rc::Rc;
 use std::sync::Arc;
 
 use leptos::prelude::*;
-use nolabs_core::proto::api::{DocumentSummary, Engine, WordTiming};
+use nolabs_core::proto::api::{Engine, WordTiming};
+
+use crate::model::DocumentSummary;
 use nolabs_player::{Player, PlayerState, Sleep};
 
-use crate::config::SEEK_STEP_MS;
 use crate::provider::RenderSession;
 use crate::reading::doc::DocModel;
 use crate::state::settings::clamp_speed;
@@ -62,11 +63,14 @@ pub struct PlayerBridge {
     pub segment: RwSignal<u32>,
     pub word: RwSignal<Option<usize>>,
     pub words: RwSignal<Vec<WordTiming>>,
+    /// The segment [`Self::words`] belongs to. `None` until a non-empty list has been loaded, so the word timings
+    /// are fetched again (on the next snapshot) when the segment was not ready yet.
+    words_for: StoredValue<Option<u32>>,
     pub rate: RwSignal<f64>,
     pub sleep: RwSignal<SleepChoice>,
     pub sleep_left_ms: RwSignal<Option<u32>>,
     pub buffered_ms: RwSignal<u32>,
-    /// Last playback error, shown in the dock until playback resumes.
+    /// Last playback error (cleared when playback resumes).
     pub error: RwSignal<Option<String>>,
     /// The listener asked for playback (play, tap, autoplay) and has not paused since. The player reports `Loading`
     /// both while preloading and while starting, so the play/pause icon follows this instead.
@@ -84,6 +88,7 @@ impl PlayerBridge {
             segment: RwSignal::new(0),
             word: RwSignal::new(None),
             words: RwSignal::new(Vec::new()),
+            words_for: StoredValue::new(None),
             rate: RwSignal::new(1.0),
             sleep: RwSignal::new(SleepChoice::Off),
             sleep_left_ms: RwSignal::new(None),
@@ -120,12 +125,9 @@ impl PlayerBridge {
         if self.wants_play.get_untracked() { self.pause() } else { self.play() }
     }
 
-    pub fn back(&self) {
-        self.with_player(|p| p.seek_by(-SEEK_STEP_MS));
-    }
-
-    pub fn forward(&self) {
-        self.with_player(|p| p.seek_by(SEEK_STEP_MS));
+    /// Skips by `seconds` (negative: back).
+    pub fn skip(&self, seconds: i32) {
+        self.with_player(|p| p.seek_by(seconds.saturating_mul(1000)));
     }
 
     pub fn next(&self) {
@@ -136,11 +138,12 @@ impl PlayerBridge {
         self.with_player(Player::previous);
     }
 
-    /// Jumps to a segment and plays from it (tap on a sentence, chapter, scrubber).
+    /// Jumps to a segment and plays from it (tap on a sentence, chapter, scrubber). The segment signal follows the
+    /// player's own report (`enter_segment`), which also loads that segment's word timings; setting it here would
+    /// skip the reload and highlight with the previous segment's timings.
     pub fn jump_to(&self, segment: u32) {
         self.error.set(None);
         self.wants_play.set(true);
-        self.segment.set(segment);
         self.word.set(None);
         self.with_player(|p| {
             p.jump_to(segment);

@@ -1,68 +1,91 @@
-// Voices page.
+// Voice rows (Voices page and the voice sheet).
+@use "../../../../brand/dist/tokens/tokens" as t;
 
-.record-card {
+.voice-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-height: 76px;
-  margin: 10px 0 8px;
-  padding: 12px 14px;
-  border-radius: var(--r-l);
-  background:
-    radial-gradient(120% 140% at 0% 0%, var(--accent-soft), transparent 60%),
-    var(--surface);
-  border: 1px solid var(--line);
+  gap: t.space(1);
+  padding-inline-end: t.space(2);
 
-  > .icon {
-    color: var(--text-3);
+  & + & {
+    border-block-start: var(--border-width) solid t.color("border");
   }
-}
 
-.record-card__icon {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  flex: none;
-  border-radius: 50%;
-  background: var(--accent-strong);
-  color: var(--on-accent);
-}
+  .sheet & {
+    padding-inline-end: 0;
+  }
 
-.record-card__text {
-  display: grid;
-  flex: 1;
-  gap: 2px;
-}
+  &__main {
+    display: flex;
+    align-items: center;
+    gap: t.space(3);
+    flex: 1;
+    min-width: 0;
+    min-height: calc(#{t.space(12)} + #{t.space(6)});
+    padding: t.space(3) t.space(4);
+    // The row's corners (the card's, on the first and last row), so the inset ring follows the card.
+    border-radius: inherit;
+    text-align: start;
+    @include t.focus-ring-inset;
 
-.record-card__title {
-  font-weight: 650;
-}
+    .sheet & {
+      padding-inline: 0;
+    }
 
-.record-card__line {
-  color: var(--text-2);
-  font-size: 13px;
-}
+    &:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+  }
 
-.budget {
-  display: grid;
-  gap: 8px;
-  margin: 10px 0 6px;
-  padding: 12px 14px;
-  border-radius: var(--r-m);
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
+  &__text {
+    display: grid;
+    gap: t.space(1);
+    flex: 1;
+    min-width: 0;
+  }
 
-.budget__row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13.5px;
-  color: var(--text-2);
-}
+  // When the name and the badge do not fit on one line, the badge moves under the name; the name itself never
+  // breaks, and truncates only if it alone is wider than the row.
+  &__name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: t.space(1) t.space(2);
+    min-width: 0;
+    font-weight: t.weight("semibold");
 
-.budget__num {
-  font-variant-numeric: tabular-nums;
-  color: var(--text);
-  font-weight: 600;
+    .badge {
+      flex: none;
+    }
+  }
+
+  &__label {
+    min-width: 0;
+    max-width: 100%;
+    @include t.truncate;
+  }
+
+  &__meta {
+    color: t.color("text-3");
+    font-size: t.text("xs");
+    @include t.truncate(2);
+  }
+
+  &__check {
+    color: t.color("brand-text");
+  }
+
+  &.is-selected .orb {
+    box-shadow: 0 0 0 2px t.color("bg"), 0 0 0 4px t.color("brand");
+  }
+
+  &__extra {
+    display: flex;
+    align-items: center;
+  }
+
+  &__heart.is-on {
+    color: t.color("brand-text");
+  }
 }

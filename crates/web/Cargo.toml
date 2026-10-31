@@ -1,17 +1,21 @@
 [package]
 name = "nolabs-web"
-description = "The nolabs phone app: Leptos CSR reader, player dock, library, voices and recording (wasm only, built with trunk)"
+description = "Streams Reader web app: Leptos CSR reader, player dock, library, voices, recording and accounts (wasm only, built with trunk)"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
 [dependencies]
 nolabs-core.workspace = true
-nolabs-import.workspace = true
+# Message types only: the parsers (nolabs-import) run in the import worker, outside the startup bundle.
+nolabs-web-import.workspace = true
 nolabs-player.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
+sha2.workspace = true
+fluent-bundle = "0.16"
+unic-langid = "0.9"
 leptos = { version = "=0.8.22", features = ["csr"] }
 leptos_router = "=0.8.17"
 console_error_panic_hook = "0.1.7"
@@ -21,6 +25,13 @@ wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
 web-sys = { version = "0.3", features = [
     "AbortController",
+    "Crypto",
+    "KeyboardEvent",
+    "PointerEvent",
+    "Selection",
+    "TouchEvent",
+    "TouchList",
+    "Touch",
     "AbortSignal",
     "Blob",
     "BlobPropertyBag",
@@ -33,12 +44,14 @@ web-sys = { version = "0.3", features = [
     "DomStringList",
     "DomTokenList",
     "Element",
+    "ErrorEvent",
     "Event",
     "EventTarget",
     "File",
     "FileList",
     "Headers",
     "HtmlAudioElement",
+    "HtmlDialogElement",
     "HtmlElement",
     "HtmlInputElement",
     "HtmlMediaElement",
@@ -56,6 +69,7 @@ web-sys = { version = "0.3", features = [
     "IntersectionObserverInit",
     "Location",
     "MediaQueryList",
+    "MessageEvent",
     "Navigator",
     "Request",
     "RequestCredentials",
@@ -64,6 +78,7 @@ web-sys = { version = "0.3", features = [
     "ScrollBehavior",
     "ScrollIntoViewOptions",
     "ScrollLogicalPosition",
+    "ScrollToOptions",
     "Storage",
     "StorageEstimate",
     "StorageManager",
@@ -71,7 +86,11 @@ web-sys = { version = "0.3", features = [
     "UrlSearchParams",
     "VisibilityState",
     "Window",
+    "Worker",
 ] }
+
+[dev-dependencies]
+fluent-syntax = "0.12"
 
 [lints]
 workspace = true

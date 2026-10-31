@@ -1,0 +1,202 @@
+// The play button and the scrubber, shared by the dock, the mini-player and the continue card.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.play-btn {
+  @include t.icon-button(play-size, primary);
+  position: relative;
+  box-shadow: t.shadow(1);
+
+  .icon {
+    width: calc(var(--icon-size) * 1.4);
+    height: calc(var(--icon-size) * 1.4);
+  }
+
+  // Drawn at 40 px (note 12), touched at 44 px.
+  &--small {
+    @include t.hit-area;
+    width: var(--play-size-sm);
+    height: var(--play-size-sm);
+
+    .icon {
+      width: var(--icon-size);
+      height: var(--icon-size);
+    }
+  }
+
+  &__ring {
+    position: absolute;
+    inset: calc(-1 * #{t.space(1)});
+    border: 2px solid transparent;
+    border-radius: t.radius("pill");
+    pointer-events: none;
+  }
+
+  &.is-waiting &__ring {
+    border-block-start-color: t.color("brand-text");
+    animation: spin 0.9s linear infinite;
+  }
+}
+
+// The play glyph is optically centred a touch towards its point.
+.play-btn__play {
+  translate: 1px 0;
+}
+
+// Media controls keep their left-to-right meaning in right-to-left languages (time runs left to right), and
+// numbers such as 1.5× keep their order. Every playback progress bar (library rows, continue card, mini-player,
+// scrubber) fills the same way for the same document. Other bars (budgets) follow the page direction.
+.scrubber,
+.dock__transport,
+.mini__progress,
+.progress--playback {
+  direction: ltr;
+}
+
+.chip,
+.dock__speed,
+.speed__value,
+.row-item__value,
+.scrubber__times > span,
+.segmented__opt {
+  unicode-bidi: plaintext;
+}
+
+.scrubber {
+  display: grid;
+
+  &__range {
+    height: t.size("tap-min");
+  }
+
+  &__times {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: t.space(2);
+    color: t.color("text-3");
+    font-size: t.text("xs");
+
+    // The row is always left to right, so the physical side is correct; `end` would follow the label's own
+    // (plaintext) direction and pull an Arabic label to the left.
+    > :last-child {
+      justify-self: end;
+      text-align: right;
+    }
+  }
+
+  &__left {
+    color: t.color("text-2");
+    text-align: center;
+  }
+}
+
+.speed {
+  display: grid;
+  gap: t.space(2);
+
+  &__value {
+    font-size: t.text("2xl");
+    font-weight: t.weight("semibold");
+    text-align: center;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: t.space(2);
+  }
+
+  &__sign {
+    font-size: t.text("xl");
+    line-height: 1;
+  }
+
+  .chip-row {
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: t.space(3);
+  }
+}
+
+.sleep__left {
+  display: flex;
+  align-items: center;
+  gap: t.space(2);
+  margin-block-end: t.space(3);
+  color: t.color("brand-text");
+  font-weight: t.weight("medium");
+  font-variant-numeric: tabular-nums;
+}
+
+.contents {
+  display: grid;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: t.space(3);
+    width: 100%;
+    min-height: calc(var(--tap-min) + #{t.space(2)});
+    padding: t.space(2);
+    border-radius: t.radius("md");
+    text-align: start;
+    @include t.transition(background-color);
+    @include t.focus-ring;
+
+    &:hover {
+      background: t.color("surface-3");
+    }
+
+    &.is-current {
+      color: t.color("brand-text");
+    }
+  }
+
+  &__num {
+    display: grid;
+    place-items: center;
+    width: t.space(6);
+    color: t.color("text-3");
+    font-size: t.text("sm");
+    font-variant-numeric: tabular-nums;
+
+    .is-current & {
+      color: t.color("brand-text");
+    }
+  }
+
+  &__title {
+    flex: 1;
+    @include t.truncate(2);
+  }
+
+  &__time {
+    color: t.color("text-3");
+    font-size: t.text("xs");
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.hits {
+  display: grid;
+  gap: t.space(1);
+
+  &__item {
+    width: 100%;
+    padding: t.space(3);
+    border-radius: t.radius("md");
+    color: t.color("text-2");
+    font-family: t.font("read");
+    text-align: start;
+    @include t.transition(background-color);
+    @include t.focus-ring;
+
+    &:hover {
+      background: t.color("surface-3");
+    }
+
+    mark {
+      @include t.word-pill;
+      color: t.color("text");
+    }
+  }
+}

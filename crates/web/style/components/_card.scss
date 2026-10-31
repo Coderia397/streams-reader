@@ -1,0 +1,96 @@
+// Cards: the continue-listening card, list cards, feature cards and settings groups.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.list-card,
+.group__card {
+  overflow: hidden;
+  border: var(--border-width) solid t.color("border");
+  border-radius: var(--card-radius);
+  background: t.color("surface-1");
+
+  // The first and last rows follow the card's inner corners, so a row's hover fill and its inset focus ring
+  // (t.focus-ring-inset) meet the curve instead of being cut by it.
+  > :first-child {
+    border-start-start-radius: calc(var(--card-radius) - var(--border-width));
+    border-start-end-radius: calc(var(--card-radius) - var(--border-width));
+  }
+
+  > :last-child {
+    border-end-start-radius: calc(var(--card-radius) - var(--border-width));
+    border-end-end-radius: calc(var(--card-radius) - var(--border-width));
+  }
+}
+
+.group {
+  margin-block-end: t.space(7);
+
+  &__title {
+    @include t.type("overline");
+    color: t.color("text-3");
+    margin-block-end: t.space(2);
+    padding-inline: t.space(1);
+  }
+
+  &__hint {
+    margin-block-start: t.space(2);
+    padding-inline: t.space(1);
+    color: t.color("text-3");
+    font-size: t.text("xs");
+  }
+}
+
+.feature-card {
+  display: flex;
+  align-items: center;
+  gap: t.space(4);
+  margin-block-end: t.space(3);
+  padding: t.space(4);
+  border: var(--border-width) solid t.color("border");
+  border-radius: var(--card-radius);
+  background: t.color("surface-1");
+  color: t.color("text");
+  @include t.transition(border-color);
+
+  &:hover {
+    border-color: t.color("border-strong");
+  }
+
+  &__text {
+    display: grid;
+    gap: t.space(1);
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    @include t.type("title");
+  }
+
+  &__line {
+    color: t.color("text-2");
+    font-size: t.text("sm");
+  }
+
+  &__chev {
+    color: t.color("text-3");
+  }
+}
+
+.budget {
+  display: grid;
+  gap: t.space(2);
+  margin-block-end: t.space(3);
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    gap: t.space(3);
+    font-size: t.text("sm");
+    color: t.color("text-2");
+  }
+
+  &__num {
+    color: t.color("text");
+    font-variant-numeric: tabular-nums;
+  }
+}

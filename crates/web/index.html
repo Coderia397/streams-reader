@@ -1,29 +1,46 @@
 <!doctype html>
-<html lang="en" data-theme="ink">
+<html lang="en" dir="ltr" data-theme="ink">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
-    <meta name="theme-color" content="#0B0B0F" />
+    <!-- The colour below is filled from brand/dist/tokens/tokens.json by tools/postbuild.py. -->
+    <meta name="theme-color" content="__THEME_BG__" />
     <meta name="color-scheme" content="dark light" />
-    <meta name="description" content="Your library, read aloud." />
+    <meta name="description" content="Your documents, articles and books, read aloud in natural voices." />
     <meta name="referrer" content="same-origin" />
-    <title>nolabs</title>
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
-    <link rel="preload" href="/assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/assets/fonts/literata-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <title>Streams Reader</title>
+    <link rel="manifest" href="/app/manifest.webmanifest" />
+    <link rel="icon" href="/app/assets/brand/icons/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/app/assets/brand/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/app/assets/brand/icons/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/app/assets/brand/icons/safari-pinned-tab.svg" color="__BRAND__" />
+    <link rel="preload" href="/app/assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/app/assets/fonts/literata-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Applies the saved theme before the first paint (external file: the CSP allows no inline scripts). -->
-    <script src="/assets/theme-boot.js"></script>
+    <script src="/app/assets/theme-boot.js"></script>
     <link data-trunk rel="scss" href="style/main.scss" />
     <link data-trunk rel="rust" data-bin="nolabs-web" data-type="main" />
+    <!-- The import worker (crates/web-import): the parsers, loaded only when something is imported. tools/postbuild.py
+         gives its files hashed names and writes its loader URL into the import-worker meta below. -->
+    <link data-trunk rel="rust" href="../web-import/Cargo.toml" data-bin="nolabs-import-worker" data-type="worker" data-cargo-features="worker" />
+    <meta name="import-worker" content="__IMPORT_WORKER__" />
     <link data-trunk rel="copy-dir" href="assets" />
+    <!-- Brand files are copied from brand/ at build time (consumers copy, never edit; see brand/README.md). -->
+    <link data-trunk rel="copy-file" href="../../brand/dist/web/favicon.ico" data-target-path="assets/brand/icons" />
+    <link data-trunk rel="copy-file" href="../../brand/dist/web/favicon.svg" data-target-path="assets/brand/icons" />
+    <link data-trunk rel="copy-file" href="../../brand/dist/web/favicon-32.png" data-target-path="assets/brand/icons" />
+    <link data-trunk rel="copy-file" href="../../brand/dist/web/apple-touch-icon.png" data-target-path="assets/brand/icons" />
+    <link data-trunk rel="copy-file" href="../../brand/dist/web/icon-192.png" data-target-path="assets/brand/icons" />
+    <link data-trunk rel="copy-file" href="../../brand/dist/web/icon-512.png" data-target-path="assets/brand/icons" />
+    <link data-trunk rel="copy-file" href="../../brand/dist/web/icon-maskable-192.png" data-target-path="assets/brand/icons" />
+    <link data-trunk rel="copy-file" href="../../brand/dist/web/icon-maskable-512.png" data-target-path="assets/brand/icons" />
+    <link data-trunk rel="copy-file" href="../../brand/dist/web/safari-pinned-tab.svg" data-target-path="assets/brand/icons" />
     <link data-trunk rel="copy-file" href="manifest.webmanifest" />
     <link data-trunk rel="copy-file" href="sw.js" />
   </head>
   <body>
     <noscript>
-      <p style="font-family: system-ui, sans-serif; padding: 24px">nolabs needs JavaScript and WebAssembly. Use a current version of Chrome.</p>
+      <p class="noscript">Streams Reader needs JavaScript and WebAssembly. Use a current version of Chrome, Edge, Firefox or Safari.</p>
     </noscript>
   </body>
 </html>

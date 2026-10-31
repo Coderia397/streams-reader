@@ -1,0 +1,122 @@
+// Chips and tiles: one chip definition for filters, presets, quick actions and the dock.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.chip {
+  @include t.chip;
+  @include t.hit-area;
+  flex: none;
+
+  .icon {
+    width: var(--icon-size-sm);
+    height: var(--icon-size-sm);
+  }
+
+  &__text {
+    @include t.truncate;
+  }
+
+  &--lg {
+    height: var(--button-height-sm);
+    padding-inline: t.space(4);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.chip-row {
+  display: flex;
+  gap: t.space(2);
+  margin-block: t.space(3);
+
+  // Wrapped rows keep the chips' 44 px hit areas apart (chip 32 px + 12 px row gap).
+  &--wrap {
+    flex-wrap: wrap;
+    row-gap: t.space(3);
+  }
+
+  // Six choices (the default speed): an even 3 + 3 on phones instead of 5 + 1; one row from sm up, where all fit.
+  &--thirds {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: t.space(3);
+
+    .chip {
+      justify-content: center;
+    }
+
+    @include t.bp("sm") {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: t.space(2);
+  width: 100%;
+
+  // Above the library list: smaller, on the page background, labels up to two lines.
+  &--compact {
+    margin-block: t.space(3);
+
+    .tile {
+      gap: t.space(1);
+      padding: t.space(3) t.space(2);
+      border-radius: t.radius("md");
+      background: transparent;
+      color: t.color("text-2");
+    }
+  }
+}
+
+.tile {
+  display: grid;
+  justify-items: center;
+  gap: t.space(2);
+  padding: t.space(4) t.space(2);
+  border: var(--border-width) solid t.color("border");
+  border-radius: var(--card-radius);
+  background: t.color("surface-1");
+  color: t.color("text");
+  font-size: t.text("sm");
+  font-weight: t.weight("medium");
+  @include t.transition(border-color, background-color);
+  @include t.focus-ring;
+
+  .icon {
+    color: t.color("brand-text");
+  }
+
+  &__label {
+    max-width: 100%;
+    text-align: center;
+    @include t.truncate(2);
+  }
+
+  &:hover {
+    border-color: t.color("border-strong");
+    color: t.color("text");
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: t.space(5);
+  padding-inline: t.space(2);
+  border-radius: t.radius("pill");
+  font-size: t.text("xs");
+  font-weight: t.weight("medium");
+  vertical-align: middle;
+
+  // The Expressive tier: brand tint, never ember (ember is only the spoken word and recording).
+  &--brand {
+    background: t.color("brand-soft");
+    color: t.color("brand-text");
+  }
+}

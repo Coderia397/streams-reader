@@ -1,4 +1,4 @@
-//! `/voices`: choose the default voice, hear previews, manage recorded voices.
+//! `/voices`: choose the default voice, hear previews, keep favourites, manage recorded voices.
 
 mod preview;
 
@@ -8,12 +8,13 @@ use leptos_router::components::A;
 use nolabs_core::proto::api::{Engine, VoiceInfo, VoiceKind};
 
 use crate::api::voices as voices_api;
-use crate::components::icons::{I, Icon, Spinner};
+use crate::components::icon::{I, Icon, Spinner};
 use crate::components::sheet::Sheet;
+use crate::components::spot::Spot;
 use crate::components::voice_row::VoiceRow;
 use crate::config::PREVIEW_TEXT;
 use crate::state::use_app;
-use crate::state::voices::{gpu_left, group, preview_gpu_seconds};
+use crate::state::voices::{GpuBudget, group, pick, preview_gpu_seconds};
 use preview::Preview;
 
 #[component]
@@ -22,7 +23,7 @@ fn PreviewButton(voice: VoiceInfo, preview: Preview, on_ask: Callback<VoiceInfo>
     let id_loading = voice.id.clone();
     let id_playing = voice.id.clone();
     let expressive = voice.engine == Engine::Ming && voice.preview_key.is_none();
-    let label = format!("Preview {}", voice.name);
+    let label = t!("voice-preview", name = voice.name.clone());
     let click = move |_| {
         let playing = preview.playing.get_untracked().as_deref() == Some(voice.id.as_str());
         if expressive && !playing {
@@ -32,7 +33,7 @@ fn PreviewButton(voice: VoiceInfo, preview: Preview, on_ask: Callback<VoiceInfo>
         }
     };
     view! {
-        <button class="icon-btn icon-btn--soft" type="button" aria-label=label on:click=click>
+        <button class="icon-btn" type="button" aria-label=label on:click=click>
             {move || {
                 if preview.loading.get().as_deref() == Some(id_loading.as_str()) {
                     view! { <Spinner /> }.into_any()
@@ -61,8 +62,14 @@ pub fn VoicesPage() -> impl IntoView {
 
     let groups = move || app.voices.catalog.with(|c| c.as_ref().map(|c| group(&c.voices)));
     let choose = Callback::new(move |id: String| {
-        app.settings.voice.set(id.clone());
-        app.toasts.success(format!("{} is now your default voice.", app.voices.name(&id)));
+        let before = app.settings.voice.get_untracked();
+        if before == id {
+            return;
+        }
+        app.settings.use_voice(&id);
+        app.toasts.undoable(t!("voice-default-set", name = app.voices.name(&id)), move || {
+            app.settings.voice.set(before.clone())
+        });
     });
     let on_ask = Callback::new(move |v: VoiceInfo| {
         asking.set(Some(v));
@@ -82,10 +89,10 @@ pub fn VoicesPage() -> impl IntoView {
                         {mine.then(|| {
                             let v = for_manage.clone();
                             view! {
-                                <button class="icon-btn" type="button" aria-label="Manage voice" on:click=move |_| {
+                                <button class="icon-btn" type="button" aria-label=t!("voice-manage") on:click=move |_| {
                                     managing.set(Some(v.clone()));
                                     manage_open.set(true);
-                                }><Icon icon=I::More /></button>
+                                }><Icon icon=I::MoreVertical /></button>
                             }
                         })}
                     </VoiceRow>
@@ -93,7 +100,7 @@ pub fn VoicesPage() -> impl IntoView {
             })
             .collect_view()
     };
-    let budget = move || app.voices.status.with(|s| s.as_ref().map(|s| (gpu_left(s), s.gpu.cap_s)));
+    let budget = move || app.voices.status.with(|s| s.as_ref().map(GpuBudget::of));
     let confirm_preview = move |_| {
         ask_open.set(false);
         if let Some(v) = asking.get_untracked() {
@@ -109,7 +116,7 @@ pub fn VoicesPage() -> impl IntoView {
                     if app.settings.voice.get_untracked() == v.id {
                         app.settings.voice.set(nolabs_core::voices::DEFAULT_VOICE.to_owned());
                     }
-                    app.toasts.info(format!("Deleted {}.", v.name));
+                    app.toasts.info(t!("voice-deleted", name = v.name.clone()));
                     app.voices.refresh(app.toasts).await;
                 }
                 Err(e) => app.toasts.api_error(&e),
@@ -117,71 +124,86 @@ pub fn VoicesPage() -> impl IntoView {
         });
     };
 
+    let all = move || app.voices.catalog.with(|c| c.as_ref().map(|c| c.voices.clone()).unwrap_or_default());
+    let section = move |title: String, voices: Vec<VoiceInfo>| {
+        (!voices.is_empty()).then(|| {
+            view! {
+                <section class="section">
+                    <h2 class="overline">{title}</h2>
+                    <div class="list-card">{rows(voices)}</div>
+                </section>
+            }
+        })
+    };
+
     view! {
         <div class="page">
-            <header class="topbar"><h1 class="page-title page-title--bar">"Voices"</h1></header>
-            <p class="page-lead">"Pick the voice that reads to you. Tap the speaker to hear it first."</p>
+            <header class="page-head"><h1 class="page-title">{t!("voices-title")}</h1></header>
+            <p class="page-lead">{t!("voices-lead")}</p>
             {move || match groups() {
-                None => view! { <div class="center-spinner"><Spinner /></div> }.into_any(),
+                None => view! { <div class="center-stack"><Spinner /></div> }.into_any(),
                 Some(g) => view! {
+                    {section(t!("voices-favourites"), pick(&all(), &app.settings.favourites.get()))}
+                    {section(t!("voices-recent"), pick(&all(), &app.settings.recent.get()))}
                     <section class="section">
-                        <h2 class="section-label">"My voices"</h2>
-                        <A href="/voices/new" attr:class="record-card">
-                            <span class="record-card__icon"><Icon icon=I::Mic /></span>
-                            <span class="record-card__text">
-                                <span class="record-card__title">"Record your voice"</span>
-                                <span class="record-card__line">"Read eight short lines. About two minutes."</span>
+                        <h2 class="overline">{t!("voices-yours")}</h2>
+                        <A href="/voices/new" attr:class="feature-card">
+                            <Spot icon=I::Mic small=true />
+                            <span class="feature-card__text">
+                                <span class="feature-card__title">{t!("record-cta")}</span>
+                                <span class="feature-card__line">{t!("record-cta-line")}</span>
                             </span>
-                            <Icon icon=I::ChevronRight />
+                            <Icon icon=I::Forward class="feature-card__chev" />
                         </A>
-                        {rows(g.mine)}
+                        {(!g.mine.is_empty()).then(|| view! { <div class="list-card">{rows(g.mine.clone())}</div> })}
                     </section>
                     <section class="section">
-                        <h2 class="section-label">"Standard"</h2>
-                        <p class="section-hint">"Unlimited listening. Quick to start."</p>
-                        {rows(g.standard_featured)}
-                        <button class="disclosure" type="button" on:click=move |_| show_more.update(|v| *v = !*v)>
-                            <span>{move || if show_more.get() { "Fewer voices" } else { "More voices" }}</span>
-                            <span class="disclosure__chev" class:flip=move || show_more.get()><Icon icon=I::ChevronDown /></span>
+                        <h2 class="overline">{t!("voices-standard")}</h2>
+                        <p class="section-hint">{t!("voices-standard-hint")}</p>
+                        <div class="list-card">
+                            {rows(g.standard_featured)}
+                            <Show when=move || show_more.get()>{rows(g.standard_more.clone())}</Show>
+                        </div>
+                        <button class="disclosure" type="button" aria-expanded=move || show_more.get().to_string()
+                            on:click=move |_| show_more.update(|v| *v = !*v)>
+                            <span>{move || if show_more.get() { t!("voices-fewer") } else { t!("voices-more") }}</span>
+                            <span class="disclosure__chev" class:is-open=move || show_more.get()><Icon icon=I::ChevronDown /></span>
                         </button>
-                        <Show when=move || show_more.get()>{rows(g.standard_more.clone())}</Show>
                     </section>
                     <section class="section">
-                        <h2 class="section-label"><Icon icon=I::Sparkles />" Expressive"</h2>
-                        {move || budget().map(|((left, runs), cap)| view! {
+                        <h2 class="overline">{t!("voices-expressive")}</h2>
+                        {move || budget().map(|b| view! {
                             <div class="budget">
                                 <div class="budget__row">
-                                    <span>"Today's GPU budget"</span>
-                                    <span class="budget__num">{format!("{left} of {cap} s · {runs} runs")}</span>
+                                    <span>{t!("voices-budget-today")}</span>
+                                    <span class="budget__num">{t!("voices-budget-numbers", left = b.left_s, cap = b.share_s, runs = b.runs_left)}</span>
                                 </div>
-                                <div class="bar"><div class="bar__fill bar__fill--warm"
-                                    style:width=format!("{:.1}%", f64::from(left) / f64::from(cap.max(1)) * 100.0)></div></div>
+                                <div class="progress"><span class="progress__fill"
+                                    style:width=format!("{:.1}%", b.percent_left())></span></div>
                             </div>
                         })}
-                        <p class="section-hint">"Richer, emotional delivery. Each preview and minute of audio spends the daily budget."</p>
-                        {rows(g.expressive)}
+                        <p class="section-hint">{t!("voices-expressive-line")}</p>
+                        <div class="list-card">{rows(g.expressive)}</div>
                     </section>
                 }.into_any(),
             }}
-            <Sheet open=ask_open title="Play an expressive preview?">
+            <Sheet open=ask_open title=t!("voice-ask-title")>
                 <p class="sheet-lead">
-                    {move || format!(
-                        "This renders a short sample on the GPU and uses about {} seconds of today's budget.",
-                        preview_gpu_seconds(PREVIEW_TEXT.chars().count())
-                    )}
+                    {move || t!("voice-ask-line", seconds = preview_gpu_seconds(PREVIEW_TEXT.chars().count()))}
                 </p>
-                {move || budget().map(|((left, runs), _)| view! {
-                    <p class="hint">{format!("{left} seconds and {runs} runs left today.")}</p>
+                {move || budget().map(|b| view! {
+                    <p class="sheet-note">{t!("voice-ask-left", left = b.left_s, runs = b.runs_left)}</p>
                 })}
                 <div class="btn-row">
-                    <button class="btn" type="button" on:click=move |_| ask_open.set(false)>"Not now"</button>
-                    <button class="btn btn--primary" type="button" on:click=confirm_preview>"Play preview"</button>
+                    <button class="btn btn--secondary" type="button" on:click=move |_| ask_open.set(false)>{t!("action-not-now")}</button>
+                    <button class="btn btn--primary" type="button" on:click=confirm_preview>{t!("voice-ask-play")}</button>
                 </div>
             </Sheet>
-            <Sheet open=manage_open title="Your voice">
-                {move || managing.get().map(|v| view! { <p class="sheet-lead">{v.name.clone()}</p> })}
-                <button class="option option--danger" type="button" on:click=delete_voice>
-                    <Icon icon=I::Trash /><span>"Delete this voice and its audio"</span>
+            <Sheet open=manage_open title=Signal::derive(move || managing.with(|m| m.as_ref().map(|v| v.name.clone()).unwrap_or_default()))>
+                <p class="sheet-lead">{t!("voice-manage-line")}</p>
+                <button class="row-item row-item--danger" type="button" on:click=delete_voice>
+                    <span class="row-item__icon"><Icon icon=I::Trash /></span>
+                    <span class="row-item__text"><span class="row-item__label">{t!("voice-delete")}</span></span>
                 </button>
             </Sheet>
         </div>

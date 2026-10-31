@@ -50,11 +50,11 @@ pub async fn cancel() {
 /// Friendly reason for a failed start (permission denied, no microphone).
 pub fn start_error_message(raw: &str) -> String {
     if raw.contains("NotAllowed") || raw.to_lowercase().contains("permission") {
-        "Microphone access is blocked. Allow it in Chrome's site settings and try again.".to_owned()
+        t!("record-error-blocked")
     } else if raw.contains("NotFound") {
-        "No microphone found.".to_owned()
+        t!("record-error-no-mic")
     } else {
-        format!("Couldn't start recording: {raw}")
+        t!("record-error-other", detail = raw.to_owned())
     }
 }
 

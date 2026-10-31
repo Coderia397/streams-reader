@@ -1,0 +1,80 @@
+// Bottom navigation on phones; a rail at the inline start on wide screens.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.tabbar {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: t.z("dock");
+  display: flex;
+  justify-content: space-around;
+  height: calc(var(--tabbar-h) + var(--safe-bottom));
+  padding-block-end: var(--safe-bottom);
+  border-block-start: var(--border-width) solid t.color("border");
+  background: t.color("glass");
+  @include t.glass;
+
+  // The mark, at the top of the rail on wide screens only.
+  &__brand {
+    display: none;
+  }
+
+  &__tab {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: t.space(1);
+    flex: 1;
+    max-width: calc(#{t.space(12)} * 3);
+    color: t.color("text-3");
+    font-size: t.text("xs");
+    font-weight: t.weight("medium");
+    text-decoration: none;
+    @include t.transition(color);
+    @include t.focus-ring;
+
+    .icon {
+      box-sizing: content-box;
+      padding: t.space(1) t.space(4);
+      border-radius: t.radius("pill");
+      @include t.transition(background-color);
+    }
+
+    &.is-active {
+      color: t.color("text");
+
+      .icon {
+        background: t.color("brand-soft");
+        color: t.color("brand-text");
+      }
+    }
+  }
+
+  @include t.bp("md") {
+    inset-block: 0;
+    inset-inline-end: auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: t.space(2);
+    width: var(--rail-w);
+    height: 100dvh;
+    padding-block: t.space(8);
+    border-block-start: 0;
+    border-inline-end: var(--border-width) solid t.color("border");
+
+    // The 32 px mark is a link home; its hit area is the tap minimum.
+    &__brand {
+      @include t.hit-area;
+      display: grid;
+      place-items: center;
+      margin-block-end: t.space(6);
+      border-radius: t.radius("sm");
+      @include t.focus-ring;
+    }
+
+    &__tab {
+      flex: none;
+      padding-block: t.space(2);
+    }
+  }
+}

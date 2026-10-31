@@ -48,7 +48,7 @@ export function registerServiceWorker(onUpdateReady) {
     if (updateRequested) window.location.reload();
   });
   navigator.serviceWorker
-    .register("/sw.js", { scope: "/" })
+    .register("/app/sw.js", { scope: "/app/" })
     .then((reg) => {
       const announce = (w) => {
         if (w && navigator.serviceWorker.controller) onUpdateReady();

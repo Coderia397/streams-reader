@@ -1,0 +1,30 @@
+[package]
+name = "nolabs-web-import"
+description = "Streams Reader's import worker: parses files, pages and pasted text off the app's startup bundle (lib: the message contract; bin with feature `worker`: the Web Worker, built by trunk)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[features]
+default = []
+# The parser and the Web Worker glue. The app depends on this crate without it, for the message types only.
+worker = ["dep:nolabs-import", "dep:wasm-bindgen", "dep:js-sys", "dep:web-sys", "dep:console_error_panic_hook"]
+
+[dependencies]
+nolabs-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+nolabs-import = { workspace = true, optional = true }
+wasm-bindgen = { version = "0.2", optional = true }
+js-sys = { version = "0.3", optional = true }
+web-sys = { version = "0.3", optional = true, features = ["DedicatedWorkerGlobalScope", "MessageEvent"] }
+console_error_panic_hook = { version = "0.1.7", optional = true }
+
+[[bin]]
+name = "nolabs-import-worker"
+path = "src/bin/worker.rs"
+required-features = ["worker"]
+
+[lints]
+workspace = true

@@ -1881,8 +1881,8 @@ dependencies = [
  "leptos",
  "leptos_router",
  "nolabs-core",
- "nolabs-import",
  "nolabs-player",
+ "nolabs-web-import",
  "serde",
  "serde_json",
  "sha2",
@@ -1890,6 +1890,20 @@ dependencies = [
  "unic-langid",
  "wasm-bindgen",
  "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
+name = "nolabs-web-import"
+version = "0.1.0"
+dependencies = [
+ "console_error_panic_hook",
+ "js-sys",
+ "nolabs-core",
+ "nolabs-import",
+ "serde",
+ "serde_json",
+ "wasm-bindgen",
  "web-sys",
 ]
 

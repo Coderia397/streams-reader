@@ -1,18 +1,20 @@
-//! One block of the reading view, split into tappable segment spans. Text is always inserted as text nodes.
+//! One block of the reading view, split into tappable sentence spans. Text is always inserted as text nodes. The
+//! sentence being read gets the wash; the word being spoken, the ember pill.
 
 use std::sync::Arc;
 
 use leptos::prelude::*;
 use nolabs_core::proto::api::BlockKind;
 
-use super::follow::Follow;
+use super::ReaderCtx;
 use crate::reading::pieces::{Piece, block_pieces, split_word};
 use crate::state::player::OpenDoc;
 use crate::state::use_app;
 
 #[component]
-fn Seg(idx: u32, text: String, current: Selector<u32>, follow: Follow) -> impl IntoView {
+fn Seg(idx: u32, text: String, current: Selector<u32>) -> impl IntoView {
     let player = use_app().player;
+    let ctx = expect_context::<ReaderCtx>();
     let text = Arc::new(text);
     let is_current = {
         let current = current.clone();
@@ -44,11 +46,9 @@ fn Seg(idx: u32, text: String, current: Selector<u32>, follow: Follow) -> impl I
         <span
             class="seg"
             class:is-current=is_current
+            class:is-picked=move || ctx.picked.get().is_some_and(|p| p.segment == idx)
             data-seg=idx
-            on:click=move |_| {
-                follow.resume();
-                player.jump_to(idx);
-            }
+            on:click=move |e| ctx.tap(idx, &e)
         >
             {content}
         </span>
@@ -56,7 +56,7 @@ fn Seg(idx: u32, text: String, current: Selector<u32>, follow: Follow) -> impl I
 }
 
 #[component]
-pub fn BlockView(doc: Arc<OpenDoc>, block: u32, current: Selector<u32>, follow: Follow) -> impl IntoView {
+pub fn BlockView(doc: Arc<OpenDoc>, block: u32, current: Selector<u32>) -> impl IntoView {
     let model = &doc.model;
     let Some(b) = model.blocks.get(block as usize) else { return ().into_any() };
     let offset = model.block_offsets.get(block as usize).copied().unwrap_or(0);
@@ -65,9 +65,7 @@ pub fn BlockView(doc: Arc<OpenDoc>, block: u32, current: Selector<u32>, follow: 
         .into_iter()
         .map(|p| match p {
             Piece::Gap(t) => t.into_any(),
-            Piece::Seg { idx, text } => {
-                view! { <Seg idx=idx text=text current=current.clone() follow=follow /> }.into_any()
-            }
+            Piece::Seg { idx, text } => view! { <Seg idx=idx text=text current=current.clone() /> }.into_any(),
         })
         .collect_view();
     match b.kind {

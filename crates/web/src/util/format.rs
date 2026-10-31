@@ -4,17 +4,20 @@
 pub fn time_left(seconds: f64) -> String {
     let minutes = (seconds / 60.0).round() as u64;
     match minutes {
-        0 => "Under a minute left".to_owned(),
-        m if m < 60 => format!("{m} min left"),
-        m if m % 60 == 0 => format!("{} h left", m / 60),
-        m => format!("{} h {} min left", m / 60, m % 60),
+        0 => t!("time-left-under-minute"),
+        m if m < 60 => t!("time-left-min", minutes = m),
+        m => t!("time-left-hours", hours = m / 60, minutes = m % 60),
     }
 }
 
 /// `"18 min"`, `"2 h 10 min"` for a total listening time.
 pub fn duration_short(seconds: f64) -> String {
     let minutes = (seconds / 60.0).round().max(1.0) as u64;
-    if minutes < 60 { format!("{minutes} min") } else { format!("{} h {} min", minutes / 60, minutes % 60) }
+    if minutes < 60 {
+        t!("duration-min", minutes = minutes)
+    } else {
+        t!("duration-hours", hours = minutes / 60, minutes = minutes % 60)
+    }
 }
 
 /// `"0:07"`, `"12:30"` for clip lengths.
@@ -23,28 +26,22 @@ pub fn clock(ms: u32) -> String {
     format!("{}:{:02}", s / 60, s % 60)
 }
 
-/// `"1.25x"`, `"1x"`, `"0.95x"`: shortest form without trailing zeros.
+/// `"1.25×"`, `"1×"`, `"0.95×"` (`"1,5×"` in German): at most two decimals, without trailing zeros, in the
+/// language's own number format (`speed-value`).
 pub fn speed(rate: f64) -> String {
-    let hundredths = (rate * 100.0).round() as i64;
-    let whole = hundredths / 100;
-    let frac = hundredths % 100;
-    match frac {
-        0 => format!("{whole}x"),
-        f if f % 10 == 0 => format!("{whole}.{}x", f / 10),
-        f => format!("{whole}.{f:02}x"),
-    }
+    t!("speed-value", rate = (rate * 100.0).round() / 100.0)
 }
 
-/// Bytes as `"12.4 MB"` (decimal units, like Android's storage screen).
+/// Bytes as `"12.4 MB"` (decimal units, like Android's storage screen), with the unit and the decimal separator of
+/// the interface language (`size-*`, `"822,4 ko"` in French).
 pub fn bytes(n: f64) -> String {
-    const UNITS: [&str; 5] = ["B", "kB", "MB", "GB", "TB"];
-    let mut v = n.max(0.0);
-    let mut unit = 0;
-    while v >= 1000.0 && unit < UNITS.len() - 1 {
-        v /= 1000.0;
-        unit += 1;
+    let v = n.max(0.0);
+    match v {
+        v if v < 1e3 => t!("size-b", n = v.round()),
+        v if v < 1e6 => t!("size-kb", n = v / 1e3),
+        v if v < 1e9 => t!("size-mb", n = v / 1e6),
+        v => t!("size-gb", n = v / 1e9),
     }
-    if unit == 0 { format!("{v:.0} {}", UNITS[unit]) } else { format!("{v:.1} {}", UNITS[unit]) }
 }
 
 /// Up to two initials from a title's significant words, skipping articles, short function words and punctuation:
@@ -71,7 +68,7 @@ mod tests {
     fn time_left_reads_naturally() {
         assert_eq!(time_left(20.0), "Under a minute left");
         assert_eq!(time_left(12.0 * 60.0), "12 min left");
-        assert_eq!(time_left(120.0 * 60.0), "2 h left");
+        assert_eq!(time_left(120.0 * 60.0), "2 h 0 min left");
         assert_eq!(time_left(65.0 * 60.0), "1 h 5 min left");
     }
 
@@ -85,17 +82,30 @@ mod tests {
 
     #[test]
     fn speeds_drop_trailing_zeros() {
-        assert_eq!(speed(1.0), "1x");
-        assert_eq!(speed(1.25), "1.25x");
-        assert_eq!(speed(1.5), "1.5x");
-        assert_eq!(speed(0.95), "0.95x");
-        assert_eq!(speed(2.999_999), "3x");
+        assert_eq!(speed(1.0), "1×");
+        assert_eq!(speed(1.25), "1.25×");
+        assert_eq!(speed(1.5), "1.5×");
+        assert_eq!(speed(0.95), "0.95×");
+        assert_eq!(speed(2.999_999), "3×");
     }
 
     #[test]
     fn byte_units() {
         assert_eq!(bytes(512.0), "512 B");
+        assert_eq!(bytes(822_400.0), "822.4 kB");
         assert_eq!(bytes(12_400_000.0), "12.4 MB");
+        assert_eq!(bytes(3_000_000_000.0), "3 GB");
+        assert_eq!(bytes(-5.0), "0 B");
+    }
+
+    #[test]
+    fn numbers_follow_the_language() {
+        use crate::i18n::{Lang, with_lang};
+        assert_eq!(with_lang(Lang::De, || speed(1.5)), "1,5×");
+        assert_eq!(with_lang(Lang::Fr, || bytes(822_400.0)), "822,4 ko");
+        assert_eq!(with_lang(Lang::Ar, || bytes(822_400.0)), "822.4 كيلوبايت");
+        assert_eq!(with_lang(Lang::Pt, || speed(1.25)), "1,25×");
+        assert_eq!(with_lang(Lang::Zh, || speed(2.0)), "2×");
     }
 
     #[test]

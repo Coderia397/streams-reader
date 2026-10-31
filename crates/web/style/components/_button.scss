@@ -1,0 +1,149 @@
+// Buttons, defined once from the token mixins: .btn (+ --primary, --secondary, --soft, --ghost, --danger, --sm,
+// --block) and the round .icon-btn (+ --primary, --lg).
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.btn {
+  @include t.button(secondary);
+
+  &--primary {
+    @include t.button(primary);
+  }
+
+  &--secondary {
+    @include t.button(secondary);
+  }
+
+  &--soft {
+    @include t.button(soft);
+  }
+
+  &--ghost {
+    @include t.button(ghost);
+  }
+
+  &--danger {
+    @include t.button(danger);
+  }
+
+  &--record {
+    @include t.button(primary);
+    background: t.color("ember");
+    color: t.color("on-ember");
+
+    &:hover:not(:disabled) {
+      background: t.color("ember");
+    }
+  }
+
+  // The main action of a page with one form (sign-in).
+  &--lg {
+    height: var(--button-height-lg);
+  }
+
+  &--sm {
+    @include t.hit-area;
+    height: var(--button-height-sm);
+    padding-inline: var(--button-padding-x-sm);
+  }
+
+  &--block {
+    width: 100%;
+  }
+}
+
+.btn-row {
+  display: flex;
+  gap: t.space(3);
+  margin-block-start: t.space(5);
+
+  > .btn {
+    flex: 1;
+  }
+}
+
+.icon-btn {
+  @include t.icon-button(tap-min, ghost);
+  position: relative;
+  color: t.color("text-2");
+
+  &--primary {
+    @include t.icon-button(tap-min, primary);
+  }
+
+  &--lg {
+    width: calc(var(--tap-min) + #{t.space(1)});
+    height: calc(var(--tap-min) + #{t.space(1)});
+
+    .icon {
+      width: calc(var(--icon-size) + #{t.space(1)});
+      height: calc(var(--icon-size) + #{t.space(1)});
+    }
+  }
+
+  &[aria-pressed="true"],
+  &.is-on {
+    color: t.color("brand-text");
+  }
+}
+
+.disclosure {
+  @include t.button(ghost, sm);
+  @include t.hit-area;
+  margin-block-start: t.space(2);
+  color: t.color("brand-text");
+
+  &__chev {
+    display: inline-flex;
+    @include t.transition(transform);
+
+    &.is-open {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+// An inline text action ("I have an invite code"): brand text, no chrome, a full-size hit area.
+.link-btn {
+  @include t.hit-area;
+  align-self: center;
+  justify-self: center;
+  padding-inline: t.space(1);
+  border-radius: t.radius("xs");
+  color: t.color("brand-text");
+  font-size: t.text("sm");
+  font-weight: t.weight("medium");
+  text-underline-offset: 0.2em;
+  @include t.focus-ring;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: t.space(2);
+  height: t.space(10);
+  padding-inline: t.space(4);
+  border: var(--border-width) solid t.color("border");
+  border-radius: t.radius("pill");
+  background: t.color("surface-2");
+  color: t.color("text");
+  box-shadow: t.shadow(2);
+  font-size: t.text("sm");
+  font-weight: t.weight("medium");
+  animation: rise var(--dur-base) var(--ease-out);
+  @include t.focus-ring;
+
+  .icon {
+    width: var(--icon-size-sm);
+    height: var(--icon-size-sm);
+  }
+
+  &--brand {
+    border-color: transparent;
+    background: t.color("brand");
+    color: t.color("on-brand");
+  }
+}

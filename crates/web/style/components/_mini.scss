@@ -1,0 +1,80 @@
+// The floating mini-player above the tab bar, with a thin progress line along its bottom edge.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.mini {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: t.space(1);
+  max-width: calc(var(--content-max) - #{t.space(6)});
+  height: var(--mini-h);
+  margin: 0 t.space(3) t.space(2);
+  padding-inline: t.space(2) t.space(3);
+  overflow: hidden;
+  border: var(--border-width) solid t.color("border");
+  border-radius: t.radius("lg");
+  background: t.color("surface-2");
+  box-shadow: t.shadow(2);
+  animation: rise var(--dur-slow) var(--ease-out);
+
+  @include t.bp("md") {
+    margin-inline: auto;
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    gap: t.space(3);
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    border-radius: t.radius("md");
+    text-align: start;
+    // .mini clips its children (the progress line), so the ring is drawn inside the button.
+    @include t.focus-ring-inset;
+  }
+
+  &__text {
+    display: grid;
+    min-width: 0;
+  }
+
+  // `dir="auto"`: truncation follows the title's own direction, while the physical alignment keeps it on the
+  // page's side (`start` would follow the title, and `match-parent` is not in Chrome).
+  &__title {
+    font-weight: t.weight("semibold");
+    text-align: left;
+    @include t.truncate;
+
+    [dir="rtl"] & {
+      text-align: right;
+    }
+  }
+
+  &__meta {
+    color: t.color("text-3");
+    font-size: t.text("xs");
+    @include t.truncate;
+  }
+
+  &__skip {
+    width: t.space(10);
+    height: t.space(10);
+  }
+
+  &__progress {
+    position: absolute;
+    inset-inline: t.space(4);
+    inset-block-end: 0;
+    height: 2px;
+    background: t.color("surface-3");
+  }
+
+  &__fill {
+    display: block;
+    height: 100%;
+    background: t.color("brand");
+    transform-origin: left center;
+    @include t.transition(transform);
+  }
+}

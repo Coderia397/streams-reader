@@ -15,7 +15,7 @@ use crate::api::client::js_error_text;
 use crate::util::dom;
 
 const DB_NAME: &str = "nolabs";
-const DB_VERSION: u32 = 1;
+const DB_VERSION: u32 = 2;
 
 /// `doc_id` → [`super::progress::LocalProgress`].
 pub const PROGRESS: &str = "progress";
@@ -23,7 +23,9 @@ pub const PROGRESS: &str = "progress";
 pub const BODIES: &str = "bodies";
 /// `doc_id|voice` → ready render slots, so cached audio replays offline.
 pub const RENDERS: &str = "renders";
-const STORES: [&str; 3] = [PROGRESS, BODIES, RENDERS];
+/// `refresh` → the Supabase refresh token (the access token stays in memory only).
+pub const AUTH: &str = "auth";
+const STORES: [&str; 4] = [PROGRESS, BODIES, RENDERS, AUTH];
 
 thread_local! {
     static DB: RefCell<Option<IdbDatabase>> = const { RefCell::new(None) };

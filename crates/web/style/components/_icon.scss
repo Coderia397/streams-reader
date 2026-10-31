@@ -1,0 +1,28 @@
+// Remix icons render at the icon-size token in currentColor; directional ones mirror in right-to-left layouts.
+@use "../../../../brand/dist/tokens/tokens" as t;
+
+.icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex: none;
+  fill: currentColor;
+
+  &--sm {
+    width: var(--icon-size-sm);
+    height: var(--icon-size-sm);
+  }
+}
+
+[dir="rtl"] .icon--mirror {
+  transform: scaleX(-1);
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+
+  &--lg {
+    width: t.space(10);
+    height: t.space(10);
+    color: t.color("brand-text");
+  }
+}

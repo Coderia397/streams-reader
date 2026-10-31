@@ -5,3 +5,4 @@ pub mod mini;
 pub mod play_button;
 pub mod scrubber;
 pub mod sheets;
+pub mod skip;

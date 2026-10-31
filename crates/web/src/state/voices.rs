@@ -37,9 +37,42 @@ pub fn group(voices: &[VoiceInfo]) -> Grouped {
     g
 }
 
-/// Seconds of GPU left today and runs left, from the status view.
-pub fn gpu_left(s: &SystemStatus) -> (u32, u32) {
-    (s.gpu.cap_s.saturating_sub(s.gpu.used_s), s.gpu.runs_cap.saturating_sub(s.gpu.runs_used))
+/// Voices listed by id, in the order of `ids`, skipping unknown or unusable ones.
+pub fn pick(voices: &[VoiceInfo], ids: &[String]) -> Vec<VoiceInfo> {
+    ids.iter()
+        .filter_map(|id| voices.iter().find(|v| &v.id == id && v.state == nolabs_core::proto::api::VoiceState::Ready))
+        .cloned()
+        .collect()
+}
+
+/// The caller's expressive budget today (D21): their own share, never more than what the whole deployment has
+/// left, and the GPU runs left (shared by everyone).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct GpuBudget {
+    pub left_s: u32,
+    pub share_s: u32,
+    pub runs_left: u32,
+}
+
+impl GpuBudget {
+    pub fn of(s: &SystemStatus) -> GpuBudget {
+        let mine = s.my_gpu.share_s.saturating_sub(s.my_gpu.used_s);
+        let everyone = s.gpu.cap_s.saturating_sub(s.gpu.used_s);
+        GpuBudget {
+            left_s: mine.min(everyone),
+            share_s: s.my_gpu.share_s,
+            runs_left: s.gpu.runs_cap.saturating_sub(s.gpu.runs_used),
+        }
+    }
+
+    /// 0–100, for the bar.
+    pub fn percent_left(self) -> f64 {
+        f64::from(self.left_s) / f64::from(self.share_s.max(1)) * 100.0
+    }
+
+    pub fn is_spent(self) -> bool {
+        self.left_s == 0 || self.runs_left == 0
+    }
 }
 
 /// Rough GPU seconds one preview costs (Ming: ~0.06 s per char plus warm-up; see notes/08).
@@ -81,7 +114,7 @@ impl VoicesState {
 
     /// Display name; user voices fall back to "Your voice" until the catalogue loads.
     pub fn name(&self, id: &str) -> String {
-        self.find(id).map_or_else(|| "Your voice".to_owned(), |v| v.name)
+        self.find(id).map_or_else(|| t!("voice-yours-fallback"), |v| v.name)
     }
 }
 
@@ -90,6 +123,20 @@ mod tests {
     use nolabs_core::proto::api::{Tier, VoiceState};
 
     use super::*;
+
+    #[test]
+    fn budget_is_the_users_share_capped_by_the_deployment() {
+        let status: SystemStatus = serde_json::from_str(
+            r#"{"version":"v","space":{"stage":"RUNNING","healthy":true,"checked_at_ms":0},
+                "gpu":{"used_s":250,"cap_s":280,"runs_used":1,"runs_cap":3},
+                "my_gpu":{"used_s":18,"share_s":60},"queued":0}"#,
+        )
+        .unwrap_or_else(|e| panic!("{e}"));
+        let b = GpuBudget::of(&status);
+        assert_eq!(b, GpuBudget { left_s: 30, share_s: 60, runs_left: 2 });
+        assert_eq!(b.percent_left(), 50.0);
+        assert!(!b.is_spent());
+    }
 
     #[test]
     fn groups_the_builtin_catalogue() {
@@ -112,6 +159,14 @@ mod tests {
         assert_eq!(g.standard_more.len(), 19);
         assert_eq!(g.expressive.len(), 5);
         assert_eq!(g.mine.len(), 1);
+    }
+
+    #[test]
+    fn pick_keeps_order_and_skips_unknown() {
+        let voices = builtin_catalog();
+        let ids = vec![voices[3].id.clone(), "kokoro:nope".to_owned(), voices[0].id.clone()];
+        let got: Vec<String> = pick(&voices, &ids).into_iter().map(|v| v.id).collect();
+        assert_eq!(got, vec![voices[3].id.clone(), voices[0].id.clone()]);
     }
 
     #[test]

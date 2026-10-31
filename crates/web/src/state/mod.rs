@@ -3,6 +3,7 @@
 pub mod library;
 pub mod nav;
 pub mod player;
+pub mod profile;
 pub mod pwa;
 pub mod session;
 pub mod settings;
@@ -47,6 +48,7 @@ impl AppState {
             nav: Nav::new(),
         };
         app.player.start_background(app);
+        profile::start(app);
         provide_context(app);
         app
     }

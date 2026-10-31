@@ -1,18 +1,18 @@
-//! Listening progress: IndexedDB every 5 s while playing; the Worker on pause, every 30 s and (by beacon) when the
+//! Listening progress: IndexedDB every 5 s while playing; Supabase on pause, every 30 s and (by a keepalive fetch) when the
 //! page is hidden, which on Android is often the last chance before the tab is frozen.
 
 use std::time::Duration;
 
+use crate::model::Progress;
 use leptos::prelude::*;
 use leptos::task::spawn_local;
-use nolabs_core::proto::api::Progress;
 use nolabs_player::PlayerState;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::Closure;
 
 use super::PlayerBridge;
-use crate::api::documents;
 use crate::config::{PROGRESS_LOCAL_MS, PROGRESS_SYNC_MS};
+use crate::db::library as rows;
 use crate::state::AppState;
 use crate::storage::progress::{self, LocalProgress};
 use crate::util::dom;
@@ -51,7 +51,7 @@ impl PlayerBridge {
         if let Some(doc) = dom::document() {
             let on_visibility = Closure::<dyn Fn()>::new(move || {
                 if dom::is_hidden() {
-                    self.beacon();
+                    self.send_on_hide();
                     spawn_local(async move {
                         let _ = self.save_local(app).await;
                     });
@@ -81,20 +81,20 @@ impl PlayerBridge {
         Some((id, p))
     }
 
-    /// Saves locally and sends to the Worker; offline failures are silent (the next sync catches up).
+    /// Saves locally and upserts the Supabase row; offline failures are silent (the next sync catches up).
     pub async fn sync(self, app: AppState) {
         let Some((id, p)) = self.save_local(app).await else { return };
         self.last_sync_ms.set_value(now_ms());
-        if documents::put_progress(&id, p).await.is_ok() {
+        if rows::put_progress(&id, p).await.is_ok() {
             let local =
                 LocalProgress { doc_id: id, char_offset: p.char_offset, updated_at_ms: p.updated_at_ms, synced: true };
             let _ = progress::save(&local).await;
         }
     }
 
-    fn beacon(&self) {
+    fn send_on_hide(&self) {
         if let Some((id, p)) = self.current_progress() {
-            documents::beacon_progress(&id, p);
+            rows::put_progress_keepalive(&id, p);
             self.last_sync_ms.set_value(now_ms());
         }
     }
@@ -115,6 +115,6 @@ impl PlayerBridge {
         })
         .await;
         app.library.set_progress(&id, p);
-        let _ = documents::put_progress(&id, p).await;
+        let _ = rows::put_progress(&id, p).await;
     }
 }

@@ -1,7 +1,7 @@
-//! PDF text through pdf.js (`interop/pdf.js`), shaped as `nolabs_import::PdfLine` pages.
+//! PDF text through pdf.js (`interop/pdf.js`), shaped as the import worker's `PdfLine` pages.
 
 use js_sys::{Array, Uint8Array};
-use nolabs_import::PdfLine;
+use nolabs_web_import::PdfLine;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::JsFuture;
 
