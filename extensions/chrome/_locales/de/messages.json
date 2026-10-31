@@ -1,0 +1,35 @@
+{
+  "ext_name": {
+    "message": "Streams Reader – diese Seite vorlesen"
+  },
+  "ext_short_name": {
+    "message": "Streams Reader"
+  },
+  "ext_description": {
+    "message": "Lass dir jeden Artikel in Streams Reader vorlesen. Ein Klick legt die geöffnete Seite in deine Bibliothek und liest sie vor."
+  },
+  "action_title": {
+    "message": "Diese Seite in Streams Reader vorlesen"
+  },
+  "menu_read_page": {
+    "message": "Diese Seite vorlesen"
+  },
+  "menu_read_selection": {
+    "message": "Auswahl vorlesen"
+  },
+  "menu_read_link": {
+    "message": "Verlinkte Seite vorlesen"
+  },
+  "error_restricted": {
+    "message": "Streams Reader kann diese Art von Seite nicht lesen."
+  },
+  "error_empty": {
+    "message": "Hier ist kein lesbarer Text."
+  },
+  "error_too_large": {
+    "message": "Diese Seite ist zu groß, um sie an Streams Reader zu senden."
+  },
+  "error_failed": {
+    "message": "Die Seite konnte nicht gelesen werden. Lade sie neu und versuche es noch einmal."
+  }
+}

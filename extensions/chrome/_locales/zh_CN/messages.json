@@ -1,0 +1,35 @@
+{
+  "ext_name": {
+    "message": "Streams Reader — 朗读此页"
+  },
+  "ext_short_name": {
+    "message": "Streams Reader"
+  },
+  "ext_description": {
+    "message": "在 Streams Reader 中收听任意文章。一键将当前页面加入书库并开始朗读。"
+  },
+  "action_title": {
+    "message": "在 Streams Reader 中朗读此页"
+  },
+  "menu_read_page": {
+    "message": "朗读此页"
+  },
+  "menu_read_selection": {
+    "message": "朗读所选内容"
+  },
+  "menu_read_link": {
+    "message": "朗读链接页面"
+  },
+  "error_restricted": {
+    "message": "Streams Reader 无法读取此类页面。"
+  },
+  "error_empty": {
+    "message": "这里没有可读的文字。"
+  },
+  "error_too_large": {
+    "message": "此页面太大，无法发送到 Streams Reader。"
+  },
+  "error_failed": {
+    "message": "无法读取此页面。请刷新后重试。"
+  }
+}

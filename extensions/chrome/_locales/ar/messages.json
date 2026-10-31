@@ -1,0 +1,35 @@
+{
+  "ext_name": {
+    "message": "Streams Reader — اقرأ هذه الصفحة"
+  },
+  "ext_short_name": {
+    "message": "Streams Reader"
+  },
+  "ext_description": {
+    "message": "استمع إلى أي مقال في Streams Reader. بنقرة واحدة تُرسَل الصفحة المفتوحة إلى مكتبتك وتبدأ قراءتها بصوت عالٍ."
+  },
+  "action_title": {
+    "message": "اقرأ هذه الصفحة في Streams Reader"
+  },
+  "menu_read_page": {
+    "message": "اقرأ هذه الصفحة"
+  },
+  "menu_read_selection": {
+    "message": "اقرأ النص المحدد"
+  },
+  "menu_read_link": {
+    "message": "اقرأ الصفحة المرتبطة"
+  },
+  "error_restricted": {
+    "message": "لا يستطيع Streams Reader قراءة هذا النوع من الصفحات."
+  },
+  "error_empty": {
+    "message": "لا يوجد هنا نص قابل للقراءة."
+  },
+  "error_too_large": {
+    "message": "هذه الصفحة أكبر من أن تُرسَل إلى Streams Reader."
+  },
+  "error_failed": {
+    "message": "تعذّرت قراءة هذه الصفحة. أعد تحميلها وحاول مرة أخرى."
+  }
+}

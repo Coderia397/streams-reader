@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Lighthouse Keeper's Year</title>
+<meta name="author" content="A. Writer">
+<style>body { font-family: serif; } .SCRIPT_MARKER_STYLE {}</style>
+<script>window.SCRIPT_MARKER = "should never reach the app";</script>
+</head>
+<body>
+<header><nav><a href="/">Home</a> · <a href="/about">About</a> · <a href="/subscribe">Subscribe</a></nav></header>
+<main>
+<article>
+<h1>The Lighthouse Keeper's Year</h1>
+<p class="byline">By A. Writer</p>
+<p id="first">ARTICLE_MARKER The light at the end of the breakwater has been tended by the same family for three generations, and every winter the work begins before dawn.</p>
+<p>In January the storms come in from the north. The keeper climbs the iron stairs twice a night to clean the salt from the lantern glass, and writes the wind speed in a ledger that is older than the harbour wall.</p>
+<p>By spring the work changes. The gulls return, the paint is scraped and renewed, and visitors begin to ask the questions that every keeper has answered a thousand times: how many steps, how far the beam reaches, whether it is lonely.</p>
+<p>Summer is the season of tourists and fog. Fog is the harder of the two. On the worst nights the horn sounds every thirty seconds until morning, and nobody on the point sleeps well.</p>
+<p>Autumn brings the inspection, a new set of bulbs, and the long slide back into winter. The ledger fills another page. The light turns. The year begins again.</p>
+<pull-quote><span slot="cite">SLOT_MARKER the keeper</span></pull-quote>
+<svg width="10" height="10"><title>SVG_MARKER</title><circle cx="5" cy="5" r="4"/></svg>
+</article>
+</main>
+<aside><h2>Related</h2><ul><li><a href="/a">Ten harbours worth the drive</a></li></ul></aside>
+<footer><p>Copyright notice and links.</p></footer>
+<script>
+// A web component whose text lives in an open shadow root, as on sites built with Lit or Stencil.
+customElements.define("pull-quote", class extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({ mode: "open" }).innerHTML =
+      "<style>q { font-style: italic; }</style><blockquote><q>SHADOW_MARKER The year begins again.</q> " +
+      "<cite><slot name=\"cite\"></slot></cite></blockquote>";
+  }
+});
+document.body.dataset.ran = "1";
+</script>
+</body>
+</html>

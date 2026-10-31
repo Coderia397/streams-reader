@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><title>Clears its selection</title></head>
+<body>
+<p id="text">SELECTION_MARKER Le phare tourne toute la nuit.</p>
+<script>
+  // Some sites (custom menus, editors) drop the selection on right-click, so the page script finds none.
+  document.addEventListener("contextmenu", () => getSelection().removeAllRanges());
+</script>
+</body></html>

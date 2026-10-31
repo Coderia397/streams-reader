@@ -1,0 +1,35 @@
+{
+  "ext_name": {
+    "message": "Streams Reader — यह पेज पढ़ें"
+  },
+  "ext_short_name": {
+    "message": "Streams Reader"
+  },
+  "ext_description": {
+    "message": "Streams Reader में कोई भी लेख सुनें। एक क्लिक में खुला पेज आपकी लाइब्रेरी में जाता है और ज़ोर से पढ़ा जाने लगता है।"
+  },
+  "action_title": {
+    "message": "यह पेज Streams Reader में पढ़ें"
+  },
+  "menu_read_page": {
+    "message": "यह पेज पढ़ें"
+  },
+  "menu_read_selection": {
+    "message": "चुना हुआ टेक्स्ट पढ़ें"
+  },
+  "menu_read_link": {
+    "message": "लिंक किया गया पेज पढ़ें"
+  },
+  "error_restricted": {
+    "message": "Streams Reader इस तरह का पेज नहीं पढ़ सकता।"
+  },
+  "error_empty": {
+    "message": "यहाँ पढ़ने लायक टेक्स्ट नहीं है।"
+  },
+  "error_too_large": {
+    "message": "यह पेज Streams Reader को भेजने के लिए बहुत बड़ा है।"
+  },
+  "error_failed": {
+    "message": "यह पेज पढ़ा नहीं जा सका। पेज रीलोड करके फिर कोशिश करें।"
+  }
+}

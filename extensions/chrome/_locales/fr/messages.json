@@ -1,0 +1,35 @@
+{
+  "ext_name": {
+    "message": "Streams Reader — lire cette page"
+  },
+  "ext_short_name": {
+    "message": "Streams Reader"
+  },
+  "ext_description": {
+    "message": "Écoutez n'importe quel article dans Streams Reader. Un clic envoie la page ouverte dans votre bibliothèque et la lit à voix haute."
+  },
+  "action_title": {
+    "message": "Lire cette page dans Streams Reader"
+  },
+  "menu_read_page": {
+    "message": "Lire cette page"
+  },
+  "menu_read_selection": {
+    "message": "Lire la sélection"
+  },
+  "menu_read_link": {
+    "message": "Lire la page liée"
+  },
+  "error_restricted": {
+    "message": "Streams Reader ne peut pas lire ce type de page."
+  },
+  "error_empty": {
+    "message": "Il n'y a aucun texte lisible ici."
+  },
+  "error_too_large": {
+    "message": "Cette page est trop volumineuse pour être envoyée à Streams Reader."
+  },
+  "error_failed": {
+    "message": "Impossible de lire cette page. Rechargez-la et réessayez."
+  }
+}

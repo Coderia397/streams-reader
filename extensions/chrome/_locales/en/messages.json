@@ -1,0 +1,46 @@
+{
+  "ext_name": {
+    "message": "Streams Reader — read this page",
+    "description": "Store and toolbar name. Keep the brand 'Streams Reader' untranslated. At most 75 characters."
+  },
+  "ext_short_name": {
+    "message": "Streams Reader",
+    "description": "Brand only; never translated."
+  },
+  "ext_description": {
+    "message": "Listen to any article in Streams Reader. One click sends the page you're on to your library and starts reading it aloud.",
+    "description": "Store summary and chrome://extensions description. At most 132 characters."
+  },
+  "action_title": {
+    "message": "Read this page in Streams Reader",
+    "description": "Tooltip of the toolbar button."
+  },
+  "menu_read_page": {
+    "message": "Read this page",
+    "description": "Context menu item on a page. Chrome nests it under the extension name."
+  },
+  "menu_read_selection": {
+    "message": "Read selection",
+    "description": "Context menu item when text is selected."
+  },
+  "menu_read_link": {
+    "message": "Read linked page",
+    "description": "Context menu item on a link: read the page the link points to."
+  },
+  "error_restricted": {
+    "message": "Streams Reader can't read this kind of page.",
+    "description": "Toolbar tooltip when the browser does not let extensions read the page (settings, Web Store)."
+  },
+  "error_empty": {
+    "message": "There's no readable text here.",
+    "description": "Toolbar tooltip when there is no text to read (or nothing selected)."
+  },
+  "error_too_large": {
+    "message": "This page is too large to send to Streams Reader.",
+    "description": "Toolbar tooltip when the page is over the size limit."
+  },
+  "error_failed": {
+    "message": "Couldn't read this page. Reload it and try again.",
+    "description": "Toolbar tooltip for any other failure."
+  }
+}
