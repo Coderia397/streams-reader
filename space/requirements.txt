@@ -9,7 +9,7 @@ kokoro==0.9.4
 misaki[en]==0.9.4
 en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
 # Ming-3.0-tts-0.5B (expressive tier), pins from the vendored runtime
-transformers==4.46.3
+transformers==5.10.1
 tokenizers==0.20.3
 safetensors==0.8.0
 accelerate==1.14.0
