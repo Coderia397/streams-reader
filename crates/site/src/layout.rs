@@ -25,10 +25,6 @@ pub struct Site {
     pub og_langs: Vec<String>,
     /// The brand build's social card (empty when there is none).
     pub og_default: String,
-    /// Spot illustrations available under `/assets/brand/spot/<name>.svg`.
-    pub spots: Vec<String>,
-    /// Voxel spot renders available under `/assets/spots/<name>.webp` (preferred over the SVG spots).
-    pub renders: Vec<String>,
     /// The hero demo: texts, voices and clip timings.
     pub demo: Demo,
     /// The classics row.
@@ -44,21 +40,6 @@ impl Site {
             format!("/assets/og/{}.png", lang.code)
         } else {
             self.og_default.clone()
-        }
-    }
-
-    /// A decorative spot illustration: the voxel render when there is one, else the drawn SVG, else nothing.
-    pub fn spot(&self, name: &str, class: &str) -> String {
-        if self.renders.iter().any(|s| s == name) {
-            format!(
-                "<img class=\"spot {class}\" src=\"/assets/spots/{name}.webp\" width=\"140\" height=\"140\" alt=\"\" loading=\"lazy\" decoding=\"async\">"
-            )
-        } else if self.spots.iter().any(|s| s == name) {
-            format!(
-                "<img class=\"spot {class}\" src=\"/assets/brand/spot/{name}.svg\" width=\"96\" height=\"96\" alt=\"\" loading=\"lazy\" decoding=\"async\">"
-            )
-        } else {
-            String::new()
         }
     }
 

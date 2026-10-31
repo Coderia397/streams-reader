@@ -9,7 +9,6 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from . import art, contact, icons, wordmark
-from .art import SPOTS
 from .raster import render, save_png
 from .tokens import Tokens
 
@@ -164,13 +163,6 @@ class Exporter:
             self.png(f"email/streams-reader-mark{scale}.png", self.bare(n))
             self.png(f"email/streams-reader-avatar{scale}.png", self.tile(n * 2, rounded=False))
 
-    def spots(self) -> None:
-        for name in SPOTS:
-            src = self.brand / "spot" / f"{name}.svg"
-            if src.exists():
-                for n in (192, 288):
-                    self.png(f"spot/{name}@{n // 96}x.png", render(src, n))
-
 
 def _viewbox(path: Path) -> tuple[float, float]:
     vb = path.read_text(encoding="utf-8").split('viewBox="', 1)[1].split('"', 1)[0].split()
@@ -189,7 +181,7 @@ def _circle(img: Image.Image) -> Image.Image:
 
 def build_all(t: Tokens, brand: Path) -> None:
     ex = Exporter(t, brand)
-    for step in (ex.web, ex.android, ex.macos, ex.windows, ex.linux, ex.tauri, ex.lockups, ex.email, ex.spots):
+    for step in (ex.web, ex.android, ex.macos, ex.windows, ex.linux, ex.tauri, ex.lockups, ex.email):
         step()
-    contact.build(t, brand, ex, SPOTS, brand / "dist" / "contact-sheet.png")
-    print("exports -> brand/dist (web, android, macos, windows, linux, tauri, wordmark, mark, email, spot, contact-sheet.png)")
+    contact.build(t, brand, ex, brand / "dist" / "contact-sheet.png")
+    print("exports -> brand/dist (web, android, macos, windows, linux, tauri, wordmark, mark, email, contact-sheet.png)")

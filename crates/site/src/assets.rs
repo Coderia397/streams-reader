@@ -71,8 +71,6 @@ pub const FONTS: [&str; 5] = [
 pub struct Brand {
     /// `brand/dist/web`: favicons, touch icon, social card.
     pub web_dir: Option<PathBuf>,
-    /// Folder holding the spot illustrations as SVG (`brand/dist/spot`, else `brand/spot`).
-    pub spot_dir: Option<PathBuf>,
     /// The mark drawn in `currentColor`, for inlining in the top bar and footer.
     pub mark_svg: Option<PathBuf>,
 }
@@ -81,27 +79,14 @@ impl Brand {
     /// Look up the brand output under `brand_root` (the repository's `brand/` folder).
     pub fn find(brand_root: &Path) -> Self {
         let dist = brand_root.join("dist");
-        let has_svg = |d: &Path| walk(d).is_ok_and(|f| f.iter().any(|p| p.extension().is_some_and(|e| e == "svg")));
-        let first_dir = |cands: [PathBuf; 2]| cands.into_iter().find(|d| d.is_dir() && has_svg(d));
         let first_file = |cands: [PathBuf; 2]| cands.into_iter().find(|f| f.is_file());
         let mark = "streams-reader-mark-currentcolor.svg";
         Self {
             web_dir: Some(dist.join("web")).filter(|d| d.is_dir()),
-            spot_dir: first_dir([dist.join("spot"), brand_root.join("spot")]),
             mark_svg: first_file([dist.join("mark").join(mark), brand_root.join("mark").join(mark)]),
         }
     }
 
-    /// Names (file stems) of the spot illustrations available as SVG.
-    pub fn spots(&self) -> Vec<String> {
-        let Some(dir) = &self.spot_dir else { return Vec::new() };
-        walk(dir)
-            .unwrap_or_default()
-            .into_iter()
-            .filter(|p| p.parent() == Some(Path::new("")) && p.extension().is_some_and(|e| e == "svg"))
-            .filter_map(|p| p.file_stem().map(|s| s.to_string_lossy().into_owned()))
-            .collect()
-    }
 }
 
 /// The built-in mark (note 12, concept 1: a reading cursor whose stem is a sound wave, with the Ember dot), used

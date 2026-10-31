@@ -84,7 +84,7 @@ pub fn build(paths: &Paths, today: Date) -> Result<BuildReport, Error> {
     assets::write(&out.join(&js_name), &js)?;
     report.js_bytes = js.len();
 
-    // Fonts (subsets of the web crate's, made by tools/subset_fonts.py), the demo clips, cover previews, covers, the hero film and spot renders.
+    // Fonts (subsets of the web crate's, made by tools/subset_fonts.py), the demo clips, cover previews, covers and the hero film.
     for font in assets::FONTS {
         assets::copy(&paths.fonts().join(font), &out.join("assets/fonts").join(font))?;
     }
@@ -94,7 +94,7 @@ pub fn build(paths: &Paths, today: Date) -> Result<BuildReport, Error> {
     let demo = Demo::load(&src("demo"))?;
     let library = Library::load(&src("covers").join("covers.json"))?;
     let mut media = Vec::new();
-    for dir in ["demo", "previews", "covers", "media", "spots"] {
+    for dir in ["demo", "previews", "covers", "media"] {
         if src(dir).is_dir() {
             let copied = assets::copy_dir(&src(dir), &out.join("assets").join(dir), is_data)?;
             if dir == "media" {
@@ -102,30 +102,20 @@ pub fn build(paths: &Paths, today: Date) -> Result<BuildReport, Error> {
             }
         }
     }
+    // Images of the auth emails (crates/mail), served at the stable URL `/email/<file>` that sent mail points to.
+    if src("email").is_dir() {
+        assets::copy_dir(&src("email"), &out.join("email"), |_| false)?;
+    } else {
+        report.warnings.push("no email images in assets/email".into());
+    }
     if media.is_empty() {
         report.warnings.push("no hero film in assets/media; run tools/media.py".into());
     }
-    let renders: Vec<String> = assets::walk(&src("spots"))
-        .unwrap_or_default()
-        .iter()
-        .filter(|p| p.extension().is_some_and(|e| e == "webp"))
-        .filter_map(|p| p.file_stem().map(|s| s.to_string_lossy().into_owned()))
-        .collect();
 
-    // Brand output (favicons, social card, spot illustrations, the mark), when the brand build has produced it.
+    // Brand output (favicons, social card, the mark), when the brand build has produced it.
     let brand = Brand::find(&paths.brand_root());
     if let Some(web) = &brand.web_dir {
         report.brand_files += assets::copy_dir(web, &out.join("assets/brand/web"), |p| p.starts_with("splash"))?.len();
-    }
-    let spots = brand.spots();
-    if let Some(dir) = &brand.spot_dir {
-        for name in &spots {
-            let file = format!("{name}.svg");
-            assets::copy(&dir.join(&file), &out.join("assets/brand/spot").join(&file))?;
-            report.brand_files += 1;
-        }
-    } else {
-        report.warnings.push("no spot illustrations found in brand/".into());
     }
     let mark_svg = brand
         .mark_svg
@@ -159,8 +149,6 @@ pub fn build(paths: &Paths, today: Date) -> Result<BuildReport, Error> {
         icon_links,
         og_langs,
         og_default,
-        spots,
-        renders,
         demo,
         library,
         media,

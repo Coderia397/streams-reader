@@ -9,13 +9,6 @@ from .icons import SMALL_GRID
 from .svgkit import colour, inner, load, svg
 from .tokens import Tokens
 
-SPOTS = [
-    "welcome", "background-play", "empty-library", "empty-voices", "import-paste", "import-link",
-    "import-file", "voice-clone", "voice-design", "offline", "error", "search-empty", "done",
-    "sync-devices", "download", "invite", "privacy", "open-source", "all-platforms", "languages",
-]
-
-
 def _write(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
@@ -106,28 +99,13 @@ def og_image(t: Tokens, brand: Path, m: dict[str, str]) -> None:
     _write(brand / "app-icon" / "og-image.svg", text)
 
 
-def spots(t: Tokens, brand: Path) -> None:
-    strokes = {"spot": float(t.art["stroke"])}
-    for name in SPOTS:
-        src = brand / "src" / "spot" / f"{name}.svg"
-        if not src.exists():
-            print(f"spot missing: {name}")
-            continue
-        root = load(src)
-        title = name.replace("-", " ")
-        for mono, sub in ((False, ""), (True, "mono/")):
-            body = inner(colour(root, t.art_colors, strokes, mono=mono))
-            _write(brand / "spot" / f"{sub}{name}.svg", svg(96, 96, body, title))
-
-
 def build_all(t: Tokens, brand: Path) -> None:
     lk = look(t, brand)
     m = marks(t, brand, lk)
     app_icons(t, brand, lk)
     lockups(t, brand, m)
     og_image(t, brand, m)
-    spots(t, brand)
-    print("art -> brand/mark, brand/app-icon, brand/wordmark, brand/spot")
+    print("art -> brand/mark, brand/app-icon, brand/wordmark")
 
 
-__all__ = ["build_all", "look", "SPOTS"]
+__all__ = ["build_all", "look"]

@@ -164,15 +164,9 @@ These are the masters. The raster exports call the same functions (`brandkit/ico
 
 Size rule for the exports: only the web favicons (`favicon.svg`, `favicon.ico`, `favicon-*.png`) and the email mark use the bare blue mark. Every app and desktop icon is the tile at every size (Windows .ico 16-256, Linux hicolor 16-512, the macOS 16 pt slot at 1x and 2x, Tauri, `png/icon-*`), as Streams' desktop set is.
 
-## Spot illustrations (`spot/`)
+## Spot illustrations (removed)
 
-These are the v1 drawings, kept as they are for now. Decision D17 replaces them with renders of the voxel mascot from the film scene (`media/spots/`, 20 presets as transparent PNG/WebP). Until then, the build regenerates them unchanged from `src/spot/`.
-
-Twenty 96x96 drawings in one style: a soft brand plate (circle r 38), flat fills from the art palette, 3-unit `blue-deep` lines with round caps and joins, one ember touch each (the spoken word, a spark, a record dot). They read on Ink, Paper and Night without change. `spot/mono/` has the same drawings in `currentColor` with the light fills set to `var(--color-surface-1)` and ember to `var(--color-ember)`, for inline SVG that follows the theme.
-
-Names: welcome, background-play, empty-library, empty-voices, import-paste, import-link, import-file, voice-clone, voice-design, offline, error, search-empty, done, sync-devices, download, invite, privacy, open-source, all-platforms, languages.
-
-To add or change one: edit `src/spot/<name>.svg` (classes `f-<art colour>` for fill, `s-<art colour>` for stroke, `data-stroke="spot"` for the shared weight), add the name to `SPOTS` in `brandkit/art.py`, rebuild, and look at `dist/contact-sheet.png`.
+Removed on 2026-10-31 (decision D40): the v1 drawings were below the brand's bar. Empty, success and onboarding states use one Remix Icon line glyph in a soft `brand-soft` disc instead. The old drawings and their sources are kept for reference in `archive/spot-v1/`.
 
 ## Exports (`dist/`)
 
@@ -187,15 +181,14 @@ To add or change one: edit `src/spot/<name>.svg` (classes `f-<art colour>` for f
 | `tauri/` | the icon set `tauri.conf.json` expects (32x32, 128x128, 128x128@2x, icon.png, icon.icns, icon.ico, Square*Logo, StoreLogo) |
 | `wordmark/`, `mark/` | PNG lockups at 64 and 128 px high (the horizontal lockup's mark lands on 4 and 8 px cells), every mark variant at 512 |
 | `email/` | for crates/mail: `streams-reader-logo-on-light.png` / `-on-dark.png` (48 px high, mark on 3 px cells) and `@2x` (96 px), `streams-reader-mark.png` 48/96, `streams-reader-avatar.png` 96/192 |
-| `spot/` | each illustration at 2x and 3x PNG |
-| `contact-sheet.png` | on Ink and on Paper: the masters, the Android adaptive and themed previews, Streams' tile for the family check, the size ladder 144 to 16 px, the 16 px mark enlarged 8x, lockups, the OG image and the spots |
+| `contact-sheet.png` | on Ink and on Paper: the masters, the Android adaptive and themed previews, Streams' tile for the family check, the size ladder 144 to 16 px, the 16 px mark enlarged 8x, lockups and the OG image |
 
 ## Consumers copy, never edit
 
-`brand/` is the only place these files are made. Other directories import or copy from `brand/dist` and `brand/spot` and re-copy after a rebuild:
+`brand/` is the only place these files are made. Other directories import or copy from `brand/dist` and re-copy after a rebuild:
 
-- Web app (`crates/web`): `@use` the tokens; copy `dist/web/*` into its assets; spots from `spot/` (or `spot/mono/` inline).
-- Landing site: `@use` the tokens; `dist/web/og-image.png`, favicons, `wordmark/streams-reader-horizontal-on-dark.svg` and `-on-light.svg`, spots.
+- Web app (`crates/web`): `@use` the tokens; copy `dist/web/*` into its assets.
+- Landing site: `@use` the tokens; `dist/web/og-image.png`, favicons, `wordmark/streams-reader-horizontal-on-dark.svg` and `-on-light.svg`.
 - Native apps: `dist/tauri/*` into `src-tauri/icons/`, `dist/android/*` into the Android `res/`, `dist/linux/hicolor` for packaging.
 - Emails: `dist/email/streams-reader-logo-on-light.png` (and `@2x`), colours from `tokens.json`.
 - `crates/web/tools/make_icons.py` still draws the v1 icons for the web app. Replace its output with `dist/web/*`.

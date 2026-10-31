@@ -1,4 +1,4 @@
-"""Contact sheet: icons, marks, lockups, OG image and spots on Ink and Paper, for review."""
+"""Contact sheet: icons, marks, lockups and OG image on Ink and Paper, for review."""
 
 from __future__ import annotations
 
@@ -57,13 +57,12 @@ def _fit(path: Path, max_w: int, max_h: int) -> Image.Image:
     return render(path, round(w * s), round(h * s))
 
 
-def _panel(t: Tokens, brand: Path, ex: Exporter, theme: str, spots: list[str], width: int) -> Image.Image:
+def _panel(t: Tokens, brand: Path, ex: Exporter, theme: str, width: int) -> Image.Image:
     colors = t.themes[theme].colors
     bg = _rgb(colors["bg"].hex)
     label = _rgb(colors["text-3"].hex)
-    pad, big, cell, cols = 32, 192, 120, 10
-    rows = (len(spots) + cols - 1) // cols
-    heights = [big + 24, 144 + 24, 120, 330 if theme == "ink" else 0, rows * (cell + 26)]
+    pad, big = 32, 192
+    heights = [big + 24, 144 + 24, 120, 330 if theme == "ink" else 0]
     h = pad + sum(x + pad for x in heights if x)
     img = Image.new("RGBA", (width, h), bg + (255,))
     draw = ImageDraw.Draw(img)
@@ -120,20 +119,12 @@ def _panel(t: Tokens, brand: Path, ex: Exporter, theme: str, spots: list[str], w
         draw.text((pad, y + 318), "og-image 1200x630 (half size)", fill=label)
         y += 330 + pad
 
-    # Row 5: spots (unchanged v1 drawings; to be replaced by the voxel mascot renders).
-    for i, name in enumerate(spots):
-        cx = pad + (i % cols) * (cell + 8)
-        cy = y + (i // cols) * (cell + 26)
-        path = brand / "spot" / f"{name}.svg"
-        if path.exists():
-            img.alpha_composite(render(path, cell), (cx, cy))
-        draw.text((cx + 4, cy + cell + 4), name, fill=label)
     return img
 
 
-def build(t: Tokens, brand: Path, ex: Exporter, spots: list[str], out: Path) -> None:
+def build(t: Tokens, brand: Path, ex: Exporter, out: Path) -> None:
     width = 32 * 2 + 10 * 128 + 120
-    panels = [_panel(t, brand, ex, theme, spots, width) for theme in ("ink", "paper")]
+    panels = [_panel(t, brand, ex, theme, width) for theme in ("ink", "paper")]
     sheet = Image.new("RGBA", (width, sum(p.height for p in panels)))
     y = 0
     for p in panels:
