@@ -10,6 +10,20 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 - Rejected: the outline with `box-decoration-break: slice` (open boxes at the line ends, still a ladder); a light fill (confused with the wash).
 - Decided by: reviewer proposal, applied and checked on the rendered page by the assistant, 2026-10-31.
 
+### D40. Illustrated spot icons removed; logo redone
+- Decision: the flat illustrated "spot" set in brand/spot (welcome, empty-library, voice-clone and 17 more) is removed from the app and the landing page. The owner judged it beginner level (2026-10-31) and the lead agrees: uneven line weights, clip-art sparkles, mixed perspectives. Empty, success and onboarding states use the quiet treatment of D39 instead: one Remix Icon line glyph in a soft tinted circle, or no image at all. The voxel character stays only in the film and the landing hero. The logo (D26 mark v2, rated 6/10: reads as a file icon, the sound arc is lost at 16-32 px) is redesigned by three competing designers and three independent judges; the owner picks from a ranked board.
+- Rejected: redrawing the spot set (hand-coded illustration has a low quality ceiling); keeping mark v2.
+- Decided by: owner (verdict), assistant (replacement and process), 2026-10-31. Supersedes the spot part of D37.
+
+### D39. Emails: a quiet design, calmer than C
+- Decision: the owner clarified (2026-10-31) that C was only the cleanest of three choices that were all too bold, C included, and expected the inbox review to tone it down. The emails become quiet and restrained, at the level of Netflix and Monzo: plain background, small logo, one headline, the code in a light box, one solid blue button, hairline rule, small grey footer, system fonts, no coloured stage, gradients or icon strip. Invite and welcome keep one modest product image on a light tile. The D38 split by purpose stays. They must adapt fully to every screen size and mail-client case (owner instruction).
+- Decided by: owner (direction), assistant (specifics), 2026-10-31. Supersedes the visual part of D38.
+
+### D38. Email design C, split by purpose
+> Correction 2026-10-31: the visual direction is superseded by D39 (quieter than C); the split by purpose stands.
+- Decision: direction C (product reveal) is the system. Code and link emails (sign-up, sign-in, reauthentication, email change, recovery) use a minimal form of it: logo, one headline, the code card, the button, two short lines, no hero or feature strip, and the code in the subject. Invite and welcome emails use the full C with the player-card hero and the feature strip. Reason: in the owner's inbox (Netflix, Disney+, Resend, Monzo, Duolingo, 2026-10-31) the best code emails are minimal, and Gmail shows a "Copy code" chip above simple code emails; brand flourishes are kept for invite and welcome mails (Disney+ product shot, Duolingo mascot). Rejected: full C everywhere (slower to scan a code), A and B.
+- Decided by: owner chose C ("it is C", undecided on details); assistant chose the split, 2026-10-31.
+
 ### D37. Character spots cut from 20 to about 4, kept out of emails
 - Decision: the 20 voxel spots in `media/dist/spots` share one standing pose with a small prop, so they read alike and the meaning hangs on a prop too small to see at app size. Keep about 4 (welcome, empty library, render done, error/offline) redrawn as distinct scenes for large empty and success states; use Remix icons everywhere else; no spots in emails. Rejected: shipping all 20 as is; dropping the character entirely (the film and hero still use it).
 - Decided by: assistant, after the owner asked whether the spots were necessary or good, 2026-10-31.
