@@ -3,6 +3,7 @@
 pub mod bootstrap;
 pub mod build;
 pub mod deploy;
+pub mod domain;
 pub mod migrate;
 pub mod providers;
 pub mod resources;

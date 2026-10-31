@@ -99,6 +99,10 @@ enum Command {
         #[arg(long)]
         ming_rev: Option<String>,
     },
+    /// Attach one of this project's hostnames (reader.streams.watch, listen.streams.watch) to the Worker.
+    Domain {
+        hostname: String,
+    },
     /// Upload space/ to the Hugging Face Space and wait until the new build is RUNNING.
     Space {
         /// Return right after the upload.
@@ -136,6 +140,7 @@ fn main() -> ExitCode {
         Command::SupabaseCheck => cmd::supabase::check(),
         Command::Build => cmd::build::run(),
         Command::Deploy { kokoro_rev, ming_rev } => cmd::deploy::run(cmd::deploy::Options { kokoro_rev, ming_rev }),
+        Command::Domain { hostname } => cmd::domain::run(&hostname),
         Command::Space { no_wait } => cmd::space::run(!no_wait),
         Command::Smoke { base } => cmd::smoke::run(base),
         Command::Status { base } => cmd::status::run(base),
