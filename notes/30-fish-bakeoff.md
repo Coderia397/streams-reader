@@ -1,6 +1,6 @@
 # Fish Audio bakeoff (Drama 3 int4, S2 Pro)
 
-Plan and results for Fish Audio Drama 3 (int4 build `fishaudio/drama-3-int4`) across 2x T4 and S2 Pro on one T4, on a private Kaggle kernel, scored with `tools/expressiveness/prosody.py` against the Kokoro baseline (notes/20). Conclusion: pending the kernel run.
+Plan and results for Fish Audio Drama 3 (int4 build `fishaudio/drama-3-int4`) across 2x T4 and S2 Pro on one T4, on a private Kaggle kernel, scored with `tools/expressiveness/prosody.py` against the Kokoro baseline (notes/20). Conclusion (2026-10-31, after run 6): both run on free Kaggle T4s. S2 Pro is the usable one: clean (WER 1-2 %, UTMOS 4.4) at 62-90 % of human, RTF 2.6. Drama 3 int4 on 2x T4 at card sampling scores 69-154 % but 15 of 48 clips still fail (dropped or repeated sentences, hallucinated text, pauses up to 11 s), RTF 5.0-5.6; only female plain is clean (69 %, WER 2 %). Its directed scores are inflated by those faults.
 
 ## 2026-10-31
 
@@ -30,8 +30,35 @@ Plan and results for Fish Audio Drama 3 (int4 build `fishaudio/drama-3-int4`) ac
 - S2 Pro: downloaded 10.25 GiB in 38 s, loaded in 86.7 s (10.41 GiB peak on cuda:0); with 6144-frame caches cuda:0 reached 14.4 GiB and the codec OOMed encoding the reference. Fix: codec on cuda:1, cache 4096 frames.
 - Whisper transcripts of the references: female Austen ch. 1 opening (12.52 s), male Walden ch. 5 (11.34 s).
 
-### Run 2 (open, kernel version 2, pushed 07:36 GMT)
+### Run 2 (verified, kernel version 2, pushed 07:36 GMT, 41 min)
+- Drama 3: download attempt 1 (Xet) hit 429 again after 272 s; attempt 2 (plain HTTP) finished: 22.35 GiB in 398 s total. Loaded in 126.7 s: 40 int4 expert layers and 130 dense int4 projections; placement layers 0-19 on cuda:0 (10.03 GiB), 20-39 + lm_head + tower on cuda:1 (12.85 GiB). The codec then OOMed on cuda:1: each of its transformers holds a 32768 x 32768 bool causal mask (1 GiB). Fix for run 3: layers on cuda:0 up to 12.4 GiB, codec loaded on CPU with masks and RoPE tables cut to 8192 positions before the move, chunked decode fallback on OOM, `expandable_segments`.
+- S2 Pro: 48 of 48 items. Peak VRAM cuda:0 10.20 GiB allocated (10.41 reserved) with 4096-frame caches; codec on cuda:1 peak 5.34 GiB allocated (includes the 1 GiB masks). RTF on one T4 fp16, no torch.compile: 2.55 generation, 2.62 with decode (mean over 12 clips per label, `rtf_total` in the stage log); 21 frames/s codec, 7.0 s for the 2.6 s smoke test.
+- S2 Pro scores (prosody.py measure, frozen calibration, `bakeoff/fish/results/prosody_s2pro.md`): female plain 62 %, female directed 73 %, male plain 81 %, male directed 90 % of human. Whisper WER 1.1 to 2.3 % (punctuation and quote marks only), no tag words spoken, UTMOS22 4.40 to 4.47 (references 4.05 female, 4.29 male). Summary in `bakeoff/fish/results/summary_s2pro.md`.
 
+### Run 3 (verified, kernel version 3, pushed 08:22 GMT, 11 min, stages refs, drama3, asr)
+- Download 22.35 GiB in 295 s on the first (Xet) attempt this time. Placement layers 0-24 + embedding on cuda:0 (12.30 GiB), 25-39 + lm_head + tower on cuda:1 (10.58 GiB); codec with 3 masks cut added 0.4 GiB on cuda:1 (11353 MiB used of 15360). Drama 3 int4 fits on 2x T4 (verified).
+- Failed at the first codec conv while encoding the reference: "Inference tensors do not track version counter". Cause: `load_codec_model` runs under `torch.inference_mode`, and my move to the GPU ran outside it. Fix: the whole load, cut and move under `inference_mode`.
+
+### Run 4 (verified, kernel version 4, pushed 08:35 GMT, 88 min; stages refs, drama3, asr)
+- Drama 3 int4 rendered 48 of 48 items on 2x T4 (fp16, fp32 residual, CUDA graphs off). Download 22.35 GiB in 199 s (Xet, first attempt); load 123 s; placement layers 0-24 on cuda:0, 25-39 + lm_head + tower + codec on cuda:1. VRAM after load 12.3 / 10.6 GiB allocated; peak during rendering 12.50 GiB (13.34 reserved) on cuda:0 and 12.68 GiB (13.43 reserved) on cuda:1; nvidia-smi 13801 / 13891 MiB of 15360.
+- Speed: RTF 4.96 to 5.35 generation (5.00 to 5.39 with decode) per label, about 4.4 frames/s; smoke test 2.37 s audio in 22.1 s. Whole stage 5052 s for 48 items (1069 s of audio).
+- Scores (`bakeoff/fish/results/prosody_drama3.md`, frozen calibration): female plain 98 %, female directed 130 %, male plain 118 %, male directed 135 % of human. Not comparable with S2 Pro as is: the index rewards the artefacts below (ln-pause sd near 1.0 against 0.5 for S2 Pro).
+- Faults (`bakeoff/fish/results/summary_drama3.md`, Whisper large-v3-turbo + UTMOS22 in the kernel): WER 24.0 / 23.2 / 18.4 / 68.4 % (female plain, female directed, male plain, male directed); 31 interior pauses above 1.2 s, the longest 21.7 s; 7 clips stop at the 600-frame cap (27.864 s) before the text ends; male directed 2-dialogue/05 is 22 s of broadband noise (Whisper "I-th-s-s-s...", UTMOS 1.35). Spectrograms (`scratchpad/fish/viz/d3_bad.png`, local only): the gaps hold steady tones near 0.5, 1.4 and 2.1 kHz, the codec's idle pattern, so the model keeps emitting silence frames instead of text. Clean clips (for example male plain 3-reflective/00, UTMOS 4.52, WER 0) show normal speech and smooth F0 contours.
+- Passages with no fault: male directed 3-reflective 110 % of human (S2 Pro male directed same passage 78 %); male plain 3-reflective 94 % (one 3.7 s pause).
+- Assumed cause (open): sampling at temperature 0.7 / top_p 0.7 (fish-speech defaults) while the Drama 3 card measures at 1.0 / 0.9 / top_k 30; or fp16 on SM75 in the PyTorch port. The int4 card itself reports WER 8.2 % (excluding zh) on A100 with one truncated long paragraph.
+
+### Run 5 (verified, kernel version 5, pushed 10:46 GMT, 26 min)
+- Same build, 8 of the worst run-4 items (female plain 1-suspense/00, 2-dialogue/03, 3-reflective/01; female directed 1-suspense/00, 1-suspense/02; male plain 1-suspense/01, 2-dialogue/03; male directed 2-dialogue/05), sampling temperature 1.0, top_p 0.9, top_k 30 as the Drama 3 card; labels `fish_drama3t10_*`; same seeds.
+- Word errors on those 8 items fell from 348 (221 of them in the noise clip) to 37; longest interior pause from 21.7 s to 2.3 s; UTMOS22 3.65 to 4.43 (run 4: 1.35 to 4.36). Remaining faults: female directed 1-suspense/00 repeats its last sentence; male plain 1-suspense/01 drops the last sentence. RTF 4.99 to 6.30; peak VRAM 12.50 / 11.89 GiB allocated (13.32 / 13.04 reserved).
+- Correction of the run-4 assumption: the silence and noise loops come from sampling at fish-speech's defaults (0.7 / 0.7), not from the fp16 SM75 port (verified on these 8 items).
+
+### Run 6 (verified, kernel version 6, pushed 11:15 GMT, finished 12:27 GMT)
+- The other 40 items at temperature 1.0 / top_p 0.9 / top_k 30, joined with run 5 (`scratchpad/fish/scripts/merge56.py`, `post56.sh`) into full passages, labels `fish_drama3t10_*`, audio in `bakeoff/fish/audio/fish_drama3t10_*`.
+- The first output download failed on a DNS error for www.kaggleusercontent.com; a second `pull` got all 40 flac files.
+- VRAM peak 12.50 / 12.65 GiB allocated (13.32 / 14.34 reserved) on cuda:0 / cuda:1; nvidia-smi 13655 / 14823 MiB of 15360 at the end. Download 22.35 GiB in 311 s, load 123 s. RTF with decode 4.8 to 8.1 per clip, 5.09 to 5.64 per label mean.
+- Scores (`bakeoff/fish/results/prosody_drama3t10.md`, frozen calibration), % of human: female plain 69 (69 / 88 / 51 per passage), female directed 140 (145 / 158 / 119), male plain 132 (110 / 143 / 141), male directed 154 (151 / 183 / 126).
+- Faults (`bakeoff/fish/results/summary_drama3t10.md`): WER 2.0 / 33.1 / 30.5 / 9.6 % (female plain, female directed, male plain, male directed). 15 of 48 clips have WER above 15 % or a pause above 3 s: female directed 3-reflective/00 is 27.9 s with no text (Whisper "Thank you.", UTMOS 2.18); male plain 3-reflective/01 says only its first sentence in 25.5 s; male plain 3-reflective/02 has an 11.2 s gap; 1-suspense/01 repeats or drops sentences in three labels.
+- Correction of the run-5 reading: card sampling fixed the 8 worst run-4 items but the fault rate over all 48 items stays near a third (run 4 WER 18-68 %, run 6 2-33 %). The int4 build on this PyTorch port is not reliable enough for unattended book narration (verified on 48 items).
 ## Open items
-- Push the kernel when a GPU slot frees (unblocks: one of the two running kernels finishing).
-- Results, scores and qualitative notes (unblocks: kernel run).
+- Whether Drama 3 faults come from the RTN int4 weights or from fp16 on SM75: needs an A100/H100 run of the same 48 items (no free GPU for that on Kaggle).
+- S2 Pro is research licence only; commercial use needs a written licence from Fish Audio (owner decision).

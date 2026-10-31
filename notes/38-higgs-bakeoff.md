@@ -40,6 +40,7 @@ Order in brackets: 1-suspense / 2-dialogue / 3-reflective.
 
 - References (verified, run 2 log): female = zero-shot seed 3, 13.7 s, 209 Hz; male = seed 6, 12.5 s, 104 Hz; both WER 0.093 (only "nine"->"9", "ten"->"10", "drop box"->"dropbox"). Ref search took 215 s for 7 seeds.
 - RTF (verified, run 2 worker logs): 2386 s generation for 1509 s of audio = 1.58 on one T4 fp16, per item median 1.62 (range 1.49-2.74, 206 items); 1.55 for paragraph calls, 1.71 for sentence calls. Model load 13-34 s. No item hit the token cap.
+- Install (verified, run 1 and 2 logs): `pip install transformers==5.5.4` rc 0 on the Kaggle image (torch 2.11.0+cu128, CUDA 12.8); port loads with `trust_remote_code=True`; no errors in either run. Only problems: one push refused by the Kaggle 2-GPU-session limit (above), and run 1 redone because of the cloning clause.
 - VRAM (verified): torch peak allocated 9.37-9.38 GB, reserved 9.87-9.91 GB, nvidia-smi peak 10.2-10.5 GB per T4. bf16 fallback never needed (fp16 warm-up sane).
 - WER (verified, Whisper large-v3-turbo in the kernel): mean 0.021 over 206 clips, 7 clips above 0.2. Those are quote-mark tokens Whisper emits as words on the Tom line and the sfx onomatopoeia ("Haha", "Haah") dropped or kept; no skipped or repeated text found.
 - Artefacts (verified, `analyze.py`, `artefacts.json`): no clipping, longest internal silence 0.85 s, median spectral flatness < 0.005, energy above 8 kHz -24 to -27 dB relative to 0-8 kHz on every set (codec at 24 kHz, no hiss signature).
@@ -50,6 +51,7 @@ Order in brackets: 1-suspense / 2-dialogue / 3-reflective.
 - Weights `bosonai/higgs-tts-3-4b` (sha 239f63fb): "Boson Higgs TTS 3 Research and Non-Commercial License Agreement", last updated July 8, 2026. Research and non-commercial use only; hosted use, API, SaaS or any product requires a separate written commercial licence (Section III). Section II-A Creator Use Grant allows monetised creator content with an acknowledgement, and excludes hosting or embedding in a product. Section IV(b)(ii) bans cloning a real person without explicit, verifiable consent. Not open source (licence text says so).
 - Port `multimodalart/higgs-audio-v3-tts-4b-transformers` (sha 30f01593, weights and modelling code): "Boson Higgs Audio v3 Research and Non-Commercial License Agreement", last updated May 21, 2026; same research and non-commercial terms, without the Creator Use Grant.
 - Codec `bosonai/higgs-audio-v2-tokenizer` (sha 815a03f1): "Boson Higgs Audio 2 Community License", based on the Meta Llama 3 Community License; commercial use allowed below 100,000 annual active users, "Built with Higgs Materials licensed from Boson AI USA, Inc." attribution.
+- Re-checked 2026-10-31 11:42 GMT (HF API): weights 239f63fb, port 30f01593, codec 815a03f1 unchanged; licence ids `boson-higgs-tts-3-research-and-non-commercial-license` and `bosonai-higgs-audio-v3`. Kernel `lbrahimali/streams-higgs-bakeoff` status COMPLETE; no rerun pushed (results above stand).
 - Consequence for Streams Reader: free to evaluate; not usable in the app (hosted product) without a Boson commercial licence.
 
 ## Open items
