@@ -18,7 +18,7 @@ jobs:
     name: Rust (native crates)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
@@ -33,7 +33,7 @@ jobs:
     env:
       RUSTFLAGS: --cfg=web_sys_unstable_apis -D warnings
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
@@ -45,7 +45,7 @@ jobs:
     name: Speech engine (Python)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v6
       - run: uv run --python 3.12 --with pytest --with numpy --with pyloudnorm --with soundfile python -m pytest -q tests
         working-directory: space
