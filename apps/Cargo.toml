@@ -1,0 +1,54 @@
+# Native apps workspace (Tauri 2 shells, Android plugin, desktop audio engine, UI bridge contract).
+#
+# A separate workspace from the repo root on purpose (notes/18, "Workspace layout"):
+# - Tauri, WebKitGTK, WebView2, cpal, libopus and the Android JNI tree never enter the root Cargo.lock, so the
+#   server/web crates resolve and build exactly as before; `cargo test` at the root never touches Tauri.
+# - Release profile tuned for an app with a DSP engine (opt-level 3 for audio), unlike the root's size-first
+#   profile for the Worker wasm.
+# Root crates are used through path dependencies (nolabs-core). crates/web depends on `apps/bridge` by path.
+[workspace]
+resolver = "3"
+members = ["bridge", "audio-engine", "android-plugin", "tauri/src-tauri"]
+# Only the pure crates by default: `cargo test` here builds no Tauri and no audio device code.
+default-members = ["bridge"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+rust-version = "1.91"
+repository = "https://github.com/Coderia397/nolabs-reader"
+
+[workspace.dependencies]
+nolabs-core = { path = "../crates/core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "warn"
+panic = "warn"
+dbg_macro = "deny"
+todo = "warn"
+
+[profile.dev]
+debug = 0
+incremental = false
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = "debuginfo"
+
+# The decode/stretch thread runs every 20 ms; size optimisation costs CPU there.
+[profile.release.package.streams-audio]
+opt-level = 3
+[profile.release.package.libsonic]
+opt-level = 3
+[profile.release.package.symphonia-format-mkv]
+opt-level = 3

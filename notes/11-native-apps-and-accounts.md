@@ -1,5 +1,7 @@
 # Native apps, self-updating, accounts for several users (architecture v3 delta)
 
+Correction 2026-10-30: in "Speed: architecture" item 1, int8 at about 90 MB and "desktop several times realtime" are superseded by [19-on-device-tts.md](19-on-device-tts.md). On the i7-9750H, fp32 ONNX (325 MB) is faster than int8 and runs at 2.1-2.3x real time on 4-6 threads (verified). The Pixel 8 is expected near 1x real time on CPU (assumed).
+
 Plan. The user asked (2026-10-30, evening) for real apps on macOS, Linux, Windows and Android (the Pixel 8, other Android phones, an old laptop), updates that install themselves, use by the user and other people, and a managed backend service so less backend code is ours. Decision: one Rust/Leptos UI shared by the web app and Tauri 2 native apps, with native audio, media controls, offline storage and updaters; managed auth for several users. Status: open (planned after milestone A ships on the web).
 
 ## 2026-10-30

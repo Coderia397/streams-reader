@@ -25,9 +25,7 @@ pub struct AppState {
 pub fn init(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
     let paths = Paths::resolve(app)?;
     paths.create_all()?;
-    let http = reqwest::Client::builder()
-        .user_agent(concat!("StreamsReader/", env!("CARGO_PKG_VERSION")))
-        .build()?;
+    let http = reqwest::Client::builder().user_agent(concat!("StreamsReader/", env!("CARGO_PKG_VERSION"))).build()?;
     let state = AppState {
         engine: Engine::start(app)?,
         secrets: Secrets::new(app),

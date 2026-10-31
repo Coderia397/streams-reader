@@ -65,13 +65,22 @@ pub struct SegmentFile {
 #[derive(Debug, Clone, PartialEq)]
 pub enum Command {
     /// Start a new document: forget the queue, expect segments from `start_segment` on.
-    Open { segment_count: u32, start_segment: u32, start_ms: u32 },
+    Open {
+        segment_count: u32,
+        start_segment: u32,
+        start_ms: u32,
+    },
     /// A segment became available (in any order; the queue sorts and waits for gaps).
     Append(SegmentFile),
     Play,
     Pause,
-    SeekTo { segment: u32, ms: u32 },
-    SeekBy { delta_ms: i32 },
+    SeekTo {
+        segment: u32,
+        ms: u32,
+    },
+    SeekBy {
+        delta_ms: i32,
+    },
     SetRate(f32),
     /// `None` = off; `Some(ms)` = fade and pause after `ms`; end-of-section is handled by the app via `ends_section`.
     SetSleep(Option<u32>),
@@ -83,7 +92,12 @@ pub enum Command {
 pub enum Event {
     State(EngineState),
     /// Sent ~4×/s while playing and on every seek.
-    Position { segment: u32, segment_pos_ms: u32, buffered_ahead_ms: u32, at_ms: u64 },
+    Position {
+        segment: u32,
+        segment_pos_ms: u32,
+        buffered_ahead_ms: u32,
+        at_ms: u64,
+    },
     SegmentChanged(u32),
     /// The queue needs `segment` and does not have it: the feeder should hurry (render / download).
     Starved(u32),

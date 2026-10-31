@@ -1,0 +1,303 @@
+# Native app release pipeline (Tauri 2). Manual only: never runs on push or pull_request.
+# Design, costs and the phased plan: notes/18-native-apps-architecture.md.
+#
+# Jobs: version check → web UI (trunk) → desktop matrix (macOS universal .dmg/.app.tar.gz, Windows .msi/.exe,
+# Linux .AppImage/.deb) and Android (.apk/.aab) → optional publish to R2 (listen.streams.watch/updates/).
+#
+# Secrets (Settings → Secrets and variables → Actions); every one is optional until its phase:
+#   TAURI_SIGNING_PRIVATE_KEY, TAURI_SIGNING_PRIVATE_KEY_PASSWORD   updater signatures (phase 3)
+#   ANDROID_KEYSTORE_B64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD   release APK/AAB
+#   R2_ACCOUNT_ID, R2_RELEASES_ACCESS_KEY_ID, R2_RELEASES_SECRET_ACCESS_KEY   publish (token scoped to the releases bucket only)
+#   APPLE_* / WINDOWS_* code-signing secrets: not used yet (open item in notes/18)
+name: Release (native apps)
+
+on:
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: What to build
+        type: choice
+        options: [android-debug, android, desktop, all]
+        default: android-debug
+      channel:
+        description: Update channel the release goes to (only used with publish)
+        type: choice
+        options: [beta, stable]
+        default: beta
+      publish:
+        description: Upload artefacts to R2 and move the channel manifest
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  TAURI_CLI_VERSION: "2.12.4"
+  # Same version the owner's machine and `cargo xtask build` use.
+  TRUNK_VERSION: "0.21.14"
+  APPS: apps
+  APP_DIR: apps/tauri/src-tauri
+
+jobs:
+  meta:
+    name: Version
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      desktop: ${{ steps.v.outputs.desktop }}
+      android: ${{ steps.v.outputs.android }}
+      android_release: ${{ steps.v.outputs.android_release }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: v
+        run: |
+          version=$(grep -m1 '^version' "$APP_DIR/Cargo.toml" | cut -d'"' -f2)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          t='${{ inputs.targets }}'
+          echo "desktop=$([[ $t == desktop || $t == all ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "android=$([[ $t == android* || $t == all ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "android_release=$([[ $t == android || $t == all ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "Streams Reader $version, targets $t" >> "$GITHUB_STEP_SUMMARY"
+      - name: Refuse to publish without a real updater key
+        if: ${{ inputs.publish }}
+        run: |
+          if grep -q 'REPLACE_WITH_UPDATER_PUBLIC_KEY' "$APP_DIR/tauri.conf.json"; then
+            echo "::error::plugins.updater.pubkey is still the placeholder (notes/18, Updater: generate the key first)"
+            exit 1
+          fi
+
+  web:
+    name: Web UI (trunk)
+    needs: meta
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - uses: astral-sh/setup-uv@v6
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-binstall
+      - run: cargo binstall -y --locked "trunk@${TRUNK_VERSION}"
+      - name: Build crates/web (release, public URL /app/)
+        working-directory: crates/web
+        run: trunk build --release
+      - name: Stage under app/ for the Tauri asset resolver
+        # The UI is built with BASE=/app and absolute /app/... asset URLs. Tauri serves frontendDist at the origin
+        # root, so the dist goes under app/, and a copy of index.html at the root catches deep-route fallbacks.
+        run: |
+          mkdir -p apps/tauri/frontend/app
+          cp -R crates/web/dist/. apps/tauri/frontend/app/
+          cp apps/tauri/frontend/app/index.html apps/tauri/frontend/index.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend
+          path: apps/tauri/frontend
+          retention-days: 3
+
+  desktop:
+    name: Desktop ${{ matrix.name }}
+    needs: [meta, web]
+    if: ${{ needs.meta.outputs.desktop == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # macos-14 is retired on 2026-11-02 (GitHub changelog 2026-10-01); macos-15 is arm64.
+          - name: macOS universal
+            os: macos-15
+            target: universal-apple-darwin
+            rust_targets: aarch64-apple-darwin,x86_64-apple-darwin
+            bundles: app,dmg
+          - name: Windows x64
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            rust_targets: x86_64-pc-windows-msvc
+            bundles: msi,nsis
+          # 22.04 for an older glibc (2.35) so the AppImage runs on older distributions.
+          - name: Linux x64
+            os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            rust_targets: x86_64-unknown-linux-gnu
+            bundles: appimage,deb
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 75
+    env:
+      TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+      TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend
+          path: apps/tauri/frontend
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust_targets }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: apps -> target
+          key: ${{ matrix.target }}
+      - name: Linux build dependencies
+        if: runner.os == 'Linux'
+        # Tauri 2 prerequisites + ALSA headers for cpal. souvlaki uses zbus (pure Rust), so no libdbus-1-dev.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev \
+            librsvg2-dev libasound2-dev patchelf file
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-binstall
+      - run: cargo binstall -y --locked "tauri-cli@${TAURI_CLI_VERSION}"
+      - name: Build
+        shell: bash
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          extra=()
+          if [[ -z "$TAURI_SIGNING_PRIVATE_KEY" ]]; then
+            echo "::warning::no updater signing key: building without updater artefacts"
+            extra+=(--config '{"bundle":{"createUpdaterArtifacts":false}}')
+          fi
+          cargo tauri build --ci --target "${{ matrix.target }}" --bundles "${{ matrix.bundles }}" "${extra[@]}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.target }}
+          path: |
+            apps/target/${{ matrix.target }}/release/bundle/**/*.dmg
+            apps/target/${{ matrix.target }}/release/bundle/**/*.app.tar.gz
+            apps/target/${{ matrix.target }}/release/bundle/**/*.msi
+            apps/target/${{ matrix.target }}/release/bundle/**/*-setup.exe
+            apps/target/${{ matrix.target }}/release/bundle/**/*.AppImage
+            apps/target/${{ matrix.target }}/release/bundle/**/*.deb
+            apps/target/${{ matrix.target }}/release/bundle/**/*.sig
+          if-no-files-found: error
+          retention-days: 7
+
+  android:
+    name: Android
+    needs: [meta, web]
+    if: ${{ needs.meta.outputs.android == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend
+          path: apps/tauri/frontend
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+      - name: SDK 36 and NDK 27
+        run: |
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;27.2.12479018"
+          echo "NDK_HOME=$ANDROID_SDK_ROOT/ndk/27.2.12479018" >> "$GITHUB_ENV"
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          # Pixel 8 and current phones are arm64; armv7 for old 32-bit phones in release builds.
+          targets: aarch64-linux-android,armv7-linux-androideabi
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: apps -> target
+          key: android
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-binstall
+      - run: cargo binstall -y --locked "tauri-cli@${TAURI_CLI_VERSION}"
+      - name: Generate the Android project if it is not committed yet
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          if [[ ! -d gen/android ]]; then
+            cargo tauri android init --ci
+            echo "GEN_ANDROID_NEW=1" >> "$GITHUB_ENV"
+          fi
+      - name: Upload the generated project (commit it, notes/18 phase 1 step 2)
+        if: ${{ env.GEN_ANDROID_NEW == '1' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gen-android
+          path: ${{ env.APP_DIR }}/gen/android
+          retention-days: 7
+      - name: Build debug APK (adb install on the Pixel)
+        if: ${{ needs.meta.outputs.android_release != 'true' }}
+        working-directory: ${{ env.APP_DIR }}
+        run: cargo tauri android build --ci --debug --apk --target aarch64
+      - name: Build release APK + AAB (unsigned)
+        if: ${{ needs.meta.outputs.android_release == 'true' }}
+        working-directory: ${{ env.APP_DIR }}
+        run: cargo tauri android build --ci --apk --aab --target aarch64 armv7
+      - name: Sign release artefacts
+        if: ${{ needs.meta.outputs.android_release == 'true' }}
+        # Signed after the build with apksigner / jarsigner, so the generated Gradle files need no signing edits.
+        # The same key must sign every future release: Android refuses updates signed by another key.
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [[ -z "$KS_B64" ]]; then echo "::error::ANDROID_KEYSTORE_B64 is not set"; exit 1; fi
+          echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          bt="$ANDROID_SDK_ROOT/build-tools/36.0.0"
+          out="$APP_DIR/gen/android/app/build/outputs"
+          for apk in $(find "$out/apk" -name '*-unsigned.apk'); do
+            "$bt/zipalign" -f -p 4 "$apk" "${apk%-unsigned.apk}-aligned.apk"
+            "$bt/apksigner" sign --ks "$RUNNER_TEMP/release.jks" --ks-pass env:KS_PASS --ks-key-alias "$KEY_ALIAS" \
+              --key-pass env:KEY_PASS --out "${apk%-unsigned.apk}.apk" "${apk%-unsigned.apk}-aligned.apk"
+            "$bt/apksigner" verify --print-certs "${apk%-unsigned.apk}.apk"
+          done
+          for aab in $(find "$out/bundle" -name '*.aab'); do
+            jarsigner -keystore "$RUNNER_TEMP/release.jks" -storepass:env KS_PASS -keypass:env KEY_PASS "$aab" "$KEY_ALIAS"
+          done
+          rm -f "$RUNNER_TEMP/release.jks"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: |
+            ${{ env.APP_DIR }}/gen/android/app/build/outputs/apk/**/*.apk
+            ${{ env.APP_DIR }}/gen/android/app/build/outputs/bundle/**/*.aab
+            !${{ env.APP_DIR }}/gen/android/app/build/outputs/apk/**/*-unsigned.apk
+            !${{ env.APP_DIR }}/gen/android/app/build/outputs/apk/**/*-aligned.apk
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish to R2
+    needs: [meta, desktop, android]
+    # Runs when publish is ticked and every requested build succeeded (skipped builds are fine).
+    if: ${{ inputs.publish && !cancelled() && !contains(needs.*.result, 'failure') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          pattern: "{desktop-*,android}"
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Upload versioned artefacts, then move the channel manifests
+        # `cargo xtask release-publish` is specified in notes/18 ("Publishing") and not written yet: versioned files
+        # first (immutable cache headers), latest.json last (short cache), so a client never sees a manifest that
+        # points at missing files.
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_RELEASES_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_RELEASES_SECRET_ACCESS_KEY }}
+        run: >
+          cargo xtask release-publish
+          --version "${{ needs.meta.outputs.version }}"
+          --channel "${{ inputs.channel }}"
+          --dir dist

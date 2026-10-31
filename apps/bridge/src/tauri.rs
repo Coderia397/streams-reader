@@ -47,7 +47,10 @@ fn tauri_part(name: &str) -> Result<JsValue, BridgeError> {
         .ok()
         .filter(JsValue::is_object)
         .ok_or_else(|| BridgeError::unsupported("window.__TAURI__ (set app.withGlobalTauri)"))?;
-    Reflect::get(&tauri, &JsValue::from_str(name)).ok().filter(JsValue::is_object).ok_or_else(|| BridgeError::unsupported(name))
+    Reflect::get(&tauri, &JsValue::from_str(name))
+        .ok()
+        .filter(JsValue::is_object)
+        .ok_or_else(|| BridgeError::unsupported(name))
 }
 
 fn method(obj: &JsValue, name: &str) -> Result<Function, BridgeError> {

@@ -258,13 +258,24 @@ pub struct Snapshot {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", rename_all_fields = "camelCase", tag = "type")]
 pub enum PlayerEvent {
-    Snapshot { snapshot: Snapshot },
-    SegmentChanged { segment: u32 },
+    Snapshot {
+        snapshot: Snapshot,
+    },
+    SegmentChanged {
+        segment: u32,
+    },
     /// Audio for a segment is on disk; carries what the UI needs for highlighting.
-    SegmentReady { segment: u32, duration_ms: u32, words: Vec<WordTiming> },
+    SegmentReady {
+        segment: u32,
+        duration_ms: u32,
+        words: Vec<WordTiming>,
+    },
     Ended,
     SleepFired,
-    Error { message: String, retryable: bool },
+    Error {
+        message: String,
+        retryable: bool,
+    },
 }
 
 // ------------------------------------------------------------------------------------------------ downloads
@@ -290,9 +301,13 @@ pub enum DownloadState {
     /// Fetching rendered audio.
     Fetching,
     /// Waiting for a network or a sign-in.
-    Paused { reason: String },
+    Paused {
+        reason: String,
+    },
     Done,
-    Failed { message: String },
+    Failed {
+        message: String,
+    },
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -375,12 +390,19 @@ pub struct UpdateInfo {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", rename_all_fields = "camelCase", tag = "kind")]
 pub enum UpdateEvent {
-    Progress { downloaded: u64, total: Option<u64> },
+    Progress {
+        downloaded: u64,
+        total: Option<u64>,
+    },
     /// Desktop: installed, the app restarts next.
     Installed,
     /// Android: the system needs the user (first time "install unknown apps", or a confirmation dialog).
-    NeedsUserAction { message: String },
-    Failed { message: String },
+    NeedsUserAction {
+        message: String,
+    },
+    Failed {
+        message: String,
+    },
 }
 
 // ------------------------------------------------------------------------------------------------ open / share

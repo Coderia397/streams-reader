@@ -4,6 +4,13 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-30
 
+### D27–D31. Native apps architecture
+- Recorded in [18-native-apps-architecture.md](18-native-apps-architecture.md): `apps/` is its own Cargo workspace (D27); the Rust core owns playback, render-ahead, downloads, session and updates while the webview only displays (D28); Sonic for pitch-preserving speed on desktop, signalsmith as fallback (D29); Android plays local files fed ≥ 3 min ahead (D30); release artefacts in R2 bucket `streams-reader-releases`, one minisign updater key (D31). Accepted by the assistant 2026-10-31.
+
+### D32. On-device Standard voice: Kokoro fp32 ONNX with misaki-rs and a BART fallback, no espeak
+- Decision: native apps render Kokoro locally with `onnx-community/Kokoro-82M-v1.0-ONNX-timestamped` (fp32; int8 measured slower on this Mac), `ort`, `misaki-rs` 0.8.0 (MIT) for G2P with the Apache-2.0 BART model for unknown words; espeak-ng is excluded (GPL-3.0). The Space switches its unknown-word fallback to the same BART model so device and server pronounce alike (this re-keys the Kokoro cache once). Android renders ahead and uses the server for live playback until the Pixel 8 is measured. Evidence: [19-on-device-tts.md](19-on-device-tts.md).
+- Decided by: assistant on the owner's delegation, 2026-10-31.
+
 ### D25. The repository is public
 - Decision: `Coderia397/streams-reader` made public on 2026-10-30 (the landing page promises open source; public repos get unlimited free CI minutes incl. macOS). Before publishing, a scan of every commit on every branch for HF/Cloudflare/GitHub/Supabase/Brevo/Resend/Kaggle tokens, service-role JWTs, passphrases, session keys, R2 secrets and private keys found nothing; the owner's email is not in tracked files. README added; topics set.
 - Decided by: owner ("you can make it public"; reaffirmed with permission to use the GitHub admin token for account work).

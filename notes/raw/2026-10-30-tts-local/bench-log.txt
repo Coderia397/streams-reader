@@ -1,0 +1,47 @@
+# run 1: bench.py, int8 timestamped, misaki 0.9.4 G2P, 2026-10-30 21:45 (load avg 10-33, other jobs running)
+21:45  up 8 days,  5:09, 1 user, load averages: 14.17 39.24 44.17
+misaki G2P init 1.7 s
+misaki phonemize 4 segments (942 chars): 59 ms
+  sample: ɪn twˈɛnti twˈɛnti sˈɪks ðə lˈIbɹˌɛɹi hˈɛld wˈʌn θˈWzᵊnd tˈu hˈʌndɹəd fˈɪfti bˈʊks, ænd dˈɑktəɹ smˈɪθ ɹˈɛd fˈɔɹTi tˈu ʌv ðˌɛm əlˈWd æt sˈɛvən❓ θˈɜɹTi pˌiˈɛm ˈɛv
+  tokens per segment: [222, 300, 306, 171]
+  [model_quantized_ts.onnx] outputs=['waveform', 'durations'] dur_sum*600=313200 samples=310200
+  word timings ms (segment 4): [('In', 358, 443), ('2026', 495, 1742), ('the', 1841, 1920), ('library', 1970, 2465), ('held', 2515, 2740), ('1,250', 2801, 4230), ('books', 4280, 4988), (',', 4988, 5069), ('and', 5129, 5205), ('Dr.', 5248, 5590), ('Smith', 5665, 6076), ('read', 6152, 6333)] ... last ('.', 10250, 10398) of 10375
+model_quantized_ts.onnx threads=1: load 1139 ms; first segment 27914 ms; 59.1 s audio in 111.25 s -> RTF 1.882 (0.5x realtime); peak RSS 876 MB; ['12.9s/27914ms', '18.2s/32147ms', '17.6s/31772ms', '10.4s/19415ms']
+model_quantized_ts.onnx threads=2: load 1006 ms; first segment 18817 ms; 59.1 s audio in 96.83 s -> RTF 1.638 (0.6x realtime); peak RSS 1438 MB; ['12.9s/18817ms', '18.2s/36947ms', '17.6s/28328ms', '10.4s/12739ms']
+model_quantized_ts.onnx threads=4: load 1063 ms; first segment 27953 ms; 59.1 s audio in 118.06 s -> RTF 1.998 (0.5x realtime); peak RSS 1475 MB; ['12.9s/27953ms', '18.2s/53524ms', '17.6s/24119ms', '10.4s/12468ms']
+exit=143
+21:52  up 8 days,  5:15, 1 user, load averages: 34.69 29.08 36.37
+
+# run 2: save_ids.py + bench_ids.py int8, threads 1,6, 2026-10-30 21:52 (load avg 32 -> 6)
+21:52  up 8 days,  5:15, 1 user, load averages: 32.16 28.64 36.17
+222 ids; durations integral: False sum*600: 312600 samples: 310800 rerun same wave/dur: True True max diff 0.0
+300 ids; durations integral: False sum*600: 440400 samples: 437400 rerun same wave/dur: True True max diff 0.0
+306 ids; durations integral: False sum*600: 424800 samples: 421800 rerun same wave/dur: True True max diff 0.0
+171 ids; durations integral: False sum*600: 249600 samples: 249000 rerun same wave/dur: True True max diff 0.0
+  words seg3 (fp from this model): [('In', 0.275, 0.35), ('2026', 0.35, 1.438), ('the', 1.438, 1.538), ('library', 1.538, 2.0), ('held', 2.0, 2.225), ('1,250', 2.225, 3.362), ('books', 3.362, 4.025), (',', 4.025, 4.125)] ... last ('.', 8.075, 8.2) audio 10.375
+  word start diff vs int8: max 0 ms, mean 0.0 ms over 22 words
+model_quantized_ts.onnx threads=1: load 1496 ms; 59.1 s audio in 124.80 s -> RTF 2.111 (0.5x realtime); CPU 109.4 s = 1.85 CPU-s per audio-s; peak RSS 717 MB; ['12.9s/31493ms', '18.2s/42413ms', '17.6s/33050ms', '10.4s/17846ms']
+   seg0: 0/224 token durations differ, total frames 521 vs int8 521
+   seg1: 0/302 token durations differ, total frames 734 vs int8 734
+   seg2: 0/308 token durations differ, total frames 708 vs int8 708
+   seg3: 0/173 token durations differ, total frames 416 vs int8 416
+model_quantized_ts.onnx threads=6: load 1032 ms; 59.1 s audio in 55.12 s -> RTF 0.932 (1.1x realtime); CPU 142.6 s = 2.41 CPU-s per audio-s; peak RSS 1252 MB; ['12.9s/14178ms', '18.2s/16294ms', '17.6s/15539ms', '10.4s/9106ms']
+21:58  up 8 days,  5:21, 1 user, load averages: 6.26 16.26 27.80
+
+[exited with code 0]
+
+# run 3: bench_ids.py fp32 timestamped, threads 1,2,4,6, 2026-10-31 00:46 (load avg 4.6)
+ 0:46  up 8 days,  8:10, 1 user, load averages: 4.60 3.62 2.68
+  words seg3 (fp from this model): [('In', 0.275, 0.375), ('2026', 0.375, 1.413), ('the', 1.413, 1.525), ('library', 1.525, 2.0), ('held', 2.0, 2.25), ('1,250', 2.25, 3.4), ('books', 3.4, 4.075), (',', 4.075, 4.175)] ... last ('.', 8.3, 8.425) audio 10.475
+  word start diff vs int8: max 225 ms, mean 76.7 ms over 22 words
+model_ts.onnx threads=1: load 2378 ms; 59.1 s audio in 82.96 s -> RTF 1.404 (0.7x realtime); CPU 75.4 s = 1.28 CPU-s per audio-s; peak RSS 978 MB; ['12.9s/17952ms', '18.2s/26333ms', '17.5s/20562ms', '10.5s/18110ms']
+   seg0: 224/224 token durations differ, total frames 520 vs int8 521
+   seg1: 302/302 token durations differ, total frames 732 vs int8 734
+   seg2: 308/308 token durations differ, total frames 705 vs int8 708
+   seg3: 173/173 token durations differ, total frames 418 vs int8 416
+model_ts.onnx threads=2: load 1758 ms; 59.1 s audio in 56.37 s -> RTF 0.954 (1.0x realtime); CPU 90.4 s = 1.53 CPU-s per audio-s; peak RSS 1373 MB; ['12.9s/17010ms', '18.2s/17320ms', '17.5s/14337ms', '10.5s/7705ms']
+model_ts.onnx threads=4: load 1336 ms; 59.1 s audio in 28.25 s -> RTF 0.478 (2.1x realtime); CPU 90.4 s = 1.53 CPU-s per audio-s; peak RSS 1427 MB; ['12.9s/6649ms', '18.2s/9030ms', '17.5s/7724ms', '10.5s/4843ms']
+model_ts.onnx threads=6: load 1248 ms; 59.1 s audio in 26.04 s -> RTF 0.441 (2.3x realtime); CPU 122.7 s = 2.08 CPU-s per audio-s; peak RSS 1502 MB; ['12.9s/5179ms', '18.2s/8472ms', '17.5s/7786ms', '10.5s/4603ms']
+ 0:50  up 8 days,  8:13, 1 user, load averages: 11.85 8.35 4.93
+
+[exited with code 0]
