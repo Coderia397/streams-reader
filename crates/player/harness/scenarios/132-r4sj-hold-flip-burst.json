@@ -1,0 +1,62 @@
+{
+ "name": "132-r4sj-hold-flip-burst",
+ "description": "Segment 5 renders in 4 s. Playing 4 (9 s): +5, +5 (past 4's end: hold on 5), -5 (back in 4), +5 (hold again) 40 ms apart, then settle and play on.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "5": 4000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    4
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 600
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "observe": 2000
+  }
+ ]
+}

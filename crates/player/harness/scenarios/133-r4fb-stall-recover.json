@@ -1,0 +1,60 @@
+{
+ "name": "133-r4fb-stall-recover",
+ "description": "fallback: segment 4 takes 6 s; the element finishes 3 (Buffering) and plays 4 from its start once it arrives.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0,
+  "delays": {
+   "4": 6000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 2500
+  },
+  {
+   "assert": {
+    "state": "Buffering",
+    "check": "fb_stall"
+   }
+  },
+  {
+   "wait": 4500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "max_pos_ms": 2500,
+    "check": "fb_stall"
+   }
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

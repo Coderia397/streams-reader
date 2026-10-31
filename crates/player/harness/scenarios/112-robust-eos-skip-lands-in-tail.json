@@ -1,0 +1,70 @@
+{
+ "name": "112-robust-eos-skip-lands-in-tail",
+ "description": "Robustness: sleep at end of section is on, then a skip lands in the closing silence of segment 0 (2.71 s heading, ends a section): 2.2 s, past its 0.9 s stop point. The section still ends 0.5 s later, so the player must stop there (SleepFired, parked at the start of 1), not play on through segments 1 to 15.",
+ "config": {
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "set_sleep",
+   "args": [
+    0,
+    true
+   ]
+  },
+  {
+   "do": "pause"
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -5000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    2200
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "play"
+  },
+  {
+   "until": "SleepFired",
+   "timeout": 4000
+  },
+  {
+   "wait": 500
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 1,
+    "max_pos_ms": 300,
+    "check": "eos_tail"
+   }
+  }
+ ],
+ "expect_events": {
+  "SleepFired": 1
+ }
+}

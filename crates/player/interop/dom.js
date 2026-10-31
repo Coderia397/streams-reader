@@ -45,9 +45,17 @@ export function playMedia(media) {
 }
 
 /**
+ * The source switch in progress per element (fallback path): at most one, so a superseded switch can never seek or
+ * start the element once a newer source loads.
+ * @type {WeakMap<HTMLMediaElement, {offset: number, autoplay: boolean, abort: () => void}>}
+ */
+const pendingSwitches = new WeakMap();
+
+/**
  * Fallback path: loads `url`, seeks to `offset` seconds once metadata is known (setting currentTime earlier is
  * ignored by some engines), then plays when `autoplay` is set. Resolves like {@link playMedia}, with "" when not
- * asked to play.
+ * asked to play. A newer switchSource, cancelSwitch or detachMedia on the element resolves this one with
+ * "AbortError" and drops its seek and play.
  * @param {HTMLMediaElement} media
  * @param {string} url
  * @param {number} offset
@@ -55,20 +63,78 @@ export function playMedia(media) {
  * @returns {Promise<string>}
  */
 export function switchSource(media, url, offset, autoplay) {
+  cancelSwitch(media);
   return new Promise((resolve) => {
-    const ready = () => {
+    const done = () => {
+      media.removeEventListener('loadedmetadata', ready);
       media.removeEventListener('error', failed);
-      if (offset > 0) media.currentTime = offset;
-      resolve(autoplay ? playMedia(media) : '');
+      if (pendingSwitches.get(media) === entry) pendingSwitches.delete(media);
+    };
+    const ready = () => {
+      done();
+      if (entry.offset > 0) media.currentTime = entry.offset;
+      resolve(entry.autoplay ? playMedia(media) : '');
     };
     const failed = () => {
-      media.removeEventListener('loadedmetadata', ready);
+      done();
       resolve('MediaError');
     };
-    media.addEventListener('loadedmetadata', ready, { once: true });
-    media.addEventListener('error', failed, { once: true });
+    const entry = {
+      offset,
+      autoplay,
+      abort: () => {
+        done();
+        resolve('AbortError');
+      },
+    };
+    pendingSwitches.set(media, entry);
+    media.addEventListener('loadedmetadata', ready);
+    media.addEventListener('error', failed);
     media.src = url;
   });
+}
+
+/**
+ * Abandons the element's pending source switch, if any.
+ * @param {HTMLMediaElement} media
+ */
+export function cancelSwitch(media) {
+  const entry = pendingSwitches.get(media);
+  if (entry) entry.abort();
+}
+
+/**
+ * Offset in seconds a pending source switch will seek to, or NaN when none is pending (the element's currentTime is
+ * then the playhead).
+ * @param {HTMLMediaElement} media
+ * @returns {number}
+ */
+export function pendingOffset(media) {
+  const entry = pendingSwitches.get(media);
+  return entry ? entry.offset : NaN;
+}
+
+/**
+ * Moves the seek of a pending source switch to `offset` seconds. False when no switch is pending.
+ * @param {HTMLMediaElement} media
+ * @param {number} offset
+ * @returns {boolean}
+ */
+export function retargetSwitch(media, offset) {
+  const entry = pendingSwitches.get(media);
+  if (!entry) return false;
+  entry.offset = offset;
+  return true;
+}
+
+/**
+ * Whether a pending source switch starts playback when it loads (a pause while it loads turns that off).
+ * @param {HTMLMediaElement} media
+ * @param {boolean} autoplay
+ */
+export function setSwitchAutoplay(media, autoplay) {
+  const entry = pendingSwitches.get(media);
+  if (entry) entry.autoplay = autoplay;
 }
 
 /**
@@ -76,6 +142,7 @@ export function switchSource(media, url, offset, autoplay) {
  * @param {HTMLMediaElement} media
  */
 export function detachMedia(media) {
+  cancelSwitch(media);
   media.removeAttribute('src');
   media.load();
 }

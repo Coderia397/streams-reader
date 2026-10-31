@@ -1,0 +1,51 @@
+{
+ "name": "144-r4sj-far-skip-back-unmeasured",
+ "description": "600 ms latency. Load 20 and play 2 s, then -45 s: crosses 19, 18, 17 (unmeasured) and lands in 16/17; then +45 s back.",
+ "config": {
+  "delay_ms": 600
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    20
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 2000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -45000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 20000
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    45000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 20000
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

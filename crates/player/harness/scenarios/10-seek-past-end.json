@@ -1,0 +1,13 @@
+{
+ "name": "10-seek-past-end",
+ "description": "+15 s with less than 15 s left lands on the end (Ended once); -15 s from Ended goes back into the previous segment.",
+ "config": {"delay_ms": 0},
+ "expect_events": {"Ended": 1},
+ "steps": [
+  {"do": "load", "args": [25]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [15000]}, {"settle": true}, {"wait": 500},
+  {"assert": {"state": "Ended"}},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true}, {"wait": 300},
+  {"do": "play"}, {"settle": true}, {"observe": 1000}
+ ]
+}

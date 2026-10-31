@@ -1,0 +1,188 @@
+{
+ "name": "141-r4sj-skip-burst-to-document-end",
+ "description": "300 ms latency. Playing 0: twenty-two +15 s presses 30 ms apart run past every segment fetched so far and past the end of the document (330 s > 318.9 s): Ended.",
+ "config": {
+  "delay_ms": 300
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 30
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 25000
+  },
+  {
+   "wait": 500
+  }
+ ],
+ "expect_events": {
+  "Ended": 1
+ }
+}

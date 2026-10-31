@@ -1,0 +1,54 @@
+{
+ "name": "110-robust-next-into-failing-inflight",
+ "description": "Robustness: segment 4 takes 2 s and fails once (retry after 2 s). While 3 plays, next jumps to 4, the build's in-flight fetch; the player waits through the failure and its retry (Error meanwhile) and lands at the start of 4, playing, about 6 s after load.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "4": 2000
+  }
+ },
+ "allow_errors": 1,
+ "steps": [
+  {
+   "configure": {
+    "fail": {
+     "4": 1
+    }
+   }
+  },
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "next"
+  },
+  {
+   "wait": 7000
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "check": "fail_next"
+   }
+  }
+ ]
+}

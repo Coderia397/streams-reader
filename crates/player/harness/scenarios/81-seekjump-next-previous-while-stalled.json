@@ -1,0 +1,10 @@
+{
+ "name": "81-seekjump-next-previous-while-stalled",
+ "description": "Segment 17 takes 9 s to render. Stalled at the end of 16: previous goes to the start of 16 (the UI shows 17), play into the stall again, then next goes to 18.",
+ "config": {"delay_ms": 0, "delays": {"17": 9000}},
+ "steps": [
+  {"do": "load", "args": [16]}, {"do": "play"}, {"settle": true}, {"wait": 3800},
+  {"do": "previous"}, {"settle": true}, {"observe": 1000}, {"wait": 2600},
+  {"do": "next"}, {"settle": true, "timeout": 15000}, {"observe": 1500}
+ ]
+}

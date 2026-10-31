@@ -1,0 +1,12 @@
+{
+ "name": "09-end-of-document",
+ "description": "Plays the last two segments at 2x to the natural end: Ended and the element's ended fire once.",
+ "config": {"delay_ms": 0},
+ "expect_events": {"Ended": 1, "media_ended": 1},
+ "steps": [
+  {"do": "load", "args": [24]}, {"do": "set_rate", "args": [2.0]}, {"do": "play"}, {"settle": true}, {"wait": 500},
+  {"do": "seek_by", "args": [15000]}, {"settle": true}, {"observe": 1500},
+  {"until": "Ended", "timeout": 12000}, {"wait": 1000},
+  {"assert": {"state": "Ended"}}
+ ]
+}

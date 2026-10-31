@@ -1,0 +1,103 @@
+{
+ "name": "1319-r4trackfb-track-rapid-3x",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 72-track-rapid-3x: 3x: bursts of in-buffer skips, next and previous 60-80 ms apart, then word tracking at speed.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "set_rate",
+   "args": [
+    3.0
+   ]
+  },
+  {
+   "do": "load",
+   "args": [
+    1
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ],
+   "gap": 60
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -3000
+   ],
+   "gap": 60
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    8000
+   ],
+   "gap": 60
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -2000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "next",
+   "gap": 70
+  },
+  {
+   "do": "next",
+   "gap": 70
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    4000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "previous",
+   "gap": 80
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

@@ -1,0 +1,44 @@
+{
+ "name": "47-robust-fail-while-buffering",
+ "description": "Robustness: a jump rebuild places segment 22 and the fetch of 23 fails once right away, while the element is still Buffering with all of 22 buffered. Playback must not report Error.",
+ "config": {
+  "delay_ms": 0
+ },
+ "allow_errors": 1,
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "configure": {
+    "fail": {
+     "23": 1
+    }
+   }
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    22
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  }
+ ]
+}

@@ -30,3 +30,11 @@ web-sys = { version = "0.3", features = [
 
 [lints]
 workspace = true
+
+# Browser test harness: a wasm page driven over the DevTools protocol by harness/run.py (see harness/README.md).
+# Built as an example so it shares the workspace lockfile and target directory; on the host it compiles to nothing.
+[[example]]
+name = "harness"
+path = "harness/src/lib.rs"
+crate-type = ["cdylib"]
+test = false

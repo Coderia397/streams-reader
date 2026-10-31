@@ -1,0 +1,41 @@
+{
+ "name": "146-r4sj-stall-tail-skip-forward-small",
+ "description": "Segment 5 renders in 7 s. Playing 4 to its stall point (Chrome stops short of the end); +2 s while stalled holds on 5 and lands 5@~2 s when it arrives.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "5": 7000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    4
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 9600
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    2000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

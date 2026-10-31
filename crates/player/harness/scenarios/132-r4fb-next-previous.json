@@ -1,0 +1,59 @@
+{
+ "name": "132-r4fb-next-previous",
+ "description": "fallback: next, previous (restart), previous (to the one before) land on segment starts.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    5
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1000
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 3500
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 5,
+    "check": "fb_prevnext"
+   }
+  }
+ ]
+}

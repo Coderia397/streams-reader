@@ -12,12 +12,15 @@ use super::js::{self, MseSession};
 use super::{Outbox, Shared, State};
 use crate::buffer::{self, Eviction, FetchStep, KEEP_BEHIND_S};
 use crate::status::Input;
+use crate::timeline::secs_to_ms;
 use crate::{PlayerError, PlayerEvent, PlayerState, Track};
 
 /// How often a loop with a full buffer checks again.
 const WAIT_POLL_MS: u32 = 1_000;
 /// Wait before retrying an append that hit the quota with nothing old enough to evict.
 const QUOTA_RETRY_MS: u32 = 2_000;
+/// How often a waiting loop checks whether a command asked it to fetch now (`State::wake_fetch`).
+const WAKE_POLL_MS: u32 = 250;
 
 /// Opens a MediaSource on the element, then runs the fetch loop on it.
 pub(super) async fn open_and_run(weak: Weak<Shared>, generation: u64, first: u32) {
@@ -53,6 +56,8 @@ pub(super) async fn open_and_run(weak: Weak<Shared>, generation: u64, first: u32
 pub(super) async fn run(weak: Weak<Shared>, generation: u64, first: u32) {
     let mut next = first;
     let mut attempt = 0u32;
+    // A run of failures is reported once, even when play restarts its backoff.
+    let mut failing = false;
     loop {
         let Some(shared) = weak.upgrade() else {
             return;
@@ -67,7 +72,9 @@ pub(super) async fn run(weak: Weak<Shared>, generation: u64, first: u32) {
             }
             FetchStep::Wait => {
                 drop(shared);
-                js::delay(WAIT_POLL_MS).await;
+                if nap(&weak, generation, WAIT_POLL_MS).await == Nap::Replaced {
+                    return;
+                }
             }
             FetchStep::Fetch(segment) => {
                 let request = (shared.provider)(segment);
@@ -83,6 +90,7 @@ pub(super) async fn run(weak: Weak<Shared>, generation: u64, first: u32) {
                     Ok(track) => {
                         drop(shared);
                         attempt = 0;
+                        failing = false;
                         if !append(&weak, generation, segment, track).await {
                             return;
                         }
@@ -91,19 +99,55 @@ pub(super) async fn run(weak: Weak<Shared>, generation: u64, first: u32) {
                     Err(err) => {
                         // Load errors are transient (render still running, network gap); the rest are final.
                         let retry = matches!(err, PlayerError::Load(_));
-                        shared.fetch_failed(generation, format!("segment {segment}: {err}"), attempt == 0);
+                        shared.fetch_failed(generation, format!("segment {segment}: {err}"), !failing, !retry);
+                        failing = true;
                         drop(shared);
                         if !retry {
                             return;
                         }
                         let wait = buffer::retry_delay_ms(attempt);
                         attempt = attempt.saturating_add(1);
-                        js::delay(wait).await;
+                        match nap(&weak, generation, wait).await {
+                            Nap::Replaced => return,
+                            // Play pressed on the failure: retry now and start the backoff over.
+                            Nap::Woken => attempt = 0,
+                            Nap::Elapsed => {}
+                        }
                     }
                 }
             }
         }
     }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Nap {
+    Elapsed,
+    /// A command set `wake_fetch` for this build.
+    Woken,
+    /// The build was replaced or the player dropped.
+    Replaced,
+}
+
+/// Waits up to `ms`, ending early when a command asks the loop of `generation` to fetch now.
+async fn nap(weak: &Weak<Shared>, generation: u64, ms: u32) -> Nap {
+    let mut left = ms;
+    while left > 0 {
+        let step = left.min(WAKE_POLL_MS);
+        js::delay(step).await;
+        left -= step;
+        let Some(shared) = weak.upgrade() else {
+            return Nap::Replaced;
+        };
+        let mut st = shared.st.borrow_mut();
+        if st.generation != generation {
+            return Nap::Replaced;
+        }
+        if std::mem::take(&mut st.wake_fetch) {
+            return Nap::Woken;
+        }
+    }
+    Nap::Elapsed
 }
 
 /// Appends one track. False when the loop should stop (build replaced or a fatal error).
@@ -197,12 +241,14 @@ impl Shared {
     }
 
     /// A provider error. Reported once per run of failures; the state only turns to Error when nothing is left to
-    /// play, otherwise playback continues on the buffer and `waiting` reports it if the fetch never recovers.
-    fn fetch_failed(&self, generation: u64, message: String, first: bool) {
+    /// play, otherwise playback continues on the buffer and `waiting` reports it if the fetch never recovers. `last`:
+    /// the error is final and the loop stops, so no later command may wait on this build's fetch.
+    fn fetch_failed(&self, generation: u64, message: String, first: bool, last: bool) {
         self.update(|st, out| {
             if st.generation != generation {
                 return;
             }
+            st.fetch_stopped |= last;
             if first {
                 out.push(PlayerEvent::Error(message.clone()));
             }
@@ -265,19 +311,17 @@ impl Shared {
         let Some(index) = st.timeline.entries().len().checked_sub(1) else {
             return;
         };
-        if let Some((target, offset)) = st.target
-            && target == segment
-        {
-            let time_s = st.timeline.entries().get(index).map_or(0.0, |entry| offset.resolve(entry));
-            st.target = None;
-            self.set_time(st, time_s);
-            st.last_media_s = None;
-            self.apply(st, out, Input::Ready);
-            if st.want_play && self.use_mse {
-                // The fallback path starts playback as part of loading the blob in set_time.
-                self.start_playback(st);
+        // Kept across rebuilds, so a later skip back across this segment resolves without fetching it again.
+        if let Some(entry) = st.timeline.last() {
+            st.lengths.record(entry.segment, secs_to_ms(entry.duration_s()));
+            st.words.insert(entry.segment, entry.words.clone());
+        }
+        if st.target.is_some() {
+            self.advance_target(st, out);
+            // Still loading (the target is in a later segment): a fetch that recovered puts it back to Loading.
+            if st.target.is_some() && recovered && matches!(st.phase, PlayerState::Error(_)) {
+                self.apply(st, out, Input::Build);
             }
-            self.update_position(st);
             return;
         }
         if recovered && matches!(st.phase, PlayerState::Error(_)) {

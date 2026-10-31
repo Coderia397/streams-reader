@@ -1,0 +1,44 @@
+{
+ "name": "130-r4fb-playback-crossing",
+ "description": "fallback: plays 3 into 4 across the blob switch; tracking and words follow the element.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    14000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 5000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "check": "fb_cross"
+   }
+  }
+ ]
+}

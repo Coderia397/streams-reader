@@ -1,0 +1,13 @@
+{
+ "name": "40-robust-starve-recover",
+ "description": "Robustness: segment 3 fails three times (retries after 2, 4, 8 s). The playhead runs out at the end of segment 2 (Error), then the retry fills 3 in and playback resumes on its own at the start of 3.",
+ "config": {"delay_ms": 0, "fail": {"3": 3}},
+ "allow_errors": 1,
+ "steps": [
+  {"do": "load", "args": [2]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [14500]}, {"settle": true}, {"observe": 1500},
+  {"wait": 14000},
+  {"assert": {"state": "Playing", "segment": 3, "check": "recover"}},
+  {"observe": 1500}
+ ]
+}

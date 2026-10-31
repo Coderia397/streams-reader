@@ -1,0 +1,86 @@
+{
+ "name": "60-robust-section-park-play-early",
+ "description": "Robustness: sleep at end of section fires while the next section's first segment (16) is still rendering (20 s), so the playhead parks on the end of the buffer. Play pressed before 16 arrives must wait there (Buffering at 16), not restart the build at the start of 15.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "16": 20000
+  }
+ },
+ "expect_events": {
+  "SleepFired": 1,
+  "Ended": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    15
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "set_sleep",
+   "args": [
+    0,
+    true
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    14000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "until": "SleepFired",
+   "timeout": 8000
+  },
+  {
+   "wait": 600
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 16,
+    "max_pos_ms": 300,
+    "check": "park"
+   }
+  },
+  {
+   "do": "play"
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "assert": {
+    "state": "Buffering",
+    "segment": 16,
+    "max_pos_ms": 300,
+    "check": "park_play"
+   }
+  },
+  {
+   "wait": 15000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 16,
+    "check": "park_resume"
+   }
+  },
+  {
+   "observe": 1000
+  }
+ ]
+}

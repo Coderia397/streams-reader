@@ -1,0 +1,14 @@
+{
+ "name": "50-media-session-skip-setting",
+ "description": "The app's skip setting (back 10 s, forward 30 s) drives the lock-screen seek buttons that carry no offset; an offset the action carries still wins.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [3]}, {"do": "play"}, {"settle": true}, {"wait": 500},
+  {"do": "set_skip", "args": [10000, 30000]},
+  {"action": "seekforward", "details": {}}, {"settle": true}, {"observe": 800},
+  {"action": "seekbackward", "details": {}}, {"settle": true}, {"observe": 800},
+  {"action": "seekforward", "details": {"seekOffset": 5}}, {"settle": true}, {"observe": 800},
+  {"do": "set_skip", "args": [0, 0]},
+  {"action": "seekbackward", "details": {}}, {"settle": true}, {"observe": 800}
+ ]
+}

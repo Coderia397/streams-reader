@@ -26,7 +26,7 @@ pub(super) struct BlobQueue {
     pub urls: Vec<Option<String>>,
     /// Timeline index of the entry the element holds (or is about to).
     pub current: usize,
-    /// The element has been given `current`.
+    /// The element has been given `current` (its switch may still be loading: see `js::pending_offset`).
     pub loaded: bool,
     /// The element finished `current` before the next entry arrived.
     pub stalled: bool,
@@ -50,8 +50,13 @@ impl Backend {
     pub fn current_time(&self, audio: &HtmlMediaElement, timeline: &Timeline) -> f64 {
         match self {
             Backend::Blob(queue) => match timeline.entries().get(queue.current) {
-                // Clamped: the element's real duration can exceed the reported one by a frame or two.
-                Some(entry) if queue.loaded => entry.start_s + audio.current_time().clamp(0.0, entry.duration_s()),
+                Some(entry) if queue.loaded => {
+                    // While the blob loads the element's clock reads 0; the playhead is where the switch will seek.
+                    let pending = js::pending_offset(audio);
+                    let local = if pending.is_nan() { audio.current_time() } else { pending };
+                    // Clamped: the element's real duration can exceed the reported one by a frame or two.
+                    entry.start_s + local.clamp(0.0, entry.duration_s())
+                }
                 Some(entry) => entry.start_s,
                 None => 0.0,
             },

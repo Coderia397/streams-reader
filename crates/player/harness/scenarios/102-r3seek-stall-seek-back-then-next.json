@@ -1,0 +1,10 @@
+{
+ "name": "102-r3seek-stall-seek-back-then-next",
+ "description": "Segment 5 renders in 8 s: playback from 4 (9 s) stalls at its end. -3 s back into the buffer, then next to 5 (in flight, held), then +5 s while held.",
+ "config": {"delay_ms": 0, "delays": {"5": 8000}},
+ "steps": [
+  {"do": "load", "args": [4]}, {"do": "play"}, {"settle": true}, {"wait": 9800},
+  {"do": "seek_by", "args": [-3000]}, {"settle": true}, {"observe": 800},
+  {"do": "next", "gap": 100}, {"do": "seek_by", "args": [5000]}, {"settle": true, "timeout": 15000}, {"observe": 1000}
+ ]
+}

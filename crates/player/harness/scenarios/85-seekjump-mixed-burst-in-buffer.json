@@ -1,0 +1,12 @@
+{
+ "name": "85-seekjump-mixed-burst-in-buffer",
+ "description": "In the buffer: +15 s, previous, next, -15 s, next pressed 50 ms apart; then next, next, previous, previous.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [2]}, {"do": "play"}, {"settle": true}, {"wait": 4000},
+  {"do": "seek_by", "args": [15000], "gap": 50}, {"do": "previous", "gap": 50}, {"do": "next", "gap": 50},
+  {"do": "seek_by", "args": [-15000], "gap": 50}, {"do": "next"}, {"settle": true}, {"observe": 1000}, {"wait": 3200},
+  {"do": "next", "gap": 50}, {"do": "next", "gap": 50}, {"do": "previous", "gap": 50}, {"do": "previous"},
+  {"settle": true}, {"observe": 1000}
+ ]
+}

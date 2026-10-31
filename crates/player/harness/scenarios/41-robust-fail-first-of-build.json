@@ -1,0 +1,13 @@
+{
+ "name": "41-robust-fail-first-of-build",
+ "description": "Robustness: the first segment of a jump's rebuild (24) fails once; the build retries after 2 s and lands on 24 playing. Then the first segment of a rebuild back to 5 fails once and a +5 s skip is pressed during the retry wait: it must land 5 s into 5.",
+ "config": {"delay_ms": 0},
+ "allow_errors": 2,
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true}, {"wait": 800},
+  {"configure": {"fail": {"24": 1, "5": 1}}},
+  {"do": "jump_to", "args": [24]}, {"settle": true, "timeout": 15000}, {"observe": 1500},
+  {"do": "jump_to", "args": [5]}, {"wait": 600},
+  {"do": "seek_by", "args": [5000]}, {"settle": true, "timeout": 15000}, {"observe": 1500}
+ ]
+}

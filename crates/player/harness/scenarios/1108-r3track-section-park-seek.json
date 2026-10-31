@@ -1,0 +1,17 @@
+{
+ "name": "1108-r3track-section-park-seek",
+ "description": "Tracking lens: end-of-section sleep parks at 16; skip back 5 s while parked, check reported segment/word against the playhead, then lock-screen seekforward while paused and play.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [15]}, {"do": "play"}, {"settle": true},
+  {"do": "set_sleep", "args": [0, true]},
+  {"do": "seek_by", "args": [14000]}, {"settle": true},
+  {"until": "SleepFired", "timeout": 8000}, {"wait": 500},
+  {"assert": {"state": "Paused", "segment": 16, "check": "tracking"}},
+  {"do": "set_sleep", "args": [0, false]},
+  {"do": "seek_by", "args": [-5000]}, {"settle": true}, {"assert": {"state": "Paused", "segment": 15, "check": "tracking"}},
+  {"action": "seekforward", "details": {"seekOffset": 6}}, {"settle": true},
+  {"assert": {"state": "Paused", "segment": 16, "check": "tracking"}},
+  {"do": "play"}, {"settle": true}, {"observe": 2500}
+ ]
+}

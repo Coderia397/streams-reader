@@ -13,6 +13,7 @@
 #![cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 
 mod buffer;
+mod seat;
 mod seek;
 mod sleep;
 mod status;
@@ -27,6 +28,9 @@ use std::rc::Rc;
 
 use futures::future::LocalBoxFuture;
 use nolabs_core::proto::api::WordTiming;
+
+/// Playback rate range [`Player::set_rate`] accepts; the UI should offer the same range.
+pub use status::{MAX_RATE, MIN_RATE};
 
 #[cfg(not(target_arch = "wasm32"))]
 use native::Driver;
@@ -103,7 +107,8 @@ pub struct Snapshot {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PlayerEvent {
-    /// About 8 Hz while visible and playing, and on every state change, seek, rate or sleep change.
+    /// About 8 Hz while visible and playing, within a frame of each change of the spoken word, and on every state
+    /// change, seek, rate or sleep change.
     Snapshot(Snapshot),
     /// The playhead moved into another segment (also emitted at the start of a rebuild for its target segment).
     SegmentChanged(u32),
@@ -156,6 +161,11 @@ impl Player {
     }
     pub fn set_sleep(&self, sleep: Sleep) {
         self.driver.set_sleep(sleep);
+    }
+    /// Skip lengths for the lock screen, notification and headset seek buttons when they do not name their own (the
+    /// app's skip setting). 0 restores the default of 15 s.
+    pub fn set_skip(&self, back_ms: u32, forward_ms: u32) {
+        self.driver.set_skip(back_ms, forward_ms);
     }
     pub fn snapshot(&self) -> Snapshot {
         self.driver.snapshot()

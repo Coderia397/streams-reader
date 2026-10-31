@@ -1,0 +1,47 @@
+{
+ "name": "143-r4fb-seekto",
+ "description": "fallback: lock-screen seekto 10 s inside 3, then seekforward with no offset.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 800
+  },
+  {
+   "action": "seekto",
+   "details": {
+    "seekTime": 10
+   }
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "action": "seekforward",
+   "details": {}
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

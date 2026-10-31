@@ -1,0 +1,78 @@
+{
+ "name": "101-robust-skip-back-during-stall",
+ "description": "Robustness: segment 4 renders for 9 s; the playhead runs dry at the end of 3 (Buffering; Chrome stops about 70 ms short of the buffered end, so 3 is still the reported segment). A 10 s skip back lands in buffered audio of 3 and must play at once (Playing in 3); 4 arrives while 3 plays and follows without a gap.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "4": 9000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15500
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 2000
+  },
+  {
+   "assert": {
+    "state": "Buffering",
+    "segment": 3,
+    "check": "stall"
+   }
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -10000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 3,
+    "check": "stall_skip_back"
+   }
+  },
+  {
+   "wait": 8000
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "check": "stall_resume"
+   }
+  }
+ ]
+}

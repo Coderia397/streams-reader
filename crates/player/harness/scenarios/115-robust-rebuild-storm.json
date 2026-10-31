@@ -1,0 +1,92 @@
+{
+ "name": "115-robust-rebuild-storm",
+ "description": "Robustness: eight jumps to segments outside the buffer pressed 30 ms apart while the first segments take 400 ms each, then 11 s more of play. Lands on the last jump (24), no Error once the abandoned MediaSources time out.",
+ "config": {
+  "delay_ms": 400
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    20
+   ],
+   "gap": 30
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    5
+   ],
+   "gap": 30
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    17
+   ],
+   "gap": 30
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    9
+   ],
+   "gap": 30
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    22
+   ],
+   "gap": 30
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    12
+   ],
+   "gap": 30
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    2
+   ],
+   "gap": 30
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    24
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "wait": 9000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 24,
+    "check": "storm"
+   }
+  }
+ ]
+}

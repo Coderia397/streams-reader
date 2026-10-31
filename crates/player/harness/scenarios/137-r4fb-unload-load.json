@@ -1,0 +1,59 @@
+{
+ "name": "137-r4fb-unload-load",
+ "description": "fallback: unload while playing, load 10 and play: plays 10.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1000
+  },
+  {
+   "do": "unload"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "assert": {
+    "state": "Idle",
+    "check": "fb_unload"
+   }
+  },
+  {
+   "do": "load",
+   "args": [
+    10
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 10,
+    "check": "fb_unload"
+   }
+  }
+ ]
+}

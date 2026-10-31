@@ -1,0 +1,14 @@
+{
+ "name": "01-playback",
+ "description": "Plain playback from the start across two segment boundaries; tracking, words, gapless, lock screen.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [0]},
+  {"do": "play"},
+  {"settle": true},
+  {"observe": 6000},
+  {"do": "jump_to", "args": [16]},
+  {"settle": true},
+  {"observe": 4500}
+ ]
+}

@@ -1,0 +1,76 @@
+{
+ "name": "153-r4rob-pause-in-hold-fail-recover",
+ "description": "4 takes 1.5 s and fails once; +18 s from 3 holds on it, pause, the failure shows Error, the retry lands paused 18 s on; play plays.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "4": 1500
+  }
+ },
+ "allow_errors": 1,
+ "steps": [
+  {
+   "configure": {
+    "fail": {
+     "4": 1
+    }
+   }
+  },
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 200
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    18000
+   ]
+  },
+  {
+   "wait": 100
+  },
+  {
+   "do": "pause"
+  },
+  {
+   "wait": 5500
+  },
+  {
+   "settle": true
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 4,
+    "check": "hold_fail"
+   }
+  },
+  {
+   "do": "play"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "check": "hold_fail"
+   }
+  }
+ ]
+}

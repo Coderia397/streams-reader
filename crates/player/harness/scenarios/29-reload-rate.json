@@ -1,0 +1,13 @@
+{
+ "name": "29-reload-rate",
+ "description": "load over a playing document (voice change / reopen) at 2x: reported segment, words and lock screen of the new load, rate kept, toggle pause/resume tracking.",
+ "config": {"delay_ms": 400},
+ "steps": [
+  {"do": "load", "args": [5]}, {"do": "play"}, {"settle": true}, {"wait": 1000},
+  {"do": "set_rate", "args": [2.0]}, {"wait": 500},
+  {"do": "load", "args": [12]}, {"do": "play"}, {"settle": true}, {"observe": 2000},
+  {"do": "toggle"}, {"wait": 400}, {"assert": {"state": "Paused", "check": "tracking"}},
+  {"do": "toggle"}, {"wait": 400}, {"observe": 2000},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

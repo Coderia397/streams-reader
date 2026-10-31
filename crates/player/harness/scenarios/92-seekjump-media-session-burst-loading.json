@@ -1,0 +1,14 @@
+{
+ "name": "92-seekjump-media-session-burst-loading",
+ "description": "1.2 s render latency. Lock-screen seekforward x3, seekbackward (10 s), previoustrack while a jump to 18 loads, then nexttrack x2 and seekbackward in the buffer.",
+ "config": {"delay_ms": 1200},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true, "timeout": 15000}, {"wait": 300},
+  {"do": "jump_to", "args": [18]},
+  {"action": "seekforward", "details": {}, "gap": 60}, {"action": "seekforward", "details": {}, "gap": 60},
+  {"action": "seekforward", "details": {}, "gap": 60}, {"action": "seekbackward", "details": {"seekOffset": 10}, "gap": 60},
+  {"action": "previoustrack"}, {"settle": true, "timeout": 20000}, {"observe": 1000},
+  {"action": "nexttrack", "gap": 60}, {"action": "nexttrack"}, {"settle": true, "timeout": 15000},
+  {"action": "seekbackward", "details": {}}, {"settle": true, "timeout": 15000}, {"observe": 1000}
+ ]
+}

@@ -1,0 +1,12 @@
+{
+ "name": "82-seekjump-double-jump-same-target",
+ "description": "2.5 s render latency: jump_to(10) pressed twice 400 ms apart (double tap on a paragraph) while it loads; then jump_to(12), +5 s, and jump_to(12) again.",
+ "config": {"delay_ms": 2500},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true, "timeout": 15000}, {"wait": 300},
+  {"do": "jump_to", "args": [10]}, {"wait": 400}, {"do": "jump_to", "args": [10]}, {"settle": true, "timeout": 15000},
+  {"observe": 800},
+  {"do": "jump_to", "args": [12]}, {"do": "seek_by", "args": [5000]}, {"wait": 400}, {"do": "jump_to", "args": [12]},
+  {"settle": true, "timeout": 15000}, {"observe": 800}
+ ]
+}

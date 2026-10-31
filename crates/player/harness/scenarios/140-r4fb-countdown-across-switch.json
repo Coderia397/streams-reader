@@ -1,0 +1,54 @@
+{
+ "name": "140-r4fb-countdown-across-switch",
+ "description": "fallback: a 4 s countdown set 1.5 s before the end of 3 fires once in 4, paused.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "expect_events": {
+  "SleepFired": 1
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "set_sleep",
+   "args": [
+    4000,
+    false
+   ]
+  },
+  {
+   "wait": 6000
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 4,
+    "check": "fb_sleep"
+   }
+  }
+ ]
+}

@@ -1,0 +1,43 @@
+{
+ "name": "114-robust-double-load-open-timeout",
+ "description": "Robustness: two loads in the same task (the first MediaSource never opens), then play. The superseded open times out after 10 s; that must not surface as an Error or disturb playback of the second load.",
+ "config": {
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "load",
+   "args": [
+    10
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "wait": 9500
+  },
+  {
+   "observe": 1000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 10,
+    "check": "double_load"
+   }
+  }
+ ]
+}

@@ -1,0 +1,72 @@
+{
+ "name": "1332-r4trackfb-r3track-lockscreen-burst-3x",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 1109-r3track-lockscreen-burst-3x: Tracking lens: at 3x with a full buffer, three lock-screen seekforward 80 ms apart across 3/4/5, then two seekbackward; the last setPositionState must describe the playhead.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    3.0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1000
+  },
+  {
+   "action": "seekforward",
+   "details": {},
+   "gap": 80
+  },
+  {
+   "action": "seekforward",
+   "details": {},
+   "gap": 80
+  },
+  {
+   "action": "seekforward",
+   "details": {}
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "action": "seekbackward",
+   "details": {},
+   "gap": 80
+  },
+  {
+   "action": "seekbackward",
+   "details": {}
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "name": "02-seek-in-buffer",
+ "description": "±15 s inside the buffered range, playing and paused, across segment boundaries.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true}, {"wait": 1500},
+  {"do": "seek_by", "args": [15000]}, {"settle": true}, {"observe": 1500},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true}, {"observe": 1000},
+  {"do": "seek_by", "args": [15000]}, {"settle": true},
+  {"do": "seek_by", "args": [15000]}, {"settle": true},
+  {"do": "seek_by", "args": [15000]}, {"settle": true}, {"observe": 1000},
+  {"do": "pause"}, {"settle": true},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true},
+  {"do": "seek_by", "args": [15000]}, {"settle": true},
+  {"do": "play"}, {"settle": true}, {"observe": 1500}
+ ]
+}

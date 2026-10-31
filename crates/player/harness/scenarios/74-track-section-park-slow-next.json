@@ -1,0 +1,14 @@
+{
+ "name": "74-track-section-park-slow-next",
+ "description": "End-of-section sleep at the end of 15 while 16 is still rendering (5 s): park, then play; 16 must start where parked and track.",
+ "config": {"delay_ms": 0, "delays": {"16": 5000}},
+ "expect_events": {"SleepFired": 1, "Ended": 0},
+ "steps": [
+  {"do": "load", "args": [15]}, {"do": "play"}, {"settle": true},
+  {"do": "set_sleep", "args": [0, true]},
+  {"do": "seek_by", "args": [15500]}, {"settle": true},
+  {"until": "SleepFired", "timeout": 6000}, {"wait": 400},
+  {"assert": {"state": "Paused", "segment": 16, "max_pos_ms": 300}},
+  {"do": "play"}, {"wait": 4000}, {"observe": 2500}
+ ]
+}

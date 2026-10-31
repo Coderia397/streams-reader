@@ -1,0 +1,11 @@
+{
+ "name": "107-robust-eos-first-segment",
+ "description": "Robustness: sleep at end of section on segment 0 (2.7 s heading, closes a section) at 3x from a cold load. Stops at its end, parked on 1.",
+ "config": {"delay_ms": 0},
+ "expect_events": {"SleepFired": 1},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "set_rate", "args": [3.0]}, {"do": "set_sleep", "args": [0, true]},
+  {"do": "play"}, {"until": "SleepFired", "timeout": 6000}, {"wait": 800},
+  {"assert": {"state": "Paused", "segment": 1, "max_pos_ms": 300, "check": "eos_first"}}
+ ]
+}

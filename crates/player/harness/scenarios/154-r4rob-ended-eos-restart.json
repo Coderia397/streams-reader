@@ -1,0 +1,77 @@
+{
+ "name": "154-r4rob-ended-eos-restart",
+ "description": "end of section armed near the document's end (25 ends a section): it stops there and reports Ended; armed again, play restarts at 0, which ends a section (2.7 s): stops there parked on 1.",
+ "config": {
+  "delay_ms": 0
+ },
+ "expect_events": {
+  "Ended": 1,
+  "SleepFired": 2
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    25
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    10000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "set_sleep",
+   "args": [
+    0,
+    true
+   ]
+  },
+  {
+   "wait": 2500
+  },
+  {
+   "assert": {
+    "state": "Ended",
+    "check": "eos_restart"
+   }
+  },
+  {
+   "do": "set_sleep",
+   "args": [
+    0,
+    true
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 4000
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 1,
+    "max_pos_ms": 300,
+    "check": "eos_restart"
+   }
+  }
+ ]
+}

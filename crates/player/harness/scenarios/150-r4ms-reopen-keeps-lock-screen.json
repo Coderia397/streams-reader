@@ -1,0 +1,20 @@
+{
+ "name": "150-r4ms-reopen-keeps-lock-screen",
+ "description": "Opening another document (new player created before the old one is dropped) keeps the lock screen working: every Media Session handler and the metadata belong to the new player, and its actions move it.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [2]}, {"do": "play"}, {"settle": true}, {"wait": 800},
+  {"assert": {"state": "Playing", "segment": 2, "session": true, "check": "media_session"}},
+  {"do": "reopen", "args": [5]}, {"do": "play"}, {"settle": true}, {"wait": 600},
+  {"assert": {"state": "Playing", "segment": 5, "session": true, "check": "media_session"}},
+  {"action": "seekforward", "details": {}}, {"settle": true}, {"observe": 800},
+  {"action": "pause"}, {"settle": true},
+  {"assert": {"state": "Paused", "session": true, "check": "media_session"}},
+  {"action": "play"}, {"settle": true}, {"observe": 600},
+  {"action": "nexttrack"}, {"settle": true}, {"observe": 800},
+  {"do": "reopen", "args": [1]}, {"settle": true},
+  {"assert": {"state": "Paused", "segment": 1, "max_pos_ms": 300, "session": true, "check": "media_session"}},
+  {"action": "play"}, {"settle": true}, {"observe": 800},
+  {"action": "seekbackward", "details": {"seekOffset": 5}}, {"settle": true}, {"observe": 800}
+ ]
+}

@@ -1,0 +1,113 @@
+{
+ "name": "1307-r4trackfb-jump-while-carrying",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 14-jump-while-carrying: A +10 s skip pressed while segment 19 (8.8 s, outside the buffer) loads carries the target into segment 20, which is slow to render. While 20 is still loading, previous (aimed 1.2 s into 20, so it means the start of 19) and then a plain jump_to(19) target a segment this build already holds.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "configure": {
+    "delays": {
+     "19": 800,
+     "20": 4000
+    }
+   }
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    19
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    10000
+   ]
+  },
+  {
+   "wait": 1600
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "assert": {
+    "segment": 19,
+    "max_pos_ms": 2500,
+    "check": "jump"
+   }
+  },
+  {
+   "observe": 800
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    2
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    19
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    10000
+   ]
+  },
+  {
+   "wait": 1600
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    19
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "assert": {
+    "segment": 19,
+    "max_pos_ms": 2500,
+    "check": "jump"
+   }
+  },
+  {
+   "observe": 800
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "name": "06-rapid",
+ "description": "Bursts: five +15 s in 300 ms, jump then seek, 2.5x then seek, three -15 s in 250 ms.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true}, {"wait": 1500},
+  {"do": "seek_by", "args": [15000], "gap": 60}, {"do": "seek_by", "args": [15000], "gap": 60},
+  {"do": "seek_by", "args": [15000], "gap": 60}, {"do": "seek_by", "args": [15000], "gap": 60},
+  {"do": "seek_by", "args": [15000]}, {"settle": true}, {"observe": 1000},
+  {"do": "jump_to", "args": [8], "gap": 50}, {"do": "seek_by", "args": [15000]}, {"settle": true}, {"observe": 800},
+  {"do": "set_rate", "args": [2.5]}, {"do": "seek_by", "args": [-15000]}, {"settle": true}, {"observe": 2000},
+  {"do": "seek_by", "args": [-15000], "gap": 80}, {"do": "seek_by", "args": [-15000], "gap": 80},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true}, {"observe": 1000},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

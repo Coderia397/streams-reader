@@ -1,0 +1,10 @@
+{
+ "name": "1207-r4track-fb-stall-resume",
+ "description": "Round 4 tracking, fallback path: segment 5 renders 5 s late, the element finishes blob 4 and waits, then resumes into 5.",
+ "config": {"query": "nomse=1", "delay_ms": 0, "delays": {"5": 5000}},
+ "steps": [
+  {"do": "load", "args": [4]}, {"do": "play"}, {"settle": true},
+  {"do": "seek_by", "args": [7000]}, {"settle": true}, {"wait": 6000},
+  {"observe": 4000}
+ ]
+}

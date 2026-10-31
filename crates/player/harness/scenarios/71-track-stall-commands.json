@@ -1,0 +1,12 @@
+{
+ "name": "71-track-stall-commands",
+ "description": "Segment 1 takes 6 s: segment 0 (2.7 s) plays into the stall; while stalled previous, then seekto on the lock screen, then play across 0/1 once 1 arrives.",
+ "config": {"delay_ms": 0, "delays": {"1": 6000}},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true}, {"wait": 3300},
+  {"do": "previous"}, {"settle": true}, {"observe": 1000},
+  {"wait": 2000},
+  {"action": "seekto", "details": {"seekTime": 1.5}}, {"settle": true}, {"observe": 1000},
+  {"wait": 1500}, {"observe": 3000}
+ ]
+}

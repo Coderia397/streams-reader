@@ -1,0 +1,47 @@
+{
+ "name": "142-r4fb-skip-back-before-build",
+ "description": "fallback: load at 5, -10 s rebuilds into the end of 3 (4 is 9 s) and plays across both switches into 5.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    5
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -10000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "wait": 9500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 5,
+    "check": "fb_back"
+   }
+  }
+ ]
+}

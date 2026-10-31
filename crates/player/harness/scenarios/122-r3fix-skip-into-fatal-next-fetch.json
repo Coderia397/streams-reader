@@ -1,0 +1,59 @@
+{
+ "name": "122-r3fix-skip-into-fatal-next-fetch",
+ "description": "A final provider error for 5 (twice) while 3 and 4 still play: the fetch loop stops. A skip into 5 (that loop's next fetch) must start a new build, which asks for 5 again and reports Error, instead of waiting in Loading for an append no loop will make.",
+ "config": {
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "configure": {
+    "fatal": {
+     "5": 2
+    }
+   }
+  },
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    4
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    10000
+   ]
+  },
+  {
+   "wait": 3000
+  },
+  {
+   "assert": {
+    "state": "Error",
+    "check": "fatal_hold_stuck"
+   }
+  }
+ ],
+ "allow_errors": 5
+}

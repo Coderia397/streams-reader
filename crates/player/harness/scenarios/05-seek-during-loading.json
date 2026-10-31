@@ -1,0 +1,12 @@
+{
+ "name": "05-seek-during-loading",
+ "description": "2.5 s render latency: skips and previous pressed while a build is still loading its first segment.",
+ "config": {"delay_ms": 2500},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"},
+  {"do": "seek_by", "args": [15000]}, {"settle": true, "timeout": 15000}, {"observe": 800},
+  {"do": "jump_to", "args": [10]}, {"do": "seek_by", "args": [15000]}, {"settle": true, "timeout": 15000},
+  {"do": "jump_to", "args": [20]}, {"do": "seek_by", "args": [-15000]}, {"settle": true, "timeout": 15000},
+  {"do": "jump_to", "args": [12]}, {"do": "previous"}, {"settle": true, "timeout": 15000}, {"observe": 800}
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "name": "104-robust-skip-forward-in-error",
+ "description": "Robustness: segment 3 fails twice; the playhead runs dry at the end of 2 (Error). A +5 s skip pressed in the Error must land 5 s into 3 once 3 arrives, playing.",
+ "config": {"delay_ms": 0, "fail": {"3": 2}},
+ "allow_errors": 2,
+ "steps": [
+  {"do": "load", "args": [2]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [15800]}, {"settle": true}, {"wait": 1500},
+  {"assert": {"state": "Error", "check": "starve"}},
+  {"do": "seek_by", "args": [5000]}, {"settle": true, "timeout": 15000}, {"observe": 1500},
+  {"assert": {"state": "Playing", "segment": 3, "check": "error_skip"}}
+ ]
+}

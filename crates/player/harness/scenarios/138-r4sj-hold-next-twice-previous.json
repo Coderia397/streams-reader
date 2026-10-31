@@ -1,0 +1,50 @@
+{
+ "name": "138-r4sj-hold-next-twice-previous",
+ "description": "Segment 5 renders in 6 s. Playing 3: next (4, buffered), next (5, held), next (past the hold: rebuild at 6), previous (back to 5: waits for it).",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "5": 6000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 800
+  },
+  {
+   "do": "next",
+   "gap": 80
+  },
+  {
+   "do": "next",
+   "gap": 80
+  },
+  {
+   "do": "next",
+   "gap": 80
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

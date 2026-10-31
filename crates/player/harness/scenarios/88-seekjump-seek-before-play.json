@@ -1,0 +1,11 @@
+{
+ "name": "88-seekjump-seek-before-play",
+ "description": "0.8 s render latency. load(8) without play, +20 s while it loads (carries into 9), settle paused; play; then -30 s (back across the build start).",
+ "config": {"delay_ms": 800},
+ "steps": [
+  {"do": "load", "args": [8]}, {"do": "seek_by", "args": [20000]}, {"settle": true, "timeout": 15000},
+  {"assert": {"state": "Paused", "segment": 9, "check": "seek"}},
+  {"do": "play"}, {"settle": true}, {"observe": 1200},
+  {"do": "seek_by", "args": [-30000]}, {"settle": true, "timeout": 15000}, {"observe": 1200}
+ ]
+}

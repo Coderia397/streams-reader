@@ -1,0 +1,10 @@
+{
+ "name": "17-seekto-while-loading",
+ "description": "2.5 s render latency. The lock-screen scrubber (Media Session seekto 8 s) used while a jump to segment 5 is still loading.",
+ "config": {"delay_ms": 2500},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true, "timeout": 15000}, {"wait": 300},
+  {"do": "jump_to", "args": [5]}, {"wait": 200}, {"action": "seekto", "details": {"seekTime": 8}},
+  {"settle": true, "timeout": 15000}, {"observe": 800}
+ ]
+}

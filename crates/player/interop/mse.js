@@ -62,14 +62,30 @@ export class MseSession {
   }
 
   /**
-   * Appends one complete WebM file. Resolves with the media time where it ends (the SourceBuffer's timestampOffset,
-   * which sequence mode advances past every append). Rejects with the browser's error, whose `name` is
-   * `QuotaExceededError` when the buffer is full.
+   * Appends one complete WebM file. Resolves with the media time where it ends: the end of the buffer, since sequence
+   * mode lays every append right after the previous one and eviction only removes from the front. Not
+   * `timestampOffset`: after an append that holds the offset applied to it, which is where it starts (Chrome 158
+   * measured by crates/player/harness: after appending 2.741 s then 17.361 s it reads 0 then 2.741). Rejects with the
+   * browser's error, whose `name` is `QuotaExceededError` when the buffer is full.
    * @param {Uint8Array} bytes
    * @returns {Promise<number>}
    */
   append(bytes) {
-    return this.run(() => this.buffer.appendBuffer(bytes)).then(() => this.buffer.timestampOffset);
+    return this.run(() => this.buffer.appendBuffer(bytes)).then(() => this.end());
+  }
+
+  /**
+   * End of the last buffered range in seconds, NaN when nothing is buffered.
+   * @private
+   * @returns {number}
+   */
+  end() {
+    try {
+      const ranges = this.buffer.buffered;
+      return ranges.length ? ranges.end(ranges.length - 1) : NaN;
+    } catch {
+      return NaN;
+    }
   }
 
   /**

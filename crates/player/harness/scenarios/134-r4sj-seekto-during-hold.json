@@ -1,0 +1,48 @@
+{
+ "name": "134-r4sj-seekto-during-hold",
+ "description": "Segment 5 renders in 5 s. Playing 4, +12 s holds on 5 at an unknown landing; lock-screen seekto 2 s applies to the segment the hold lands in.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "5": 5000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    4
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    12000
+   ],
+   "gap": 200
+  },
+  {
+   "action": "seekto",
+   "details": {
+    "seekTime": 2
+   }
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

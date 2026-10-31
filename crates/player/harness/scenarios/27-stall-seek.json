@@ -1,0 +1,10 @@
+{
+ "name": "27-stall-seek",
+ "description": "Segment 17 takes 6 s to render: play 16 (3.2 s) into the stall, skip back 2 s while stalled, replay into the stall, then play across 16/17 once 17 arrives.",
+ "config": {"delay_ms": 0, "delays": {"17": 6000}},
+ "steps": [
+  {"do": "load", "args": [16]}, {"do": "play"}, {"settle": true}, {"wait": 3800},
+  {"do": "seek_by", "args": [-2000]}, {"settle": true}, {"observe": 1500},
+  {"wait": 1500}, {"observe": 2500}
+ ]
+}

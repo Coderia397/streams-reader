@@ -1,0 +1,12 @@
+{
+ "name": "84-seekjump-skip-forward-burst-past-buffer",
+ "description": "1.5 s render latency keeps the buffer at one or two segments. Six +15 s presses in 300 ms from 9 run past the buffered end and on through segments not fetched yet; then previous and -15 s right after.",
+ "config": {"delay_ms": 1500},
+ "steps": [
+  {"do": "load", "args": [9]}, {"do": "play"}, {"settle": true, "timeout": 15000}, {"wait": 500},
+  {"do": "seek_by", "args": [15000], "gap": 60}, {"do": "seek_by", "args": [15000], "gap": 60}, {"do": "seek_by", "args": [15000], "gap": 60},
+  {"do": "seek_by", "args": [15000], "gap": 60}, {"do": "seek_by", "args": [15000], "gap": 60}, {"do": "seek_by", "args": [15000]},
+  {"settle": true, "timeout": 30000}, {"observe": 1200},
+  {"do": "previous", "gap": 60}, {"do": "seek_by", "args": [-15000]}, {"settle": true, "timeout": 20000}, {"observe": 1200}
+ ]
+}

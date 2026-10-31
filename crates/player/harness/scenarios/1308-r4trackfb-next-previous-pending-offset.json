@@ -1,0 +1,148 @@
+{
+ "name": "1308-r4trackfb-next-previous-pending-offset",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 15-next-previous-pending-offset: 2.5 s render latency. next/previous pressed right after a skip whose target points past the edge of the segment being loaded: -15 s from the start of 10 (5.5 s into 9: previous restarts 9), +15 s from the start of 16 (3.2 s long, so 11.8 s into 17: next goes to 18, previous restarts 17), and two -15 s from 10 (6.5 s into 8: next goes to 9).",
+ "config": {
+  "delay_ms": 2500,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    10
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "assert": {
+    "segment": 9,
+    "max_pos_ms": 2500,
+    "check": "jump"
+   }
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    16
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ]
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "assert": {
+    "segment": 18,
+    "max_pos_ms": 2500,
+    "check": "jump"
+   }
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    16
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ]
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "assert": {
+    "segment": 17,
+    "max_pos_ms": 2500,
+    "check": "jump"
+   }
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    10
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "assert": {
+    "segment": 9,
+    "max_pos_ms": 2500,
+    "check": "jump"
+   }
+  },
+  {
+   "observe": 800
+  }
+ ]
+}

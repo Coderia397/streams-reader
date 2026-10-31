@@ -1,0 +1,64 @@
+{
+ "name": "143-r4sj-jump-previous-next-gap0",
+ "description": "No latency. Playing 3: jump_to(8) then previous then next with no gaps (all buffered): lands on 8.",
+ "config": {
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 1000
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    8
+   ],
+   "gap": 0
+  },
+  {
+   "do": "previous",
+   "gap": 0
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "do": "previous",
+   "gap": 0
+  },
+  {
+   "do": "previous",
+   "gap": 0
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

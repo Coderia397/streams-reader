@@ -1,0 +1,53 @@
+{
+ "name": "161-r4rob-eos-skip-over-section",
+ "description": "end of section armed in 15; +23 s skips over the ends of 15 and 16 into 17 while playing: no stop for sections not played through.",
+ "config": {
+  "delay_ms": 0
+ },
+ "expect_events": {
+  "SleepFired": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    15
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "set_sleep",
+   "args": [
+    0,
+    true
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    23000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 3000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 17,
+    "check": "eos_skip"
+   }
+  }
+ ]
+}

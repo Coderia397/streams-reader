@@ -1,0 +1,15 @@
+{
+ "name": "109-robust-ended-unload-load",
+ "description": "Robustness: the document plays to Ended, is unloaded and loaded again at 0, and play starts it at 0 (Playing, segment 0).",
+ "config": {"delay_ms": 0},
+ "expect_events": {"Ended": 1},
+ "steps": [
+  {"do": "load", "args": [25]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [11000]}, {"settle": true}, {"wait": 1200},
+  {"assert": {"state": "Ended"}},
+  {"do": "unload"}, {"wait": 300},
+  {"assert": {"state": "Idle", "check": "unload"}},
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true}, {"observe": 1500},
+  {"assert": {"state": "Playing", "segment": 0, "check": "unload"}}
+ ]
+}

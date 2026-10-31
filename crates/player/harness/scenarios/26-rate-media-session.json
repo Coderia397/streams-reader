@@ -1,0 +1,13 @@
+{
+ "name": "26-rate-media-session",
+ "description": "Lock screen at 1.75x: seekforward, seekto, nexttrack, previoustrack; position state must carry the rate.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [5]}, {"do": "set_rate", "args": [1.75]}, {"do": "play"}, {"settle": true}, {"wait": 800},
+  {"action": "seekforward", "details": {"seekOffset": 5}}, {"settle": true}, {"observe": 1200},
+  {"action": "seekto", "details": {"seekTime": 2}}, {"settle": true}, {"observe": 1200},
+  {"action": "nexttrack"}, {"settle": true}, {"wait": 2500},
+  {"action": "previoustrack"}, {"settle": true}, {"observe": 1500},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

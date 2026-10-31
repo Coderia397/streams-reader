@@ -1,0 +1,53 @@
+{
+ "name": "145-r4fb-paused-seek-play-at-once",
+ "description": "fallback: paused in 3, +20 s into 4 and play in the same breath (the switch is still loading): plays from 20 s on.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 800
+  },
+  {
+   "do": "pause"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    20000
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "check": "fb_paused"
+   }
+  }
+ ]
+}

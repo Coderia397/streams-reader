@@ -1,0 +1,51 @@
+{
+ "name": "136-r4fb-fail-retry",
+ "description": "fallback: 4 fails twice (retries after 2, 4 s); the element finishes 3, then plays 4 once it arrives.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0,
+  "fail": {
+   "4": 2
+  }
+ },
+ "allow_errors": 1,
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15500
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 9000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "check": "fb_retry"
+   }
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

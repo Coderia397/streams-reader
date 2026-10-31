@@ -1,0 +1,87 @@
+{
+ "name": "1320-r4trackfb-track-same-segment-taps",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 75-track-same-segment-taps: Reader taps: jump_to the current segment, the previous and the next repeatedly while playing (all in buffer), with word tracking after each.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    5
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 2500
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    5
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1200
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    6
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1200
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    5
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1200
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    7
+   ],
+   "gap": 50
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    5
+   ],
+   "gap": 50
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    6
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

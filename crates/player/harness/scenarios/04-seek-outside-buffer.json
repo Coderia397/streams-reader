@@ -1,0 +1,14 @@
+{
+ "name": "04-seek-outside-buffer",
+ "description": "1.2 s per segment render latency keeps the buffer short. Back 15 s from the start of a build across a short segment; forward 15 s past the buffered end across a short segment.",
+ "config": {"delay_ms": 1200},
+ "steps": [
+  {"do": "load", "args": [5]}, {"do": "play"}, {"settle": true}, {"wait": 1000},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true}, {"observe": 1000},
+  {"do": "jump_to", "args": [23]}, {"settle": true}, {"wait": 400},
+  {"do": "seek_by", "args": [15000]}, {"settle": true}, {"observe": 1000},
+  {"do": "jump_to", "args": [9]}, {"settle": true},
+  {"do": "seek_by", "args": [15000]}, {"settle": true},
+  {"do": "seek_by", "args": [15000]}, {"settle": true}, {"observe": 1000}
+ ]
+}

@@ -1,0 +1,73 @@
+{
+ "name": "135-r4sj-ended-skip-back-burst",
+ "description": "300 ms latency. Load 25 at 3x, play to the end, then -15 s three times 60 ms apart (crosses the build start into unmeasured 24 and 23), then previous.",
+ "config": {
+  "delay_ms": 300
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    25
+   ]
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    3.0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "until": "Ended",
+   "timeout": 15000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ],
+   "gap": 60
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ],
+   "gap": 60
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ],
+ "expect_events": {
+  "Ended": 1,
+  "media_ended": 1
+ }
+}

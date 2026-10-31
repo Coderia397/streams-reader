@@ -1,0 +1,16 @@
+{
+ "name": "86-seekjump-previous-threshold",
+ "description": "Paused: previous at 2.9 s into 5 goes to 4; at 3.1 s into 5 restarts 5; previous at 3.1 s into the first segment of a build (12) restarts it, at 2.9 s goes to 11 (rebuild).",
+ "config": {"delay_ms": 300},
+ "steps": [
+  {"do": "load", "args": [5]}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [2900]}, {"settle": true}, {"do": "previous"}, {"settle": true},
+  {"assert": {"state": "Paused", "segment": 4, "max_pos_ms": 60, "check": "jump"}},
+  {"do": "next"}, {"settle": true}, {"do": "seek_by", "args": [3100]}, {"settle": true}, {"do": "previous"}, {"settle": true},
+  {"assert": {"state": "Paused", "segment": 5, "max_pos_ms": 60, "check": "jump"}},
+  {"do": "jump_to", "args": [12]}, {"settle": true}, {"do": "seek_by", "args": [3100]}, {"settle": true},
+  {"do": "previous"}, {"settle": true}, {"assert": {"state": "Paused", "segment": 12, "max_pos_ms": 60, "check": "jump"}},
+  {"do": "seek_by", "args": [2900]}, {"settle": true}, {"do": "previous"}, {"settle": true},
+  {"assert": {"state": "Paused", "segment": 11, "max_pos_ms": 60, "check": "jump"}}
+ ]
+}

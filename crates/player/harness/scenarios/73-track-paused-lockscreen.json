@@ -1,0 +1,14 @@
+{
+ "name": "73-track-paused-lockscreen",
+ "description": "Paused: lock-screen seekto twice inside a segment, play, pause, seekforward across into the next segment, play.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [2]}, {"settle": true},
+  {"action": "seekto", "details": {"seekTime": 5}}, {"settle": true}, {"assert": {"state": "Paused", "segment": 2, "check": "tracking"}},
+  {"action": "seekto", "details": {"seekTime": 15}}, {"settle": true},
+  {"do": "play"}, {"wait": 300}, {"observe": 1500},
+  {"do": "pause"}, {"wait": 300},
+  {"action": "seekforward", "details": {"seekOffset": 10}}, {"settle": true}, {"assert": {"state": "Paused", "segment": 3, "check": "tracking"}},
+  {"do": "play"}, {"wait": 300}, {"observe": 2000}
+ ]
+}

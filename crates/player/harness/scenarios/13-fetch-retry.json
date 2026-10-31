@@ -1,0 +1,9 @@
+{
+ "name": "13-fetch-retry",
+ "description": "Segment 3 fails once while segment 2 plays; the retry fills it in with no gap.",
+ "config": {"delay_ms": 0, "fail": {"3": 1}},
+ "allow_errors": 1,
+ "steps": [
+  {"do": "load", "args": [2]}, {"do": "play"}, {"settle": true}, {"observe": 3500}
+ ]
+}

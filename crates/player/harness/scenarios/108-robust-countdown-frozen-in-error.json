@@ -1,0 +1,17 @@
+{
+ "name": "108-robust-countdown-frozen-in-error",
+ "description": "Robustness: a 5 s sleep countdown starts about 1.2 s before the playhead runs dry at the end of 2 while 3 keeps failing (Error). The countdown counts playing time only: no SleepFired during 8 s of Error; after a skip back into buffered audio it fires about 3.8 s later.",
+ "config": {"delay_ms": 0, "fail": {"3": 20}},
+ "allow_errors": 1,
+ "expect_events": {"SleepFired": 1},
+ "steps": [
+  {"do": "load", "args": [2]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [15500]}, {"settle": true},
+  {"do": "set_sleep", "args": [5000, false]}, {"wait": 8000},
+  {"assert": {"state": "Error", "check": "sleep_error"}},
+  {"do": "seek_by", "args": [-10000]}, {"wait": 2000},
+  {"assert": {"state": "Playing", "segment": 2, "check": "sleep_error"}},
+  {"until": "SleepFired", "timeout": 6000}, {"wait": 500},
+  {"assert": {"state": "Paused", "segment": 2, "check": "sleep_error"}}
+ ]
+}

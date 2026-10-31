@@ -1,0 +1,13 @@
+{
+ "name": "1203-r4track-fb-rapid-skips",
+ "description": "Round 4 tracking, fallback path: bursts of lock-screen skips while playing, across blob boundaries both ways.",
+ "config": {"query": "nomse=1", "delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [4]}, {"do": "play"}, {"settle": true}, {"wait": 1000},
+  {"action": "seekforward", "details": {}, "gap": 80}, {"action": "seekforward", "details": {}, "gap": 80},
+  {"settle": true}, {"observe": 2000},
+  {"action": "seekbackward", "details": {"seekOffset": 10}, "gap": 80}, {"action": "seekbackward", "details": {"seekOffset": 10}, "gap": 80},
+  {"settle": true}, {"observe": 2000},
+  {"do": "next", "gap": 60}, {"do": "next", "gap": 60}, {"settle": true}, {"observe": 1500}
+ ]
+}

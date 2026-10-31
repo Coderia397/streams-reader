@@ -1,0 +1,12 @@
+{
+ "name": "1106-r3track-half-rate-rebuild",
+ "description": "Tracking lens: 0.5x, 0.3 s latency; start at 9, skip back 20 s past the build start (rebuild into 8), play across 8/9 at 0.5x, then a forward skip inside the buffer and next.",
+ "config": {"delay_ms": 300},
+ "steps": [
+  {"do": "load", "args": [9]}, {"do": "set_rate", "args": [0.5]}, {"do": "play"}, {"settle": true}, {"observe": 2500},
+  {"do": "seek_by", "args": [-20000]}, {"settle": true}, {"observe": 2500},
+  {"do": "seek_by", "args": [13500]}, {"settle": true}, {"observe": 3000},
+  {"do": "next"}, {"settle": true}, {"observe": 2500},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

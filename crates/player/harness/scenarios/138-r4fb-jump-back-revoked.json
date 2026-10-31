@@ -1,0 +1,50 @@
+{
+ "name": "138-r4fb-jump-back-revoked",
+ "description": "fallback at 3x from 1 for 32 s (about 96 s of audio): blobs played over a minute ago are released; a jump back to 1 rebuilds there and plays.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "set_rate",
+   "args": [
+    3.0
+   ]
+  },
+  {
+   "do": "load",
+   "args": [
+    1
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 32000
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    1
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 1,
+    "check": "fb_revoked"
+   }
+  }
+ ]
+}

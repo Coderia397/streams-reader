@@ -1,0 +1,62 @@
+{
+ "name": "89-seekjump-large-skips",
+ "description": "0.3 s render latency. +60 s (in the buffer), +100 s (past the buffer, carried across segments not fetched yet), -80 s (back across several segments before the build start, one rebuild per segment). Skips that cross many boundaries drift by the ~20 ms of Opus padding per segment against the fixture durations, so they are kept under the 150 ms tolerance.",
+ "config": {
+  "delay_ms": 300
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 2500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    60000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    100000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 30000
+  },
+  {
+   "observe": 1000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -80000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 40000
+  },
+  {
+   "observe": 1000
+  }
+ ]
+}

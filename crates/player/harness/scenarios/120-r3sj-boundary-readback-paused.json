@@ -1,0 +1,14 @@
+{
+ "name": "120-r3sj-boundary-readback-paused",
+ "description": "No latency, build from 12 (8.081 s appended). Paused at 12@~1.5 s: jump_to(13) sets currentTime 8.081, which Chrome reads back as 8.080999 (microsecond truncation), so the player reports 12 at its end. Then next must reach 14, and previous from 13@0 must reach 12.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [12]}, {"do": "play"}, {"settle": true}, {"wait": 1500}, {"do": "pause"}, {"wait": 300},
+  {"do": "jump_to", "args": [13]}, {"settle": true},
+  {"assert": {"segment": 13, "max_pos_ms": 100, "check": "jump"}}, {"wait": 500},
+  {"assert": {"segment": 13, "max_pos_ms": 100, "check": "jump"}},
+  {"do": "next"}, {"settle": true},
+  {"assert": {"segment": 14, "max_pos_ms": 100, "check": "jump"}},
+  {"do": "jump_to", "args": [13]}, {"settle": true}, {"do": "play"}, {"observe": 1000}
+ ]
+}

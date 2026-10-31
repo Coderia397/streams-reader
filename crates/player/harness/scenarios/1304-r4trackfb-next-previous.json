@@ -1,0 +1,97 @@
+{
+ "name": "1304-r4trackfb-next-previous",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 07-next-previous: next/previous in the buffer (restart after 3 s, previous segment before), a burst of three next, and previous while a rebuild loads.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 3500
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1000
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "next",
+   "gap": 80
+  },
+  {
+   "do": "next",
+   "gap": 80
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1000
+  },
+  {
+   "configure": {
+    "delay_ms": 1500
+   }
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    20
+   ]
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "observe": 1000
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "observe": 800
+  }
+ ]
+}

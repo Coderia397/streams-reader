@@ -1,0 +1,71 @@
+{
+ "name": "1333-r4trackfb-r3track-paused-rate-skip-play",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 1110-r3track-paused-rate-skip-play: Tracking lens: pause, change rate to 2.5x while paused, skip +10 s while paused, play: lock screen and words at the new rate from the first sample.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    7
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 2000
+  },
+  {
+   "do": "pause"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    2.5
+   ]
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    10000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 8,
+    "check": "tracking"
+   }
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 3000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

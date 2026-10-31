@@ -1,0 +1,54 @@
+{
+ "name": "130-r4sj-hold-skip-back-into-buffer",
+ "description": "Segment 5 renders in 6 s. Playing 3, +30 s holds on 5 (in flight); -15 s 300 ms later lands back in 3 from the buffer at once; 5 arrives while 4 plays and follows without a gap.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "5": 6000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 1000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    30000
+   ],
+   "gap": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "wait": 6000
+  },
+  {
+   "observe": 3000
+  }
+ ]
+}

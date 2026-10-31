@@ -1,0 +1,11 @@
+{
+ "name": "87-seekjump-rebuild-race",
+ "description": "1 s render latency. jump_to(20), -15 s, jump_to(3) and jump_to(6) 40 ms apart while each rebuild opens; then jump far and straight back into what the first build held.",
+ "config": {"delay_ms": 1000},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true, "timeout": 15000}, {"wait": 300},
+  {"do": "jump_to", "args": [20], "gap": 40}, {"do": "seek_by", "args": [-15000], "gap": 40}, {"do": "jump_to", "args": [3], "gap": 40},
+  {"do": "jump_to", "args": [6]}, {"settle": true, "timeout": 15000}, {"observe": 1000},
+  {"do": "jump_to", "args": [22], "gap": 30}, {"do": "jump_to", "args": [7]}, {"settle": true, "timeout": 15000}, {"observe": 1000}
+ ]
+}

@@ -1,0 +1,11 @@
+{
+ "name": "25-fast-short-segments",
+ "description": "3x from segment 23 (4 s) through 24 and 25 with the word highlight at speed, then a skip back across the 23/24 boundary at 3x.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "set_rate", "args": [3.0]},
+  {"do": "load", "args": [22]}, {"do": "play"}, {"settle": true}, {"wait": 3500}, {"observe": 4000},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true}, {"observe": 2500},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

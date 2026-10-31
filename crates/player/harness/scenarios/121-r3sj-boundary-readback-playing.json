@@ -1,0 +1,11 @@
+{
+ "name": "121-r3sj-boundary-readback-playing",
+ "description": "No latency, build from 12 (8.081 s appended). Playing 12@~1 s: jump_to(13) in the buffer lands at 8.081, read back as 8.080999: the first snapshot and a SegmentChanged report 12 (last word) before 13. Then previous at 13@~1 s (restart threshold not reached) must go to 12, and next from 12@~0.5 s must go to 13.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [12]}, {"do": "play"}, {"settle": true}, {"wait": 1000},
+  {"do": "jump_to", "args": [13]}, {"settle": true}, {"observe": 800},
+  {"do": "previous"}, {"settle": true}, {"wait": 500},
+  {"do": "next"}, {"settle": true}, {"observe": 800}
+ ]
+}

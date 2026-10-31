@@ -1,0 +1,12 @@
+{
+ "name": "101-r3seek-previous-after-carried-skip",
+ "description": "1.5 s latency. From 3@~1 s, +20 s lands 4 s into 4 (in flight, held); previous queued restarts 4. Then +20 s from 4@~1 s crosses 4 (9 s) into 5@~12 s; previous queued restarts 5.",
+ "config": {"delay_ms": 1500},
+ "steps": [
+  {"do": "load", "args": [3]}, {"do": "play"}, {"settle": true, "timeout": 15000}, {"wait": 800},
+  {"do": "seek_by", "args": [21000]}, {"do": "previous"}, {"settle": true, "timeout": 15000},
+  {"assert": {"segment": 4, "max_pos_ms": 1500, "check": "jump"}}, {"wait": 800},
+  {"do": "seek_by", "args": [20000]}, {"do": "previous"}, {"settle": true, "timeout": 15000},
+  {"assert": {"segment": 5, "max_pos_ms": 1500, "check": "jump"}}, {"observe": 1000}
+ ]
+}

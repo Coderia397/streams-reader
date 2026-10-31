@@ -1,0 +1,12 @@
+{
+ "name": "1101-r3track-rate3-short-crossings",
+ "description": "Tracking lens: 3x across short segments 22 -> 23 (4.0 s) -> 24, starting 3 s before the end of 22, words and segment must follow at 3x.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [22]}, {"do": "play"}, {"settle": true}, {"wait": 1500},
+  {"do": "set_rate", "args": [3.0]},
+  {"do": "seek_by", "args": [11000]}, {"settle": true}, {"observe": 4500},
+  {"do": "seek_by", "args": [-6000]}, {"settle": true}, {"observe": 3000},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

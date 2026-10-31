@@ -1,0 +1,101 @@
+{
+ "name": "45-robust-ended-actions",
+ "description": "Robustness: after Ended, next does nothing, previous restarts the last segment, play reaches Ended again, and play after that restarts the document at segment 0. (`until` cannot be used for a second Ended: it matches the first one in the log.)",
+ "config": {
+  "delay_ms": 0
+ },
+ "expect_events": {
+  "Ended": 2
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    25
+   ]
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    3.0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    11000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 800
+  },
+  {
+   "assert": {
+    "state": "Ended"
+   }
+  },
+  {
+   "do": "next",
+   "expect": false
+  },
+  {
+   "wait": 300
+  },
+  {
+   "assert": {
+    "state": "Ended"
+   }
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    9000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "play"
+  },
+  {
+   "wait": 2500
+  },
+  {
+   "wait": 600
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 0
+   }
+  },
+  {
+   "observe": 800
+  }
+ ]
+}

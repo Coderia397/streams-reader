@@ -1,0 +1,108 @@
+{
+ "name": "1326-r4trackfb-seekjump-restart-same-segment",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 93-seekjump-restart-same-segment: jump_to the segment that is playing, three times 300 ms apart, then previous at 0.5 s (goes to the one before), next, next at the second-to-last and last segment.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    7
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 2000
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    7
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    7
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    7
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 800
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    24
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "next",
+   "expect": false
+  },
+  {
+   "wait": 500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 25,
+    "check": "jump"
+   }
+  },
+  {
+   "observe": 800
+  }
+ ]
+}

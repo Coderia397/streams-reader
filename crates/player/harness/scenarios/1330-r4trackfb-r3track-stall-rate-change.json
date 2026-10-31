@@ -1,0 +1,58 @@
+{
+ "name": "1330-r4trackfb-r3track-stall-rate-change",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 1105-r3track-stall-rate-change: Tracking lens: segment 17 renders 5 s late; play 16 (3.2 s) into the stall, change rate to 2x while Buffering, then play across into 17 at 2x: words, segment and lock screen must follow.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "17": 5000
+  },
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    16
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 3600
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    2.0
+   ]
+  },
+  {
+   "wait": 2600
+  },
+  {
+   "observe": 3000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -4000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2500
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

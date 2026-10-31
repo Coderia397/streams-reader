@@ -1,0 +1,14 @@
+{
+ "name": "18-seek-after-ended",
+ "description": "Build started at segment 24; play to the end, press +15 s at the end, then play: play after the end should start the document again (segment 0), as it does without the skip.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [24]}, {"do": "set_rate", "args": [3.0]}, {"do": "play"}, {"settle": true},
+  {"until": "Ended", "timeout": 20000}, {"wait": 300},
+  {"do": "seek_by", "args": [15000], "expect": false}, {"wait": 600},
+  {"assert": {"state": "Ended", "check": "seek"}},
+  {"do": "set_rate", "args": [1.0]}, {"do": "play"}, {"wait": 1500},
+  {"assert": {"state": "Playing", "segment": 0, "max_pos_ms": 3000, "check": "seek"}}
+ ],
+ "expect_events": {"Ended": 1}
+}

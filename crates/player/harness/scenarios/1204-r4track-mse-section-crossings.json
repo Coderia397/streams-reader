@@ -1,0 +1,12 @@
+{
+ "name": "1204-r4track-mse-section-crossings",
+ "description": "Round 4 tracking: natural playback across 15 -> 16 (3.2 s) -> 17 at 1x and 0.5x, words and lock screen through two section ends.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [15]}, {"do": "play"}, {"settle": true},
+  {"do": "seek_by", "args": [15500]}, {"settle": true}, {"observe": 7000},
+  {"do": "set_rate", "args": [0.5]},
+  {"do": "jump_to", "args": [16]}, {"settle": true}, {"observe": 8000},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

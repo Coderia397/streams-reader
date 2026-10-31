@@ -1,0 +1,42 @@
+{
+ "name": "147-r4fb-next-burst-loading",
+ "description": "fallback: next x3 pressed 60 ms apart while each segment takes 400 ms: lands on the start of the third one.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 400
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "next",
+   "gap": 60
+  },
+  {
+   "do": "next",
+   "gap": 60
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

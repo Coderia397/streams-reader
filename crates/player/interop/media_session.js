@@ -58,6 +58,17 @@ export function setPositionState(duration, position, rate) {
   }
 }
 
+/** Drops the position state, so the notification stops advancing a segment that is no longer playing. */
+export function clearPositionState() {
+  const ms = session();
+  if (!ms || !('setPositionState' in ms)) return;
+  try {
+    ms.setPositionState();
+  } catch {
+    // Older engines reject the no-argument form.
+  }
+}
+
 /**
  * Installs a handler for one action, or removes it when `handler` is null. The handler receives the number the
  * action carries: `seekTime` for seekto, `seekOffset` for seekbackward/seekforward, NaN when absent.

@@ -1,0 +1,10 @@
+{
+ "name": "1209-r4track-fb-long-3x",
+ "description": "Round 4 tracking, fallback path: 3x from segment 0 for 45 s of wall time with 400 ms render latency, across a dozen blob switches.",
+ "config": {"query": "nomse=1", "delay_ms": 400},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "set_rate", "args": [3.0]}, {"do": "play"}, {"settle": true},
+  {"observe": 15000}, {"observe": 15000}, {"observe": 15000},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

@@ -1,0 +1,10 @@
+{
+ "name": "16-skip-back-while-carrying",
+ "description": "+15 s pressed while segment 0 (2.7 s) loads carries the target into segment 1, which takes 8 s to render. -15 s then points back at the start of segment 0, which is already buffered: it should land without waiting for segment 1.",
+ "config": {"delay_ms": 0, "delays": {"0": 600, "1": 8000}},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"do": "seek_by", "args": [15000]}, {"wait": 1500},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true, "timeout": 3000},
+  {"assert": {"segment": 0, "max_pos_ms": 1500, "check": "seek"}}, {"observe": 800}
+ ]
+}

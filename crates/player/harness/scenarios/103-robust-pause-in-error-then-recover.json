@@ -1,0 +1,74 @@
+{
+ "name": "103-robust-pause-in-error-then-recover",
+ "description": "Robustness: segment 3 takes 300 ms and fails twice (about 0.3 s and 2.6 s after load; the try 4 s later succeeds, about 6.9 s after load); the playhead runs dry at the end of 2 (Error). The listener pauses during the Error; when 3 arrives the player must stay Paused (not start playing on its own), and play then resumes in 3.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "3": 300
+  },
+  "fail": {
+   "3": 2
+  }
+ },
+ "allow_errors": 1,
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    2
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15800
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 2500
+  },
+  {
+   "assert": {
+    "state": "Error",
+    "check": "starve"
+   }
+  },
+  {
+   "do": "pause"
+  },
+  {
+   "wait": 7000
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "check": "error_pause_recover"
+   }
+  },
+  {
+   "do": "play"
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 3,
+    "check": "error_pause_recover"
+   }
+  }
+ ]
+}

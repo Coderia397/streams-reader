@@ -1,0 +1,16 @@
+{
+ "name": "49-robust-error-pause-seek-back",
+ "description": "Robustness: segment 3 keeps failing, the playhead runs out at the end of 2 (Error). The listener pauses and skips back 10 s into buffered audio: the state should leave Error (Paused, audio available), and play resumes there.",
+ "config": {"delay_ms": 0, "fail": {"3": 20}},
+ "allow_errors": 1,
+ "steps": [
+  {"do": "load", "args": [2]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [15500]}, {"settle": true}, {"wait": 2500},
+  {"assert": {"state": "Error", "check": "starve"}},
+  {"do": "pause"}, {"wait": 300},
+  {"do": "seek_by", "args": [-10000]}, {"wait": 800},
+  {"assert": {"state": "Paused", "segment": 2, "check": "error_exit"}},
+  {"do": "play"}, {"wait": 800},
+  {"assert": {"state": "Playing", "segment": 2, "check": "error_exit"}}
+ ]
+}

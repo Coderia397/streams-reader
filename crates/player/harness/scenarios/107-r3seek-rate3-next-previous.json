@@ -1,0 +1,10 @@
+{
+ "name": "107-r3seek-rate3-next-previous",
+ "description": "Rate 3, no latency, playing from 15: next into 16 (3.2 s, about 1 s of wall time), next into 17, previous after ~2 s wall (6 s media: restarts 17), previous immediately (to 16).",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [15]}, {"do": "set_rate", "args": [3.0]}, {"do": "play"}, {"settle": true}, {"wait": 500},
+  {"do": "next"}, {"settle": true}, {"do": "next"}, {"settle": true}, {"wait": 2000},
+  {"do": "previous"}, {"settle": true}, {"do": "previous"}, {"settle": true}, {"observe": 800}
+ ]
+}

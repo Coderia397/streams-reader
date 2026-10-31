@@ -1,0 +1,12 @@
+{
+ "name": "1111-r3track-hold-rate",
+ "description": "Tracking lens: every segment takes 1.2 s; skip forward into the segment the build is fetching (hold), change rate during the hold, then words and lock screen after it lands.",
+ "config": {"delay_ms": 1200},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true}, {"wait": 1800},
+  {"do": "seek_by", "args": [36000]}, {"wait": 150},
+  {"do": "set_rate", "args": [1.75]}, {"settle": true}, {"observe": 2500},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true}, {"observe": 2000},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

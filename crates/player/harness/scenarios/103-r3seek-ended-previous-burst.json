@@ -1,0 +1,13 @@
+{
+ "name": "103-r3seek-ended-previous-burst",
+ "description": "Play 24 to the end (Ended). previous restarts 25; previous again goes to 24; -15 s from there crosses into 23 (4 s) and 22, before the build start.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [24]}, {"do": "play"}, {"settle": true}, {"do": "seek_by", "args": [21000]}, {"settle": true},
+  {"until": "Ended", "timeout": 10000}, {"wait": 300},
+  {"do": "previous"}, {"settle": true}, {"do": "previous"}, {"settle": true},
+  {"assert": {"segment": 24, "max_pos_ms": 300, "check": "jump"}},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true, "timeout": 15000}
+ ],
+ "expect_events": {"Ended": 1, "media_ended": 1}
+}

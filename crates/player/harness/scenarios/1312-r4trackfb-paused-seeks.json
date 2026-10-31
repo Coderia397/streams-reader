@@ -1,0 +1,109 @@
+{
+ "name": "1312-r4trackfb-paused-seeks",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 23-paused-seeks: Seeks and jumps while paused (in buffer, before the build, far ahead), rate change while paused, then resume.",
+ "config": {
+  "delay_ms": 300,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "do": "pause"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "check": "tracking"
+   }
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 2,
+    "check": "tracking"
+   }
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    20
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 20,
+    "max_pos_ms": 60,
+    "check": "tracking"
+   }
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.5
+   ]
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "play"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "observe": 2500
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

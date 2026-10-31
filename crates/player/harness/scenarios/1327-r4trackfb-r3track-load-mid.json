@@ -1,0 +1,40 @@
+{
+ "name": "1327-r4trackfb-r3track-load-mid",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 1100-r3track-load-mid: Tracking lens: open the document at segment 12 with 0.8 s render latency; every event from load to placement must name segment 12 (the app follows Snapshot.segment).",
+ "config": {
+  "delay_ms": 800,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    12
+   ]
+  },
+  {
+   "wait": 200
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.5
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

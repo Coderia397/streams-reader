@@ -1,0 +1,131 @@
+{
+ "name": "1329-r4trackfb-r3track-skip-burst-in-buffer",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 1103-r3track-skip-burst-in-buffer: Tracking lens: with the buffer full, six +5 s skips 40 ms apart across segment edges, then six -5 s skips, while playing at 1.25x.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.25
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 3000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    5000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -5000
+   ],
+   "gap": 40
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -5000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

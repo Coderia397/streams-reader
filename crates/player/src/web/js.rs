@@ -37,6 +37,16 @@ extern "C" {
     /// Resolves like [`play_media`].
     #[wasm_bindgen(js_name = switchSource)]
     pub fn switch_source(media: &HtmlMediaElement, url: &str, offset: f64, autoplay: bool) -> js_sys::Promise;
+    #[wasm_bindgen(js_name = cancelSwitch)]
+    pub fn cancel_switch(media: &HtmlMediaElement);
+    /// NaN when no switch is pending.
+    #[wasm_bindgen(js_name = pendingOffset)]
+    pub fn pending_offset(media: &HtmlMediaElement) -> f64;
+    /// False when no switch is pending.
+    #[wasm_bindgen(js_name = retargetSwitch)]
+    pub fn retarget_switch(media: &HtmlMediaElement, offset: f64) -> bool;
+    #[wasm_bindgen(js_name = setSwitchAutoplay)]
+    pub fn set_switch_autoplay(media: &HtmlMediaElement, autoplay: bool);
     #[wasm_bindgen(js_name = detachMedia)]
     pub fn detach_media(media: &HtmlMediaElement);
     #[wasm_bindgen(js_name = blobUrl, catch)]
@@ -63,6 +73,8 @@ extern "C" {
     pub fn session_set_playback_state(state: &str);
     #[wasm_bindgen(js_name = setPositionState)]
     pub fn session_set_position(duration: f64, position: f64, rate: f64);
+    #[wasm_bindgen(js_name = clearPositionState)]
+    pub fn session_clear_position();
     #[wasm_bindgen(js_name = setActionHandler)]
     pub fn session_set_action_handler(action: &str, handler: Option<&js_sys::Function>) -> bool;
 }

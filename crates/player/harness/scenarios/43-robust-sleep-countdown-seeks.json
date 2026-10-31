@@ -1,0 +1,17 @@
+{
+ "name": "43-robust-sleep-countdown-seeks",
+ "description": "Robustness: a 9 s sleep countdown survives an in-buffer skip, a rebuild (jump to 20, outside the buffer) with 0.8 s render latency and a skip back; it fires once, pauses, and play afterwards works.",
+ "config": {"delay_ms": 0},
+ "expect_events": {"SleepFired": 1},
+ "steps": [
+  {"do": "load", "args": [1]}, {"do": "play"}, {"settle": true},
+  {"do": "set_sleep", "args": [9000, false]}, {"wait": 1500},
+  {"do": "seek_by", "args": [15000]}, {"settle": true}, {"wait": 1000},
+  {"configure": {"delay_ms": 800}},
+  {"do": "jump_to", "args": [20]}, {"settle": true}, {"wait": 1000},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true},
+  {"until": "SleepFired", "timeout": 15000}, {"wait": 800},
+  {"assert": {"state": "Paused", "check": "sleep"}},
+  {"do": "play"}, {"settle": true}, {"observe": 1500}
+ ]
+}

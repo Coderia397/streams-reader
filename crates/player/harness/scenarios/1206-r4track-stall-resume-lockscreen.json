@@ -1,0 +1,54 @@
+{
+ "name": "1206-r4track-stall-resume-lockscreen",
+ "description": "Round 4 tracking: segment 5 renders 5 s late, playback of 4 runs dry at its end, then resumes into 5; segment, words and the lock screen position must follow the resume.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "5": 5000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    4
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    7000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 6000
+  },
+  {
+   "observe": 4000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    2.0
+   ]
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

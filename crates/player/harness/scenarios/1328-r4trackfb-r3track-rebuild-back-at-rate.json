@@ -1,0 +1,82 @@
+{
+ "name": "1328-r4trackfb-r3track-rebuild-back-at-rate",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 1102-r3track-rebuild-back-at-rate: Tracking lens: 2.5x, 0.4 s latency, start at 10, skip back 30 s past the build start (carried across 9 into 8), then forward 30 s inside the new buffer, then next twice.",
+ "config": {
+  "delay_ms": 400,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    10
+   ]
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    2.5
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -30000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "wait": 2500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    30000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

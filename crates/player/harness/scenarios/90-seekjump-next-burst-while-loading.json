@@ -1,0 +1,12 @@
+{
+ "name": "90-seekjump-next-burst-while-loading",
+ "description": "1.5 s render latency. jump_to(20) then three next 50 ms apart while it loads (lands on 23); then jump_to(5) and three previous (lands on 2).",
+ "config": {"delay_ms": 1500},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true, "timeout": 15000}, {"wait": 300},
+  {"do": "jump_to", "args": [20]}, {"do": "next", "gap": 50}, {"do": "next", "gap": 50}, {"do": "next"},
+  {"settle": true, "timeout": 20000}, {"observe": 1000},
+  {"do": "jump_to", "args": [5]}, {"do": "previous", "gap": 50}, {"do": "previous", "gap": 50}, {"do": "previous"},
+  {"settle": true, "timeout": 20000}, {"observe": 1000}
+ ]
+}

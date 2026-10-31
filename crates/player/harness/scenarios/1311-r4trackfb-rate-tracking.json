@@ -1,0 +1,89 @@
+{
+ "name": "1311-r4trackfb-rate-tracking",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 20-rate-tracking: Tracking and words at 2x, 0.5x and 3x: in-buffer skip at 2x, rebuild jump at 3x across a short segment, lock-screen seekbackward at 3x.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    1
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    2.0
+   ]
+  },
+  {
+   "observe": 3000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    0.5
+   ]
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    3.0
+   ]
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    16
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 4000
+  },
+  {
+   "action": "seekbackward",
+   "details": {}
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "name": "141-r4fb-skip-into-slow-next",
+ "description": "fallback: 5 takes 4 s; +30 s from early 3 lands 4.4 s into 5 (hold on the in-flight fetch), playing.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "configure": {
+    "delays": {
+     "5": 4000
+    }
+   }
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    30000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 5,
+    "check": "fb_hold"
+   }
+  }
+ ]
+}

@@ -1,0 +1,62 @@
+{
+ "name": "134-r4fb-ended-restart",
+ "description": "fallback: the last segment plays to Ended (once); play then starts the document at 0.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "expect_events": {
+  "Ended": 1
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    25
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    10500
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 2000
+  },
+  {
+   "assert": {
+    "state": "Ended",
+    "check": "fb_end"
+   }
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 0,
+    "check": "fb_end"
+   }
+  }
+ ]
+}

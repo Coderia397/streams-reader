@@ -1,0 +1,62 @@
+{
+ "name": "165-r4rob-hold-then-jump-buffered-at-once",
+ "description": "4 takes 3 s; +18 s holds on it and a jump to 3 right after lands in buffered audio; a later next (rebuild into 4, slow) must still play.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "4": 3000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    18000
+   ],
+   "expect": false
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    3
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "check": "hold_back"
+   }
+  }
+ ]
+}

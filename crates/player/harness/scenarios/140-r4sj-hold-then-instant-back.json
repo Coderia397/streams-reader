@@ -1,0 +1,72 @@
+{
+ "name": "140-r4sj-hold-then-instant-back",
+ "description": "Segment 5 renders in 6 s. Playing 3: +30 s (hold on 5) and -15 s with no gap; the player must stay playing in 3, and a later jump to 12 (rebuild) must land playing.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "5": 6000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 800
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    30000
+   ],
+   "gap": 0
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing"
+   }
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    12
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 12
+   }
+  }
+ ]
+}

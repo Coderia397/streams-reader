@@ -1,0 +1,56 @@
+{
+ "name": "124-r3fix-fallback-eos-next-appended",
+ "description": "fallback: end of section on 22 (next 23 appended): Paused, Media Session paused (fallback path via ?nomse=1).",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    22
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "set_sleep",
+   "args": [
+    0,
+    true
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    12500
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "until": "SleepFired",
+   "timeout": 6000
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 23,
+    "max_pos_ms": 300,
+    "check": "fb_eos2"
+   }
+  }
+ ],
+ "expect_events": {
+  "SleepFired": 1
+ }
+}

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Player harness</title>
+  <style>
+    body { font: 14px/1.4 system-ui, sans-serif; margin: 16px; background: #fff; color: #111; }
+    pre { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>nolabs player harness</h1>
+  <p>Driven by <code>harness/run.py</code>. Manual use: open the console and call <code>__harness.load()</code>,
+    <code>__harness.play()</code>, <code>__harness.seek_by(15000)</code>, <code>__harness.snapshot()</code>.</p>
+  <pre id="status">starting</pre>
+  <script type="module" src="./harness.js"></script>
+</body>
+</html>

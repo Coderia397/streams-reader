@@ -1,0 +1,17 @@
+{
+ "name": "46-robust-unload-load",
+ "description": "Robustness: unload while playing, unload while a slow build loads (its fetch must be dropped), load twice in a row, then a normal load plays from its start segment.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [5]}, {"do": "play"}, {"settle": true}, {"observe": 1000},
+  {"do": "unload"}, {"wait": 500},
+  {"assert": {"state": "Idle", "check": "unload"}},
+  {"configure": {"delay_ms": 2000}},
+  {"do": "load", "args": [3]}, {"do": "play"}, {"wait": 400},
+  {"do": "unload"}, {"wait": 2500},
+  {"assert": {"state": "Idle", "check": "unload"}},
+  {"do": "load", "args": [7]}, {"do": "load", "args": [12]}, {"do": "play"}, {"settle": true, "timeout": 15000}, {"observe": 1500},
+  {"configure": {"delay_ms": 0}},
+  {"do": "unload"}, {"do": "load", "args": [20]}, {"do": "play"}, {"settle": true}, {"observe": 1500}
+ ]
+}

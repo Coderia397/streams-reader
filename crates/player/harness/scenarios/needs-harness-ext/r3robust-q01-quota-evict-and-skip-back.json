@@ -1,0 +1,47 @@
+{
+ "name": "r3robust-q01-quota-evict-and-skip-back",
+ "description": "MSE with a 90 s quota at 3x: plays across evictions, then a 70 s skip back into evicted audio rebuilds there",
+ "config": {
+  "delay_ms": 0,
+  "quota_s": 90
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    3.0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 25000
+  },
+  {
+   "observe": 8000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -70000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  }
+ ],
+ "requires": "harness page: configure({quota_s: s}) makes appendBuffer throw QuotaExceededError while the SourceBuffer holds more than s seconds; the timeline check then counts those throws as failed appends."
+}

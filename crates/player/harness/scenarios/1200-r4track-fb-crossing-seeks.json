@@ -1,0 +1,15 @@
+{
+ "name": "1200-r4track-fb-crossing-seeks",
+ "description": "Round 4 tracking, fallback path: play across a blob switch 3 -> 4, next, previous, skip back across the switch, rate 2x, seekto; segment, word and lock screen must follow.",
+ "config": {"query": "nomse=1", "delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [3]}, {"do": "play"}, {"settle": true}, {"wait": 500},
+  {"do": "seek_by", "args": [12000]}, {"settle": true}, {"observe": 7000},
+  {"do": "next"}, {"settle": true}, {"observe": 2000},
+  {"do": "previous"}, {"settle": true}, {"observe": 2500},
+  {"do": "seek_by", "args": [-6000]}, {"settle": true}, {"observe": 2000},
+  {"do": "set_rate", "args": [2.0]}, {"observe": 4000},
+  {"action": "seekto", "details": {"seekTime": 5}}, {"settle": true}, {"observe": 2000},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

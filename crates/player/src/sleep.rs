@@ -3,7 +3,7 @@
 //! that closes a section-ending segment.
 
 use crate::Sleep;
-use crate::timeline::Entry;
+use crate::timeline::{BOUNDARY_EPSILON_S, Entry};
 
 /// Length of the linear fade before a countdown pauses playback.
 pub const FADE_MS: u32 = 10_000;
@@ -80,8 +80,8 @@ impl SleepTimer {
         }
     }
 
-    /// For end of section: the media time to stop at when playback moved from `prev_s` to `now_s` across the tail of
-    /// a section-ending entry. Returns that entry's end, where the next section starts, and turns the timer off.
+    /// For end of section: the media time to stop at when playback moved from `prev_s` to `now_s` across, or inside,
+    /// the tail of a section-ending entry. Returns that entry's end, where the next section starts, and turns the timer off.
     pub fn section_stop(&mut self, entries: &[Entry], prev_s: f64, now_s: f64) -> Option<f64> {
         if !self.is_end_of_section() {
             return None;
@@ -97,12 +97,19 @@ pub fn fade_volume(left_ms: u32) -> f64 {
     (f64::from(left_ms) / f64::from(FADE_MS)).clamp(0.0, 1.0)
 }
 
-/// End time of the first section-ending entry whose stop point (`end - SECTION_TAIL_S`, never before its start) lies
-/// in `(prev_s, now_s]`. Callers reset `prev_s` after a seek so a jump never counts as a crossing.
+/// End time of the first section-ending entry whose tail playback moved through from `prev_s` to `now_s`: the
+/// playhead advanced, reached the stop point (`end - SECTION_TAIL_S`, never before the entry's start), and started
+/// before the entry's end. A playhead that was already in the tail (the timer set there, or a skip that landed there)
+/// stops at its next step, still in the closing silence; one parked on the end itself is in the next section. Callers
+/// seed `prev_s` after a seek with the landing, so a jump never counts as playing through.
 pub fn crossed_section_end(entries: &[Entry], prev_s: f64, now_s: f64) -> Option<f64> {
+    if now_s <= prev_s {
+        return None;
+    }
     entries.iter().filter(|e| e.ends_section).find_map(|e| {
         let stop_at = (e.end_s - SECTION_TAIL_S).max(e.start_s);
-        (prev_s < stop_at && stop_at <= now_s).then_some(e.end_s)
+        // A park on the end reads back a microsecond early (see `BOUNDARY_EPSILON_S`): that is the next section.
+        (stop_at <= now_s && prev_s < e.end_s - BOUNDARY_EPSILON_S).then_some(e.end_s)
     })
 }
 
@@ -175,7 +182,30 @@ mod tests {
     fn section_stop_catches_up_when_the_boundary_was_skipped() {
         let entries = [entry(1, 10.0, 20.0, true), entry(2, 20.0, 30.0, false)];
         assert_eq!(crossed_section_end(&entries, 18.5, 20.3), Some(20.0));
-        assert_eq!(crossed_section_end(&entries, 19.2, 20.3), None, "already past the stop point");
+        assert_eq!(crossed_section_end(&entries, 20.0, 20.3), None, "already in the next section");
+    }
+
+    #[test]
+    fn a_playhead_already_in_the_tail_stops_at_its_next_step() {
+        let entries = [entry(0, 0.0, 2.71, true), entry(1, 2.71, 20.0, false), entry(2, 20.0, 30.0, true)];
+        // Set (or skipped) to 2.2 s, past the 1.81 s stop point: playing on stops there, in the silence.
+        assert_eq!(crossed_section_end(&entries, 2.2, 2.45), Some(2.71));
+        assert_eq!(crossed_section_end(&entries, 2.2, 2.9), Some(2.71), "a step that runs past the end too");
+        assert_eq!(crossed_section_end(&entries, 2.2, 2.2), None, "a paused element does not play through");
+        assert_eq!(crossed_section_end(&entries, 2.4, 2.2), None, "nor does a seek back");
+        let mut t = SleepTimer::default();
+        t.set(Sleep::EndOfSection);
+        assert_eq!(t.section_stop(&entries, 2.2, 2.45), Some(2.71));
+        assert!(!t.is_end_of_section());
+    }
+
+    #[test]
+    fn a_park_on_the_section_end_belongs_to_the_next_section() {
+        let entries = [entry(0, 0.0, 2.71, true), entry(1, 2.71, 20.0, true)];
+        // The park at 2.71 reads back truncated to whole microseconds; resuming must not stop again at once.
+        let parked = (2.71f64 * 1e6).trunc() / 1e6;
+        assert_eq!(crossed_section_end(&entries, parked, parked + 0.25), None);
+        assert_eq!(crossed_section_end(&entries, 18.9, 19.2), Some(20.0), "the next section still stops");
     }
 
     #[test]

@@ -1,0 +1,11 @@
+{
+ "name": "100-robust-skip-past-end-last-loading",
+ "description": "Robustness: +40 s from early in 24 while the last segment (25) is still rendering (4 s). The target is past the end of the document, so once 25 is in the player must land on the end and report Ended (once).",
+ "config": {"delay_ms": 0, "delays": {"25": 4000}},
+ "expect_events": {"Ended": 1},
+ "steps": [
+  {"do": "load", "args": [24]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [40000]}, {"wait": 6000},
+  {"assert": {"state": "Ended", "check": "past_end_loading"}}
+ ]
+}

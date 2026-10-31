@@ -1,0 +1,44 @@
+{
+ "name": "136-r4sj-next-previous-alternate-loading",
+ "description": "1 s latency. Load 10 and play; while it loads next, previous, next, previous, next 60 ms apart; lands on 11.",
+ "config": {
+  "delay_ms": 1000
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    10
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "do": "next",
+   "gap": 60
+  },
+  {
+   "do": "previous",
+   "gap": 60
+  },
+  {
+   "do": "next",
+   "gap": 60
+  },
+  {
+   "do": "previous",
+   "gap": 60
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

@@ -1,0 +1,94 @@
+{
+ "name": "1313-r4trackfb-boundary-seeks",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 24-boundary-seeks: Paused seeks that land just either side of the 0/1 boundary (outside segment 0's ~27 ms frame-padding tail), next/previous from there, then play across the boundary.",
+ "config": {
+  "delay_ms": 0,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    2690
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "assert": {
+    "segment": 0,
+    "check": "tracking"
+   }
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    80
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "assert": {
+    "segment": 1,
+    "check": "tracking"
+   }
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -60
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "assert": {
+    "segment": 0,
+    "check": "tracking"
+   }
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -1500
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "play"
+  },
+  {
+   "observe": 2500
+  }
+ ]
+}

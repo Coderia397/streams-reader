@@ -1,0 +1,10 @@
+{
+ "name": "1208-r4track-long-3x",
+ "description": "Round 4 tracking: 3x from segment 0 for 60 s of wall time (about 180 s of audio, 14 segment crossings), with 400 ms render latency; words, segment and lock screen across every crossing.",
+ "config": {"delay_ms": 400},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "set_rate", "args": [3.0]}, {"do": "play"}, {"settle": true},
+  {"observe": 20000}, {"observe": 20000}, {"observe": 20000},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

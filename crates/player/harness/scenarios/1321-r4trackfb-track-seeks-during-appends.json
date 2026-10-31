@@ -1,0 +1,97 @@
+{
+ "name": "1321-r4trackfb-track-seeks-during-appends",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 77-track-seeks-during-appends: 0.3 s render latency so appends keep landing while playing: in-buffer skips 400 ms apart while segments are appended, then 2x across several boundaries.",
+ "config": {
+  "delay_ms": 300,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 400
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    3000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    2500
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -2000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    12000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    2.0
+   ]
+  },
+  {
+   "observe": 6000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  }
+ ]
+}

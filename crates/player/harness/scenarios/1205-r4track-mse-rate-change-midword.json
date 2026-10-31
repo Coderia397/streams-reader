@@ -1,0 +1,12 @@
+{
+ "name": "1205-r4track-mse-rate-change-midword",
+ "description": "Round 4 tracking: rate changes every 700 ms while playing (1 -> 2.5 -> 0.75 -> 3 -> 1), lock screen and words must follow each.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [1]}, {"do": "play"}, {"settle": true}, {"wait": 500},
+  {"do": "set_rate", "args": [2.5]}, {"observe": 700},
+  {"do": "set_rate", "args": [0.75]}, {"observe": 700},
+  {"do": "set_rate", "args": [3.0]}, {"observe": 700},
+  {"do": "set_rate", "args": [1.0]}, {"observe": 1500}
+ ]
+}

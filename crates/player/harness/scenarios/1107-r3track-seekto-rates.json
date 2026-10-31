@@ -1,0 +1,14 @@
+{
+ "name": "1107-r3track-seekto-rates",
+ "description": "Tracking lens: lock-screen seekto at 2x inside segment 5 (forward and back), then a rebuild jump to 20 with 1.5 s latency and a seekto pressed while it loads.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [5]}, {"do": "set_rate", "args": [2.0]}, {"do": "play"}, {"settle": true}, {"wait": 1000},
+  {"action": "seekto", "details": {"seekTime": 12}}, {"settle": true}, {"observe": 1500},
+  {"action": "seekto", "details": {"seekTime": 1}}, {"settle": true}, {"observe": 1500},
+  {"configure": {"delay_ms": 1500}},
+  {"do": "jump_to", "args": [21]}, {"wait": 200},
+  {"action": "seekto", "details": {"seekTime": 4}}, {"settle": true}, {"observe": 2000},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

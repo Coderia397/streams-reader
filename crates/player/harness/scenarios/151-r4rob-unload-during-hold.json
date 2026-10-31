@@ -1,0 +1,71 @@
+{
+ "name": "151-r4rob-unload-during-hold",
+ "description": "4 takes 3 s; +18 s from 3 holds on 4's fetch; unload 500 ms later and load 3 again: plays 3, the old fetch of 4 is dropped.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "4": 3000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    18000
+   ],
+   "expect": false
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "unload"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "assert": {
+    "state": "Idle",
+    "check": "unload"
+   }
+  },
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 4000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 3,
+    "check": "unload"
+   }
+  }
+ ]
+}

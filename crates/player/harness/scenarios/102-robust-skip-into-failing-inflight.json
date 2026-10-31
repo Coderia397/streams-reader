@@ -1,0 +1,57 @@
+{
+ "name": "102-robust-skip-into-failing-inflight",
+ "description": "Robustness: segment 4 takes 1.5 s and fails twice (retries after 2 and 4 s). While 3 plays, a +18 s skip lands about 1 s into 4, the build's in-flight fetch. The player holds the build through the failures (Error while nothing can play) and lands 18 s on, playing, once 4 arrives about 10.5 s after load.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "4": 1500
+  }
+ },
+ "allow_errors": 1,
+ "steps": [
+  {
+   "configure": {
+    "fail": {
+     "4": 2
+    }
+   }
+  },
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 200
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    18000
+   ]
+  },
+  {
+   "wait": 12000
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "check": "fail_hold"
+   }
+  }
+ ]
+}

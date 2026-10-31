@@ -1,0 +1,11 @@
+{
+ "name": "03-seek-clamp-start",
+ "description": "Back 15 s near the start of the document clamps to 0, from the first segment and from the second.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [0]}, {"do": "play"}, {"settle": true}, {"wait": 1000},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true}, {"observe": 1000},
+  {"do": "jump_to", "args": [1]}, {"settle": true}, {"wait": 800},
+  {"do": "seek_by", "args": [-15000]}, {"settle": true}, {"observe": 1000}
+ ]
+}

@@ -1,0 +1,53 @@
+{
+ "name": "133-r4sj-paused-skip-across-short",
+ "description": "500 ms latency, paused at 22 (15.4 s, section end): +20 s crosses 23 (4.0 s) into 24; -20 s comes back to 22; previous twice.",
+ "config": {
+  "delay_ms": 500
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    22
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    20000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -20000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  }
+ ]
+}

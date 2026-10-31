@@ -70,6 +70,15 @@ pub fn ahead_of(ranges: &[(f64, f64)], t: f64) -> f64 {
     end.map_or(0.0, |e| (e - t).max(0.0))
 }
 
+/// Less than this much audio ahead of the playhead means it has run out (or is about to): only then does a failed
+/// fetch become an error. A `waiting` with more ahead is the element catching up after a seek.
+pub const STARVED_S: f64 = 0.3;
+
+/// True when the playhead at `t` has run out of buffered audio.
+pub fn is_starved(ranges: &[(f64, f64)], t: f64) -> bool {
+    ahead_of(ranges, t) < STARVED_S
+}
+
 /// Backoff before retrying a failed fetch: 2 s, 4 s, 8 s, 16 s, then 30 s.
 pub fn retry_delay_ms(attempt: u32) -> u32 {
     2_000u32.saturating_mul(1u32 << attempt.min(4)).min(30_000)
@@ -121,6 +130,17 @@ mod tests {
         assert_eq!(ahead_of(&ranges, 22.0), 0.0);
         assert_eq!(ahead_of(&ranges, 50.0), 0.0);
         assert_eq!(ahead_of(&[], 1.0), 0.0);
+    }
+
+    #[test]
+    fn starved_means_nothing_left_to_play() {
+        let ranges = [(0.0, 10.0)];
+        assert!(!is_starved(&ranges, 2.0));
+        assert!(!is_starved(&ranges, 9.6));
+        assert!(is_starved(&ranges, 9.8));
+        assert!(is_starved(&ranges, 10.0));
+        assert!(is_starved(&ranges, 15.0));
+        assert!(is_starved(&[], 0.0));
     }
 
     #[test]

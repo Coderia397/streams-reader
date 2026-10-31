@@ -1,0 +1,66 @@
+{
+ "name": "148-r4fb-unload-during-switch",
+ "description": "fallback: +20 s into 4 (switch loading) then unload at once, load 8 and play: plays 8; the cancelled switch neither seeks nor starts the element.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    20000
+   ],
+   "expect": false
+  },
+  {
+   "do": "unload"
+  },
+  {
+   "wait": 200
+  },
+  {
+   "assert": {
+    "state": "Idle",
+    "check": "fb_unload"
+   }
+  },
+  {
+   "do": "load",
+   "args": [
+    8
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 8,
+    "check": "fb_unload"
+   }
+  }
+ ]
+}

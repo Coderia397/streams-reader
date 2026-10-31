@@ -1,0 +1,71 @@
+{
+ "name": "94-seekjump-fast-next-unfetched",
+ "description": "3x with 0.9 s render latency: next pressed 4 times 100 ms apart from 2, walking off the buffered end (each next past the buffer restarts the build, abandoning the in-flight fetch); then back to 1x and -15 s right after it lands.",
+ "config": {
+  "delay_ms": 900
+ },
+ "steps": [
+  {
+   "do": "set_rate",
+   "args": [
+    3.0
+   ]
+  },
+  {
+   "do": "load",
+   "args": [
+    2
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1200
+  },
+  {
+   "do": "next",
+   "gap": 100
+  },
+  {
+   "do": "next",
+   "gap": 100
+  },
+  {
+   "do": "next",
+   "gap": 100
+  },
+  {
+   "do": "next"
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "wait": 200
+  },
+  {
+   "do": "set_rate",
+   "args": [
+    1.0
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

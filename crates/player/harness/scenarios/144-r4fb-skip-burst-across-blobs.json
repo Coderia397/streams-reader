@@ -1,0 +1,58 @@
+{
+ "name": "144-r4fb-skip-burst-across-blobs",
+ "description": "fallback: +15, +15, -15, +15 s pressed 80 ms apart from early 3 (each one a blob switch or a retarget of a pending one): lands 30 s on, playing.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 80
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ],
+   "gap": 80
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ],
+   "gap": 80
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  }
+ ]
+}

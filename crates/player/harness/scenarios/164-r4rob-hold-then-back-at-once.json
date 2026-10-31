@@ -1,0 +1,70 @@
+{
+ "name": "164-r4rob-hold-then-back-at-once",
+ "description": "4 takes 3 s; +18 s from 3 holds on its fetch and -18 s right after lands back in buffered 3 (the hold's queued pause event fires after the new play); a later jump to 20 must still play.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "4": 3000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    18000
+   ],
+   "expect": false
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -18000
+   ],
+   "expect": false
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 3,
+    "check": "hold_back"
+   }
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    20
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 20,
+    "check": "hold_back"
+   }
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "name": "63-robust-error-unload-load",
+ "description": "Robustness: segment 3 keeps failing and the playhead runs dry (Error) with a retry pending. Unload, then load another document at 10 and play: the old retry must not touch the new document, which plays normally.",
+ "config": {"delay_ms": 0, "fail": {"3": 20}},
+ "allow_errors": 1,
+ "steps": [
+  {"do": "load", "args": [2]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [15500]}, {"settle": true}, {"wait": 2500},
+  {"assert": {"state": "Error", "check": "starve"}},
+  {"do": "unload"}, {"wait": 300},
+  {"assert": {"state": "Idle", "check": "unload"}},
+  {"do": "load", "args": [10]}, {"do": "play"}, {"settle": true}, {"observe": 6000},
+  {"assert": {"state": "Playing", "segment": 10, "check": "unload"}}
+ ]
+}

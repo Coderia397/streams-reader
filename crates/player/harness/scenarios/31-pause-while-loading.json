@@ -1,0 +1,11 @@
+{
+ "name": "31-pause-while-loading",
+ "description": "Pause pressed while a jump to segment 15 (4 s render) is loading: the lock screen playback state should turn to paused at once (inspect with --raw), and the build lands paused.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [1]}, {"do": "play"}, {"settle": true}, {"wait": 1000},
+  {"configure": {"delays": {"15": 4000}}},
+  {"do": "jump_to", "args": [15]}, {"wait": 500}, {"do": "pause"}, {"wait": 2500},
+  {"settle": true, "timeout": 8000}, {"assert": {"state": "Paused", "segment": 15, "max_pos_ms": 60, "check": "jump"}}
+ ]
+}

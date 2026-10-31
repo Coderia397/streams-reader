@@ -1,0 +1,78 @@
+{
+ "name": "139-r4sj-hold-pause-skip-play",
+ "description": "Segment 5 renders in 5 s. Playing 4: +12 s holds on 5; pause; -6 s (lands in 4, paused); play; then +15 s holds on 5 again until it arrives.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "5": 5000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    4
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 500
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    12000
+   ],
+   "gap": 150
+  },
+  {
+   "do": "pause",
+   "gap": 150
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -6000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 4
+   }
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "observe": 1500
+  }
+ ]
+}

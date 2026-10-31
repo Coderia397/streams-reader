@@ -1,0 +1,15 @@
+{
+ "name": "48-robust-skip-forward-at-end",
+ "description": "Robustness: +15 s pressed again once the document has Ended must leave it Ended (not Paused at the end), and play then restarts the document at segment 0 as it does from Ended.",
+ "config": {"delay_ms": 0},
+ "expect_events": {"Ended": 1},
+ "steps": [
+  {"do": "load", "args": [25]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [15000]}, {"settle": true}, {"wait": 500},
+  {"assert": {"state": "Ended"}},
+  {"do": "seek_by", "args": [15000], "expect": false}, {"wait": 600},
+  {"assert": {"state": "Ended"}},
+  {"do": "play"}, {"settle": true}, {"wait": 600},
+  {"assert": {"state": "Playing", "segment": 0}}
+ ]
+}

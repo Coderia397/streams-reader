@@ -1,0 +1,12 @@
+{
+ "name": "1202-r4track-fb-paused-skips",
+ "description": "Round 4 tracking, fallback path: paused skips across blob boundaries (15 -> 16 -> 17 and back), then play.",
+ "config": {"query": "nomse=1", "delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [15]}, {"do": "play"}, {"settle": true}, {"wait": 2500}, {"do": "pause"}, {"settle": true},
+  {"do": "seek_by", "args": [17000]}, {"settle": true}, {"assert": {"state": "Paused", "segment": 16, "check": "tracking"}},
+  {"do": "seek_by", "args": [3000]}, {"settle": true}, {"assert": {"state": "Paused", "segment": 17, "check": "tracking"}},
+  {"do": "seek_by", "args": [-4000]}, {"settle": true}, {"assert": {"state": "Paused", "segment": 16, "check": "tracking"}},
+  {"do": "play"}, {"settle": true}, {"observe": 3000}
+ ]
+}

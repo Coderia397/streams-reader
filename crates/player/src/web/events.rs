@@ -7,14 +7,22 @@ use std::rc::{Rc, Weak};
 
 use wasm_bindgen::JsCast;
 use wasm_bindgen::closure::Closure;
+use wasm_bindgen_futures::spawn_local;
 
 use super::backend::Backend;
 use super::{Listeners, Outbox, Shared, State, js};
+use crate::buffer;
+use crate::seek;
 use crate::sleep::SleepStep;
-use crate::status::Input;
+use crate::status::{ClockProbe, Input, ProbeStep};
 use crate::{PlayerEvent, PlayerState};
 
 type Handler = fn(&Rc<Shared>);
+
+/// Period of the probe that holds the lock screen's position while the element's clock has not started.
+const CLOCK_PROBE_MS: u32 = 50;
+/// The probe gives up after this long (a stall, which `waiting` reports).
+const CLOCK_PROBE_LIMIT_MS: f64 = 2_000.0;
 
 /// One listener per media element event the player reacts to.
 pub(super) fn listeners(weak: &Weak<Shared>) -> Listeners {
@@ -58,9 +66,12 @@ impl Shared {
                 return;
             }
             let t = self.media_time(st);
-            if let Some(pos) = st.timeline.locate(t) {
-                self.report_segment(st, out, pos.segment);
+            if let Some((segment, _, _)) = self.shown(st, t) {
+                self.report_segment(st, out, segment);
             }
+            // Chrome fires `playing` about 250 ms before the clock moves, and the lock screen extrapolates from the
+            // call at the playback rate: correct it once the clock is running.
+            self.refresh_position(st, t);
             if st.phase == PlayerState::Playing {
                 self.account_sleep(st, out);
             }
@@ -75,16 +86,28 @@ impl Shared {
     }
 
     /// End-of-section sleep: pause in the section's closing silence and park the playhead where the next section
-    /// starts, so resuming begins with it.
+    /// starts, so resuming begins with it. When that segment is not appended yet, the park is the end of the buffered
+    /// audio, which is where it will start.
     fn stop_at_section_end(self: &Rc<Self>, st: &mut State, out: &mut Outbox, stop_s: f64) {
         st.want_play = false;
         st.sleep_clock_ms = None;
         let _ = self.audio.pause();
-        if stop_s < st.timeline.end_s() {
-            self.set_time(st, stop_s);
-        }
+        self.set_time(st, stop_s.min(st.timeline.end_s()));
         st.last_media_s = None;
+        if let Some((segment, _, _)) = self.shown(st, stop_s) {
+            self.report_segment(st, out, segment);
+        }
         out.push(PlayerEvent::SleepFired);
+        // The last section ends the document, but a paused element never fires `ended` there.
+        if st.finished && seek::is_document_end(&st.timeline, stop_s, st.segment_count) {
+            self.apply(st, out, Input::Ended);
+            out.push(PlayerEvent::Ended);
+            return;
+        }
+        // Not left to the element's `pause` event: on the fallback path the park can switch the source, and loading a
+        // new source drops the queued `pause` event.
+        self.apply(st, out, Input::Paused);
+        self.update_position(st);
     }
 
     fn on_playing(self: &Rc<Self>) {
@@ -97,6 +120,7 @@ impl Shared {
             st.sleep_clock_ms = Some(js_sys::Date::now());
             self.apply(st, out, Input::Playing);
             self.update_position(st);
+            self.watch_clock(st);
             self.schedule_frame(st);
         });
     }
@@ -129,11 +153,13 @@ impl Shared {
         });
     }
 
-    /// The playhead ran out of audio: buffering, or an error when the fetch that should have filled it failed.
+    /// The element is waiting for audio: buffering, or an error when the fetch that should have filled it failed and
+    /// nothing is left to play (a build still loading its target, or a playhead at the end of what is buffered).
     pub(super) fn starve(&self, st: &mut State, out: &mut Outbox) {
+        let dry = st.target.is_some() || buffer::is_starved(&st.backend.ranges(&st.timeline), self.media_time(st));
         match st.fetch_failure.clone() {
-            Some(message) => self.apply(st, out, Input::Failed(message)),
-            None => self.apply(st, out, Input::Waiting),
+            Some(message) if dry => self.apply(st, out, Input::Failed(message)),
+            _ => self.apply(st, out, Input::Waiting),
         }
     }
 
@@ -195,6 +221,9 @@ impl Shared {
             }
             st.last_media_s = Some(self.media_time(st));
             self.update_position(st);
+            if !self.audio.paused() {
+                self.watch_clock(st);
+            }
             out.push(PlayerEvent::Snapshot(self.snapshot_of(st)));
         });
     }
@@ -205,11 +234,75 @@ impl Shared {
             if !matches!(st.phase, PlayerState::Playing | PlayerState::Buffering) {
                 return;
             }
-            if st.throttle.ready(now) {
+            // A snapshot goes out when the spoken word changes, so the highlight follows the voice within a frame,
+            // and otherwise at the throttle's pace for the position read-outs.
+            let spoken = st.timeline.locate(self.media_time(st)).map(|pos| (pos.segment, pos.word));
+            let word_changed = st.target.is_none() && spoken.is_some() && spoken != st.shown_word;
+            if st.throttle.ready(now) || word_changed {
+                st.shown_word = spoken;
                 out.push(PlayerEvent::Snapshot(self.snapshot_of(st)));
             }
             self.schedule_frame(st);
         });
+    }
+
+    /// Chrome fires `playing` (and `seeked` while playing) about 250 ms before the element's clock moves, while the
+    /// session already says "playing", so the lock screen runs ahead of silence at the playback rate. Until the clock
+    /// has started and the published position agrees with it, this republishes the position every
+    /// [`CLOCK_PROBE_MS`], for at most [`CLOCK_PROBE_LIMIT_MS`]. Timers keep running behind a locked screen, where
+    /// `requestAnimationFrame` does not.
+    fn watch_clock(self: &Rc<Self>, st: &mut State) {
+        let generation = st.generation;
+        let running = st.clock_watch.is_some_and(|(g, _)| g == generation);
+        st.clock_watch = Some((generation, ClockProbe::new(self.media_time(st))));
+        if running {
+            return;
+        }
+        let weak = Rc::downgrade(self);
+        spawn_local(async move {
+            let started_ms = js_sys::Date::now();
+            loop {
+                js::delay(CLOCK_PROBE_MS).await;
+                let Some(shared) = weak.upgrade() else {
+                    return;
+                };
+                let done = shared.update(|st, _| shared.probe_clock(st, generation, started_ms));
+                if done {
+                    return;
+                }
+            }
+        });
+    }
+
+    /// One round of [`Shared::watch_clock`]; true when it is over.
+    fn probe_clock(&self, st: &mut State, generation: u64, started_ms: f64) -> bool {
+        let Some((g, mut probe)) = st.clock_watch else {
+            return true;
+        };
+        if g != generation {
+            // A newer build runs its own probe.
+            return true;
+        }
+        let now_ms = js_sys::Date::now();
+        let over = st.target.is_some()
+            || st.phase != PlayerState::Playing
+            || st.session_playback != "playing"
+            || now_ms - started_ms > CLOCK_PROBE_LIMIT_MS;
+        if over {
+            st.clock_watch = None;
+            return true;
+        }
+        let step = probe.step(self.media_time(st), st.position_mark, now_ms);
+        st.clock_watch = Some((generation, probe));
+        match step {
+            ProbeStep::Republish => self.update_position(st),
+            ProbeStep::Watch => {}
+            ProbeStep::Done => {
+                st.clock_watch = None;
+                return true;
+            }
+        }
+        false
     }
 
     fn schedule_frame(&self, st: &mut State) {

@@ -1,0 +1,13 @@
+{
+ "name": "08-media-session",
+ "description": "Lock screen actions: seekforward, seekbackward with its own offset, seekto inside the segment, nexttrack, previoustrack.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [3]}, {"do": "play"}, {"settle": true}, {"wait": 1000},
+  {"action": "seekforward", "details": {}}, {"settle": true}, {"observe": 800},
+  {"action": "seekbackward", "details": {"seekOffset": 10}}, {"settle": true}, {"observe": 800},
+  {"action": "seekto", "details": {"seekTime": 5}}, {"settle": true}, {"observe": 800},
+  {"action": "nexttrack"}, {"settle": true}, {"wait": 3500},
+  {"action": "previoustrack"}, {"settle": true}, {"observe": 1500}
+ ]
+}

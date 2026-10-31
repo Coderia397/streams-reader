@@ -1,0 +1,52 @@
+{
+ "name": "113-robust-eos-set-inside-tail",
+ "description": "Robustness: the listener picks sleep at end of section while the playhead is in the closing silence of segment 0 (paused at 2.2 s of 2.71 s, past the 0.9 s stop point). Playback reaches the end of that section 0.5 s after play, so it must stop there (SleepFired, parked at the start of 1) instead of playing on to the end of 15.",
+ "config": {
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    2200
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "set_sleep",
+   "args": [
+    0,
+    true
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "until": "SleepFired",
+   "timeout": 4000
+  },
+  {
+   "wait": 500
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 1,
+    "max_pos_ms": 300,
+    "check": "eos_tail"
+   }
+  }
+ ],
+ "expect_events": {
+  "SleepFired": 1
+ }
+}

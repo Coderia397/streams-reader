@@ -1,0 +1,154 @@
+{
+ "name": "145-r4sj-paused-tiny-skips-boundary",
+ "description": "Paused in 4 near its end: +/-150 ms skips across the 4/5 boundary ten times, then next and previous.",
+ "config": {
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    4
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    8900
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    150
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "do": "previous"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 4,
+    "max_pos_ms": 60,
+    "check": "jump"
+   }
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "name": "1112-r3track-loading-snapshot-position",
+ "description": "Tracking lens: segment 6 renders 4 s late. From 4@3 s skip +30 s into 6 (in flight, length unknown): while it loads, what do snapshots report? Then from 10@2 s (fresh build, 2 s latency) skip back 20 s into 9 (length unknown).",
+ "config": {"delay_ms": 0, "delays": {"6": 4000}},
+ "steps": [
+  {"do": "load", "args": [4]}, {"do": "play"}, {"settle": true}, {"wait": 2900},
+  {"do": "seek_by", "args": [30000]}, {"wait": 1500},
+  {"settle": true}, {"observe": 1500},
+  {"configure": {"delay_ms": 2000, "delays": {}}},
+  {"do": "unload", "expect": false}, {"wait": 300},
+  {"do": "load", "args": [10]}, {"do": "play"}, {"settle": true}, {"wait": 2000},
+  {"do": "seek_by", "args": [-20000]}, {"wait": 1000},
+  {"settle": true}, {"observe": 1500}
+ ]
+}

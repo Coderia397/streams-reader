@@ -1,0 +1,14 @@
+{
+ "name": "51-paused-skip-past-end",
+ "description": "Paused in the last segment, +15 s parks the playhead on the end of the document. Play then starts the document again at segment 0, as play after Ended does, instead of the browser restarting this build.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [24]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "jump_to", "args": [25]}, {"settle": true}, {"wait": 300},
+  {"do": "pause"}, {"wait": 300},
+  {"do": "seek_by", "args": [15000], "expect": false}, {"wait": 600},
+  {"do": "play"}, {"settle": true}, {"wait": 600},
+  {"assert": {"state": "Playing", "segment": 0, "max_pos_ms": 2000}}
+ ],
+ "expect_events": {"Ended": 0}
+}

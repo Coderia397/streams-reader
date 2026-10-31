@@ -1,0 +1,48 @@
+{
+ "name": "131-r4sj-jump-to-held-segment",
+ "description": "Segment 5 renders in 5 s. Playing 3, +30 s holds on 5; jump_to(5) keeps the in-flight fetch and lands on 5@0 when it arrives.",
+ "config": {
+  "delay_ms": 0,
+  "delays": {
+   "5": 5000
+  }
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 800
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    30000
+   ],
+   "gap": 200
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    5
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 12000
+  },
+  {
+   "observe": 2000
+  }
+ ]
+}

@@ -1,0 +1,63 @@
+{
+ "name": "139-r4fb-paused-seek-across",
+ "description": "fallback: paused in 3, +20 s into 4, play: plays from there.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1000
+  },
+  {
+   "do": "pause"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    20000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 4,
+    "check": "fb_paused"
+   }
+  },
+  {
+   "do": "play"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "observe": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 4,
+    "check": "fb_paused"
+   }
+  }
+ ]
+}

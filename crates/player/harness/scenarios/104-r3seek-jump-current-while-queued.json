@@ -1,0 +1,10 @@
+{
+ "name": "104-r3seek-jump-current-while-queued",
+ "description": "1.5 s latency. From 3, +20 s holds on 4 (in flight) with an unknown landing; next is queued behind it; jump_to(3) (in the buffer) must win and drop both.",
+ "config": {"delay_ms": 1500},
+ "steps": [
+  {"do": "load", "args": [3]}, {"do": "play"}, {"settle": true, "timeout": 15000}, {"wait": 800},
+  {"do": "seek_by", "args": [20000]}, {"do": "next"}, {"do": "jump_to", "args": [3]}, {"settle": true, "timeout": 15000},
+  {"assert": {"segment": 3, "max_pos_ms": 600, "check": "jump"}}, {"observe": 2500}
+ ]
+}

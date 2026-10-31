@@ -1,0 +1,11 @@
+{
+ "name": "105-r3seek-skip-pingpong-loading",
+ "description": "2 s latency, load at 12 (8 s). -15 s / +15 s / -15 s / +15 s while the first build loads: the target swings across the build start into 11 and back; lands 12@0.",
+ "config": {"delay_ms": 2000},
+ "steps": [
+  {"do": "load", "args": [12]}, {"do": "play", "gap": 100},
+  {"do": "seek_by", "args": [-15000], "gap": 80}, {"do": "seek_by", "args": [15000], "gap": 80},
+  {"do": "seek_by", "args": [-15000], "gap": 80}, {"do": "seek_by", "args": [15000]},
+  {"settle": true, "timeout": 20000}, {"assert": {"segment": 12, "max_pos_ms": 400, "check": "seek"}}, {"observe": 1200}
+ ]
+}

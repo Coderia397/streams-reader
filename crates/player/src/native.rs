@@ -21,6 +21,7 @@ impl Driver {
     pub(crate) fn previous(&self) {}
     pub(crate) fn set_rate(&self, _rate: f64) {}
     pub(crate) fn set_sleep(&self, _sleep: Sleep) {}
+    pub(crate) fn set_skip(&self, _back_ms: u32, _forward_ms: u32) {}
     pub(crate) fn snapshot(&self) -> Snapshot {
         Snapshot {
             state: PlayerState::Idle,

@@ -1,0 +1,11 @@
+{
+ "name": "106-robust-eos-fast-short-first",
+ "description": "Robustness: sleep at end of section set before play on segment 16 (3.2 s, closes a section) at 3x. The stop must still fire inside 16's tail and park on the start of 17.",
+ "config": {"delay_ms": 0},
+ "expect_events": {"SleepFired": 1},
+ "steps": [
+  {"do": "load", "args": [16]}, {"do": "set_rate", "args": [3.0]}, {"do": "set_sleep", "args": [0, true]},
+  {"do": "play"}, {"until": "SleepFired", "timeout": 6000}, {"wait": 800},
+  {"assert": {"state": "Paused", "segment": 17, "max_pos_ms": 300, "check": "eos_fast"}}
+ ]
+}

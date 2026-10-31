@@ -1,0 +1,101 @@
+{
+ "name": "142-r4sj-inbuffer-jump-pingpong",
+ "description": "No latency, buffer full. Playing: jump_to 6, 2, 6, 2, ... ten times 20 ms apart (all buffered), then observe tracking and words.",
+ "config": {
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    6
+   ],
+   "gap": 20
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    2
+   ],
+   "gap": 20
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    6
+   ],
+   "gap": 20
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    2
+   ],
+   "gap": 20
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    6
+   ],
+   "gap": 20
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    2
+   ],
+   "gap": 20
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    6
+   ],
+   "gap": 20
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    2
+   ],
+   "gap": 20
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    6
+   ],
+   "gap": 20
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    2
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 10000
+  },
+  {
+   "observe": 3000
+  }
+ ]
+}

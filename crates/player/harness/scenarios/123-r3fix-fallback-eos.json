@@ -1,0 +1,69 @@
+{
+ "name": "123-r3fix-fallback-eos",
+ "description": "fallback: end of section from 15 parks at the start of 16; play then plays 16 (fallback path via ?nomse=1).",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    15
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "set_sleep",
+   "args": [
+    0,
+    true
+   ]
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    15000
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "until": "SleepFired",
+   "timeout": 6000
+  },
+  {
+   "wait": 800
+  },
+  {
+   "assert": {
+    "state": "Paused",
+    "segment": 16,
+    "max_pos_ms": 300,
+    "check": "fb_eos"
+   }
+  },
+  {
+   "do": "play"
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 16,
+    "check": "fb_eos"
+   }
+  }
+ ],
+ "expect_events": {
+  "SleepFired": 1
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "name": "1104-r3track-paused-skips",
+ "description": "Tracking lens: paused, skip across short segment 16 both ways and jump into the buffer; the reported segment and word must match the playhead after each.",
+ "config": {"delay_ms": 0},
+ "steps": [
+  {"do": "load", "args": [15]}, {"do": "play"}, {"settle": true}, {"wait": 2500}, {"do": "pause"}, {"settle": true},
+  {"do": "seek_by", "args": [17000]}, {"settle": true}, {"assert": {"state": "Paused", "segment": 16, "check": "tracking"}},
+  {"do": "seek_by", "args": [3000]}, {"settle": true}, {"assert": {"state": "Paused", "segment": 17, "check": "tracking"}},
+  {"do": "seek_by", "args": [-4000]}, {"settle": true}, {"assert": {"state": "Paused", "segment": 16, "check": "tracking"}},
+  {"do": "jump_to", "args": [18]}, {"settle": true}, {"do": "pause"}, {"settle": true},
+  {"assert": {"state": "Paused", "segment": 18, "check": "tracking"}},
+  {"do": "play"}, {"settle": true}, {"observe": 1500}
+ ]
+}

@@ -1,0 +1,12 @@
+{
+ "name": "70-track-rate-during-loading",
+ "description": "Rate changed while a build is loading (1.5 s render): 2.5x set during the first load, 0.75x set during a rebuild back past the build start; words, tracking and lock-screen rate after each.",
+ "config": {"delay_ms": 1500},
+ "steps": [
+  {"do": "load", "args": [3]}, {"do": "play"}, {"wait": 300},
+  {"do": "set_rate", "args": [2.5]}, {"settle": true}, {"observe": 3000},
+  {"do": "seek_by", "args": [-15000]}, {"wait": 200},
+  {"do": "set_rate", "args": [0.75]}, {"settle": true}, {"observe": 2500},
+  {"do": "set_rate", "args": [1.0]}
+ ]
+}

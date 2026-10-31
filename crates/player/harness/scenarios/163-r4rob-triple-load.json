@@ -1,0 +1,46 @@
+{
+ "name": "163-r4rob-triple-load",
+ "description": "three loads 0 ms apart (3, 5, 7) then play: plays 7; the abandoned MediaSources never touch it.",
+ "config": {
+  "delay_ms": 200
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    3
+   ]
+  },
+  {
+   "do": "load",
+   "args": [
+    5
+   ]
+  },
+  {
+   "do": "load",
+   "args": [
+    7
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 2000
+  },
+  {
+   "wait": 5000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 7,
+    "check": "reload"
+   }
+  }
+ ]
+}

@@ -1,0 +1,59 @@
+{
+ "name": "1325-r4trackfb-seekjump-skip-back-short-prev",
+ "description": "Round 4 tracking, fallback path (?nomse=1) copy of 91-seekjump-skip-back-short-prev: 0.6 s render latency. Build from 14 fetches 15, 16, 17; a jump to 17 rebuilds there. -15 s from 1 s into 17 crosses the build start and short segment 16 (3.2 s) into 15, whose length the player had already seen.",
+ "config": {
+  "delay_ms": 600,
+  "query": "nomse=1"
+ },
+ "steps": [
+  {
+   "do": "load",
+   "args": [
+    14
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 2500
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    22
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "do": "jump_to",
+   "args": [
+    17
+   ]
+  },
+  {
+   "settle": true
+  },
+  {
+   "wait": 1000
+  },
+  {
+   "do": "seek_by",
+   "args": [
+    -15000
+   ]
+  },
+  {
+   "settle": true,
+   "timeout": 15000
+  },
+  {
+   "observe": 1200
+  }
+ ]
+}

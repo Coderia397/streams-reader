@@ -1,0 +1,15 @@
+{
+ "name": "61-robust-stall-pause-play-early",
+ "description": "Robustness: segment 4 takes 12 s to render; the playhead runs out at the end of 3 (Buffering). Pause, then play again before 4 arrives: the element is trying to play (it fires waiting), so the state must be Buffering again, not stay Paused until 4 arrives.",
+ "config": {"delay_ms": 0, "delays": {"4": 12000}},
+ "steps": [
+  {"do": "load", "args": [3]}, {"do": "play"}, {"settle": true}, {"wait": 300},
+  {"do": "seek_by", "args": [15500]}, {"settle": true}, {"wait": 2500},
+  {"assert": {"state": "Buffering", "segment": 3, "check": "stall"}},
+  {"do": "pause"}, {"wait": 500},
+  {"do": "play"}, {"wait": 1500},
+  {"assert": {"state": "Buffering", "check": "stall_play"}},
+  {"wait": 9000},
+  {"assert": {"state": "Playing", "segment": 4, "check": "stall_resume"}}
+ ]
+}

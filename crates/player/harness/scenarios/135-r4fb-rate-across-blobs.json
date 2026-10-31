@@ -1,0 +1,38 @@
+{
+ "name": "135-r4fb-rate-across-blobs",
+ "description": "fallback at 2x: 0 (2.7 s) into 1 keeps the rate across the switch.",
+ "config": {
+  "query": "nomse=1",
+  "delay_ms": 0
+ },
+ "steps": [
+  {
+   "do": "set_rate",
+   "args": [
+    2.0
+   ]
+  },
+  {
+   "do": "load",
+   "args": [
+    0
+   ]
+  },
+  {
+   "do": "play"
+  },
+  {
+   "settle": true
+  },
+  {
+   "observe": 4000
+  },
+  {
+   "assert": {
+    "state": "Playing",
+    "segment": 1,
+    "check": "fb_rate"
+   }
+  }
+ ]
+}

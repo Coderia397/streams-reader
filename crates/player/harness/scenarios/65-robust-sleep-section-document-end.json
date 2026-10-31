@@ -1,0 +1,13 @@
+{
+ "name": "65-robust-sleep-section-document-end",
+ "description": "Robustness: sleep at end of section on the last segment of the document (25 closes a section). The document is finished there: Ended should fire (the app marks the document finished on Ended), as when it plays out without the timer.",
+ "config": {"delay_ms": 0},
+ "expect_events": {"SleepFired": 1, "Ended": 1},
+ "steps": [
+  {"do": "load", "args": [25]}, {"do": "play"}, {"settle": true},
+  {"do": "set_sleep", "args": [0, true]},
+  {"do": "seek_by", "args": [9000]}, {"settle": true},
+  {"until": "SleepFired", "timeout": 6000}, {"wait": 1500},
+  {"assert": {"state": "Ended", "check": "section_doc_end"}}
+ ]
+}
