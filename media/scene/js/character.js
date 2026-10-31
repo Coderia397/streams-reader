@@ -179,7 +179,7 @@ export class Character {
       this.box(knee, 0.18, 0.035, 0.195, this.m('pantsD', { color: P.pantsDark, roughness: 0.9 }), [0, -0.215, 0], 0.012);
       const ankle = this.joint('ankle' + side, knee, [0, -0.25, 0]);
       this.box(ankle, 0.19, 0.075, 0.28, shoe, [0, -0.025, 0.04], 0.03);
-      this.box(ankle, 0.195, 0.025, 0.285, sole, [0, -0.068, 0.04], 0.01);
+      this.box(ankle, 0.196, 0.034, 0.286, sole, [0, -0.06, 0.04], 0.012);
     }
     // torso
     const spine = this.joint('spine', hips, [0, 0.06, 0]);
@@ -347,6 +347,7 @@ export class Character {
       j.position.copy(this.restPose[k]);
     }
     J.hips.position.y += st.hipsY || 0;
+    if (st.lookAt && (st.lookW ?? 1) > 0) this.aimHead(st.lookAt, st.lookW ?? 1);
     // secondary motion: breathing, idle sway, head drift
     const br = Math.sin(6.2831853 * this.snapF(0.22) * t);
     J.spine.scale.set(1 + 0.008 * br, 1 + 0.012 * br, 1 + 0.01 * br);
@@ -373,6 +374,20 @@ export class Character {
       if (ik && ik.w > 0) this.applyIK(side, ik);
     }
     this.applyExpression(st.expr || EXPRESSIONS.neutral, t, st.blinkSeed ?? this.seed);
+  }
+
+  // look-at constraint: neck and head share the yaw/pitch towards a world point (35 % / 65 %), clamped, blended
+  // with the pose by w. Applied before the secondary noise so breathing and drift stay on top.
+  aimHead(target, w) {
+    const J = this.joints;
+    this.group.updateMatrixWorld(true);
+    const eye = J.neck.localToWorld(new THREE.Vector3(0, 0.3, 0.1));
+    const q = J.spine.getWorldQuaternion(new THREE.Quaternion()).invert();
+    const d = target.clone().sub(eye).applyQuaternion(q);
+    const yaw = clamp(Math.atan2(d.x, d.z), -0.8, 0.8);
+    const pitch = clamp(Math.atan2(-d.y, Math.hypot(d.x, d.z)), -0.5, 0.75);
+    J.neck.rotation.x = lerp(J.neck.rotation.x, 0.35 * pitch, w); J.neck.rotation.y = lerp(J.neck.rotation.y, 0.35 * yaw, w);
+    J.head.rotation.x = lerp(J.head.rotation.x, 0.65 * pitch, w); J.head.rotation.y = lerp(J.head.rotation.y, 0.65 * yaw, w);
   }
 
   soleMin(side) {
@@ -426,16 +441,21 @@ export class Character {
     const parent = sh.parent;
     parent.updateMatrixWorld(true);
     const inv = new THREE.Matrix4().copy(parent.matrixWorld).invert();
-    const target = ik.pos.clone().applyMatrix4(inv).sub(sh.position);
+    // with a grip orientation, aim the wrist pivot so the hand centre (0,-0.05,0 in wrist space) lands on the target
+    const handOff = new THREE.Vector3(0, -0.05, 0);
+    const pivotW = ik.quat ? ik.pos.clone().sub(handOff.clone().applyQuaternion(ik.quat)) : ik.pos;
+    const target = pivotW.clone().applyMatrix4(inv).sub(sh.position);
     const sx = side === 'L' ? 1 : -1;
     // elbows point down, out and back; the hinge only flexes forward
     const pole = new THREE.Vector3(0.7 * sx, -1, -0.6).normalize();
     const fkQ = sh.quaternion.clone(), fkE = el.rotation.x;
     let best = null;
-    for (const c of solveArmCandidates(target, this.armLen.a, this.armLen.b, pole)) {
+    const b = ik.quat ? 0.215 : this.armLen.b;
+    for (const c of solveArmCandidates(target, this.armLen.a, b, pole)) {
       sh.quaternion.copy(c.q); el.rotation.set(c.elbow, 0, 0);
       sh.updateMatrixWorld(true);
-      const err = wr.localToWorld(new THREE.Vector3(0, -0.05, 0)).distanceTo(ik.pos);
+      const err = ik.quat ? wr.getWorldPosition(new THREE.Vector3()).distanceTo(pivotW)
+        : wr.localToWorld(new THREE.Vector3(0, -0.05, 0)).distanceTo(ik.pos);
       const score = err * 10 - c.elbowPos.clone().normalize().dot(pole);
       if (!best || score < best.score) best = { ...c, err, score };
     }
@@ -446,7 +466,7 @@ export class Character {
     if (ik.quat) {
       const pw = new THREE.Quaternion(); el.getWorldQuaternion(pw);
       const local = pw.invert().multiply(ik.quat);
-      wr.quaternion.slerp(local, ik.w * (ik.quatW ?? 0.85));
+      wr.quaternion.slerp(local, ik.w * (ik.quatW ?? 1));
     }
   }
 

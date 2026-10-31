@@ -4,6 +4,7 @@ import * as THREE from '../vendor/three/three.module.min.js';
 import { RoundedBoxGeometry } from '../vendor/three/addons/geometries/RoundedBoxGeometry.js';
 import { rng, pixelTexture, hexRgb, clamp, radialSprite, deg } from './util.js';
 import { voxelBlob } from './env_room.js';
+import { Character } from './character.js';
 
 const std = (o) => new THREE.MeshStandardMaterial({ roughness: 0.85, ...o });
 const G = new Map();
@@ -96,7 +97,7 @@ export function buildPark({ seed = 21, setting = 'park', time = 'golden' } = {})
   } else {
     for (let x = -36; x < 36; x += r.range(2.6, 4.2)) tree(x + r.range(-0.6, 0.6), r.range(-3.2, -5.5), r.range(0.9, 1.25));
     for (let x = -36; x < 36; x += r.range(5, 8)) tree(x, r.range(-9, -13), r.range(1.2, 1.6));
-    for (let x = -36; x < 36; x += r.range(7, 11)) tree(x, r.range(3.2, 4.5), r.range(0.9, 1.1));
+    for (let x = -36; x < 36; x += r.range(7, 11)) tree(x, r.range(5.0, 6.2), r.range(0.9, 1.1)); // foreground row, clear of tracking cameras
     for (let x = -36; x < 36; x += r.range(1.8, 3.2)) root.add(voxelBlob(r, [x, 0.3, r.range(1.6, 2.6)], [0.5, 0.35, 0.4], 0.17, shrubM, 0.7));
     for (let x = -36; x < 36; x += r.range(2, 3.5)) root.add(voxelBlob(r, [x, 0.25, r.range(-1.7, -2.3)], [0.45, 0.3, 0.35], 0.15, shrubM, 0.7));
     // flowers: tiny coloured cubes in the grass
@@ -150,7 +151,7 @@ export function buildPark({ seed = 21, setting = 'park', time = 'golden' } = {})
   const leaves = [];
   for (let i = 0; i < 90; i++) {
     const l = new THREE.Mesh(leafG, r.pick(leafMs)); l.castShadow = false;
-    l.userData = { x: r.range(-14, 22), z: r.range(-3.5, 2.4), h: r.range(3, 5), ph: r(), T: r.range(5, 9), sw: r.range(0.2, 0.6), sp: r.range(1, 3) };
+    l.userData = { x: r.range(-14, 22), z: r.range(-3.8, 1.0), h: r.range(3, 5), ph: r(), T: r.range(5, 9), sw: r.range(0.2, 0.6), sp: r.range(1, 3) };
     root.add(l); leaves.push(l);
   }
   updaters.push((t, period) => {
@@ -183,6 +184,33 @@ export function buildPark({ seed = 21, setting = 'park', time = 'golden' } = {})
       const f = Math.sin(t * 6.283 * 2.5 + u.ph * 10) * 0.6;
       u.wl.rotation.z = f; u.wr.rotation.z = -f;
       u.wl.position.y = u.wr.position.y = 0;
+    }
+  });
+
+  // depth: a second path behind the first row of trees with a few people strolling (same rig, other palettes)
+  if (setting !== 'street') {
+    const back = new THREE.Mesh(new THREE.BoxGeometry(160, 0.03, 1.4), std({ map: pathTex, roughness: 0.9 }));
+    back.position.set(0, 0.015, -7.6); back.receiveShadow = true; root.add(back);
+  }
+  const walkers = [];
+  const looks = [
+    { hoodie: '#7D8FB3', hoodieDark: '#687A9E', hoodieTrim: '#5E6F90', pants: '#3B3B44', skin: '#C98E62', hair: '#1E1A18' },
+    { hoodie: '#B5543C', hoodieDark: '#9C4632', hoodieTrim: '#8A3E2C', pants: '#2C3550', skin: '#F2CDA8', hair: '#8A5A2E' },
+    { hoodie: '#5E8E5A', hoodieDark: '#4F7A4B', hoodieTrim: '#456B42', pants: '#4A4036', skin: '#8D5A3B', hair: '#151313' },
+    { hoodie: '#E1B862', hoodieDark: '#C9A04E', hoodieTrim: '#B08A40', pants: '#2F3A4A', skin: '#E8B48C', hair: '#3B2A24' },
+  ];
+  [[-6, -7.4, -1], [3, -7.8, 1], [11, -7.5, -1], [19, -7.7, 1]].forEach(([x, z, dir], i) => {
+    if (setting === 'street') z = -3.2;
+    const c = new Character({ seed: 40 + i, palette: looks[i], headphones: i === 1 ? 'ears' : 'none' });
+    c.group.scale.setScalar(0.96 + 0.06 * (i % 2));
+    root.add(c.group);
+    walkers.push({ c, x, z, dir, cad: 0.8 + 0.06 * i });
+  });
+  updaters.push((t) => {
+    for (const w of walkers) {
+      const v = w.c.strideSpeed({ amount: 0.9, cadence: w.cad });
+      w.c.update({ root: { pos: [w.x + w.dir * v * t, 0, w.z], rotY: w.dir * 90 }, joints: {}, ground: 0,
+        walk: { amount: 0.9, cadence: w.cad, arms: 1, phase: w.x }, expr: undefined, life: 0.6 }, t + w.x);
     }
   });
 

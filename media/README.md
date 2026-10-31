@@ -21,7 +21,9 @@ Copy a shot from `media/shots/` and edit it. Times inside a segment are relative
 {
   "name": "my-video", "fps": 30, "duration": 12, "resolution": [1920, 1080], "seed": 11,
   "loop": false,                 // true: every motion snaps to the duration so the clip loops seamlessly
-  "poster_t": 4.0, "motion_blur": 1, "encode": {"webm": {"codec": "av1", "crf": 34}, "mp4": {"crf": 21}},
+  "poster_t": 4.0, "motion_blur": 1,
+  "encode": {"webm": {"codec": "av1", "crf": 34}, "mp4": {"crf": 20},
+             "deliver": [{"suffix": "", "height": 1080, "video_bitrate": "1450k"}, {"suffix": "-720p", "height": 720, "video_bitrate": "850k"}]},
   "segments": [{
     "start": 0, "end": 12,
     "environment": {"preset": "room"},          // or {"preset": "park", "options": {"time": "golden|day|dusk", "setting": "park|street"}}
@@ -34,11 +36,12 @@ Copy a shot from `media/shots/` and edit it. Times inside a segment are relative
       "keys": [{"t": 0, "pos": [0, 0, 0], "rotY": 0}],     // offset from the anchor, facing (deg)
       "headphones": "ears",                      // ears | neck | earbuds | none
       "cable": true,                             // wired: cable from the left cup to the phone
-      "walk": {"speed": 0.85, "heading": 90, "cadence": 0.85, "arms": 0.45},
+      "walk": {"speed": "auto", "heading": 90, "cadence": 0.85, "arms": 0.45},   // auto = matched to the stride
       "poses": [{"t": 0, "pose": "sit_relaxed"}, {"t": 3, "pose": "sit_relaxed+look_up", "blend": 0.8}],
       "expressions": [{"t": 0, "expr": "absorbed"}, {"t": 4, "expr": "soft_smile"}],
       "hold": [{"t": 0, "item": "phone", "hold": "read_one"}],   // item: phone | book | none
-      "hold_yaw": 20, "phone_scale": 1.6, "pov": false           // pov hides the head for an eye-line insert
+      "hold_yaw": 20, "phone_scale": 1.6, "pov": false,          // pov hides the head for an eye-line insert
+      "look_w": [{"t": 0, "v": 0.9}]                             // head look-at weight towards the held item
     },
     "screen": {"clip": "assets/screen/app-alice.webm", "in": 3.0, "on": [{"t": 0, "v": [1]}], "loop_xfade": 0.8},
     "camera": {
@@ -46,7 +49,7 @@ Copy a shot from `media/shots/` and edit it. Times inside a segment are relative
       "focus": [{"t": 0, "on": "face"}, {"t": 2, "on": "phone"}],   // rack focus: face | phone | chest | eye | metres
       "keys": [
         {"t": 0, "pos": [1.3, 1.3, 0.45], "target": [-0.12, 1.0, -1.3], "fov": 33},
-        {"t": 6, "orbit": [30, 4, 1.6], "target": "face", "aim": [0, -0.1, 0], "fov": 30, "ease": "inout"},
+        {"t": 6, "orbit": [30, 4, 1.6], "target": "face", "aim": [0, -0.1, 0], "fov": 30, "ease": "inout"},  // aim moves the look point only
         {"t": 9, "pos": "eye", "offset": [0, 0.06, 0.05], "target": "phone", "fov": 30, "ease": "step"}
       ]
     },
@@ -56,6 +59,7 @@ Copy a shot from `media/shots/` and edit it. Times inside a segment are relative
                {"start": 10, "end": 12, "type": "endcard", "sub_id": "url"}],
   "audio": {
     "music": {"file": "assets/music/bed.ogg", "gain_db": -2, "fade_out": 3},
+    "vo_set": "{lang}-ming",                    // expressive take if rendered, else the Kokoro set for the language
     "vo": [{"id": "late", "at": 1.6}],          // line ids from media/vo/script.<lang>.json
     "narration": [{"file": "assets/screen/app-alice.narration.webm", "at": 5, "in": 3.0, "dur": 4, "gain_db": 0}],
     "loudness": -16, "true_peak": -1.5
@@ -73,6 +77,13 @@ yaw 0 in front of the character, 90 on its left.
 Mix: voice-over and narration form one voice bus; the music is ducked under it with `sidechaincompress`, then the mix
 is normalised with two-pass `loudnorm` to -16 LUFS integrated, -1.5 dBTP. Captions (WebVTT) are written from the
 voice-over lines. Delivery: AV1 (SVT-AV1) + Opus in WebM, H.264 + AAC in MP4, limited-range BT.709 yuv420p.
+
+## Rig and continuity QA
+
+    uv run --script media/qa.py media/shots/promo.json --out /tmp/qa      # sheets every 0.25 s + joint close-ups + metrics
+
+Read the sheets after any change to poses, holds or cameras; the metrics file flags floating or sinking feet, hands
+missing their IK target, elbows or knees bending backwards and the headphone cable passing through the torso.
 
 ## Spot illustrations
 
@@ -97,7 +108,9 @@ reference the clip by path and in-point, so after a re-capture check the `in` po
 ## Other languages
 
 1. Copy `media/vo/script.en.json` to `script.<lang>.json`, translate `text` and `cards`, keep the ids, set `voice`.
-2. `uv run --script media/vo/render_vo.py --lang <lang>` (Kokoro voices only; the GPU voices are reserved).
+2. `uv run --script media/vo/render_vo.py --lang <lang>` (Kokoro). The expressive take uses the shared GPU budget:
+   `render_vo.py --voice ming:US_Emma --set en-ming --gpu` sends all lines in one request with each line's `emotion`
+   and never resubmits.
 3. `uv run --script media/render.py media/shots/promo.json --lang <lang> --out media/dist/promo-<lang>`.
 Line timing in the shot is by id; if a translation runs long, move the next `at` in a copy of the shot.
 `media/vo/languages.json` lists which Kokoro voice fits each UI language; only English voices are in the app's

@@ -1,0 +1,74 @@
+{
+ "viewport": [
+  390,
+  844
+ ],
+ "dpr": 2,
+ "probe": {
+  "title": {
+   "x": 22,
+   "y": -4631,
+   "w": 346,
+   "h": 70.78125,
+   "font": "Literata",
+   "size": "30px",
+   "weight": "600",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "radius": "0px",
+   "text": "Alice\u2019s Adventures in Wonderland"
+  },
+  "para": {
+   "x": 22,
+   "y": -4353.15625,
+   "w": 346,
+   "h": 282.09375,
+   "font": "Literata",
+   "size": "19px",
+   "weight": "400",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "radius": "0px",
+   "text": "Alice was beginning to get very tired of sitting by her sister on the bank, and "
+  },
+  "bar": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "Inter",
+   "size": "15px",
+   "weight": "400",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgba(11, 11, 15, 0.82)",
+   "radius": "0px",
+   "text": "CHAPTER I. Down the Rabbit-Hole"
+  },
+  "dock": {
+   "x": 0,
+   "y": 642.609375,
+   "w": 390,
+   "h": 201.390625,
+   "font": "Inter",
+   "size": "15px",
+   "weight": "400",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgba(11, 11, 15, 0.82)",
+   "radius": "24px 24px 0px 0px",
+   "text": "17%\n29 min left\n15\n15\n1x\nHeart\nSleep\nChapters"
+  },
+  "play": {
+   "x": 163,
+   "y": 711,
+   "w": 64,
+   "h": 64,
+   "font": "Inter",
+   "size": "15px",
+   "weight": "400",
+   "color": "rgb(255, 255, 255)",
+   "bg": "rgb(102, 85, 240)",
+   "radius": "50%",
+   "text": ""
+  }
+ }
+}

@@ -58,11 +58,79 @@ How to use it: `media/README.md`. Sources and licences: `media/CREDITS.md`.
   0-byte WebM); run renders in the foreground of a background task instead.
 
 ### Outputs
-- See the final table in the progress section below (filled after the renders).
+- Superseded by the 2026-10-31 outputs below (the 2026-10-30 renders were replaced).
+
+## 2026-10-31
+
+### Expressive voice-over (owner: "not expressive enough")
+- One `POST /api/render` request with all six lines, voice `ming:US_Emma` (warm US narrator; UK_Charlotte would have
+  sounded too close to the book's British voice), per-line emotion: late neutral, readto happy, voice neutral,
+  anywhere happy, tagline happy, endcard happy. Result: all ready, no retry. GPU ledger after the run (GET /api/status):
+  used 38 s of 280 s, 1 of 3 runs. Durations (API `duration_ms`): late 4.32 s, readto 1.66 s, voice 4.06 s,
+  anywhere 3.59 s, tagline 5.01 s, endcard 1.59 s (Kokoro takes kept in `assets/vo/en/` as fallback; the Ming set is
+  `assets/vo/en-ming/`, selected by `audio.vo_set` in the shot). Edit re-timed: lines at 1.5, 8.3, 14.9, 19.5, 31.2,
+  37.3 s. Status: verified rendered and audible (ffmpeg volumedetect mean -17 to -20 dB); not judged by ear.
+
+### Rig QA (owner: "sometimes the limbs are weird and the joints are weird")
+Tool: `media/qa.py <shot> --out DIR` renders every 0.25 s at 960x540 into 3x3 sheets, joint close-ups (shoulders,
+elbows, wrists on the phone, hips, knees, ankles; set hidden so the armchair does not block them) and a metrics file
+(lowest sole height, IK hand error, elbow/knee hinge angles, cable points inside the torso). Passes run: 8 on the promo
+(164 frames each). Defects found and fixed at the rig level (verified on the final pass: 0 metric issues, sheets read):
+1. Elbow IK picked the elbow side away from the pole (upper arm rotated by -alpha), so elbows could flip up or inwards.
+   Fix: candidate solver, elbow is a hinge that only flexes forward, pick the reaching candidate closest to the pole.
+   Measured on the final pass: elbows -6 to -95 deg, never positive; knees 6 to 96 deg, never negative.
+2. Hands floated beside the phone: IK placed the hand centre, then the wrist rotated about its pivot and moved the hand.
+   Fix: with a grip orientation the solver aims the wrist pivot; hands clamp the phone's side edges (thumb in front,
+   fingers behind). Hand-target error 0.000 m (qa metrics).
+3. Visible gaps where boxes rotate at elbows, knees and hips. Fix: round joint caps at those pivots.
+4. Shoe sole showed a seam under the shoe. Fix: sole overlaps the shoe.
+5. Headphone cable ran through the arm and torso while walking (1-3 cable points inside the torso box on 69 of 164
+   samples). Fix: cable routed over the collar, down the chest and belly front. Now 0.
+6. Feet could float or sink while standing/walking. Fix: ground solve (lowest sole to y = 0) every frame; planted foot
+   at 0.000 m, swing foot up to 0.028 m. Ground speed now derived from the stride (no foot sliding).
+7. While "reading" the face looked at the camera, not the phone. Fix: look-at constraint on neck (35 %) and head
+   (65 %), clamped, keyable weight (`look_w`).
+8. The tired nod dropped the head 51 deg. Fix: 14 deg nod.
+9. Falling leaves crossed the lens in tracking shots (big orange blur). Fix: leaf volume kept behind the camera paths.
+10. Orbit cameras pivoted around the aim point, swinging through the foreground tree row. Fix: orbit around the subject,
+    `aim` only shifts the look point; foreground trees moved to 5-6 m from the path.
+11. Screenshot could be taken before the compositor presented the frame. Fix: wait two animation frames before
+    capture. Determinism checked: frames 30-32 rendered twice in one session gave identical PNG md5 hashes.
+Polish: glide from his face to the rainy window, dissolve into the park opening on the canopy and tilting down to him
+(replaces the whip); calm park face; back path with four strolling people; grain lowered for compression; web MP4s
+are two-pass x264 from a master (1080p 1450k video, 720p 850k).
+
+### Finding about the app (for the player team)
+- In the capture the app read the heading, then skipped the first paragraph ("Alice was beginning to get very
+  tired...") and continued with "So she was considering..." both in audio and highlight (frames at 3-5 s of
+  `assets/screen/app-alice.webm`; narration from 3.54 s). Status: verified once, cause unknown (fresh profile, voice
+  switched to Emma just before Play, progress set to 0). Unblock: reproduce in the player harness.
+
+### Outputs (2026-10-31, local in media/dist/, gitignored; sizes from ls, durations and loudness from ffmpeg/ebur128)
+| File | Size | Notes |
+|---|---|---|
+| promo/promo.webm | 7.05 MB | 41.0 s, 1920x1080 AV1 + Opus |
+| promo/promo.mp4 | 7.81 MB | 41.0 s, 1080p H.264 two-pass 1350k + AAC; -16.0 LUFS, true peak -1.5 dBTP |
+| promo/promo-720p.mp4 | 5.15 MB | 41.0 s, 720p two-pass 850k |
+| promo/promo.poster.{jpg,avif} | 135 KB / 35 KB | frame at 14 s (POV of the app) |
+| promo/promo.en.vtt | 0.5 KB | voice-over captions |
+| hero/hero-loop.{webm,mp4} | 0.49 / 0.99 MB | 10 s seamless loop, 1280x720, silent |
+| hero/hero-loop-portrait.{webm,mp4} | 0.43 / 0.90 MB | 10 s loop, 720x1280 |
+| hero/*.poster.{jpg,avif} | 56-59 KB / 11-12 KB | |
+| spots/<name>{,-512}.{png,webp} | 6.7 MB total | 20 presets, transparent, 1024 and 512 px |
+| preview/ | | first-look stills and 5 s room clip (2026-10-30, older rig) |
+Render speed for the final promo: 685 s for 1230 frames (1.8 frames/s; the park now has five rigs).
+
+### Handover
+- Lead's decision (2026-10-31): the next film version moves to headless Blender on Kaggle (real armatures, IK
+  constraints, path-traced light, motion blur), built by another agent. This three.js studio stays for quick cuts,
+  spots and loops.
 
 ## Open items
 - Other languages: only English Kokoro voices are in the app's voice catalogue; es/fr/pt/hi/zh Kokoro voices exist
   upstream, de/ar need another engine (`media/vo/languages.json`). Unblock: expose those voices in the API.
 - Re-capture the screen after the Streams-blue app redesign ships (`media/capture/capture_app.py`), then re-render.
-- Determinism was not checked by rendering twice and diffing. Unblock: render a shot twice and compare frame hashes.
+- Determinism across separate sessions not checked (within one session verified, 2026-10-31). Unblock: render a shot in two runs and compare frame hashes.
+- Spots: owner review of the 20 presets (some poses are stiff). Unblock: owner picks the ones to redo.
+- The film's look stays three.js-grade (no path tracing, no real motion blur); the Blender pipeline is the next step (lead, 2026-10-31).
 - Music was chosen by analysis, not by ear. Unblock: owner listens to `assets/music/bed.ogg` vs `bed-alt.ogg`.

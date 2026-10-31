@@ -15,11 +15,21 @@
    "preset": 6
   },
   "mp4": {
-   "crf": 23,
-   "preset": "slow",
-   "maxrate": "3500k",
-   "bufsize": "7000k"
-  }
+   "crf": 20,
+   "preset": "medium"
+  },
+  "deliver": [
+   {
+    "suffix": "",
+    "height": 1080,
+    "video_bitrate": "1350k"
+   },
+   {
+    "suffix": "-720p",
+    "height": 720,
+    "video_bitrate": "850k"
+   }
+  ]
  },
  "segments": [
   {
@@ -53,17 +63,41 @@
      },
      {
       "t": 3.4,
-      "pose": "sit_relaxed+look_down",
+      "pose": "sit_relaxed",
+      "joints": {
+       "neck": [
+        5,
+        0,
+        0
+       ],
+       "head": [
+        9,
+        0,
+        2
+       ]
+      },
       "blend": 1.4
      },
      {
       "t": 4.3,
       "pose": "sit_relaxed",
-      "blend": 0.35
+      "blend": 0.45
      },
      {
       "t": 6.2,
-      "pose": "sit_relaxed+look_down",
+      "pose": "sit_relaxed",
+      "joints": {
+       "neck": [
+        5,
+        0,
+        0
+       ],
+       "head": [
+        8,
+        0,
+        2
+       ]
+      },
       "blend": 1.2
      }
     ],
@@ -135,6 +169,11 @@
       "ease": "inout"
      }
     ]
+   },
+   "look": {
+    "grade": {
+     "grain": 0.014
+    }
    }
   },
   {
@@ -241,6 +280,11 @@
       "ease": "linear"
      }
     ]
+   },
+   "look": {
+    "grade": {
+     "grain": 0.014
+    }
    }
   },
   {
@@ -315,6 +359,11 @@
       "ease": "linear"
      }
     ]
+   },
+   "look": {
+    "grade": {
+     "grain": 0.014
+    }
    }
   },
   {
@@ -354,8 +403,8 @@
       "blend": 0.8
      },
      {
-      "t": 2.2,
-      "expr": "soft_smile",
+      "t": 2.4,
+      "expr": "content",
       "blend": 0.8
      }
     ],
@@ -365,6 +414,26 @@
       "item": "phone",
       "hold": "read_one"
      }
+    ],
+    "look_w": [
+     {
+      "t": 0,
+      "v": 0.9
+     },
+     {
+      "t": 1.1,
+      "v": 0.0,
+      "ease": "inout"
+     },
+     {
+      "t": 2.6,
+      "v": 0.0
+     },
+     {
+      "t": 3.4,
+      "v": 0.8,
+      "ease": "inout"
+     }
     ]
    },
    "screen": {
@@ -372,11 +441,20 @@
     "in": 10.6
    },
    "camera": {
-    "handheld": 0.25,
+    "handheld": 0.2,
     "focus": [
      {
       "t": 0,
       "on": "face"
+     },
+     {
+      "t": 2.2,
+      "on": "face"
+     },
+     {
+      "t": 3.6,
+      "on": 4.0,
+      "ease": "inout"
      }
     ],
     "keys": [
@@ -388,7 +466,7 @@
        1.7
       ],
       "target": "face",
-      "shift": [
+      "aim": [
        0,
        -0.08,
        0
@@ -396,22 +474,57 @@
       "fov": 32
      },
      {
-      "t": 3.6,
+      "t": 2.0,
       "orbit": [
-       -40,
-       6,
-       1.45
+       -34,
+       5,
+       1.5
       ],
       "target": "face",
-      "shift": [
+      "aim": [
        0,
-       -0.05,
+       -0.06,
        0
       ],
-      "fov": 30,
+      "fov": 31,
+      "ease": "linear"
+     },
+     {
+      "t": 2.8,
+      "pos": [
+       0.95,
+       1.5,
+       -0.45
+      ],
+      "target": [
+       0.9,
+       1.6,
+       -2.2
+      ],
+      "fov": 29,
       "ease": "in"
+     },
+     {
+      "t": 3.6,
+      "pos": [
+       0.35,
+       1.45,
+       -0.75
+      ],
+      "target": [
+       1.15,
+       1.75,
+       -2.6
+      ],
+      "fov": 26,
+      "ease": "inout"
      }
     ]
+   },
+   "look": {
+    "grade": {
+     "grain": 0.014
+    }
    }
   },
   {
@@ -424,12 +537,8 @@
     }
    },
    "transition_in": {
-    "type": "whip",
-    "duration": 0.8,
-    "direction": [
-     1,
-     0
-    ]
+    "type": "dissolve",
+    "duration": 0.8
    },
    "lighting": {
     "screen_glow": 0.05,
@@ -452,7 +561,7 @@
      }
     ],
     "walk": {
-     "speed": 0.85,
+     "speed": "auto",
      "heading": 90,
      "cadence": 0.85,
      "arms": 0.45
@@ -469,9 +578,9 @@
       "expr": "calm"
      },
      {
-      "t": 4.0,
-      "expr": "soft_smile",
-      "blend": 1.0
+      "t": 5.0,
+      "expr": "content",
+      "blend": 1.5
      }
     ],
     "hold": [
@@ -479,6 +588,12 @@
       "t": 0,
       "item": "phone",
       "hold": "walk"
+     }
+    ],
+    "look_w": [
+     {
+      "t": 0,
+      "v": 0.25
      }
     ]
    },
@@ -488,28 +603,49 @@
    },
    "camera": {
     "follow": true,
-    "handheld": 0.45,
+    "handheld": 0.35,
     "focus": [
      {
       "t": 0,
-      "on": "face"
+      "on": 5.5
+     },
+     {
+      "t": 2.2,
+      "on": "face",
+      "ease": "inout"
      }
     ],
     "keys": [
      {
       "t": 0,
       "orbit": [
-       -72,
+       -70,
        4,
-       3.0
+       3.2
+      ],
+      "target": "chest",
+      "aim": [
+       0.6,
+       2.2,
+       -3.6
+      ],
+      "fov": 30
+     },
+     {
+      "t": 2.4,
+      "orbit": [
+       -70,
+       6,
+       2.9
       ],
       "target": "chest",
       "aim": [
        0.25,
-       0.32,
+       0.3,
        0
       ],
-      "fov": 30
+      "fov": 30,
+      "ease": "inout"
      },
      {
       "t": 8,
@@ -528,6 +664,11 @@
       "ease": "linear"
      }
     ]
+   },
+   "look": {
+    "grade": {
+     "grain": 0.014
+    }
    }
   },
   {
@@ -575,7 +716,7 @@
      }
     ],
     "walk": {
-     "speed": 0.8,
+     "speed": "auto",
      "heading": 90,
      "cadence": 0.85,
      "arms": 0.45
@@ -589,7 +730,12 @@
     "expressions": [
      {
       "t": 0,
-      "expr": "soft_smile"
+      "expr": "calm"
+     },
+     {
+      "t": 5.5,
+      "expr": "soft_smile",
+      "blend": 1.2
      }
     ],
     "hold": [
@@ -597,6 +743,12 @@
       "t": 0,
       "item": "phone",
       "hold": "walk"
+     }
+    ],
+    "look_w": [
+     {
+      "t": 0,
+      "v": 0.2
      }
     ]
    },
@@ -646,6 +798,11 @@
       "ease": "inout"
      }
     ]
+   },
+   "look": {
+    "grade": {
+     "grain": 0.014
+    }
    }
   }
  ],

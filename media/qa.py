@@ -28,9 +28,9 @@ import render as R  # noqa: E402
 from ffmpeg import ffmpeg_exe  # noqa: E402
 
 JOINT_VIEWS = [("shoulderR", [-60, 10, 0.75]), ("elbowR", [-80, 5, 0.6]), ("wristR", [-30, 15, 0.45]),
-               ("shoulderL", [60, 10, 0.75]), ("elbowL", [80, 5, 0.6]), ("wristL", [30, 15, 0.45]),
+               ("wristR", [-120, 60, 0.6]), ("elbowL", [80, 5, 0.6]), ("wristL", [30, 15, 0.45]),
                ("hipR", [-90, 5, 0.8]), ("kneeR", [-90, 0, 0.7]), ("ankleR", [-90, 10, 0.55]),
-               ("hipL", [90, 5, 0.8]), ("kneeL", [90, 0, 0.7]), ("ankleL", [90, 10, 0.55])]
+               ("hips", [0, 10, 1.4]), ("kneeL", [90, 0, 0.7]), ("ankleL", [90, 10, 0.55])]
 
 
 def tile(images: list[bytes], cols: int, rows: int, w: int, h: int, out: Path, labels: list[str]):

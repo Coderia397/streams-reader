@@ -1,0 +1,48 @@
+{
+ "viewport": [
+  1440,
+  900
+ ],
+ "dpr": 2,
+ "probe": {
+  "title": {
+   "x": 402,
+   "y": -2420,
+   "w": 636,
+   "h": 35.390625,
+   "font": "Literata",
+   "size": "30px",
+   "weight": "600",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "radius": "0px",
+   "text": "Alice\u2019s Adventures in Wonderland"
+  },
+  "para": {
+   "x": 402,
+   "y": -2209.140625,
+   "w": 636,
+   "h": 156.71875,
+   "font": "Literata",
+   "size": "19px",
+   "weight": "400",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "radius": "0px",
+   "text": "Alice was beginning to get very tired of sitting by her sister on the bank, and "
+  },
+  "dock": {
+   "x": 340,
+   "y": 698.609375,
+   "w": 760,
+   "h": 201.390625,
+   "font": "Inter",
+   "size": "15px",
+   "weight": "400",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgba(11, 11, 15, 0.82)",
+   "radius": "24px 24px 0px 0px",
+   "text": "16%\n29 min left\n15\n15\n1x\nHeart\nSleep\nChapters"
+  }
+ }
+}

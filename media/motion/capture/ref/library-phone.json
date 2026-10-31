@@ -1,0 +1,49 @@
+{
+ "viewport": [
+  390,
+  844
+ ],
+ "dpr": 2,
+ "probe": {
+  "title": {
+   "x": 16,
+   "y": 66,
+   "w": 358,
+   "h": 38.078125,
+   "font": "Literata",
+   "size": "34px",
+   "weight": "600",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "radius": "0px",
+   "text": "Library"
+  },
+  "row": null,
+  "hero": {
+   "x": 16,
+   "y": 124.078125,
+   "w": 358,
+   "h": 234,
+   "font": "Inter",
+   "size": "15px",
+   "weight": "400",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgb(21, 21, 27)",
+   "radius": "24px",
+   "text": "AA\nCONTINUE LISTENING\nAlice\u2019s Adventures in Wonderland\nLewis Carroll\n29 min left"
+  },
+  "tabbar": {
+   "x": 0,
+   "y": 782,
+   "w": 390,
+   "h": 62,
+   "font": "Inter",
+   "size": "15px",
+   "weight": "400",
+   "color": "rgb(238, 238, 243)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "radius": "0px",
+   "text": "Library\nVoices\nSettings"
+  }
+ }
+}

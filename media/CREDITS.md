@@ -10,7 +10,10 @@ Everything in the Streams Reader films and spot illustrations is either made her
 - An earlier run fell back to MusicGen medium (CC-BY-NC weights) when ACE-Step failed to install; that output was not used and is not kept.
 
 ## Voices
-- Voice-over and the book narration are rendered by Streams Reader itself (`POST /api/render` on listen.streams.watch) with Kokoro-82M (Apache-2.0) voices: `kokoro:af_heart` (voice-over), `kokoro:bf_emma` (the app reading Alice in the screen capture).
+- Voice-over and the book narration are rendered by Streams Reader itself (`POST /api/render` on listen.streams.watch).
+  Promo voice-over: the expressive engine, inclusionAI Ming-3.0-tts-0.5B on the app's ZeroGPU Space (preset `ming:US_Emma`,
+  per-line emotion; `assets/vo/en-ming/`), MIT licence (notes/03).
+  Fallback take: Kokoro-82M (Apache-2.0) `kokoro:af_heart` (`assets/vo/en/`). The app reads Alice with `kokoro:bf_emma`.
 
 ## Text
 - *Alice's Adventures in Wonderland*, Lewis Carroll (1865), public domain.

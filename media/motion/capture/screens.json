@@ -1,0 +1,24 @@
+{
+  "base": "",
+  "_base": "path prefix of the app on the live site: \"\" for the current deployment, \"/app\" once the redesign ships",
+  "screens": [
+    {"name": "library-phone", "path": "{base}/", "viewport": [390, 844], "dpr": 2, "mobile": true,
+     "probe": {"title": ".page-title", "row": ".doc-list li", "hero": ".hero", "tabbar": ".tabbar"}},
+    {"name": "reader-phone", "path": "{base}/read/{doc}", "doc_title": "Alice’s Adventures in Wonderland",
+     "viewport": [390, 844], "dpr": 2, "mobile": true, "wait": 6,
+     "probe": {"title": ".reading__title", "para": ".r-p", "bar": ".reader__bar", "dock": ".dock", "play": ".play-btn"}},
+    {"name": "reader-playing-phone", "path": "{base}/read/{doc}", "doc_title": "Alice’s Adventures in Wonderland",
+     "viewport": [390, 844], "dpr": 2, "mobile": true, "wait": 6,
+     "actions": [{"click": "play", "wait": 4}],
+     "probe": {"word": ".is-word, .word--now, [data-now]", "sentence": ".is-sentence, .sentence--now"}},
+    {"name": "voices-sheet-phone", "path": "{base}/read/{doc}", "doc_title": "Alice’s Adventures in Wonderland",
+     "viewport": [390, 844], "dpr": 2, "mobile": true, "wait": 6,
+     "actions": [{"click": "voice", "wait": 1.5}],
+     "probe": {"sheet": ".sheet"}},
+    {"name": "library-laptop", "path": "{base}/", "viewport": [1440, 900], "dpr": 2,
+     "probe": {"title": ".page-title", "row": ".doc-list li", "hero": ".hero"}},
+    {"name": "reader-laptop", "path": "{base}/read/{doc}", "doc_title": "Alice’s Adventures in Wonderland",
+     "viewport": [1440, 900], "dpr": 2, "wait": 6,
+     "probe": {"title": ".reading__title", "para": ".r-p", "dock": ".dock"}}
+  ]
+}

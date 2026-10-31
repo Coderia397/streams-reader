@@ -117,7 +117,8 @@ class Session:
 
     def grab(self, i: int, fmt: str = "jpeg", quality: int = 94) -> bytes:
         try:
-            self.d.eval(f"studio.frame({i})")
+            # wait for two animation frames so the compositor has presented this frame before the screenshot
+            self.d.eval(f"studio.frame({i}).then(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))")
         except RuntimeError:
             self.dump_errors()
             raise
@@ -163,8 +164,29 @@ def encode_cmd(shot: dict, out: Path, name: str, fps: int, audio: Path | None, f
         cmd += ["-maxrate", mp["maxrate"], "-bufsize", mp.get("bufsize", mp["maxrate"])]
     if audio:
         cmd += ["-c:a", "aac", "-b:a", "160k", "-shortest"]
-    cmd += [str(out / f"{name}.mp4")]
+    cmd += [str(out / (f"{name}.master.mp4" if enc.get("deliver") else f"{name}.mp4"))]
     return cmd
+
+
+def deliver_mp4(shot: dict, out: Path, name: str):
+    """Web MP4s from the high-quality master: two-pass x264 at a fixed video bitrate per size, AAC 128k, faststart."""
+    master = out / f"{name}.master.mp4"
+    if not master.exists():
+        return
+    for d in shot["encode"]["deliver"]:
+        dst = out / f"{name}{d.get('suffix', '')}.mp4"
+        log = out / f".{name}{d.get('suffix', '')}-2pass"
+        vf = ["-vf", f"scale=-2:{d['height']}:flags=lanczos,format=yuv420p"]
+        common = ["-c:v", "libx264", "-preset", "slow", "-b:v", d["video_bitrate"], "-profile:v", "high", "-tune", "film",
+                  "-color_range", "tv", "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
+                  "-passlogfile", str(log)]
+        subprocess.run([ffmpeg_exe(), "-y", "-loglevel", "error", "-i", str(master), *vf, *common, "-pass", "1", "-an",
+                        "-f", "null", "-"], check=True)
+        subprocess.run([ffmpeg_exe(), "-y", "-loglevel", "error", "-i", str(master), *vf, *common, "-pass", "2",
+                        "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", str(dst)], check=True)
+        for f in out.glob(f".{name}{d.get('suffix', '')}-2pass*"):
+            f.unlink()
+    master.unlink()
 
 
 def render_video(shot: dict, args):
@@ -203,6 +225,8 @@ def render_video(shot: dict, args):
     finally:
         s.close()
         shutil.rmtree(tmpd, ignore_errors=True)
+    if shot.get("encode", {}).get("deliver") and not args.range:
+        deliver_mp4(shot, out, name)
     # small poster: re-encode to a compact JPEG
     p = out / f"{name}{suffix}.poster.jpg"
     if p.exists():

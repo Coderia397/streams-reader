@@ -1,0 +1,59 @@
+{
+  "lang": "en",
+  "headlines": {
+    "paste": "Paste a *link*.",
+    "paste_sub": "Articles, books, PDFs.",
+    "doc": "It becomes a\n*beautiful* document.",
+    "play": "Press *play*.",
+    "follow": "Every word,\n*in time*.",
+    "voices": "Switch *voices*\nmid-sentence.",
+    "control": "Speed and sleep,\n*at hand*.",
+    "library": "Your library,\non *every* screen.",
+    "import_loop": "Paste a *link*.",
+    "highlight_loop": "Every word, *in time*.",
+    "voices_loop": "Pick a *voice*."
+  },
+  "end": { "tag": "Your library, read aloud.", "url": "listen.streams.watch" },
+  "link": "standardebooks.org/ebooks/jane-austen/pride-and-prejudice",
+  "doc": {
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "chapter": "Chapter 1",
+    "left": "11 h 4 min left",
+    "hues": [212, 262],
+    "paragraphs": [
+      "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
+      "However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+      "“My dear Mr. Bennet,” said his lady to him one day, “have you heard that Netherfield Park is let at last?”",
+      "Mr. Bennet replied that he had not.",
+      "“But it is,” returned she; “for Mrs. Long has just been here, and she told me all about it.”"
+    ]
+  },
+  "voices": [
+    {"id": "af_heart", "name": "Heart", "meta": "American · Female", "desc": "Warm, clear storyteller. The default.", "hues": [28, 330]},
+    {"id": "bm_george", "name": "George", "meta": "British · Male", "desc": "Classic British reader.", "hues": [205, 245]},
+    {"id": "bf_emma", "name": "Emma", "meta": "British · Female", "desc": "Composed British narrator.", "hues": [168, 220]},
+    {"id": "am_michael", "name": "Michael", "meta": "American · Male", "desc": "Even, steady and friendly.", "hues": [70, 120]},
+    {"id": "af_nicole", "name": "Nicole", "meta": "American · Female", "desc": "Soft and close, like a quiet room.", "hues": [280, 230]}
+  ],
+  "library": [
+    {"title": "Pride and Prejudice", "author": "Jane Austen", "meta": "11 h 4 min left", "kind": "book", "pct": 3, "hues": [212, 262]},
+    {"title": "Frankenstein", "author": "Mary Shelley", "meta": "Book · 6 h 12 min left", "kind": "book", "pct": 41, "hues": [150, 200]},
+    {"title": "Why we remember stories", "author": "Article", "meta": "Article · 11 min", "kind": "article", "pct": 0, "hues": [20, 340]},
+    {"title": "Meditations", "author": "Marcus Aurelius", "meta": "Book · 3 h 40 min left", "kind": "book", "pct": 68, "hues": [38, 8]},
+    {"title": "Field notes, October", "author": "PDF", "meta": "PDF · 24 min", "kind": "pdf", "pct": 12, "hues": [260, 300]}
+  ],
+  "ui": {
+    "library": "Library", "voices": "Voices", "settings": "Settings", "add": "Add",
+    "continue": "Continue listening", "all": "All documents",
+    "add_title": "Add to library", "add_link": "Paste a link", "add_link_hint": "Articles and blog posts work best",
+    "add_paste": "Paste text", "add_paste_hint": "An article, a chapter, anything",
+    "add_file": "Open a file", "add_file_hint": "EPUB, PDF, TXT, Markdown or HTML",
+    "add_link_submit": "Add link", "stage_fetching": "Fetching the page…", "stage_reading": "Reading…",
+    "voice_title": "Voices", "standard": "Standard", "standard_hint": "Unlimited listening. Quick to start.",
+    "speed_title": "Playback speed", "speed_hint": "Pitch stays natural at every speed.",
+    "speeds": ["0.8×", "1×", "1.2×", "1.5×", "2×", "2.5×"],
+    "sleep_title": "Sleep timer", "sleep_hint": "The last ten seconds fade out gently.",
+    "sleeps": ["Off", "5 min", "10 min", "15 min", "30 min", "45 min", "60 min", "End of chapter"]
+  }
+}

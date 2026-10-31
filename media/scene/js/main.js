@@ -231,14 +231,18 @@ class Studio {
     if (!H.hidden && H.hands !== 'none' && hk.item !== 'none') {
       const isBook = hk.item === 'book';
       // phone: palms behind the lower corners, so the thumbs sit at the bottom edge and the screen stays clear
-      const R = item.localToWorld(new THREE.Vector3(isBook ? 0.14 : 0.03, isBook ? -0.02 : -0.07, isBook ? -0.03 : -0.038));
-      const L = item.localToWorld(new THREE.Vector3(isBook ? -0.14 : -0.03, isBook ? -0.02 : -0.075, isBook ? -0.03 : -0.038));
+      // hands clamp the phone's side edges (fingers behind, thumb in front) without covering the text
+      const R = item.localToWorld(new THREE.Vector3(isBook ? 0.14 : 0.066, isBook ? -0.02 : -0.05, isBook ? -0.03 : -0.004));
+      const L = item.localToWorld(new THREE.Vector3(isBook ? -0.14 : -0.066, isBook ? -0.02 : -0.056, isBook ? -0.03 : -0.004));
       const grip = isBook ? null : item.getWorldQuaternion(new THREE.Quaternion()).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI));
       if (H.hands === 'both' || H.hands === 'right') ik.R = { w: hw, pos: R, quat: grip };
       if (H.hands === 'both') ik.L = { w: hw, pos: L, quat: grip };
     }
     this._ikT = ik;
-    this.char.update({ ...st, ik }, tg);
+    // eyes on the held item unless the shot says otherwise (look_w keys, 0..1)
+    const lookW = C.look_w ? sampleKeys(C.look_w, t, (k) => [k.v])[0] : (H.face && !H.hidden && hk.item !== 'none' ? 0.9 : 0);
+    const aimAt = lookW > 0 ? item.getWorldPosition(new THREE.Vector3()) : null;
+    this.char.update({ ...st, ik, lookAt: aimAt, lookW }, tg);
     this._ground = st.ground;
     this.char.joints.head.visible = !C.pov;
     this.placeProps(seg);
@@ -250,9 +254,11 @@ class Studio {
       this.char.group.updateMatrixWorld(true);
       const a = this.char.cupWorld(1);
       const b = this.phone.group.visible ? this.phone.plug.getWorldPosition(new THREE.Vector3()) : this.char.joints.hipR.localToWorld(new THREE.Vector3(-0.02, -0.1, 0.1));
-      const chest = spine.localToWorld(new THREE.Vector3(-0.12, 0.3, 0.17));
+      const chest = spine.localToWorld(new THREE.Vector3(-0.07, 0.36, 0.2));
+      const belly = spine.localToWorld(new THREE.Vector3(-0.1, 0.14, 0.21));
       const sway = 0.02 * Math.sin(6.283 * this.char.snapF(1.8) * tg) * (walk ? 1 : 0.2);
-      this.cable.update(a, b, 0.05, sway, [chest.clone().add(new THREE.Vector3(sway, 0, 0)), chest.clone().lerp(b, 0.5).add(new THREE.Vector3(sway * 1.5, -0.06, 0.02))]);
+      const collar = spine.localToWorld(new THREE.Vector3(-0.15, 0.47, 0.13));
+      this.cable.update(a, b, 0.05, sway, [collar, chest.clone().add(new THREE.Vector3(sway * 0.5, 0, 0)), belly.clone().add(new THREE.Vector3(sway, 0, 0))]);
     }
     // phone screen: clip time and brightness
     const S = seg.screen;
@@ -279,12 +285,13 @@ class Studio {
     const follow = seg.camera?.follow ? this.char.group.position.clone() : new THREE.Vector3();
     const facing = deg(off[3]);
     const cam = sampleKeys(keys, t, (k) => {
-      const tg2 = resolve(k.target).map((v, i) => v + (k.aim ? k.aim[i] : 0));
+      const tgBase = resolve(k.target);
+      const tg2 = tgBase.map((v, i) => v + (k.aim ? k.aim[i] : 0)); // aim shifts the look point only
       let pos = typeof k.pos === 'string' ? resolve(k.pos) : (k.pos || [0, 1, 2]);
       if (k.offset) pos = pos.map((v, i) => v + k.offset[i]);
       if (k.orbit) { // [yaw, pitch, dist] around the target; yaw 0 = in front of the character, 90 = its left
         const [yw, pt, ds] = k.orbit, a = facing + deg(yw), e = deg(pt);
-        pos = [tg2[0] + ds * Math.cos(e) * Math.sin(a), tg2[1] + ds * Math.sin(e), tg2[2] + ds * Math.cos(e) * Math.cos(a)];
+        pos = [tgBase[0] + ds * Math.cos(e) * Math.sin(a), tgBase[1] + ds * Math.sin(e), tgBase[2] + ds * Math.cos(e) * Math.cos(a)];
         if (k.shift) pos = pos.map((v, i) => v + k.shift[i]);
         const f2 = seg.camera?.follow ? follow : new THREE.Vector3();
         pos = [pos[0] - f2.x, pos[1] - f2.y, pos[2] - f2.z];
@@ -320,6 +327,8 @@ class Studio {
       this.camera.updateMatrixWorld(true);
       this.char.joints.head.visible = true;
       look.dof.focus = ds;
+      env.root.visible = false; // isolate the rig (the armchair would hide the joints)
+      this.scene.background = new THREE.Color('#3A3F4D');
     }
     // fade keys (to/from black)
     if (seg.fade) look.grade.fade = sampleKeys(seg.fade, t, (k) => [k.v])[0];
