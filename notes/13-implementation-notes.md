@@ -31,5 +31,16 @@ Both are the Worker vars `KOKORO_REV` / `MING_REV` and part of every cache key.
 ### Deploy order
 `cargo xtask bootstrap-token` → `passphrase` → `setup` → `migrate` → `space` → `build` → `deploy` → `smoke`. Resources created 2026-10-30: D1 `nolabs` (`d6d8cdc1-52d2-4b0b-9ec8-58f1aef1e542`), Queue `nolabs-render` (`99bea8e7efd048dab297a0e827a4cba1`), R2 lifecycle rule `nolabs-expire-kokoro-audio`, deploy token `nolabs-deploy` (expires 2027-01-28). Ids also in the gitignored `deploy/state.toml`.
 
+## 2026-10-31 player round 2 fixes (crates/player only)
+Nine defects from the Pixel 8 seek/jump/tracking report fixed; harness 70/70 scenarios pass (verified: `uv run --script crates/player/harness/run.py`, 710 s with the machine at load 13 to 33 from other agents; about 135 s on an idle machine).
+- A seek, jump or next whose target is the segment being fetched keeps the build (`seek::is_next_fetch`, `Shared::hold`). Scenario 80: one build, 17 asked for once, playback at 7.25 s (was 11.0 s).
+- Segment lengths are kept per document (`seek::Lengths`, recorded on each append, cleared on load/unload), so a skip back across segments already played rebuilds once where the target is. Scenario 91: one rebuild at 15, landed 605 ms later. Skips across segments never fetched still rebuild one segment at a time (each length is unknown until fetched).
+- SegmentChanged is sent only for a target whose segment is certain, not for each hop.
+- Lock screen: a 50 ms probe after `playing`/`seeked` republishes the standing position until the clock has run with it for 3 rounds (Chrome starts the clock about 250 ms after `playing`, longer under load: verified in the raw logs), plus a refresh on any `timeupdate` that drifted more than 100 ms.
+- Play with nothing buffered goes to Buffering; play in Error wakes the fetch loop (checks every 250 ms) and restarts the backoff; end-of-section sleep on the document's last section also sends Ended.
+- Fallback (blob) path: one pending source switch per element in `interop/dom.js`; seeks during a switch move its offset; the playhead reads the pending offset. Verified with the scratchpad `fallback.py` probes (all pass).
+- Harness noise seen on 2026-10-31 (not player bugs): external pauses of the harness Chrome while other Chrome/ffmpeg jobs ran, and Chrome applying a rate change about 150 ms late (scenario 20 gapless ratio 1.18).
+
 ## Open items
+- Fallback path on a real iPhone: assumed to be what Safari uses; not tested on a device.
 - Each "assumed" line above: verified or corrected by the first deploy and smoke test.

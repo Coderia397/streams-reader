@@ -4,7 +4,22 @@ Decisions, newest first. Each has date, decision, reason, alternatives rejected,
 
 ## 2026-10-31
 
+### D38. The tapped sentence is underlined, not outlined
+- Decision: a sentence picked for "Play from here" gets one 1 px `brand-text` underline (offset 0.28em, no skip-ink) that runs on across its wrapped lines, with no fill and no padding. Supersedes the "1 px outline" of note 12 (line 250) and of note 34.
+- Reason: the inset outline is drawn per line box, so a 4-line sentence at 1440 showed a stack of touching boxes (reviewer, 13-reader-play-here), heavy next to the calm sentence wash. The underline reads as one mark and still never looks like the spoken sentence's wash.
+- Rejected: the outline with `box-decoration-break: slice` (open boxes at the line ends, still a ladder); a light fill (confused with the wash).
+- Decided by: reviewer proposal, applied and checked on the rendered page by the assistant, 2026-10-31.
+
+### D37. Character spots cut from 20 to about 4, kept out of emails
+- Decision: the 20 voxel spots in `media/dist/spots` share one standing pose with a small prop, so they read alike and the meaning hangs on a prop too small to see at app size. Keep about 4 (welcome, empty library, render done, error/offline) redrawn as distinct scenes for large empty and success states; use Remix icons everywhere else; no spots in emails. Rejected: shipping all 20 as is; dropping the character entirely (the film and hero still use it).
+- Decided by: assistant, after the owner asked whether the spots were necessary or good, 2026-10-31.
+
+### D36. Auth emails redesigned from scratch, not on the Streams template
+- Decision: the owner rejected both the current Streams Reader emails and the Streams parent emails (white card, black header, blue button) as bland, and wants them to stand out. Three directions are being designed in parallel (A night broadcast, B the spoken page, C product reveal); the owner picks one, which is then built in `crates/mail` on brand tokens in 8 languages at reader.streams.watch. Rejected: polishing the existing template (the stopped "Email polish pass").
+- Decided by: owner (direction and rejection), assistant (the three directions), 2026-10-31. Status: open until the owner picks.
+
 ### D35. Streamed renders level each segment against the batch so far
+- Correction 2026-10-31 ([31](31-engine-review-fixes.md)): both gain terms (per clip and batch so far) now come from one meter, `Programme` / `measure_blocks`. It follows BS.1770 using complete blocks only and differs from pyloudnorm by up to about 0.2 LU when pyloudnorm adds a partial trailing block. Before this, segments 1 and later were off by up to about 0.2 dB.
 - Decision: the Space streams one item result per finished segment, so segment N's batch loudness is that of segments 0..N, not the whole batch; per-segment clamp and peak ceiling unchanged. Needs Worker `ADAPTER_VERSION` 2 (together with the BART fallback of D32). Rejected: whole-batch loudness (blocks streaming), per-segment targets with no batch term. Details: [22-engine-speed.md](22-engine-speed.md).
 - Decided by: assistant under the engine-speed track delegation, 2026-10-31; owner may veto.
 
