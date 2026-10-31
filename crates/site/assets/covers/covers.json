@@ -1,0 +1,165 @@
+{
+ "source": "Standard Ebooks (CC0 1.0)",
+ "books": [
+  {
+   "slug": "frankenstein",
+   "title": "Frankenstein",
+   "author": "Mary Shelley",
+   "url": "https://standardebooks.org/ebooks/mary-shelley/frankenstein",
+   "line": "You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings.",
+   "preview_voice": "kokoro:bm_george"
+  },
+  {
+   "slug": "pride-and-prejudice",
+   "title": "Pride and Prejudice",
+   "author": "Jane Austen",
+   "url": "https://standardebooks.org/ebooks/jane-austen/pride-and-prejudice",
+   "line": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
+   "preview_voice": "kokoro:af_heart"
+  },
+  {
+   "slug": "the-adventures-of-sherlock-holmes",
+   "title": "The Adventures of Sherlock Holmes",
+   "author": "Arthur Conan Doyle",
+   "url": "https://standardebooks.org/ebooks/arthur-conan-doyle/the-adventures-of-sherlock-holmes",
+   "line": "To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name.",
+   "preview_voice": "kokoro:bf_isabella"
+  },
+  {
+   "slug": "moby-dick",
+   "title": "Moby Dick",
+   "author": "Herman Melville",
+   "url": "https://standardebooks.org/ebooks/herman-melville/moby-dick",
+   "line": "Call me Ishmael. Some years ago, never mind how long precisely, having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
+   "preview_voice": "kokoro:am_michael"
+  },
+  {
+   "slug": "the-great-gatsby",
+   "title": "The Great Gatsby",
+   "author": "F. Scott Fitzgerald",
+   "url": "https://standardebooks.org/ebooks/f-scott-fitzgerald/the-great-gatsby",
+   "line": "In my younger and more vulnerable years my father gave me some advice that I’ve been turning over in my mind ever since.",
+   "preview_voice": "kokoro:bm_george"
+  },
+  {
+   "slug": "dracula",
+   "title": "Dracula",
+   "author": "Bram Stoker",
+   "url": "https://standardebooks.org/ebooks/bram-stoker/dracula",
+   "line": "Left Munich at 8:35 P.M., on 1st May, arriving at Vienna early next morning; should have arrived at 6:46, but train was an hour late.",
+   "preview_voice": "kokoro:af_heart"
+  },
+  {
+   "slug": "the-picture-of-dorian-gray",
+   "title": "The Picture of Dorian Gray",
+   "author": "Oscar Wilde",
+   "url": "https://standardebooks.org/ebooks/oscar-wilde/the-picture-of-dorian-gray",
+   "line": "The studio was filled with the rich odour of roses, and when the light summer wind stirred amidst the trees of the garden, there came through the open door the heavy scent of the lilac.",
+   "preview_voice": "kokoro:bf_isabella"
+  },
+  {
+   "slug": "alices-adventures-in-wonderland",
+   "title": "Alice’s Adventures in Wonderland",
+   "author": "Lewis Carroll",
+   "url": "https://standardebooks.org/ebooks/lewis-carroll/alices-adventures-in-wonderland/john-tenniel",
+   "line": "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do.",
+   "preview_voice": "kokoro:am_michael"
+  },
+  {
+   "slug": "crime-and-punishment",
+   "title": "Crime and Punishment",
+   "author": "Fyodor Dostoevsky",
+   "url": "https://standardebooks.org/ebooks/fyodor-dostoevsky/crime-and-punishment/constance-garnett",
+   "line": "On an exceptionally hot evening early in July a young man came out of the garret in which he lodged in S. Place and walked slowly, as though in hesitation, towards K. bridge.",
+   "preview_voice": "kokoro:bm_george"
+  },
+  {
+   "slug": "meditations",
+   "title": "Meditations",
+   "author": "Marcus Aurelius",
+   "url": "https://standardebooks.org/ebooks/marcus-aurelius/meditations/george-long",
+   "line": "From my grandfather Verus I learned good morals and the government of my temper.",
+   "preview_voice": "kokoro:af_heart"
+  },
+  {
+   "slug": "the-time-machine",
+   "title": "The Time Machine",
+   "author": "H. G. Wells",
+   "url": "https://standardebooks.org/ebooks/h-g-wells/the-time-machine",
+   "line": "The Time Traveller (for so it will be convenient to speak of him) was expounding a recondite matter to us.",
+   "preview_voice": "kokoro:bf_isabella"
+  },
+  {
+   "slug": "jane-eyre",
+   "title": "Jane Eyre",
+   "author": "Charlotte Brontë",
+   "url": "https://standardebooks.org/ebooks/charlotte-bronte/jane-eyre",
+   "line": "There was no possibility of taking a walk that day.",
+   "preview_voice": "kokoro:am_michael"
+  },
+  {
+   "slug": "the-adventures-of-huckleberry-finn",
+   "title": "The Adventures of Huckleberry Finn",
+   "author": "Mark Twain",
+   "url": "https://standardebooks.org/ebooks/mark-twain/the-adventures-of-huckleberry-finn",
+   "line": "You don't know about me without you have read a book by the name of The Adventures of Tom Sawyer; but that ain't no matter.",
+   "preview_voice": "kokoro:bm_george"
+  },
+  {
+   "slug": "the-art-of-war",
+   "title": "The Art of War",
+   "author": "Sun Tzu",
+   "url": "https://standardebooks.org/ebooks/sun-tzu/the-art-of-war/lionel-giles",
+   "line": "Sun Tzu said: The art of war is of vital importance to the State.",
+   "preview_voice": "kokoro:af_heart"
+  },
+  {
+   "slug": "mrs-dalloway",
+   "title": "Mrs. Dalloway",
+   "author": "Virginia Woolf",
+   "url": "https://standardebooks.org/ebooks/virginia-woolf/mrs-dalloway",
+   "line": "Mrs. Dalloway said she would buy the flowers herself.",
+   "preview_voice": "kokoro:bf_isabella"
+  },
+  {
+   "slug": "the-odyssey",
+   "title": "The Odyssey",
+   "author": "Homer",
+   "url": "https://standardebooks.org/ebooks/homer/the-odyssey/william-cullen-bryant",
+   "line": "Tell me, O Muse, of that sagacious man who, having overthrown the sacred town of Ilium, wandered far and visited the capitals of many nations.",
+   "preview_voice": "kokoro:am_michael"
+  },
+  {
+   "slug": "anna-karenina",
+   "title": "Anna Karenina",
+   "author": "Leo Tolstoy",
+   "url": "https://standardebooks.org/ebooks/leo-tolstoy/anna-karenina/constance-garnett",
+   "line": "Happy families are all alike; every unhappy family is unhappy in its own way.",
+   "preview_voice": "kokoro:bm_george"
+  },
+  {
+   "slug": "the-strange-case-of-dr-jekyll-and-mr-hyde",
+   "title": "The Strange Case of Dr. Jekyll and Mr. Hyde",
+   "author": "Robert Louis Stevenson",
+   "url": "https://standardebooks.org/ebooks/robert-louis-stevenson/the-strange-case-of-dr-jekyll-and-mr-hyde",
+   "line": "Mr. Utterson the lawyer was a man of a rugged countenance that was never lighted by a smile.",
+   "preview_voice": "kokoro:af_heart"
+  },
+  {
+   "slug": "short-fiction",
+   "title": "Short Fiction",
+   "author": "Edgar Allan Poe",
+   "url": "https://standardebooks.org/ebooks/edgar-allan-poe/short-fiction",
+   "line": "True! Nervous, very, very dreadfully nervous I had been and am; but why will you say that I am mad?",
+   "preview_voice": "kokoro:bf_isabella"
+  },
+  {
+   "slug": "wuthering-heights",
+   "title": "Wuthering Heights",
+   "author": "Emily Brontë",
+   "url": "https://standardebooks.org/ebooks/emily-bronte/wuthering-heights",
+   "line": "I have just returned from a visit to my landlord, the solitary neighbour that I shall be troubled with.",
+   "preview_voice": "kokoro:am_michael"
+  }
+ ]
+}

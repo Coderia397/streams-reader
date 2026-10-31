@@ -5,6 +5,7 @@ use std::path::{Path, PathBuf};
 
 use crate::assets::{self, Brand};
 use crate::config::{LANGS, Page};
+use crate::data::{Demo, Library};
 use crate::i18n::Catalog;
 use crate::layout::{self, Ctx, Site};
 use crate::seo::{self, Date};
@@ -43,7 +44,7 @@ impl Paths {
     }
 
     pub fn fonts(&self) -> PathBuf {
-        self.repo_root.join("crates/web/assets/fonts")
+        self.crate_dir.join("assets/fonts")
     }
 }
 
@@ -52,7 +53,8 @@ impl Paths {
 pub struct BuildReport {
     pub pages: usize,
     pub files: usize,
-    pub css_bytes: usize,
+    /// Size of each stylesheet (entry name, bytes).
+    pub css_bytes: Vec<(&'static str, usize)>,
     pub js_bytes: usize,
     pub brand_files: usize,
     pub warnings: Vec<String>,
@@ -68,21 +70,47 @@ pub fn build(paths: &Paths, today: Date) -> Result<BuildReport, Error> {
     let out = &paths.out;
 
     // Stylesheet and script, named by content hash so they can be cached for a year.
-    let css = css::compile(&paths.crate_dir.join("style"), &paths.tokens_dir())?;
-    let css_name = format!("assets/site.{}.css", content_hash(css.as_bytes()));
-    assets::write(&out.join(&css_name), &css)?;
-    report.css_bytes = css.len();
+    let mut css_hrefs = Vec::new();
+    for entry in css::ENTRIES {
+        let css = css::compile(&paths.crate_dir.join("style"), &paths.tokens_dir(), entry)?;
+        let name = format!("assets/{entry}.{}.css", content_hash(css.as_bytes()));
+        assets::write(&out.join(&name), &css)?;
+        report.css_bytes.push((entry, css.len()));
+        css_hrefs.push(format!("/{name}"));
+    }
     let js_src = paths.crate_dir.join("assets/js/site.js");
     let js = std::fs::read(&js_src).map_err(|e| Error::io(&js_src, e))?;
     let js_name = format!("assets/site.{}.js", content_hash(&js));
     assets::write(&out.join(&js_name), &js)?;
     report.js_bytes = js.len();
 
-    // Fonts (read-only from the web crate), demo clips.
+    // Fonts (subsets of the web crate's, made by tools/subset_fonts.py), the demo clips, cover previews, covers, the hero film and spot renders.
     for font in assets::FONTS {
         assets::copy(&paths.fonts().join(font), &out.join("assets/fonts").join(font))?;
     }
-    assets::copy_dir(&paths.crate_dir.join("assets/demo"), &out.join("assets/demo"), |_| false)?;
+    let src = |d: &str| paths.crate_dir.join("assets").join(d);
+    let is_data =
+        |p: &Path| p.extension().is_some_and(|e| e == "md") || p.ends_with("demo.json") || p.ends_with("covers.json");
+    let demo = Demo::load(&src("demo"))?;
+    let library = Library::load(&src("covers").join("covers.json"))?;
+    let mut media = Vec::new();
+    for dir in ["demo", "previews", "covers", "media", "spots"] {
+        if src(dir).is_dir() {
+            let copied = assets::copy_dir(&src(dir), &out.join("assets").join(dir), is_data)?;
+            if dir == "media" {
+                media = copied.iter().map(|p| p.to_string_lossy().into_owned()).collect();
+            }
+        }
+    }
+    if media.is_empty() {
+        report.warnings.push("no hero film in assets/media; run tools/media.py".into());
+    }
+    let renders: Vec<String> = assets::walk(&src("spots"))
+        .unwrap_or_default()
+        .iter()
+        .filter(|p| p.extension().is_some_and(|e| e == "webp"))
+        .filter_map(|p| p.file_stem().map(|s| s.to_string_lossy().into_owned()))
+        .collect();
 
     // Brand output (favicons, social card, spot illustrations, the mark), when the brand build has produced it.
     let brand = Brand::find(&paths.brand_root());
@@ -122,7 +150,8 @@ pub fn build(paths: &Paths, today: Date) -> Result<BuildReport, Error> {
     };
 
     let site = Site {
-        css_href: format!("/{css_name}"),
+        css_landing: css_hrefs[0].clone(),
+        css_inner: css_hrefs[1].clone(),
         js_href: format!("/{js_name}"),
         theme,
         year: u16::try_from(today.year).unwrap_or(2026),
@@ -131,6 +160,10 @@ pub fn build(paths: &Paths, today: Date) -> Result<BuildReport, Error> {
         og_langs,
         og_default,
         spots,
+        renders,
+        demo,
+        library,
+        media,
     };
 
     for cat in &catalogs {

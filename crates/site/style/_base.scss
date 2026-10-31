@@ -1,10 +1,10 @@
-// Fonts, reset and page defaults.
-@use "tokens" as t;
+// Fonts, reset, page defaults, focus, the reveal system and view transitions.
+@use "tk" as t;
 
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 700;
   font-display: swap;
   src: url("/assets/fonts/inter-latin-wght-normal.woff2") format("woff2");
 }
@@ -12,7 +12,7 @@
 @font-face {
   font-family: "Literata";
   font-style: normal;
-  font-weight: 200 900;
+  font-weight: 400 700;
   font-display: swap;
   src: url("/assets/fonts/literata-latin-wght-normal.woff2") format("woff2");
 }
@@ -20,9 +20,18 @@
 @font-face {
   font-family: "Literata";
   font-style: italic;
-  font-weight: 200 900;
+  font-weight: 450 550;
   font-display: swap;
   src: url("/assets/fonts/literata-latin-wght-italic.woff2") format("woff2");
+}
+
+// Motion lengths derived from the motion tokens (no new values): a reveal, a slow drift, the marquee loop.
+:root {
+  --dur-reveal: calc(var(--dur-slow) * 2.5);
+  --dur-drift: calc(var(--dur-slow) * 80);
+  --dur-marquee: calc(var(--dur-slow) * 280);
+  --rise: #{t.space(6)};
+  --topbar: calc(#{t.space(12)} + #{t.space(4)});
 }
 
 *,
@@ -35,10 +44,8 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: calc(t.space(12) + t.space(8));
-  @include t.reduced-motion {
-    scroll-behavior: auto;
-  }
+  scroll-padding-top: calc(var(--topbar) + #{t.space(4)});
+  interpolate-size: allow-keywords;
 }
 
 body {
@@ -53,8 +60,7 @@ body {
   font-feature-settings: "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 h1,
@@ -64,7 +70,8 @@ p,
 ul,
 ol,
 figure,
-blockquote {
+blockquote,
+table {
   margin: 0;
 }
 
@@ -78,19 +85,21 @@ a {
   color: t.color(brand-text);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
-  @include t.focus-ring;
 }
 
 button {
   font: inherit;
+  color: inherit;
 }
 
-summary {
-  @include t.focus-ring;
+:focus-visible {
+  outline: t.size(focus-width) solid t.color(focus);
+  outline-offset: t.size(focus-offset);
 }
 
 img,
-svg {
+svg,
+video {
   display: block;
   max-width: 100%;
 }
@@ -110,12 +119,19 @@ svg {
   color: t.color(text);
 }
 
-main:focus {
+// Script and skip-link targets (tabindex="-1") take focus without a ring.
+main:focus,
+.demo:focus,
+.marquee__viewport:focus {
   outline: none;
 }
 
+.sr-only {
+  @include t.visually-hidden;
+}
+
 .skip {
-  @include t.button(primary, sm);
+  height: t.size(tap-min);
   position: absolute;
   inset-inline-start: t.space(4);
   top: t.space(2);
@@ -126,10 +142,112 @@ main:focus {
   }
 }
 
+// Watched by the script: once it scrolls out of view, the top bar condenses.
+.sentinel {
+  position: absolute;
+  top: t.space(2);
+  height: 1px;
+  width: 1px;
+}
+
 // Languages whose scripts the Latin fonts don't cover keep the system fonts and natural letter spacing.
 :lang(ar),
 :lang(hi),
 :lang(zh) {
   --tracking-display: 0;
   --tracking-title: 0;
+}
+
+// Those scripts have no italic: the browser would slant the system font. The accent keeps its ember underline.
+// Matched on the element itself, so English inserts (the demo poem, the reader mock) keep their italic.
+:is(em, i, .accent, .footer__tagline):is(:lang(ar), :lang(hi), :lang(zh)) {
+  font-style: normal;
+}
+
+// ---- reveals: scroll-driven where supported, an IntersectionObserver fallback (html.io) elsewhere, none when the
+// visitor prefers reduced motion. Content is visible without script.
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal,
+    .stagger > * {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+    @for $i from 2 through 4 {
+      .stagger > :nth-child(#{$i}n) {
+        animation-range: entry #{($i - 1) * 6%} entry #{55% + ($i - 1) * 6%};
+      }
+    }
+  }
+  .io .reveal,
+  .io .stagger > * {
+    transition:
+      opacity var(--dur-reveal) t.ease(out),
+      transform var(--dur-reveal) t.ease(out);
+  }
+  .io .reveal:not(.is-in),
+  .io .stagger:not(.is-in) > * {
+    opacity: 0;
+    transform: translateY(var(--rise));
+  }
+  @for $i from 2 through 4 {
+    .io .stagger > :nth-child(#{$i}n) {
+      transition-delay: calc(var(--dur-fast) * #{($i - 1) * 0.6});
+    }
+  }
+
+  // Page-to-page navigation crossfades; the top bar stays put.
+  @view-transition {
+    navigation: auto;
+  }
+  .topbar {
+    view-transition-name: topbar;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: t.dur(slow);
+    animation-timing-function: t.ease(out);
+  }
+}
+
+@include t.reduced-motion {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .topbar,
+  .film,
+  .demo,
+  .marquee,
+  .chapter__media,
+  .footer__base {
+    display: none;
+  }
+}
+
+// Shapes shared by the layout and components (grouped instead of @extend; see _tk.scss).
+.eyebrow__chip {
+  @include t.disc;
+}
+
+.eyebrow__chip .ri,
+.footer__title .ri,
+.badge .ri,
+.tag .ri {
+  @include t.ri-sm;
 }

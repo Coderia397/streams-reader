@@ -1,9 +1,14 @@
 //! What the site is made of: its origin, languages and pages, and where each one lives on disk and on the web.
 
-pub const ORIGIN: &str = "https://listen.streams.watch";
+pub const ORIGIN: &str = "https://reader.streams.watch";
 pub const GITHUB_URL: &str = "https://github.com/Coderia397/streams-reader";
 pub const CONTACT_EMAIL: &str = "help@streams.watch";
 pub const PARENT_URL: &str = "https://streams.watch";
+pub const CHANGELOG_URL: &str = "https://github.com/Coderia397/streams-reader/blob/main/CHANGELOG.md";
+pub const RELEASES_URL: &str = "https://github.com/Coderia397/streams-reader/releases";
+/// The comparison on the landing page quotes this page; the facts were checked on `COMPARE_CHECKED` (note 15, D16).
+pub const COMPARE_SOURCE_URL: &str = "https://elevenreader.io/pricing";
+pub const COMPARE_CHECKED: &str = "2026-10-30";
 /// The web app, served by the Worker next to the site.
 pub const APP_PATH: &str = "/app/";
 /// IndexNow key: a public identifier proving ownership of the host to search engines (not a secret).
@@ -139,7 +144,7 @@ mod tests {
         assert_eq!(Page::Download.path(&ar), "/ar/download");
         assert_eq!(Page::Download.out_file(&DEFAULT_LANG), "download/index.html");
         assert_eq!(Page::NotFound.out_file(&ar), "ar/404.html");
-        assert_eq!(Page::Home.url(&DEFAULT_LANG), "https://listen.streams.watch/");
+        assert_eq!(Page::Home.url(&DEFAULT_LANG), "https://reader.streams.watch/");
     }
 
     #[test]

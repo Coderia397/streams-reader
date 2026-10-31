@@ -23,8 +23,8 @@ pub fn render(ctx: &Ctx) -> Doc {
         })
         .collect();
     let body = format!(
-        "{intro}<section class=\"wrap section section--tight\" aria-label=\"{list_label}\"><ul class=\"platforms platforms--detail\">{cards}</ul></section>\n\
-         <section class=\"wrap section\" aria-labelledby=\"install-title\">{install_head}<ol class=\"howtos\">{install}</ol></section>\n\
+        "{intro}<section class=\"wrap section section--tight\" aria-label=\"{list_label}\"><ul class=\"platforms\" data-detected-first>{cards}</ul></section>\n\
+         <section class=\"wrap section\" id=\"install\" aria-labelledby=\"install-title\">{install_head}<ol class=\"howtos\">{install}</ol></section>\n\
          <section class=\"wrap section\" aria-labelledby=\"apps-title\">{apps_head}<ul class=\"features features--two\">{coming}</ul></section>\n{cta}",
         intro = page_intro(&ctx.t("download-eyebrow"), &ctx.t("download-title"), &ctx.t("download-lede")),
         list_label = ctx.t("download-list-label"),
@@ -33,10 +33,11 @@ pub fn render(ctx: &Ctx) -> Doc {
         cta = parts::cta_band(ctx),
     );
     Doc {
-        title: super::title(ctx, "download-title"),
+        title: super::title(ctx, "nav-download"),
         description: ctx.cat.text("download-meta-description"),
         body,
         json_ld: vec![],
         script: true,
+        preload: String::new(),
     }
 }

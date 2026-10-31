@@ -1,0 +1,36 @@
+// The brand tokens, with the theme-independent scales (space, radius, type size, leading, weight, z, durations,
+// component sizes) inlined as their values at build time instead of `var(--…)` (note 15, A14: "tokens inlined at
+// build"). Colours, fonts, easing and tracking stay live custom properties. Same names and errors as the token layer.
+@use "sass:map";
+@use "sass:string";
+@forward "tokens" hide space, radius, text, leading, weight, z, dur, size;
+@use "tokens" as t;
+
+@function _raw($values, $key, $kind) {
+  @if not map.has-key($values, "#{$key}") {
+    @error "unknown #{$kind} token: #{$key}";
+  }
+  @return string.unquote(map.get($values, "#{$key}"));
+}
+
+@function space($n) { @return _raw(t.$space-values, $n, "space"); }
+@function radius($n) { @return _raw(t.$radius-values, $n, "radius"); }
+@function text($n) { @return _raw(t.$text-values, $n, "text"); }
+@function leading($n) { @return _raw(t.$leading-values, $n, "leading"); }
+@function weight($n) { @return _raw(t.$weight-values, $n, "weight"); }
+@function z($n) { @return _raw(t.$z-values, $n, "z"); }
+@function dur($n) { @return _raw(t.$motion-values, "dur-#{$n}", "motion"); }
+@function size($n) { @return _raw(t.$component-values, $n, "component"); }
+
+// Shared shapes as mixins for the rare single use. grass does not carry @extend across @use modules, so the
+// common ones are written once as grouped selectors in _base.scss (shared) and at the top of _home.scss.
+@mixin disc {
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+}
+
+@mixin ri-sm {
+  width: 16px;
+  height: 16px;
+}

@@ -1,4 +1,4 @@
-//! Static files copied into `dist/`: fonts (read-only from the web crate), the demo clips, the site script, social
+//! Static files copied into `dist/`: fonts (subsets of the web crate's), the demo clips, the site script, social
 //! card images, and whatever the brand build has produced (`brand/dist`, minus the token sources).
 
 use std::path::{Path, PathBuf};
@@ -56,7 +56,8 @@ pub fn copy_dir(from: &Path, to: &Path, skip: impl Fn(&Path) -> bool) -> Result<
     Ok(files)
 }
 
-/// Fonts the site uses (Latin subsets, variable weight), from `crates/web/assets/fonts`.
+/// Fonts the site uses: subsets of the web crate's fonts made by `tools/subset_fonts.py` into `assets/fonts`
+/// (upright: Latin-1 and punctuation, weights 400-700; italic: only the characters the site sets in italic).
 pub const FONTS: [&str; 5] = [
     "inter-latin-wght-normal.woff2",
     "literata-latin-wght-normal.woff2",

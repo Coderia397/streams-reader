@@ -1,56 +1,80 @@
-// Page frame: width, top bar, sections, footer.
-@use "tokens" as t;
+// Page frame: width, top bar (condenses on scroll), mobile menu, sections, section heads, footer.
+@use "tk" as t;
 
-// Site layout widths (page frame only; components take their sizes from tokens).
-$wrap-max: 1160px;
-$narrow-max: 820px;
-$topbar-height: calc(t.space(12) + t.space(4));
-$section-gap: calc(t.space(12) + t.space(6));
-$section-gap-wide: calc(t.space(12) * 2);
+$wrap-max: 1200px;
+// Half of the gap between two sections (note 15 A0: 96 px on phones, 136 px wide), so neighbours add up to it.
+$section-gap: t.space(12);
+$section-gap-wide: calc(t.space(12) * 1.42);
+
+// The side gutter, on the root so full-bleed rows (the classics) can line up with the content column.
+:root {
+  --gutter: #{t.space(4)};
+  @media (min-width: 400px) {
+    --gutter: #{t.space(5)};
+  }
+  @include t.bp(md) {
+    --gutter: #{t.space(8)};
+  }
+}
 
 .wrap {
   width: 100%;
   max-width: $wrap-max;
   margin-inline: auto;
-  padding-inline: t.space(4);
-  @include t.bp(sm) {
-    padding-inline: t.space(6);
-  }
-  @include t.bp(md) {
-    padding-inline: t.space(8);
-  }
+  padding-inline: var(--gutter);
 }
 
-// ---- top bar
+// ---- top bar: transparent over the hero, glass with a hairline once the page scrolls (fixed height, no shift)
 
 .topbar {
   position: sticky;
   top: 0;
   z-index: t.z(sticky);
-  background: t.color(glass);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  border-bottom: t.size(border-width) solid color-mix(in srgb, t.color(border) 70%, transparent);
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: t.color(glass);
+    backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: t.size(border-width) solid t.color(border);
+    opacity: 0;
+    transition: opacity t.dur(slow) t.ease(out);
+  }
+  &.is-scrolled::before {
+    opacity: 1;
+  }
 }
 
 .topbar__inner {
   display: flex;
   align-items: center;
-  gap: t.space(4);
-  height: $topbar-height;
+  gap: t.space(2);
+  height: var(--topbar);
 }
 
 .lockup {
   display: inline-flex;
   align-items: center;
   gap: t.space(2);
+  min-height: t.size(tap-min);
   color: t.color(text);
   text-decoration: none;
   border-radius: t.radius(sm);
   margin-inline-end: auto;
+  transform-origin: left center;
+  transition: transform t.dur(slow) t.ease(out);
+  .is-scrolled & {
+    transform: scale(0.94);
+  }
+}
+
+[dir="rtl"] .lockup {
+  transform-origin: right center;
 }
 
 .lockup__mark {
+  flex: none;
   display: grid;
   place-items: center;
   color: t.color(brand);
@@ -58,18 +82,11 @@ $section-gap-wide: calc(t.space(12) * 2);
     width: t.space(7);
     height: t.space(7);
   }
-  .mark-word {
-    stroke: t.color(ember);
-  }
-  .mark-dot {
-    fill: t.color(ember);
-  }
 }
 
 .lockup__word {
   font-size: t.text(lg);
   letter-spacing: var(--tracking-title);
-  color: t.color(text);
   white-space: nowrap;
   b {
     font-weight: t.weight(semibold);
@@ -82,21 +99,21 @@ $section-gap-wide: calc(t.space(12) * 2);
 
 .topbar__links {
   display: none;
-  gap: t.space(1);
   @include t.bp(md) {
     display: flex;
+    gap: t.space(1);
   }
   a {
     display: inline-flex;
     align-items: center;
-    height: t.size(button-height-sm);
+    min-height: t.size(tap-min);
     padding-inline: t.space(3);
     border-radius: t.radius(pill);
     color: t.color(text-2);
     font-size: t.text(sm);
     font-weight: t.weight(medium);
     text-decoration: none;
-    @include t.transition(color, background-color);
+    transition: color t.dur(base) t.ease(out), background-color t.dur(base) t.ease(out);
     &:hover,
     &[aria-current="page"] {
       color: t.color(text);
@@ -108,10 +125,69 @@ $section-gap-wide: calc(t.space(12) * 2);
 .topbar__actions {
   display: flex;
   align-items: center;
-  gap: t.space(2);
+  gap: t.space(1);
   @include t.bp(md) {
-    margin-inline-start: t.space(4);
+    margin-inline-start: t.space(3);
   }
+  .btn--sm {
+    height: t.size(tap-min);
+  }
+}
+
+.topbar .topbar__gh {
+  display: none;
+  @include t.bp(sm) {
+    display: inline-flex;
+  }
+}
+
+// Mobile menu: a native disclosure, so it works without script.
+.menu {
+  @include t.bp(md) {
+    display: none;
+  }
+  summary {
+    list-style: none;
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+  .menu__close,
+  &[open] .menu__open {
+    display: none;
+  }
+  &[open] .menu__close {
+    display: block;
+  }
+}
+
+.menu__sheet {
+  position: fixed;
+  inset: var(--topbar) 0 0;
+  padding: t.space(4) t.space(5) t.space(10);
+  background: t.color(bg);
+  border-top: t.size(border-width) solid t.color(border);
+  overflow-y: auto;
+  animation: sheet-in t.dur(slow) t.ease(out);
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(t.space(3) * -1));
+  }
+}
+
+.menu__links a {
+  display: flex;
+  align-items: center;
+  gap: t.space(3);
+  min-height: calc(t.size(tap-min) + t.space(3));
+  border-bottom: t.size(border-width) solid t.color(border);
+  color: t.color(text);
+  font-family: t.font(read);
+  font-size: t.text(xl);
+  text-decoration: none;
 }
 
 // ---- sections
@@ -123,22 +199,17 @@ $section-gap-wide: calc(t.space(12) * 2);
   }
 }
 
-.section--tight {
-  padding-block-start: t.space(4);
-}
-
-// Narrow content keeps the page's start edge (aligned with the intro) and limits its line length.
-.section--narrow > * {
-  max-width: $narrow-max;
-}
-
 .section--band {
+  padding-block: calc(t.space(12) * 2);
   background: t.color(surface-1);
   border-block: t.size(border-width) solid t.color(border);
+  @include t.bp(md) {
+    padding-block: calc(t.space(12) * 2.85);
+  }
 }
 
 .section__head {
-  max-width: 40rem;
+  max-width: 44rem;
   margin-block-end: t.space(10);
   @include t.bp(md) {
     margin-block-end: t.space(12);
@@ -146,25 +217,39 @@ $section-gap-wide: calc(t.space(12) * 2);
 }
 
 .eyebrow {
-  @include t.type(overline);
+  display: flex;
+  align-items: center;
+  gap: t.space(3);
+  margin-block-end: t.space(4);
+  color: t.color(text-2);
+  font-size: t.text(md);
+  font-weight: t.weight(medium);
+}
+
+.eyebrow__chip {
+  width: t.space(9);
+  height: t.space(9);
+  background: t.color(surface-2);
+  border: t.size(border-width) solid t.color(border);
   color: t.color(brand-text);
-  margin-block-end: t.space(3);
 }
 
 .section__title {
+  max-width: 18ch;
   font-family: t.font(read);
-  font-size: calc(t.text(2xl) * 1.15);
+  font-size: calc(t.text(2xl) * 1.1);
   line-height: t.leading(tight);
   letter-spacing: var(--tracking-title);
   font-weight: t.weight(semibold);
   text-wrap: balance;
   @include t.bp(md) {
-    font-size: calc(t.text(2xl) * 1.5);
+    font-size: calc(t.text(2xl) * 1.45);
   }
 }
 
 .section__lede {
   margin-block-start: t.space(4);
+  max-width: 38rem;
   font-size: t.text(lg);
   color: t.color(text-2);
   text-wrap: pretty;
@@ -178,53 +263,19 @@ $section-gap-wide: calc(t.space(12) * 2);
   display: inline-flex;
   align-items: center;
   gap: t.space(2);
+  min-height: t.size(tap-min);
   font-weight: t.weight(medium);
   text-decoration: none;
   .ri {
-    @include t.transition(transform);
+    transition: transform t.dur(base) t.ease(out);
   }
   &:hover .ri {
-    transform: translateX(t.space(1));
-  }
-  &:hover .ri-flip {
     transform: translateX(t.space(1));
   }
 }
 
 [dir="rtl"] .link-arrow:hover .ri-flip {
   transform: scaleX(-1) translateX(t.space(1));
-}
-
-// ---- inner page intro
-
-.intro {
-  padding-block: calc(t.space(12) + t.space(4)) t.space(10);
-  @include t.bp(md) {
-    padding-block: calc(t.space(12) * 2) t.space(12);
-  }
-}
-
-.intro__title {
-  font-family: t.font(read);
-  font-size: calc(t.text(2xl) * 1.3);
-  line-height: t.leading(tight);
-  letter-spacing: var(--tracking-display);
-  font-weight: t.weight(semibold);
-  text-wrap: balance;
-  @include t.bp(md) {
-    font-size: calc(t.text(2xl) * 1.9);
-  }
-}
-
-.intro__lede {
-  margin-block-start: t.space(4);
-  max-width: 38rem;
-  font-size: t.text(lg);
-  color: t.color(text-2);
-  text-wrap: pretty;
-  @include t.bp(md) {
-    font-size: t.text(xl);
-  }
 }
 
 // ---- footer
@@ -237,16 +288,19 @@ $section-gap-wide: calc(t.space(12) * 2);
 
 .footer__grid {
   display: grid;
-  gap: t.space(10) t.space(6);
+  gap: t.space(8) t.space(6);
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  @include t.bp(md) {
-    grid-template-columns: 2fr repeat(4, minmax(0, 1fr));
+  @include t.bp(sm) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @include t.bp(lg) {
+    grid-template-columns: 1.6fr repeat(5, minmax(0, 1fr));
   }
 }
 
 .footer__brand {
   grid-column: 1 / -1;
-  @include t.bp(md) {
+  @include t.bp(lg) {
     grid-column: auto;
   }
 }
@@ -270,47 +324,29 @@ $section-gap-wide: calc(t.space(12) * 2);
   display: flex;
   align-items: center;
   gap: t.space(2);
-  margin-block-end: t.space(4);
-  .ri {
-    width: t.size(icon-size-sm);
-    height: t.size(icon-size-sm);
-  }
+  margin-block-end: t.space(2);
 }
 
-.footer__col li + li {
-  margin-block-start: t.space(3);
-}
-
-.footer__col a {
+.footer__col a,
+.footer__langs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: t.size(tap-min);
   color: t.color(text-2);
   text-decoration: none;
-  &:hover {
+  &:hover,
+  &[aria-current="true"] {
     color: t.color(text);
   }
   &[aria-current="true"] {
-    color: t.color(text);
     font-weight: t.weight(semibold);
   }
 }
 
-.footer__langs ul {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, max-content));
-  gap: t.space(3) t.space(5);
-  li + li {
-    margin-block-start: 0;
-  }
-  @include t.bp(md) {
-    grid-template-columns: 1fr;
-  }
-}
-
 .footer__base {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: t.space(2) t.space(6);
-  margin-block-start: t.space(12);
+  display: grid;
+  gap: t.space(4);
+  margin-block-start: t.space(10);
   padding-block-start: t.space(6);
   border-top: t.size(border-width) solid t.color(border);
   color: t.color(text-3);
@@ -318,4 +354,10 @@ $section-gap-wide: calc(t.space(12) * 2);
   a {
     color: t.color(text-2);
   }
+}
+
+.footer__langs ul {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: t.space(5);
 }

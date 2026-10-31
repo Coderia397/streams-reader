@@ -7,7 +7,7 @@ use crate::config::{APP_PATH, GITHUB_URL, ORIGIN, Page};
 use crate::icons::{icon, icon_with_class};
 use crate::layout::Ctx;
 
-/// A section heading with an optional eyebrow and lede.
+/// A section heading with an optional eyebrow and lede (inner pages).
 pub fn section_head(ctx: &Ctx, id: &str, eyebrow: &str, title: &str, lede: Option<&str>) -> String {
     let lede = lede.map(|k| format!("<p class=\"section__lede\">{}</p>", ctx.t(k))).unwrap_or_default();
     format!(
@@ -87,13 +87,58 @@ pub fn software_json_ld(ctx: &Ctx) -> Value {
         "description": ctx.cat.text("home-meta-description"),
         "inLanguage": ctx.lang().code,
         "applicationCategory": "MultimediaApplication",
-        "operatingSystem": "Web, Android, macOS, Windows, Linux",
+        // Only what has shipped (note 15, A12); extend as each app is released.
+        "operatingSystem": "Web",
         "isAccessibleForFree": true,
         "license": "https://opensource.org/licenses/MIT",
         "codeRepository": GITHUB_URL,
         "image": format!("{ORIGIN}{}", ctx.site.og_image(&ctx.lang())),
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
         "publisher": { "@type": "Organization", "name": "Streams", "url": crate::config::PARENT_URL },
+    })
+}
+
+pub fn organization_json_ld() -> Value {
+    json!({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Streams",
+        "url": crate::config::PARENT_URL,
+        "sameAs": [GITHUB_URL],
+    })
+}
+
+pub fn website_json_ld(ctx: &Ctx) -> Value {
+    json!({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": ctx.cat.text("brand-name"),
+        "url": Page::Home.url(&ctx.lang()),
+        "inLanguage": ctx.lang().code,
+    })
+}
+
+/// The classics row as an `ItemList` of `Book`s.
+pub fn books_json_ld(ctx: &Ctx) -> Value {
+    let items: Vec<Value> = ctx
+        .site
+        .library
+        .books
+        .iter()
+        .enumerate()
+        .map(|(i, b)| {
+            json!({
+                "@type": "ListItem",
+                "position": i + 1,
+                "item": { "@type": "Book", "name": b.title, "author": { "@type": "Person", "name": b.author }, "url": b.url },
+            })
+        })
+        .collect();
+    json!({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": ctx.cat.text("classics-title"),
+        "itemListElement": items,
     })
 }
 
@@ -140,8 +185,15 @@ pub fn platform_card(ctx: &Ctx, p: &Platform, detail: bool) -> String {
     } else {
         String::new()
     };
+    // Anchors for the footer and the landing page: /download#android, /download#desktop.
+    let anchor = match (detail, p.os) {
+        (true, "macos") => " id=\"desktop\"",
+        (true, "android") => " id=\"android\"",
+        (true, "web") => " id=\"web\"",
+        _ => "",
+    };
     format!(
-        "<li class=\"platform{avail}\" data-os=\"{os}\"><span class=\"platform__icon\">{ic}</span>\
+        "<li class=\"platform{avail}\" data-os=\"{os}\"{anchor}><span class=\"platform__icon\">{ic}</span>\
          <div class=\"platform__body\"><h3 class=\"platform__name\">{name}<span class=\"platform__you\">{you}</span></h3><p class=\"platform__meta\">{meta}</p>{note}</div>\
          <div class=\"platform__side\">{status}{action}</div></li>",
         avail = if p.available { " is-available" } else { "" },
@@ -156,9 +208,9 @@ pub fn platform_card(ctx: &Ctx, p: &Platform, detail: bool) -> String {
 /// The closing band with the main call to action.
 pub fn cta_band(ctx: &Ctx) -> String {
     format!(
-        "<section class=\"cta wrap\" aria-labelledby=\"cta-title\"><div class=\"cta__inner\">\
+        "<section class=\"cta wrap\" aria-labelledby=\"cta-title\"><div class=\"cta__inner reveal\"><div class=\"cta__glow\" aria-hidden=\"true\"></div>\
          <h2 class=\"cta__title\" id=\"cta-title\">{}</h2><p class=\"cta__lede\">{}</p>\
-         <div class=\"cta__actions\"><a class=\"btn btn--primary btn--lg\" href=\"{APP_PATH}\">{}{}</a>\
+         <div class=\"actions\"><a class=\"btn btn--primary btn--lg\" href=\"{APP_PATH}\">{}{}</a>\
          <a class=\"btn btn--ghost btn--lg\" href=\"{GITHUB_URL}\">{}{}</a></div></div></section>\n",
         ctx.t("cta-title"),
         ctx.t("cta-lede"),

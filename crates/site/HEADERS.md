@@ -1,7 +1,8 @@
 # Serving the site: routes, content types and cache headers
 
 For the owner of the Worker (`crates/worker`). `site-gen` writes everything into `crates/site/dist`; the Worker serves
-that folder at `/` on `https://listen.streams.watch`, next to the app (`/app/`) and the API (`/api/`). The whole folder
+that folder at `/` on `https://reader.streams.watch` (canonical since D34; `listen.streams.watch` answers with a permanent
+redirect to the same path), next to the app (`/app/`) and the API (`/api/`). The whole folder
 is rebuilt on every run, and the stylesheet and script names carry a content hash, so embed the folder as a whole.
 
 ## Routes
@@ -71,4 +72,4 @@ allows. It fetches `/assets/demo/<voice>.json` and plays `/assets/demo/<voice>.m
 
 The key file is `/<key>.txt` at the root, with the key as its body (the key is in `src/config.rs`, `INDEXNOW_KEY`). After
 a deploy that changes pages, POST the changed URLs to `https://api.indexnow.org/indexnow` with that key and
-`keyLocation: https://listen.streams.watch/<key>.txt`.
+`keyLocation: https://reader.streams.watch/<key>.txt`.

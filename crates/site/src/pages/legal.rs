@@ -55,5 +55,6 @@ fn policy(ctx: &Ctx, doc: &str, sections: &[(&str, usize)]) -> Doc {
         body,
         json_ld: vec![],
         script: false,
+        preload: String::new(),
     }
 }

@@ -169,7 +169,7 @@ mod tests {
         assert_eq!(r.matches("Disallow: /app/").count(), 2);
         assert_eq!(r.matches("Disallow: /api/").count(), 2);
         assert!(r.contains("User-agent: ClaudeBot"));
-        assert!(r.ends_with("Sitemap: https://listen.streams.watch/sitemap.xml\n"));
+        assert!(r.ends_with("Sitemap: https://reader.streams.watch/sitemap.xml\n"));
     }
 
     #[test]

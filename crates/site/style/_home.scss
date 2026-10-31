@@ -1,57 +1,122 @@
-// Landing page: hero and live demo, steps, voice tiers, promise pillars.
-@use "tokens" as t;
+// Landing page (note 15, v2). Motion animates transform, opacity and filter only, except the FAQ's height.
+@use "sass:map";
+@use "tk" as t;
+
+$blue-700: map.get(t.$palette, "blue-700");
+$blue-800: map.get(t.$palette, "blue-800");
+$blue-900: map.get(t.$palette, "blue-900");
+$void: map.get(t.$palette, "void");
+$white: map.get(t.$palette, "white");
+
+@keyframes drift {
+  to {
+    transform: translate3d(6%, 4%, 0) scale(1.08);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+// Shapes shared by several landing parts (grouped instead of @extend; see _tk.scss).
+.book__play,
+.clean__listen,
+.rec__btn,
+.mini__play {
+  @include t.disc;
+}
+
+.hero__eyebrow .ri,
+.demo__title .ri,
+.tab .ri,
+.vcard__tag .ri,
+.tier__meta .ri,
+.tile__name .ri,
+.tiles__ios .ri {
+  @include t.ri-sm;
+}
+
+.book__art,
+.vcard,
+.reason,
+.tile {
+  transition:
+    transform t.dur(slow) t.ease(out),
+    box-shadow t.dur(slow) t.ease(out),
+    border-color t.dur(slow) t.ease(out);
+}
 
 // ---- hero
 
 .hero {
   position: relative;
   isolation: isolate;
-  padding-block: calc(t.space(12) + t.space(2)) t.space(12);
-  text-align: center;
+  padding-block: t.space(10) t.space(8);
   @include t.bp(md) {
-    padding-block: calc(t.space(12) * 2) calc(t.space(12) * 2);
+    padding-block: calc(t.space(12) * 1.5) t.space(10);
+  }
+  @include t.bp(lg) {
+    padding-top: t.space(10);
   }
 }
 
-// A soft blue light from above, with a faint ember warmth: the room the demo sits in.
+// Two soft lights that drift slowly: Streams blue from above, a faint warm ember low on the end side.
 .hero__glow {
   position: absolute;
   z-index: -1;
-  inset: 0;
+  inset: calc(var(--topbar) * -1) 0 0;
   overflow: hidden;
   pointer-events: none;
-  &::before,
-  &::after {
-    content: "";
+  i {
     position: absolute;
-    border-radius: t.radius(pill);
-    filter: blur(t.space(12));
+    width: min(1100px, 150vw);
+    aspect-ratio: 2;
+    inset-inline-start: calc(50% - min(550px, 75vw));
+    top: -22%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, t.color(brand) 38%, transparent), transparent);
+    animation: drift var(--dur-drift) t.ease(inout) infinite alternate;
   }
-  &::before {
-    width: min(1100px, 140vw);
-    aspect-ratio: 2 / 1;
-    inset-inline-start: 50%;
-    top: -38%;
-    transform: translateX(-50%);
-    background: radial-gradient(closest-side, color-mix(in srgb, t.color(brand) 34%, transparent), transparent);
-  }
-  &::after {
-    width: min(520px, 80vw);
+  i + i {
+    width: min(620px, 90vw);
     aspect-ratio: 1;
-    inset-inline-start: 58%;
-    top: 46%;
-    background: radial-gradient(closest-side, color-mix(in srgb, t.color(ember) 10%, transparent), transparent);
+    inset-inline-start: auto;
+    inset-inline-end: -12%;
+    top: 34%;
+    background: radial-gradient(closest-side, color-mix(in srgb, t.color(ember) 12%, transparent), transparent);
+    animation-direction: alternate-reverse;
   }
 }
 
-[dir="rtl"] .hero__glow::before {
-  transform: translateX(50%);
-}
-
-.hero__inner {
+.hero__head {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  > * {
+    animation: rise var(--dur-reveal) t.ease(out) both;
+  }
+  > :nth-child(2) {
+    animation-delay: calc(var(--dur-fast) * 0.5);
+  }
+  > :nth-child(3) {
+    animation-delay: var(--dur-fast);
+  }
+  > :nth-child(n + 4) {
+    animation-delay: calc(var(--dur-fast) * 1.5);
+  }
+  // The H1 and the film poster paint at once (they are the LCP candidates): they only glide into place.
+  > .hero__title {
+    animation-name: glide;
+  }
+}
+
+@keyframes glide {
+  from {
+    transform: translateY(var(--rise));
+  }
 }
 
 .hero__eyebrow {
@@ -67,74 +132,193 @@
   font-size: t.text(sm);
   font-weight: t.weight(medium);
   .ri {
-    width: t.size(icon-size-sm);
-    height: t.size(icon-size-sm);
     color: t.color(ember);
   }
 }
 
 .hero__title {
   margin-block-start: t.space(6);
-  max-width: 13ch;
+  max-width: 14ch;
   font-family: t.font(read);
   font-size: t.text(3xl);
   line-height: t.leading(tight);
   letter-spacing: var(--tracking-display);
   font-weight: t.weight(semibold);
   text-wrap: balance;
-  @include t.bp(lg) {
-    font-size: calc(t.text(3xl) * 1.12);
+}
+
+// The accent word: Literata italic with a hand-drawn ember underline, drawn once.
+.accent {
+  position: relative;
+  display: inline-block;
+  font-style: italic;
+  font-weight: t.weight(medium);
+}
+
+.scribble {
+  position: absolute;
+  inset-inline: -4%;
+  bottom: -0.12em;
+  width: 108%;
+  height: 0.28em;
+  overflow: visible;
+  path {
+    fill: none;
+    stroke: t.color(ember);
+    stroke-width: 3;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scribble path {
+    animation: draw calc(var(--dur-slow) * 3) t.ease(out) calc(var(--dur-slow) * 2.5) both;
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
   }
 }
 
 .hero__lede {
   margin-block-start: t.space(5);
-  max-width: 34rem;
+  max-width: 36rem;
   color: t.color(text-2);
   font-size: t.text(lg);
-  line-height: t.leading(normal);
   text-wrap: pretty;
   @include t.bp(md) {
     font-size: t.text(xl);
   }
 }
 
-.hero__ctas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: t.space(3);
-  margin-block-start: t.space(8);
-}
-
 .hero__note {
   margin-block-start: t.space(4);
   color: t.color(text-3);
   font-size: t.text(sm);
-  max-width: 30rem;
 }
 
-// ---- live demo
+// ---- stage: the head, the demo, then the film, in source order. Wide screens put the demo beside the head, so its
+// voices and play button sit in the first view (ElevenLabs), and the film runs below at full width. Visual order
+// and keyboard order are the same at every width.
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  @include t.bp(lg) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    column-gap: t.space(12);
+    .hero__head {
+      align-items: flex-start;
+      text-align: start;
+    }
+    .actions {
+      justify-content: flex-start;
+    }
+  }
+}
+
+.demo {
+  animation: rise var(--dur-reveal) t.ease(out) calc(var(--dur-fast) * 2.5) both;
+}
+
+.film {
+  animation: glide var(--dur-reveal) t.ease(out) both;
+  position: relative;
+  margin-top: t.space(10);
+  @include t.bp(md) {
+    margin-top: t.space(12);
+  }
+  @include t.bp(lg) {
+    grid-area: 2 / 1 / 3 / 3;
+  }
+}
+
+.film__frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: t.size(sheet-radius);
+  border: t.size(border-width) solid color-mix(in srgb, t.color(text) 10%, transparent);
+  background: t.color(surface-1);
+  box-shadow: t.shadow(3), 0 t.space(8) calc(t.space(12) * 2) color-mix(in srgb, t.color(brand) 22%, transparent);
+  @media (min-width: 700px) {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.film__poster,
+.film__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.film__video {
+  opacity: 0;
+  transition: opacity var(--dur-reveal) t.ease(out);
+  .is-playing & {
+    opacity: 1;
+  }
+}
+
+.film__toggle {
+  position: absolute;
+  inset-inline-start: t.space(4);
+  bottom: t.space(4);
+  background: color-mix(in srgb, t.color(bg) 55%, transparent);
+  border-color: color-mix(in srgb, t.color(text) 18%, transparent);
+  color: t.color(text);
+  backdrop-filter: blur(10px);
+}
+
+.film__line {
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: color-mix(in srgb, t.color(text) 14%, transparent);
+  span {
+    display: block;
+    height: 100%;
+    background: t.color(text);
+    transform-origin: left center;
+    transform: scaleX(0);
+  }
+}
+
+// ---- the demo card
 
 .demo {
   position: relative;
-  max-width: t.size(content-max);
-  margin: t.space(12) auto 0;
-  padding: t.space(5);
-  text-align: start;
+  margin-top: t.space(10);
+  padding: t.space(4);
   border-radius: t.size(sheet-radius);
-  border: t.size(border-width) solid t.color(border);
+  border: t.size(border-width) solid color-mix(in srgb, t.color(text) 12%, transparent);
   background: t.color(surface-1);
   box-shadow: t.shadow(3);
+  scroll-margin-top: calc(var(--topbar) + t.space(6));
   @include t.bp(sm) {
-    padding: t.space(8);
+    padding: t.space(6);
   }
   @include t.bp(md) {
-    margin-block-start: calc(t.space(12) + t.space(6));
+    max-width: 680px;
+    margin: t.space(12) auto 0;
+  }
+  @include t.bp(lg) {
+    grid-area: 1 / 2;
+    max-width: none;
+    margin: 0;
   }
 }
 
-.demo__bar {
+.demo__top {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -142,49 +326,95 @@
   gap: t.space(3);
 }
 
-.demo__book {
+.demo__title {
   display: flex;
   align-items: center;
   gap: t.space(2);
+  font-size: t.text(sm);
+  font-weight: t.weight(semibold);
+  color: t.color(text-2);
+  .ri {
+    color: t.color(ember);
+  }
+}
+
+// Segmented sample tabs; scroll sideways on narrow screens.
+.tabs {
+  display: flex;
+  gap: t.space(1);
+  max-width: 100%;
+  padding: t.space(1);
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-radius: t.radius(pill);
+  background: t.color(surface-2);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: t.space(1);
+  min-height: t.size(tap-min);
+  padding-inline: t.space(3);
+  border: 0;
+  border-radius: t.radius(pill);
+  background: transparent;
   color: t.color(text-2);
   font-size: t.text(sm);
-  min-width: 0;
-  .ri {
-    width: t.size(icon-size-sm);
-    height: t.size(icon-size-sm);
-    color: t.color(text-3);
-  }
-  cite {
-    font-family: t.font(read);
-    font-style: italic;
+  font-weight: t.weight(medium);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color t.dur(base) t.ease(out), background-color t.dur(base) t.ease(out);
+  &:hover {
     color: t.color(text);
   }
-}
-
-.demo__author {
-  color: t.color(text-3);
-  &::before {
-    content: "·";
-    margin-inline: t.space(1) t.space(2);
+  &[aria-selected="true"] {
+    background: t.color(surface-3);
+    color: t.color(text);
+    box-shadow: t.shadow(1);
   }
 }
 
-.demo__voices {
-  display: flex;
-  gap: t.space(2);
+// Phones: the sample tabs share the width without icons, so every sample shows without scrolling.
+@media (max-width: 599px) {
+  .tabs > .tab {
+    flex: 1 0 auto;
+    justify-content: center;
+    padding-inline: t.space(2);
+    .ri {
+      display: none;
+    }
+  }
+}
+
+// Panels share one grid cell, so switching samples never changes the card's height.
+.demo__body {
+  position: relative;
+  display: grid;
+  margin-block: t.space(5);
+  @include t.bp(sm) {
+    margin-block: t.space(6);
+  }
+}
+
+.demo__panel {
+  grid-area: 1 / 1;
+  transition: opacity t.dur(slow) t.ease(out), transform t.dur(slow) t.ease(out);
+  &[hidden] {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(t.space(2));
+  }
 }
 
 .demo__text {
   position: relative;
-  margin-block: t.space(6);
   font-family: t.font(read);
   font-size: t.text(xl);
   line-height: t.leading(read);
-  color: t.color(text);
   @include t.bp(sm) {
-    margin-block: t.space(8);
-    font-size: t.text(2xl);
-    line-height: t.leading(normal);
+    font-size: calc(t.text(xl) * 1.12);
   }
   p {
     position: relative;
@@ -192,20 +422,20 @@
   }
 }
 
-.demo__sentence {
-  @include t.sentence-wash;
-  padding-block: 0.08em;
-  padding-inline: 0.12em;
-  margin-inline: -0.12em;
+.demo__text--poem {
+  font-style: italic;
 }
 
+.demo__source,
+// While a clip plays, words not yet spoken dim and spoken ones brighten.
 .w {
-  border-radius: t.radius(2xs);
-  @include t.transition(color);
-}
-
-.w.is-still {
-  @include t.word-pill;
+  transition: color t.dur(base) t.ease(out);
+  .is-playing & {
+    color: t.color(text-3);
+  }
+  &.is-done {
+    color: t.color(text);
+  }
 }
 
 // The spoken word's pill glides from word to word (moved by the script with transforms).
@@ -215,10 +445,10 @@
   left: 0;
   z-index: 0;
   opacity: 0;
+  pointer-events: none;
   @include t.word-pill;
   transition:
-    transform t.dur(fast) t.ease(out),
-    width t.dur(fast) t.ease(out),
+    transform calc(var(--dur-fast) * 0.9) t.ease(out),
     opacity t.dur(fast) t.ease(out);
   &.is-on {
     opacity: 1;
@@ -226,196 +456,1305 @@
   &.is-jump {
     transition: opacity t.dur(fast) t.ease(out);
   }
-  @include t.reduced-motion {
-    transition: none;
-  }
 }
 
-.demo__controls {
-  display: flex;
-  align-items: center;
+.demo__foot {
+  display: grid;
   gap: t.space(4);
 }
 
-.demo__track {
-  position: relative;
-  flex: 1;
-  height: t.space(1);
+.voices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.space(2);
+}
+
+.voice {
+  display: inline-flex;
+  align-items: center;
+  gap: t.space(2);
+  min-height: t.size(tap-min);
+  padding-inline: t.space(1) t.space(3);
+  border: t.size(border-width) solid t.color(border);
   border-radius: t.radius(pill);
-  background: t.color(surface-3);
-  overflow: hidden;
+  background: transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color t.dur(base) t.ease(out), background-color t.dur(base) t.ease(out);
+  .orb {
+    width: t.space(8);
+    height: t.space(8);
+    transition: transform t.dur(slow) t.ease(out);
+  }
+  &:hover {
+    border-color: t.color(border-strong);
+  }
+  &[aria-checked="true"] {
+    border-color: color-mix(in srgb, t.color(brand-text) 60%, transparent);
+    background: t.color(brand-soft);
+    .orb {
+      transform: scale(1.08);
+    }
+  }
+  &[data-locked] {
+    opacity: 0.6;
+  }
 }
 
-.demo__progress {
-  position: absolute;
-  inset: 0;
-  background: t.color(brand);
-  transform-origin: left center;
-  transform: scaleX(0);
+.voice__name {
+  font-size: t.text(sm);
+  font-weight: t.weight(semibold);
 }
 
-.chip--speed {
-  min-width: calc(t.size(chip-height) * 1.6);
-  justify-content: center;
-  font-variant-numeric: tabular-nums;
+// Phones: the chips fill a two-column grid (2 + 2 + 1, the odd last one full width), labels clip with an ellipsis.
+@media (max-width: 599px) {
+  .voices {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .voice {
+    gap: t.space(1);
+    min-width: 0;
+    padding-inline-end: t.space(2);
+    &:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+  .voice__name,
+  .voice__meta {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
-.demo__caption {
-  margin-block-start: t.space(5);
+.voice__meta,
+.voice__tier {
+  display: inline-flex;
+  align-items: center;
+  gap: t.space(1);
   color: t.color(text-3);
   font-size: t.text(xs);
-}
-
-// ---- how it works
-
-.steps {
-  display: grid;
-  gap: t.space(4);
-  counter-reset: step;
-  @include t.bp(md) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: t.space(5);
+  .ri {
+    width: t.space(3);
+    height: t.space(3);
   }
 }
 
-.step {
-  @include t.card;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: t.space(4);
-  align-items: start;
-  padding: t.space(4);
-  @include t.bp(md) {
-    display: block;
-    padding: t.space(6);
-  }
+.voice__tier {
+  color: t.color(ember);
 }
 
-.step__art {
+.player {
   display: flex;
   align-items: center;
-  justify-content: center;
-  grid-row: span 3;
-  width: calc(t.space(12) * 1.75);
-  height: calc(t.space(12) * 1.75);
-  border-radius: t.radius(md);
-  background:
-    radial-gradient(90% 80% at 50% 0%, t.color(brand-soft), transparent 70%),
-    t.color(surface-2);
-  overflow: hidden;
-  .spot {
-    width: calc(t.space(12) * 1.5);
-    height: calc(t.space(12) * 1.5);
+  gap: t.space(3);
+  @include t.bp(sm) {
+    gap: t.space(4);
   }
-  @include t.bp(md) {
-    width: auto;
-    height: calc(t.space(12) * 3.5);
-    margin-block-end: t.space(6);
-    border-radius: t.radius(lg);
-    .spot {
-      width: calc(t.space(12) * 2.5);
-      height: calc(t.space(12) * 2.5);
+}
+
+// The waveform: the clip's real loudness envelope; bars light up as they are passed.
+.wave {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: t.space(10);
+  min-width: 0;
+  i {
+    flex: 1;
+    height: 100%;
+    border-radius: t.radius(pill);
+    background: color-mix(in srgb, t.color(text-3) 55%, transparent);
+    transform: scaleY(0.3);
+    transition: transform t.dur(slow) t.ease(out), background-color t.dur(fast) linear;
+    &.on {
+      background: t.color(brand-text);
     }
   }
 }
 
-.step__num {
-  display: grid;
-  place-items: center;
-  width: t.space(7);
-  height: t.space(7);
+// Bar heights (the clip's loudness, 1-10); `i.lN` outranks `.wave i` by coming later.
+@for $l from 1 through 10 {
+  i.l#{$l} {
+    transform: scaleY(#{0.08 + $l * 0.092});
+  }
+}
+
+.wave__head {
+  position: absolute;
+  inset-block: calc(t.space(1) * -1);
+  left: 0;
+  width: 2px;
   border-radius: t.radius(pill);
-  border: t.size(border-width) solid t.color(border-strong);
+  background: t.color(text);
+  opacity: 0;
+  transition: opacity t.dur(base) t.ease(out);
+  .is-playing & {
+    opacity: 1;
+  }
+}
+
+.player__time {
+  min-width: 3.2em;
   color: t.color(text-2);
-  font-size: t.text(xs);
-  font-weight: t.weight(semibold);
+  font-size: t.text(sm);
   font-variant-numeric: tabular-nums;
 }
 
-.step__title {
-  margin-block-start: t.space(2);
-  font-size: t.text(xl);
-  font-weight: t.weight(semibold);
-  letter-spacing: var(--tracking-title);
+.chip--speed {
+  min-width: calc(t.size(tap-min) * 1.3);
+  justify-content: center;
+  border: t.size(border-width) solid t.color(border);
+  font-variant-numeric: tabular-nums;
 }
 
-.step__text {
+// Every caption the demo can show, stacked in one cell: the box always has the tallest one's height (no shift).
+.demo__note {
+  display: grid;
+  margin-block-start: t.space(4);
+  color: t.color(text-3);
+  font-size: t.text(xs);
+  text-wrap: pretty;
+  > * {
+    grid-area: 1/1;
+  }
+  .off {
+    visibility: hidden;
+  }
+  .is-alert {
+    color: t.color(ember);
+  }
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: t.space(6) t.space(4);
+  margin-block-start: t.space(10);
+  text-align: center;
+  @include t.bp(md) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-block-start: t.space(12);
+  }
+  b {
+    display: block;
+    font-family: t.font(read);
+    font-size: calc(t.text(2xl) * 1.2);
+    font-weight: t.weight(semibold);
+    line-height: t.leading(tight);
+  }
+  span {
+    color: t.color(text-3);
+    font-size: t.text(sm);
+  }
+}
+
+// ---- the glow arc between the hero and the content
+
+.arc {
+  position: relative;
+  height: t.space(12);
+  overflow: hidden;
+  pointer-events: none;
+  // Fade the glow out inside the band so it never ends in a hard cut; the 2 px top border stays the line.
+  mask-image: linear-gradient(to bottom, $white 35%, transparent);
+  span {
+    position: absolute;
+    left: -25%;
+    right: -25%;
+    top: t.space(6);
+    height: 600px;
+    border-radius: 50%;
+    border-top: 2px solid color-mix(in srgb, t.color(brand-text) 80%, transparent);
+    background: radial-gradient(60% 12% at 50% 0%, color-mix(in srgb, t.color(brand) 30%, transparent), transparent);
+    box-shadow: 0 calc(t.space(1) * -1) t.space(6) color-mix(in srgb, t.color(brand) 45%, transparent);
+  }
+}
+
+// ---- classics: a slow marquee of numbered covers (static row with arrows under reduced motion)
+
+.classics {
+  overflow: clip;
+  padding-block-start: t.space(8);
+}
+
+.marquee {
+  position: relative;
+  container-type: inline-size;
+  --cover: 104px;
+  @include t.bp(md) {
+    --cover: 132px;
+  }
+}
+
+.marquee__viewport {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, $white 6%, $white 94%, transparent);
+}
+
+.marquee__rail {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--dur-marquee) linear infinite;
+  .marquee:hover &,
+  .marquee:focus-within &,
+  .marquee.is-paused & {
+    animation-play-state: paused;
+  }
+}
+
+[dir="rtl"] .marquee__rail {
+  animation-name: marquee-rtl;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-rtl {
+  to {
+    transform: translateX(50%);
+  }
+}
+
+.marquee__list {
+  display: flex;
+  gap: t.space(3);
+  padding-block: t.space(4) t.space(6);
+  padding-inline-end: t.space(3);
+}
+
+// Netflix's numbered row: a cover-high outlined numeral beside each cover, the cover overlapping it a little.
+.book__btn {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 0;
+  padding-inline-start: calc(var(--cover) * 0.5);
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: t.radius(xs);
+  .book--wide & {
+    padding-inline-start: calc(var(--cover) * 0.98);
+  }
+}
+
+.book__rank {
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: 0;
+  font-family: t.font(ui);
+  font-size: calc(var(--cover) * 1.15);
+  font-weight: t.weight(semibold);
+  line-height: 0.8;
+  letter-spacing: -0.08em;
+  color: t.color(bg);
+  -webkit-text-stroke: 2px t.color(text-3);
+  user-select: none;
+}
+
+.book__art {
+  position: relative;
+  display: block;
+  width: var(--cover);
+  aspect-ratio: 2 / 3;
+  border-radius: t.radius(xs);
+  box-shadow: t.shadow(2);
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, t.color(on-brand) 12%, transparent);
+  }
+}
+
+.book__btn:hover .book__art,
+.book__btn:focus-visible .book__art,
+.book__btn[aria-pressed="true"] .book__art {
+  transform: translateY(calc(t.space(1) * -1.5));
+  box-shadow: t.shadow(3);
+}
+
+.book__play {
+  position: absolute;
+  inset-inline-end: t.space(2);
+  bottom: t.space(2);
+  width: t.space(10);
+  height: t.space(10);
+  background: t.color(brand);
+  color: t.color(on-brand);
+  box-shadow: t.shadow(2);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity t.dur(base) t.ease(out), transform t.dur(base) t.ease(out);
+  .book__btn:hover &,
+  .book__btn:focus-visible &,
+  [aria-pressed="true"] & {
+    opacity: 1;
+    transform: none;
+  }
+  @media (hover: none) {
+    opacity: 0.92;
+    transform: none;
+  }
+}
+
+.book__i-pause,
+[aria-pressed="true"] .book__i-play {
+  display: none;
+}
+
+[aria-pressed="true"] .book__i-pause {
+  display: block;
+}
+
+.marquee__arrow {
+  display: none;
+  position: absolute;
+  top: 40%;
+  cursor: pointer;
+  box-shadow: t.shadow(2);
+}
+
+.marquee__arrow[aria-disabled=true] {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.marquee__arrow--prev {
+  inset-inline-start: t.space(3);
+}
+
+.marquee__arrow--next {
+  inset-inline-end: t.space(3);
+}
+
+// The static row (.is-manual, set by the script): with reduced motion, and once a keyboard user tabs into the row,
+// so a focused cover is always on screen. It starts at the content column, like the heading above it. Without the
+// script, reduced motion still stops the rail and lets the row scroll.
+.is-manual {
+  .marquee__rail {
+    animation: none;
+  }
+  .marquee__viewport {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--start);
+    scrollbar-width: none;
+    mask-image: none;
+  }
+  .marquee__list--copy {
+    display: none;
+  }
+  // The end padding keeps the last cover clear of the "More books" arrow (44 px tap target + its inset and a gap).
+  .marquee__list {
+    padding-inline: var(--start) calc(t.size(tap-min) + t.space(5));
+  }
+  .book {
+    scroll-snap-align: start;
+  }
+  .marquee__arrow {
+    display: inline-flex;
+  }
+}
+
+@include t.reduced-motion {
+  .marquee__rail {
+    animation: none;
+  }
+  .marquee__viewport {
+    overflow-x: auto;
+  }
+}
+
+.marquee {
+  --start: calc(max(0px, (100cqw - 1200px) / 2) + var(--gutter));
+}
+
+.classics__licence {
   margin-block-start: t.space(2);
+  color: t.color(text-3);
+  font-size: t.text(sm);
+}
+
+// ---- chapters: media on one side (sticky on wide screens), text on the other
+
+.chapters {
+  padding-block-start: t.space(8);
+}
+
+.chapter {
+  display: grid;
+  gap: t.space(8);
+  & + & {
+    margin-block-start: calc(t.space(12) * 2);
+  }
+  @include t.bp(md) {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: t.space(12);
+    &:nth-child(even) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      .chapter__media {
+        order: 2;
+      }
+    }
+  }
+}
+
+.chapter__num {
+  color: t.color(brand-text);
+  font-size: t.text(sm);
+  font-weight: t.weight(semibold);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+}
+
+.chapter__title {
+  margin-block: t.space(4);
+  font-family: t.font(read);
+  font-size: calc(t.text(2xl) * 1.1);
+  line-height: t.leading(tight);
+  letter-spacing: var(--tracking-title);
+  font-weight: t.weight(semibold);
+  text-wrap: balance;
+  @include t.bp(md) {
+    font-size: calc(t.text(2xl) * 1.45);
+  }
+}
+
+.chapter__body {
+  margin-block-end: t.space(6);
+  max-width: 34rem;
   color: t.color(text-2);
+  font-size: t.text(lg);
   text-wrap: pretty;
 }
 
-// Spot illustrations (brand/spot), decorative.
-.spot {
-  width: calc(t.space(12) * 2);
-  height: calc(t.space(12) * 2);
+.chapter__more {
+  margin-block-start: t.space(4);
 }
 
-.spot--tier,
-.spot--pillar {
-  width: calc(t.space(12) * 1.75);
-  height: calc(t.space(12) * 1.75);
-  margin-inline-start: calc(t.space(2) * -1);
+// Shared frame for the four product mocks. Each is sized by its content (no empty half card); only the lock screen,
+// whose phone is placed in container units, keeps a fixed shape.
+.mock {
+  position: relative;
+  overflow: hidden;
+  padding: t.space(5);
+  border-radius: t.size(sheet-radius);
+  border: t.size(border-width) solid t.color(border);
+  background:
+    radial-gradient(90% 70% at 50% 0%, t.color(brand-soft), transparent 70%),
+    t.color(surface-1);
+  box-shadow: t.shadow(2);
+  @include t.bp(sm) {
+    padding: t.space(8);
+  }
 }
 
-// ---- voice tiers
+.mock__bar {
+  display: flex;
+  align-items: center;
+  gap: t.space(1);
+  margin-block-end: t.space(3);
+  color: t.color(text-3);
+  font-size: t.text(xs);
+  i {
+    width: t.space(2);
+    height: t.space(2);
+    border-radius: 50%;
+    background: t.color(surface-3);
+  }
+  span {
+    margin-inline-start: t.space(2);
+    direction: ltr;
+  }
+}
+
+// 01: clutter falls away and the clean text comes forward.
+.clean {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 28%;
+  grid-template-rows: auto 1fr;
+  gap: t.space(2);
+}
+
+.junk {
+  border-radius: t.radius(sm);
+  background: t.color(surface-3);
+  transition: opacity var(--dur-reveal) t.ease(out), transform var(--dur-reveal) t.ease(out), filter var(--dur-reveal) t.ease(out);
+  .is-in & {
+    opacity: 0;
+    transform: scale(0.9);
+    filter: blur(4px);
+  }
+}
+
+.junk--nav {
+  grid-column: 1 / -1;
+  height: t.space(6);
+}
+
+.junk--ad {
+  grid-area: 2 / 2;
+  background: t.color(surface-2);
+}
+
+.junk--pop {
+  position: absolute;
+  inset: 18% 20% 30% 22%;
+  background: t.color(surface-2);
+  box-shadow: t.shadow(3);
+  border: t.size(border-width) solid t.color(border-strong);
+  transition-delay: calc(var(--dur-fast) * 2);
+}
+
+.clean__text {
+  grid-area: 2 / 1;
+  font-family: t.font(read);
+  font-size: t.text(sm);
+  line-height: t.leading(read);
+  color: t.color(text-2);
+  transform-origin: 0 0;
+  transition: transform var(--dur-reveal) t.ease(out) var(--dur-slow), color var(--dur-reveal) t.ease(out);
+  @include t.bp(sm) {
+    font-size: t.text(md);
+  }
+  [dir="rtl"] & {
+    transform-origin: 100% 0;
+  }
+  .is-in & {
+    color: t.color(text);
+    transform: scale(1.06);
+  }
+  p + p {
+    margin-block-start: t.space(2);
+  }
+}
+
+.clean__h {
+  font-size: t.text(xl);
+  font-weight: t.weight(semibold);
+}
+
+.clean__listen {
+  grid-area: 2 / 2;
+  justify-self: center;
+  margin-block-start: t.space(8);
+  width: t.space(11);
+  height: t.space(11);
+  background: t.color(brand);
+  color: t.color(on-brand);
+  box-shadow: t.shadow(2);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity t.dur(slow) t.ease(out) calc(var(--dur-reveal) + var(--dur-slow)), transform t.dur(slow) t.ease(out) calc(var(--dur-reveal) + var(--dur-slow));
+  .is-in & {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// 02: the reader follows along.
+.reader {
+  position: relative;
+  font-family: t.font(read);
+  font-size: t.text(md);
+  line-height: t.leading(read);
+  @include t.bp(sm) {
+    font-size: t.text(lg);
+  }
+}
+
+.reader__chapter {
+  margin-block-end: t.space(3);
+  color: t.color(text-3);
+  font-size: t.text(sm);
+  font-style: italic;
+}
+
+.reader__text {
+  position: relative;
+  color: t.color(text-2);
+}
+
+.reader__sentence {
+  @include t.sentence-wash;
+  position: relative;
+  color: t.color(text);
+}
+
+// 03: the recording screen.
+.mock--rec {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: t.space(4);
+  text-align: center;
+}
+
+.rec__step {
+  color: t.color(text-3);
+  font-size: t.text(sm);
+}
+
+.rec__line {
+  max-width: 22ch;
+  font-family: t.font(read);
+  font-size: t.text(xl);
+  line-height: t.leading(snug);
+}
+
+.meter {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: t.space(12);
+  i {
+    width: t.space(1);
+    height: 100%;
+    border-radius: t.radius(pill);
+    background: t.color(brand-text);
+    transform: scaleY(0.15);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .is-in .meter i {
+    animation: level calc(var(--dur-slow) * 2.6) t.ease(inout) infinite alternate;
+  }
+  // Four phases and heights, repeated: enough to read as a voice without one rule per bar.
+  @for $k from 1 through 4 {
+    .meter i:nth-child(4n + #{$k}) {
+      animation-delay: calc(var(--dur-fast) * #{($k * 3) % 4 * 0.9});
+      --peak: #{0.4 + ($k * 3 % 4) * 0.18};
+    }
+  }
+}
+
+@keyframes level {
+  to {
+    transform: scaleY(var(--peak, 0.8));
+  }
+}
+
+.rec__btn {
+  width: t.size(play-size);
+  height: t.size(play-size);
+  background: color-mix(in srgb, t.color(ember) 18%, transparent);
+  color: t.color(ember);
+  box-shadow: 0 0 0 t.space(2) color-mix(in srgb, t.color(ember) 8%, transparent);
+  .ri {
+    width: t.space(8);
+    height: t.space(8);
+  }
+}
+
+.rec__hint {
+  color: t.color(text-3);
+  font-size: t.text(xs);
+}
+
+// 04: the lock screen keeps playing: the Android tile's phone, scaled by this container, rising from the bottom edge.
+// A full-width card on tablets is wide and low; its side padding narrows the container, so the phone scales down.
+.mock.mock--lock {
+  container-type: inline-size;
+  aspect-ratio: 5 / 4;
+  .mini--phone {
+    inset: 10cqw 0 auto;
+    width: 52cqw;
+    margin-inline: auto;
+  }
+  @include t.bp(sm) {
+    aspect-ratio: 2.2;
+    padding-inline: 24%;
+  }
+  @include t.bp(md) {
+    aspect-ratio: 5 / 4;
+    padding-inline: t.space(8);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .is-in .mini__bar span {
+    animation: progress calc(var(--dur-slow) * 120) linear infinite;
+  }
+}
+
+@keyframes progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+// ---- voices
+
+.vgrid {
+  display: grid;
+  gap: t.space(3);
+  @include t.bp(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @include t.bp(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: t.space(4);
+  }
+}
+
+.vcard {
+  @include t.card;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: t.space(1) t.space(4);
+  padding: t.space(5);
+  &:hover,
+  &:focus-within {
+    transform: translateY(calc(t.space(1) * -1));
+    border-color: t.color(border-strong);
+    box-shadow: t.shadow(2);
+  }
+}
+
+.vcard__orb {
+  grid-row: span 2;
+  width: t.space(12);
+  height: t.space(12);
+  border: 0;
+  color: t.color(on-brand);
+  cursor: pointer;
+  transition: transform t.dur(slow) t.ease(out);
+  .ri {
+    width: t.size(icon-size);
+    filter: drop-shadow(0 1px 2px color-mix(in srgb, $void 50%, transparent));
+  }
+  &:hover {
+    transform: scale(1.06);
+  }
+  &[aria-pressed="true"] {
+    box-shadow: 0 0 0 t.space(1) color-mix(in srgb, t.color(brand-text) 40%, transparent);
+  }
+}
+
+span.vcard__orb {
+  cursor: default;
+}
+
+.vcard__name {
+  font-size: t.text(lg);
+  font-weight: t.weight(semibold);
+}
+
+.vcard__desc {
+  color: t.color(text-2);
+  font-size: t.text(sm);
+}
+
+.vcard__tag {
+  grid-column: 2;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: t.space(1);
+  margin-block-start: t.space(2);
+  color: t.color(text-3);
+  font-size: t.text(xs);
+  font-weight: t.weight(medium);
+}
+
+.vcard__tag--x {
+  color: t.color(ember);
+}
+
+.vcard__tag--link {
+  min-height: t.size(tap-min);
+  margin-block: 0;
+  color: t.color(brand-text);
+  font-size: t.text(sm);
+  text-decoration: none;
+}
+
+.vcard--own {
+  border-style: dashed;
+}
 
 .tiers {
   display: grid;
-  gap: t.space(4);
+  gap: t.space(6);
+  margin-block-start: t.space(10);
+  padding-block-start: t.space(8);
+  border-top: t.size(border-width) solid t.color(border);
   @include t.bp(md) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: t.space(5);
   }
 }
 
 .tier {
-  @include t.card;
   display: flex;
-  flex-direction: column;
-  padding: t.space(6);
-  @include t.bp(md) {
-    padding: t.space(8) t.space(6);
-  }
+  gap: t.space(4);
 }
 
-.tier--featured {
-  border-color: color-mix(in srgb, t.color(ember) 35%, t.color(border));
-  background:
-    radial-gradient(100% 70% at 100% 0%, color-mix(in srgb, t.color(ember) 12%, transparent), transparent 70%),
-    t.color(surface-1);
+.tier__n {
+  min-width: 1.4em;
+  font-family: t.font(read);
+  font-size: calc(t.text(2xl) * 1.2);
+  font-weight: t.weight(semibold);
+  line-height: 1;
+  color: t.color(brand-text);
 }
 
 .tier__title {
-  margin-block-start: t.space(4);
-  font-size: t.text(xl);
+  font-size: t.text(lg);
   font-weight: t.weight(semibold);
-  letter-spacing: var(--tracking-title);
 }
 
 .tier__text {
-  margin-block: t.space(2) t.space(6);
+  margin-block: t.space(1) t.space(2);
   color: t.color(text-2);
+  font-size: t.text(sm);
   text-wrap: pretty;
 }
 
 .tier__meta {
-  margin-block-start: auto;
-  padding-block-start: t.space(4);
-  border-top: t.size(border-width) solid t.color(border);
-  color: t.color(text-3);
+  display: flex;
+  align-items: center;
+  gap: t.space(1);
+  color: t.color(success);
   font-size: t.text(sm);
   font-weight: t.weight(medium);
 }
 
-// ---- promise pillars
+// ---- more reasons: four gradient cards (Streams blue to deep indigo) with a spot in the corner
+
+.reasons-section {
+  padding-block-start: 0;
+}
+
+.reasons {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 78%;
+  gap: t.space(3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+  padding-block-end: t.space(2);
+  @include t.bp(sm) {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+  @include t.bp(lg) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: t.space(4);
+  }
+}
+
+.reason {
+  position: relative;
+  min-height: 236px;
+  padding: t.space(6) t.space(6) calc(t.space(12) * 2.25);
+  border-radius: t.size(sheet-radius);
+  background: linear-gradient(165deg, $blue-700 0%, $blue-800 40%, $blue-900 72%, color-mix(in srgb, $blue-900 55%, $void) 100%);
+  color: $white;
+  scroll-snap-align: start;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, $white 14%, transparent);
+  &:hover {
+    transform: translateY(calc(t.space(1) * -1.5));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, $white 14%, transparent), t.shadow(3);
+  }
+}
+
+.reason__title {
+  max-width: 12ch;
+  font-size: t.text(xl);
+  font-weight: t.weight(semibold);
+  line-height: t.leading(snug);
+  // Side by side, every title takes two lines, so the sentences below start on one line across the row.
+  @include t.bp(sm) {
+    min-height: 2lh;
+  }
+}
+
+.reason__text {
+  margin-block-start: t.space(3);
+  color: color-mix(in srgb, $white 78%, transparent);
+  font-size: t.text(sm);
+  text-wrap: pretty;
+}
+
+// A 56 px glyph in a soft disc in the bottom corner (it lifts with the card).
+.reason__icon {
+  @include t.disc;
+  position: absolute;
+  inset-inline-end: t.space(5);
+  bottom: t.space(5);
+  width: calc(t.space(12) + t.space(2));
+  height: calc(t.space(12) + t.space(2));
+  background: radial-gradient(circle at 30% 25%, color-mix(in srgb, $white 26%, transparent), color-mix(in srgb, $white 6%, transparent) 70%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, $white 16%, transparent);
+  .ri {
+    width: t.space(7);
+    height: t.space(7);
+  }
+}
+
+// ---- available everywhere: four tiles with mini UIs drawn in CSS (container-query units)
+
+.tiles {
+  display: grid;
+  gap: t.space(3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (min-width: 1008px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: t.space(4);
+  }
+}
+
+.tile {
+  @include t.card;
+  display: flex;
+  flex-direction: column;
+  gap: t.space(3);
+  padding: t.space(3);
+  &:hover,
+  &:focus-within {
+    transform: translateY(calc(t.space(1) * -1));
+    box-shadow: t.shadow(2);
+  }
+  &.is-detected {
+    border-color: color-mix(in srgb, t.color(brand-text) 60%, transparent);
+  }
+  @include t.bp(sm) {
+    padding: t.space(4);
+  }
+}
+
+.tile__ui {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  container-type: inline-size;
+  border-radius: t.radius(md);
+  background:
+    radial-gradient(80% 60% at 50% 0%, t.color(brand-soft), transparent 70%),
+    t.color(surface-2);
+}
+
+.tile__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: t.space(1);
+}
+
+// The icon stays beside the name when the name wraps.
+.tile__name {
+  display: flex;
+  align-items: center;
+  gap: t.space(2);
+  font-size: t.text(lg);
+  font-weight: t.weight(semibold);
+  line-height: t.leading(snug);
+  > span {
+    min-width: 0;
+  }
+  .ri {
+    color: t.color(text-2);
+  }
+}
+
+.tile__meta {
+  color: t.color(text-3);
+  font-size: t.text(sm);
+  margin-block-end: t.space(1);
+}
+
+// Status chip and actions sit at the bottom of every tile, so they line up across a row.
+.tile__actions {
+  display: grid;
+  justify-items: start;
+  gap: t.space(2);
+  width: 100%;
+  // Same rows in every tile (status, action, a link or its room), so chips and pills line up across a row.
+  grid-template-rows: auto auto t.size(tap-min);
+  margin-block-start: auto;
+  padding-block-start: t.space(2);
+  .btn {
+    width: 100%;
+    padding-inline: t.space(2);
+    font-size: t.text(sm);
+    white-space: nowrap;
+  }
+}
+
+.tile__link {
+  justify-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: t.size(tap-min);
+  font-size: t.text(sm);
+  text-decoration: none;
+}
+
+.tiles__ios {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: t.space(2);
+  margin-block-start: t.space(6);
+  color: t.color(text-2);
+  font-size: t.text(sm);
+}
+
+// The mini UIs. Sizes in cqw so each scales with its tile; they drift a little on hover.
+.mini {
+  position: absolute;
+  inset: 12cqw 10cqw auto;
+  padding: 5cqw;
+  border-radius: t.radius(md);
+  background: t.color(surface-1);
+  border: t.size(border-width) solid t.color(border);
+  box-shadow: t.shadow(2);
+  font-size: 5.6cqw;
+  line-height: 1.5;
+  transition: transform calc(var(--dur-slow) * 14) cubic-bezier(0.22, 1, 0.36, 1);
+  .tile:hover & {
+    transform: translateY(-6cqw);
+  }
+  i {
+    display: block;
+  }
+}
+
+.mini__dots {
+  display: flex;
+  gap: 1.6cqw;
+  margin-block-end: 3cqw;
+  i {
+    width: 2.6cqw;
+    height: 2.6cqw;
+    border-radius: 50%;
+    background: t.color(surface-3);
+  }
+}
+
+.mini__page {
+  font-family: t.font(read);
+  color: t.color(text-2);
+  direction: ltr;
+  text-align: left;
+  mark {
+    @include t.word-pill;
+    color: t.color(text);
+  }
+}
+
+.mini--phone {
+  inset: 8cqw 22cqw auto;
+  aspect-ratio: 9 / 15;
+  padding: 7cqw 4cqw;
+  border-radius: t.radius(lg);
+  background: linear-gradient(180deg, $blue-900, $void);
+  text-align: center;
+}
+
+.mini__clock {
+  color: $white;
+  font-size: 11cqw;
+  font-weight: t.weight(semibold);
+}
+
+.mini__player {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 2cqw;
+  margin-block-start: 6cqw;
+  padding: 3cqw;
+  border-radius: t.radius(sm);
+  background: color-mix(in srgb, $white 14%, transparent);
+  color: $white;
+}
+
+.mini__cover {
+  width: 9cqw;
+  aspect-ratio: 2 / 3;
+  border-radius: t.radius(2xs);
+  background: linear-gradient(160deg, t.color(ember), color-mix(in srgb, t.color(ember) 30%, $blue-800));
+}
+
+.mini__lines {
+  display: grid;
+  gap: 1.6cqw;
+  i {
+    height: 1.8cqw;
+    border-radius: t.radius(pill);
+    background: color-mix(in srgb, $white 40%, transparent);
+  }
+  i + i {
+    width: 60%;
+  }
+}
+
+.mini__bar {
+  grid-column: 1 / -1;
+  height: 0.8cqw;
+  border-radius: t.radius(pill);
+  background: color-mix(in srgb, $white 25%, transparent);
+  overflow: hidden;
+  span {
+    display: block;
+    height: 100%;
+    background: $white;
+    transform-origin: left center;
+    transform: scaleX(0.42);
+  }
+}
+
+.mini__ctl {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 5cqw;
+  .ri {
+    width: 7cqw;
+    height: 7cqw;
+  }
+}
+
+.mini--desk {
+  inset: 16cqw 8cqw auto;
+}
+
+.mini__panel {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 3cqw;
+}
+
+.mini__play {
+  width: 12cqw;
+  height: 12cqw;
+  background: t.color(brand);
+  color: t.color(on-brand);
+  .ri {
+    width: 6cqw;
+    height: 6cqw;
+  }
+}
+
+.mini__wave {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  height: 10cqw;
+  i {
+    flex: 1;
+    height: 100%;
+    border-radius: t.radius(pill);
+    background: t.color(brand-text);
+  }
+  @for $k from 1 through 4 {
+    i:nth-child(4n + #{$k}) {
+      transform: scaleY(#{0.3 + ($k * 3 % 4) * 0.22});
+    }
+  }
+}
+
+.mini__rate {
+  grid-column: 1 / -1;
+  color: t.color(text-2);
+  font-size: 5cqw;
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+}
+
+.mini--ext {
+  inset: 10cqw 6cqw auto;
+}
+
+.mini__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  padding-block-end: 3cqw;
+  border-bottom: t.size(border-width) solid t.color(border);
+}
+
+.mini__url {
+  flex: 1;
+  height: 6cqw;
+  border-radius: t.radius(pill);
+  background: t.color(surface-2);
+}
+
+.mini__btn {
+  display: grid;
+  place-items: center;
+  width: 8cqw;
+  height: 8cqw;
+  border-radius: t.radius(xs);
+  background: t.color(brand);
+  color: t.color(on-brand);
+  .ri {
+    width: 5cqw;
+    height: 5cqw;
+  }
+}
+
+.mini__toast {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  margin: 4cqw 0 4cqw auto;
+  width: max-content;
+  padding: 2cqw 3cqw;
+  border-radius: t.radius(pill);
+  background: t.color(brand-soft);
+  color: t.color(brand-text);
+  font-size: 4.6cqw;
+  font-weight: t.weight(semibold);
+  .ri {
+    width: 5cqw;
+    height: 5cqw;
+  }
+}
+
+.mini__lines--page i {
+  background: t.color(surface-3);
+}
+
+// ---- promise and the dated comparison
 
 .pillars {
   display: grid;
-  gap: t.space(10);
-  @include t.bp(md) {
+  gap: t.space(8);
+  @include t.bp(sm) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: t.space(8);
   }
 }
 
@@ -428,8 +1767,122 @@
 }
 
 .pillar__text {
-  margin-block-start: t.space(3);
+  margin-block-start: t.space(2);
   color: t.color(text-2);
   font-size: t.text(lg);
   text-wrap: pretty;
+}
+
+.promise__note {
+  max-width: 46rem;
+  margin-block-start: t.space(10);
+  padding: t.space(5);
+  border-radius: t.radius(lg);
+  background: t.color(surface-2);
+  color: t.color(text-2);
+}
+
+.compare {
+  margin-block-start: t.space(12);
+}
+
+.compare__title {
+  margin-block-end: t.space(4);
+  font-size: t.text(xl);
+  font-weight: t.weight(semibold);
+}
+
+.compare__scroll {
+  overflow-x: auto;
+  border-radius: t.radius(lg);
+  border: t.size(border-width) solid t.color(border);
+}
+
+.compare__table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: t.text(sm);
+  color: t.color(text-2);
+  th,
+  td {
+    padding: t.space(4);
+    text-align: start;
+    vertical-align: top;
+    border-top: t.size(border-width) solid t.color(border);
+  }
+  thead > tr > * {
+    border-top: 0;
+  }
+  th {
+    font-weight: t.weight(semibold);
+  }
+  td:nth-child(2),
+  .compare__us {
+    color: t.color(text);
+    background: color-mix(in srgb, t.color(brand) 7%, transparent);
+  }
+}
+
+// Phones: each row stacks its label over the two values, under a two-column header; no sideways scroll.
+@media (max-width: 599px) {
+  .compare__table {
+    min-width: 0;
+    &,
+    thead,
+    tbody {
+      display: block;
+    }
+    tr {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    thead td {
+      display: none;
+    }
+    tbody th {
+      grid-column: 1 / -1;
+      padding-block-end: 0;
+      color: t.color(text-3);
+      font-size: t.text(xs);
+    }
+    tbody td {
+      border-top: 0;
+    }
+  }
+}
+
+// ---- FAQ: full-width rows, centred head
+
+.faq-section {
+  max-width: 880px;
+  .section__head {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .eyebrow {
+    justify-content: center;
+  }
+  .section__title {
+    margin-inline: auto;
+  }
+}
+
+// ---- motion off: nothing drifts or reveals; the demo still works with instant word swaps
+
+@include t.reduced-motion {
+  .hero__glow i,
+  .cta__glow,
+  .hero__head > *,
+  .film,
+  .demo {
+    animation: none;
+  }
+  .demo__pill,
+  .mini,
+  .junk,
+  .clean__text,
+  .clean__listen {
+    transition: none;
+  }
 }

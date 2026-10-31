@@ -25,5 +25,6 @@ pub fn render(ctx: &Ctx) -> Doc {
 
 /// `<title>`: "Page · Streams Reader", or the full landing title for the home page.
 pub fn title(ctx: &Ctx, key: &str) -> String {
-    format!("{} · {}", ctx.cat.text(key), ctx.cat.text("brand-name"))
+    let (text, brand) = (ctx.cat.text(key), ctx.cat.text("brand-name"));
+    if text.contains(&brand) { text } else { format!("{text} · {brand}") }
 }

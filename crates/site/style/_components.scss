@@ -1,38 +1,92 @@
-// Reusable components. Each is defined once on top of the token mixins and used by every page.
-@use "tokens" as t;
+// Reusable components on top of the token mixins: buttons, badges, chips, orbs, play, FAQ, platform cards, features,
+// the closing call to action.
+@use "tk" as t;
 
-// ---- buttons
+// ---- buttons: one base for every button shape, then colour variants and round sizes (grouped to keep CSS small)
 
+// Every button carries `.btn`; the shapes below only change size and colour.
 .btn {
   @include t.button-base;
+  min-height: t.size(tap-min);
 }
 
-.btn--primary {
-  @include t.button(primary);
-  box-shadow: 0 t.space(2) t.space(6) color-mix(in srgb, t.color(brand) 32%, transparent);
+.btn--primary,
+.play,
+.skip {
+  background: t.color(brand);
+  color: t.color(on-brand);
+  &:hover:not(:disabled) {
+    background: t.color(brand-hover);
+  }
+  &:active:not(:disabled) {
+    background: t.color(brand-active);
+  }
 }
 
-.btn--secondary {
-  @include t.button(secondary);
+.btn--primary,
+.play {
+  box-shadow: 0 t.space(2) t.space(6) color-mix(in srgb, t.color(brand) 34%, transparent);
 }
 
-.btn--ghost {
-  @include t.button(ghost);
+.btn--secondary,
+.film__toggle,
+.marquee__arrow {
+  background: t.color(surface-2);
+  color: t.color(text);
+  border-color: t.color(border);
+  &:hover:not(:disabled) {
+    background: t.color(surface-3);
+  }
+}
+
+.btn--ghost,
+.icon-btn {
+  background: transparent;
+  color: t.color(text-2);
+  &:hover:not(:disabled) {
+    background: t.color(surface-2);
+    color: t.color(text);
+  }
+}
+
+.icon-btn,
+.play,
+.film__toggle,
+.marquee__arrow {
+  width: t.size(tap-min);
+  height: t.size(tap-min);
+  padding: 0;
+  border-radius: t.radius(pill);
 }
 
 .btn--sm {
-  height: t.size(button-height-sm);
+  height: t.size(tap-min);
   padding-inline: t.size(button-padding-x-sm);
 }
 
 .btn--lg {
-  height: calc(t.size(button-height) + t.space(1));
+  height: calc(t.size(button-height) + t.space(2));
   padding-inline: t.space(6);
   font-size: t.text(md);
 }
 
-.icon-btn {
-  @include t.icon-button(tap-min, ghost);
+.btn[hidden] {
+  display: none;
+}
+
+.btn .badge {
+  margin-inline-start: t.space(1);
+  background: t.color(surface-3);
+}
+
+// A centred row of call-to-action buttons (hero, closing band, 404).
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: t.space(3);
+  margin-block-start: t.space(8);
 }
 
 // ---- badges and chips
@@ -49,10 +103,6 @@
   font-size: t.text(xs);
   font-weight: t.weight(medium);
   white-space: nowrap;
-  .ri {
-    width: t.size(icon-size-sm);
-    height: t.size(icon-size-sm);
-  }
 }
 
 .badge--ok {
@@ -60,69 +110,69 @@
   color: t.color(success);
 }
 
-.badge--inline {
-  margin-inline-start: t.space(1);
-  background: t.color(surface-3);
+
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.space(2);
 }
 
-.chip {
-  @include t.chip;
-}
-
-.chip__meta {
-  color: t.color(text-3);
-  font-size: t.text(xs);
-  margin-inline-start: t.space(1);
-}
-
-.chip.is-selected .chip__meta {
-  color: inherit;
-  opacity: 0.75;
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: t.space(2);
+  height: t.size(chip-height);
+  padding-inline: t.space(3);
+  border-radius: t.radius(pill);
+  border: t.size(border-width) solid t.color(border);
+  color: t.color(text-2);
+  font-size: t.text(sm);
+  .ri {
+    color: t.color(brand-text);
+  }
 }
 
 // ---- voice orbs: soft spheres in brand colours (decorative)
 
-@mixin orb($light, $mid, $deep) {
-  background: radial-gradient(
-    circle at 32% 28%,
-    color-mix(in srgb, t.color(on-brand) 70%, $light) 0%,
-    $light 22%,
-    $mid 58%,
-    $deep 100%
-  );
-}
-
 .orb {
-  display: inline-block;
-  width: t.space(5);
-  height: t.space(5);
+  display: inline-grid;
+  place-items: center;
+  width: t.space(6);
+  height: t.space(6);
   border-radius: t.radius(pill);
   flex: none;
-  box-shadow: inset 0 0 0 t.size(border-width) color-mix(in srgb, t.color(on-brand) 12%, transparent);
+  background: radial-gradient(circle at 32% 28%, var(--orb-a) 0%, var(--orb-b) 60%, t.color(brand-active) 100%);
+  box-shadow: inset 0 0 0 t.size(border-width) color-mix(in srgb, t.color(on-brand) 14%, transparent);
 }
 
-.orb--0 {
-  @include orb(t.color(brand-text), t.color(brand), t.color(brand-active));
-}
+$orbs: (
+  0: (t.color(brand-text), t.color(brand)),
+  1: (t.color(success), t.color(brand)),
+  2: (t.color(danger), t.color(brand)),
+  3: (t.color(warning), t.color(danger)),
+  4: (t.color(ember), t.color(brand)),
+);
 
-.orb--1 {
-  @include orb(t.color(ember), color-mix(in srgb, t.color(ember) 70%, t.color(danger)), color-mix(in srgb, t.color(danger) 60%, t.color(brand-active)));
-}
-
-.orb--2 {
-  @include orb(t.color(success), color-mix(in srgb, t.color(success) 60%, t.color(brand)), t.color(brand-active));
+@each $i, $pair in $orbs {
+  .orb--#{$i} {
+    --orb-a: #{nth($pair, 1)};
+    --orb-b: #{nth($pair, 2)};
+  }
 }
 
 .orb--you {
-  @include orb(t.color(ember), color-mix(in srgb, t.color(ember) 45%, t.color(brand)), t.color(brand-active));
+  --orb-a: #{t.color(ember)};
+  --orb-b: #{t.color(brand)};
 }
 
-// ---- play button
+// ---- play button (round, primary), with a busy ring while a clip loads
 
 .play {
-  @include t.icon-button(play-size, primary);
   position: relative;
-  box-shadow: 0 t.space(2) t.space(6) color-mix(in srgb, t.color(brand) 38%, transparent);
+  flex: none;
+  width: t.size(play-size);
+  height: t.size(play-size);
   svg {
     width: calc(t.size(icon-size) * 1.4);
     height: calc(t.size(icon-size) * 1.4);
@@ -135,35 +185,35 @@
 }
 
 .play__icon--pause,
-.play[aria-pressed="true"] .play__icon--play {
+[aria-pressed="true"] > .play__icon--play {
   display: none;
 }
 
-.play[aria-pressed="true"] .play__icon--pause {
+[aria-pressed="true"] > .play__icon--pause {
   display: grid;
 }
 
-// ---- cards
-
-.card {
-  @include t.card;
-}
-
-// Heading on the start side, content on the end side (wide screens).
-.split {
-  @include t.bp(md) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
-    gap: t.space(12);
-    align-items: start;
-    .section__head {
-      position: sticky;
-      top: calc(t.space(12) + t.space(10));
-    }
+.play__spin {
+  position: absolute;
+  inset: calc(t.space(1) * -1);
+  border-radius: t.radius(pill);
+  border: 2px solid transparent;
+  border-top-color: t.color(brand-text);
+  opacity: 0;
+  .is-loading & {
+    opacity: 1;
+    animation: spin calc(var(--dur-slow) * 3) linear infinite;
   }
 }
 
-// FAQ: native disclosure, one per question.
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+// ---- FAQ: native disclosure; the answer's height animates where the browser can (::details-content)
+
 .faq {
   border-top: t.size(border-width) solid t.color(border);
 }
@@ -187,7 +237,7 @@
     }
     .ri {
       color: t.color(text-3);
-      @include t.transition(transform, color);
+      transition: transform t.dur(slow) t.ease(out), color t.dur(base) t.ease(out);
     }
     &:hover .ri {
       color: t.color(text);
@@ -196,6 +246,19 @@
   &[open] summary .ri {
     transform: rotate(45deg);
     color: t.color(brand-text);
+  }
+  &::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    opacity: 0;
+    transition:
+      block-size var(--dur-reveal) t.ease(out),
+      opacity var(--dur-reveal) t.ease(out),
+      content-visibility var(--dur-reveal) allow-discrete;
+  }
+  &[open]::details-content {
+    block-size: auto;
+    opacity: 1;
   }
 }
 
@@ -207,64 +270,7 @@
   text-wrap: pretty;
 }
 
-// ---- platform cards
-
-.platforms {
-  display: grid;
-  gap: t.space(3);
-  @include t.bp(md) {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
-
-.platform {
-  @include t.card;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: t.space(3) t.space(4);
-  padding: t.space(4);
-  @include t.bp(md) {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: t.space(4);
-    padding: t.space(5);
-  }
-  @include t.transition(border-color, transform);
-  &.is-available {
-    border-color: color-mix(in srgb, t.color(brand) 45%, t.color(border));
-    background: linear-gradient(180deg, t.color(brand-soft), transparent 70%), t.color(surface-1);
-  }
-  &.is-detected {
-    border-color: t.color(brand-text);
-  }
-}
-
-.platform__icon {
-  display: grid;
-  place-items: center;
-  width: t.space(11);
-  height: t.space(11);
-  border-radius: t.radius(md);
-  background: t.color(surface-2);
-  color: t.color(text);
-  .ri {
-    width: t.space(6);
-    height: t.space(6);
-  }
-}
-
-.platform__name {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: t.space(2);
-  font-size: t.text(lg);
-  font-weight: t.weight(semibold);
-}
-
-.platform__you {
+.tile__you {
   display: none;
   font-size: t.text(xs);
   font-weight: t.weight(medium);
@@ -274,86 +280,25 @@
   }
 }
 
-.platform__meta {
-  margin-block-start: t.space(1);
-  color: t.color(text-3);
-  font-size: t.text(sm);
-}
-
-.platform__note {
-  margin-block-start: t.space(3);
-  color: t.color(text-2);
-  font-size: t.text(sm);
-  text-wrap: pretty;
-}
-
-.platform__side {
-  grid-column: 2;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: t.space(3);
-  @include t.bp(md) {
-    margin-block-start: auto;
-  }
-}
-
-// Download page: one row per platform on wide screens.
-.platforms--detail {
-  @include t.bp(sm) {
-    grid-template-columns: 1fr;
-  }
-  @include t.bp(md) {
-    grid-template-columns: 1fr;
-  }
-  .platform {
-    @include t.bp(sm) {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: t.space(5);
-    }
-  }
-  .platform__side {
-    @include t.bp(sm) {
-      grid-column: auto;
-      margin-block-start: 0;
-      justify-content: flex-end;
-    }
-  }
-}
-
-// ---- features (icon + short text)
+// ---- features (icon, title, one line)
 
 .features {
   display: grid;
   gap: t.space(8) t.space(6);
-  @include t.bp(sm) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   @include t.bp(md) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
-.features--two {
-  @include t.bp(md) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
 
-.feature {
-  display: flex;
-  gap: t.space(4);
-  align-items: flex-start;
-}
 
 .feature__icon {
   display: grid;
   place-items: center;
-  flex: none;
   width: t.space(10);
   height: t.space(10);
+  margin-block-end: t.space(4);
   border-radius: t.radius(sm);
   background: t.color(brand-soft);
   color: t.color(brand-text);
@@ -362,7 +307,7 @@
 .feature__title {
   font-size: t.text(md);
   font-weight: t.weight(semibold);
-  margin-block: t.space(2) t.space(1);
+  margin-block-end: t.space(1);
 }
 
 .feature__text {
@@ -371,10 +316,6 @@
   text-wrap: pretty;
 }
 
-.feature__text:only-child {
-  margin-block-start: t.space(2);
-  font-size: t.text(md);
-}
 
 // ---- closing call to action
 
@@ -385,16 +326,24 @@
 .cta__inner {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
   text-align: center;
   padding: t.space(12) t.space(5);
   border-radius: t.size(sheet-radius);
   border: t.size(border-width) solid t.color(border);
-  background:
-    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, t.color(brand) 30%, transparent), transparent 60%),
-    t.color(surface-1);
+  background: t.color(surface-1);
   @include t.bp(md) {
     padding: calc(t.space(12) * 2) t.space(12);
   }
+}
+
+.cta__glow {
+  position: absolute;
+  inset: -50% -10% auto;
+  height: 120%;
+  z-index: -1;
+  background: radial-gradient(closest-side, color-mix(in srgb, t.color(brand) 34%, transparent), transparent);
+  animation: drift var(--dur-drift) t.ease(inout) infinite alternate;
 }
 
 .cta__title {
@@ -414,12 +363,4 @@
   max-width: 32rem;
   color: t.color(text-2);
   font-size: t.text(lg);
-}
-
-.cta__actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: t.space(3);
-  margin-block-start: t.space(8);
 }

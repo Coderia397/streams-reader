@@ -1,0 +1,87 @@
+{
+ "texts": [
+  {
+   "id": "story",
+   "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
+   "source": "Jane Austen, Pride and Prejudice (1813)",
+   "clips": [
+    "af_heart",
+    "am_michael",
+    "bf_isabella",
+    "bm_george"
+   ]
+  },
+  {
+   "id": "article",
+   "text": "Why is the sky blue? Sunlight holds every colour, but the air scatters short blue waves far more than long red ones. So blue light reaches your eyes from every direction you look.",
+   "source": "Streams Reader",
+   "clips": [
+    "af_heart",
+    "am_michael",
+    "bf_isabella",
+    "bm_george"
+   ]
+  },
+  {
+   "id": "poem",
+   "text": "Hope is the thing with feathers,\nThat perches in the soul,\nAnd sings the tune without the words,\nAnd never stops at all.",
+   "source": "Emily Dickinson (1891)",
+   "clips": [
+    "af_heart",
+    "am_michael",
+    "bf_isabella",
+    "bm_george"
+   ]
+  },
+  {
+   "id": "night",
+   "text": "It's late. Your eyes are tired, but the story isn't finished. So let it read to you.",
+   "source": "Streams Reader",
+   "clips": [
+    "af_heart",
+    "am_michael",
+    "bf_isabella",
+    "bm_george",
+    "us_emma"
+   ]
+  }
+ ],
+ "voices": [
+  {
+   "id": "af_heart",
+   "voice": "kokoro:af_heart",
+   "name": "Heart",
+   "accent": "us",
+   "tier": "standard"
+  },
+  {
+   "id": "am_michael",
+   "voice": "kokoro:am_michael",
+   "name": "Michael",
+   "accent": "us",
+   "tier": "standard"
+  },
+  {
+   "id": "bf_isabella",
+   "voice": "kokoro:bf_isabella",
+   "name": "Isabella",
+   "accent": "uk",
+   "tier": "standard"
+  },
+  {
+   "id": "bm_george",
+   "voice": "kokoro:bm_george",
+   "name": "George",
+   "accent": "uk",
+   "tier": "standard"
+  },
+  {
+   "id": "us_emma",
+   "voice": "ming:US_Emma",
+   "name": "Emma",
+   "accent": "us",
+   "tier": "expressive",
+   "available": true
+  }
+ ]
+}

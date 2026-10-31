@@ -23,7 +23,7 @@ const fn c(
 }
 
 /// (group key, credits).
-pub const GROUPS: [(&str, &[Credit]); 3] = [
+pub const GROUPS: [(&str, &[Credit]); 4] = [
     (
         "models",
         &[
@@ -76,12 +76,31 @@ pub const GROUPS: [(&str, &[Credit]); 3] = [
             c("Inter", "Rasmus Andersson", "OFL-1.1", "https://rsms.me/inter/", "credit-role-inter"),
             c("Literata", "TypeTogether", "OFL-1.1", "https://github.com/googlefonts/literata", "credit-role-literata"),
             c("Remix Icon", "Remix Design", "Remix Icon License v1.0", "https://remixicon.com", "credit-role-remix"),
+        ],
+    ),
+    (
+        "library",
+        &[
+            c(
+                "Standard Ebooks",
+                "Standard Ebooks volunteers",
+                "CC0 1.0",
+                "https://standardebooks.org",
+                "credit-role-se",
+            ),
             c(
                 "Pride and Prejudice",
                 "Jane Austen",
                 "Public domain",
                 "https://www.gutenberg.org/ebooks/1342",
                 "credit-role-austen",
+            ),
+            c(
+                "\u{201c}Hope\u{201d} is the thing with feathers",
+                "Emily Dickinson",
+                "Public domain",
+                "https://en.wikisource.org/wiki/%22Hope%22_is_the_thing_with_feathers",
+                "credit-role-dickinson",
             ),
         ],
     ),
@@ -106,7 +125,7 @@ pub fn render(ctx: &Ctx) -> Doc {
                 })
                 .collect();
             format!(
-                "<section class=\"credits-group\" aria-labelledby=\"{g}-title\"><h2 class=\"help-group__title\" id=\"{g}-title\">{}</h2><ul class=\"credits\">{rows}</ul></section>\n",
+                "<section class=\"credits-group\" id=\"{g}\" aria-labelledby=\"{g}-title\"><h2 class=\"help-group__title\" id=\"{g}-title\">{}</h2><ul class=\"credits\">{rows}</ul></section>\n",
                 ctx.t(&format!("credits-group-{g}"))
             )
         })
@@ -122,5 +141,6 @@ pub fn render(ctx: &Ctx) -> Doc {
         body,
         json_ld: vec![],
         script: false,
+        preload: String::new(),
     }
 }

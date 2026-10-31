@@ -2,15 +2,18 @@
 
 use serde_json::Value;
 
-use crate::config::{APP_PATH, GITHUB_URL, LANGS, Lang, ORIGIN, PARENT_URL, Page};
+use crate::config::{APP_PATH, CHANGELOG_URL, GITHUB_URL, LANGS, Lang, ORIGIN, PARENT_URL, Page};
+use crate::data::{Demo, Library};
 use crate::html::{esc, json_for_script};
 use crate::i18n::Catalog;
-use crate::icons::icon;
+use crate::icons::{icon, icon_with_class};
 use crate::tokens::ThemeColors;
 
 /// Build-wide facts every page needs.
 pub struct Site {
-    pub css_href: String,
+    /// The landing page's stylesheet, and the one every other page uses.
+    pub css_landing: String,
+    pub css_inner: String,
     pub js_href: String,
     pub theme: ThemeColors,
     pub year: u16,
@@ -24,6 +27,14 @@ pub struct Site {
     pub og_default: String,
     /// Spot illustrations available under `/assets/brand/spot/<name>.svg`.
     pub spots: Vec<String>,
+    /// Voxel spot renders available under `/assets/spots/<name>.webp` (preferred over the SVG spots).
+    pub renders: Vec<String>,
+    /// The hero demo: texts, voices and clip timings.
+    pub demo: Demo,
+    /// The classics row.
+    pub library: Library,
+    /// Hero film files present under `/assets/media/` (file names).
+    pub media: Vec<String>,
 }
 
 impl Site {
@@ -36,15 +47,23 @@ impl Site {
         }
     }
 
-    /// A decorative spot illustration, or nothing if the brand build hasn't made it.
+    /// A decorative spot illustration: the voxel render when there is one, else the drawn SVG, else nothing.
     pub fn spot(&self, name: &str, class: &str) -> String {
-        if self.spots.iter().any(|s| s == name) {
+        if self.renders.iter().any(|s| s == name) {
             format!(
-                "<img class=\"spot {class}\" src=\"/assets/brand/spot/{name}.svg\" width=\"96\" height=\"96\" alt=\"\" decoding=\"async\">"
+                "<img class=\"spot {class}\" src=\"/assets/spots/{name}.webp\" width=\"140\" height=\"140\" alt=\"\" loading=\"lazy\" decoding=\"async\">"
+            )
+        } else if self.spots.iter().any(|s| s == name) {
+            format!(
+                "<img class=\"spot {class}\" src=\"/assets/brand/spot/{name}.svg\" width=\"96\" height=\"96\" alt=\"\" loading=\"lazy\" decoding=\"async\">"
             )
         } else {
             String::new()
         }
+    }
+
+    pub fn has_media(&self, file: &str) -> bool {
+        self.media.iter().any(|m| m == file)
     }
 }
 
@@ -79,13 +98,15 @@ pub struct Doc {
     pub json_ld: Vec<Value>,
     /// Load the site script (hero demo, OS detection).
     pub script: bool,
+    /// Extra `<head>` HTML (preloads for the page's first image).
+    pub preload: String,
 }
 
 pub fn render(ctx: &Ctx, doc: &Doc) -> String {
     let lang = ctx.lang();
     format!(
         "<!doctype html>\n<html lang=\"{code}\" dir=\"{dir}\">\n<head>\n{head}</head>\n<body>\n\
-         <a class=\"skip\" href=\"#main\">{skip}</a>\n{header}\n<main id=\"main\" tabindex=\"-1\">\n{body}</main>\n\
+         <a class=\"btn skip\" href=\"#main\">{skip}</a>\n<span class=\"sentinel\" aria-hidden=\"true\" data-sentinel></span>\n{header}\n<main id=\"main\" tabindex=\"-1\">\n{body}</main>\n\
          {footer}\n</body>\n</html>\n",
         code = lang.code,
         dir = lang.dir.as_str(),
@@ -131,12 +152,15 @@ fn head(ctx: &Ctx, doc: &Doc) -> String {
          <meta name=\"theme-color\" content=\"{}\" media=\"(prefers-color-scheme: light)\">\n",
         site.theme.dark_bg, site.theme.light_bg
     ));
-    for font in ["inter-latin-wght-normal", "literata-latin-wght-normal"] {
+    // All three: the italic face sets the top bar's "Reader" and the hero accent, so it is in the first view too.
+    for font in ["inter-latin-wght-normal", "literata-latin-wght-normal", "literata-latin-wght-italic"] {
         h.push_str(&format!(
             "<link rel=\"preload\" href=\"/assets/fonts/{font}.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n"
         ));
     }
-    h.push_str(&format!("<link rel=\"stylesheet\" href=\"{}\">\n", site.css_href));
+    h.push_str(&doc.preload);
+    let css = if ctx.page == Page::Home { &site.css_landing } else { &site.css_inner };
+    h.push_str(&format!("<link rel=\"stylesheet\" href=\"{css}\">\n"));
     h.push_str(&site.icon_links);
     // Social cards.
     let site_name = ctx.cat.t("brand-name");
@@ -181,30 +205,42 @@ pub fn lockup(ctx: &Ctx) -> String {
 fn header(ctx: &Ctx) -> String {
     let home = ctx.href(Page::Home);
     let current = |p: Page| if ctx.page == p { " aria-current=\"page\"" } else { "" };
-    format!(
-        "<header class=\"topbar\">\n<nav class=\"topbar__inner wrap\" aria-label=\"{nav_label}\">\n{lockup}\n\
-         <ul class=\"topbar__links\">\n<li><a href=\"{home}#how\">{how}</a></li>\n<li><a href=\"{home}#voices\">{voices}</a></li>\n\
-         <li><a href=\"{download}\"{dl_cur}>{dl}</a></li>\n<li><a href=\"{help}\"{help_cur}>{help_label}</a></li>\n</ul>\n\
-         <div class=\"topbar__actions\">\n<a class=\"icon-btn\" href=\"{GITHUB_URL}\" aria-label=\"{gh}\">{gh_icon}</a>\n\
-         <a class=\"btn btn--primary btn--sm\" href=\"{APP_PATH}\">{open}</a>\n</div>\n</nav>\n</header>",
-        nav_label = ctx.t("nav-label"),
-        lockup = lockup(ctx),
+    let links = format!(
+        "<li><a href=\"{home}#library\">{library}</a></li><li><a href=\"{home}#how\">{how}</a></li>\
+         <li><a href=\"{home}#voices\">{voices}</a></li><li><a href=\"{download}\"{dl_cur}>{dl}</a></li>",
+        library = ctx.t("nav-library"),
         how = ctx.t("nav-how"),
         voices = ctx.t("nav-voices"),
         download = ctx.href(Page::Download),
         dl_cur = current(Page::Download),
         dl = ctx.t("nav-download"),
-        help = ctx.href(Page::Help),
-        help_cur = current(Page::Help),
-        help_label = ctx.t("nav-help"),
+    );
+    format!(
+        "<header class=\"topbar\" data-topbar>\n<nav class=\"topbar__inner wrap\" aria-label=\"{nav_label}\">\n{lockup}\n\
+         <ul class=\"topbar__links\">{links}</ul>\n<div class=\"topbar__actions\">\n\
+         <a class=\"btn icon-btn topbar__gh\" href=\"{GITHUB_URL}\" aria-label=\"{gh}\">{gh_icon}</a>\n\
+         <a class=\"btn btn--primary btn--sm\" href=\"{APP_PATH}\">{open}</a>\n\
+         <details class=\"menu\" data-menu><summary class=\"btn icon-btn\" aria-label=\"{menu}\">{menu_icon}{close_icon}</summary>\
+         <div class=\"menu__sheet\"><ul class=\"menu__links\">{links}<li><a href=\"{help}\"{help_cur}>{help_label}</a></li>\
+         <li><a href=\"{GITHUB_URL}\">{gh_icon}GitHub</a></li></ul></div></details>\n</div>\n</nav>\n</header>",
+        nav_label = ctx.t("nav-label"),
+        lockup = lockup(ctx),
         gh = ctx.t("nav-github"),
         gh_icon = icon("github-fill"),
         open = ctx.t("nav-open-app"),
+        menu = ctx.t("nav-menu"),
+        menu_icon = icon_with_class("menu-line", "ri menu__open"),
+        close_icon = icon_with_class("close-line", "ri menu__close"),
+        help = ctx.href(Page::Help),
+        help_cur = current(Page::Help),
+        help_label = ctx.t("nav-help"),
     )
 }
 
 fn footer(ctx: &Ctx) -> String {
     let lang = ctx.lang();
+    let home = ctx.href(Page::Home);
+    let download = ctx.href(Page::Download);
     let link = |href: &str, key: &str| format!("<li><a href=\"{href}\">{}</a></li>", ctx.t(key));
     let languages: String = LANGS
         .iter()
@@ -219,32 +255,69 @@ fn footer(ctx: &Ctx) -> String {
             )
         })
         .collect();
+    let col = |title: &str, items: String| {
+        format!("<div class=\"footer__col\"><h2 class=\"footer__title\">{}</h2><ul>{items}</ul></div>\n", ctx.t(title))
+    };
     let kokoro = "<a href=\"https://huggingface.co/hexgrad/Kokoro-82M\">Kokoro-82M</a>";
     let ming = "<a href=\"https://huggingface.co/inclusionAI/Ming-3.0-tts-0.5B\">Ming-3.0-tts</a>";
     let parent = format!("<a href=\"{PARENT_URL}\">Streams</a>");
+    let cols = [
+        col(
+            "footer-get-started",
+            [
+                link(APP_PATH, "footer-listen-online"),
+                link(&format!("{download}#android"), "footer-android"),
+                link(&format!("{download}#desktop"), "footer-desktop"),
+                link(&format!("{home}#everywhere"), "footer-extension"),
+                link(&download, "footer-all-downloads"),
+            ]
+            .concat(),
+        ),
+        col(
+            "footer-library",
+            [
+                link(&format!("{home}#library"), "footer-classics"),
+                link(&format!("{}#library", ctx.href(Page::Credits)), "footer-book-sources"),
+            ]
+            .concat(),
+        ),
+        col(
+            "footer-help-title",
+            [
+                link(&ctx.href(Page::Help), "nav-help"),
+                link(&format!("{home}#faq"), "footer-faq"),
+                link(CHANGELOG_URL, "footer-changelog"),
+            ]
+            .concat(),
+        ),
+        col(
+            "footer-project",
+            [
+                link(GITHUB_URL, "footer-source"),
+                link("/.well-known/security.txt", "footer-security"),
+                link(&format!("{GITHUB_URL}/blob/main/LICENSE"), "footer-licence"),
+            ]
+            .concat(),
+        ),
+        col(
+            "footer-legal",
+            [
+                link(&ctx.href(Page::Privacy), "footer-privacy"),
+                link(&ctx.href(Page::Terms), "footer-terms"),
+                link(&ctx.href(Page::Credits), "footer-credits"),
+            ]
+            .concat(),
+        ),
+    ]
+    .concat();
     format!(
         "<footer class=\"footer\">\n<div class=\"wrap footer__grid\">\n<div class=\"footer__brand\">\n{lockup}\n\
-         <p class=\"footer__tagline\">{tagline}</p>\n<p class=\"footer__parent\">{parent_line}</p>\n</div>\n\
-         <div class=\"footer__col\"><h2 class=\"footer__title\">{product}</h2><ul>{l_app}{l_dl}{l_help}</ul></div>\n\
-         <div class=\"footer__col\"><h2 class=\"footer__title\">{legal}</h2><ul>{l_priv}{l_terms}{l_credits}</ul></div>\n\
-         <div class=\"footer__col\"><h2 class=\"footer__title\">{project}</h2><ul>{l_gh}{l_sec}</ul></div>\n\
-         <div class=\"footer__col footer__langs\"><h2 class=\"footer__title\" id=\"lang-title\">{icon_tr}{lang_title}</h2>\
-         <ul aria-labelledby=\"lang-title\">{languages}</ul></div>\n</div>\n\
-         <div class=\"wrap footer__base\">\n<p>{credits}</p>\n<p>{copyright}</p>\n</div>\n</footer>",
+         <p class=\"footer__tagline\">{tagline}</p>\n<p class=\"footer__parent\">{parent_line}</p>\n</div>\n{cols}</div>\n\
+         <div class=\"wrap footer__base\">\n<div class=\"footer__langs\"><h2 class=\"footer__title\" id=\"lang-title\">{icon_tr}{lang_title}</h2>\
+         <ul aria-labelledby=\"lang-title\">{languages}</ul></div>\n<p>{credits}</p>\n<p>{copyright}</p>\n</div>\n</footer>",
         lockup = lockup(ctx),
         tagline = ctx.t("footer-tagline"),
         parent_line = ctx.cat.t_html("footer-parent", &[("streams", &parent)]),
-        product = ctx.t("footer-product"),
-        l_app = link(APP_PATH, "nav-open-app"),
-        l_dl = link(&ctx.href(Page::Download), "nav-download"),
-        l_help = link(&ctx.href(Page::Help), "nav-help"),
-        legal = ctx.t("footer-legal"),
-        l_priv = link(&ctx.href(Page::Privacy), "footer-privacy"),
-        l_terms = link(&ctx.href(Page::Terms), "footer-terms"),
-        l_credits = link(&ctx.href(Page::Credits), "footer-credits"),
-        project = ctx.t("footer-project"),
-        l_gh = link(GITHUB_URL, "footer-source"),
-        l_sec = link("/.well-known/security.txt", "footer-security"),
         icon_tr = icon("translate-2"),
         lang_title = ctx.t("footer-language"),
         credits = ctx.cat.t_html("footer-credits-line", &[("kokoro", kokoro), ("ming", ming)]),

@@ -1,13 +1,14 @@
 //! site-gen: the public Streams Reader website as static files.
 //!
 //! Every page is prebuilt HTML in eight languages with one stylesheet compiled from SCSS (grass) on top of the
-//! central brand tokens (`brand/dist/tokens`), plus one small external script for the hero demo and OS detection.
+//! central brand tokens (`brand/dist/tokens`), plus one small external script (the hero demo and film, OS detection, the classics row, scroll reveals).
 //! No inline scripts, styles or event handlers, so the Worker can serve it under a strict CSP.
 
 pub mod assets;
 pub mod build;
 pub mod config;
 pub mod css;
+pub mod data;
 pub mod html;
 pub mod i18n;
 pub mod icons;
@@ -32,6 +33,8 @@ pub enum Error {
     Scss(String),
     #[error("tokens: {0}")]
     Tokens(String),
+    #[error("data: {0}")]
+    Data(String),
 }
 
 impl Error {

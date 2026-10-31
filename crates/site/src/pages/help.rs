@@ -56,5 +56,6 @@ pub fn render(ctx: &Ctx) -> Doc {
         body,
         json_ld: vec![parts::faq_json_ld(ctx, "help", &all_ids())],
         script: false,
+        preload: String::new(),
     }
 }

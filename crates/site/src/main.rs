@@ -50,12 +50,13 @@ fn main() -> ExitCode {
             for w in &r.warnings {
                 eprintln!("site-gen: warning: {w}");
             }
+            let css: Vec<String> = r.css_bytes.iter().map(|(e, b)| format!("{e} {b} B")).collect();
             println!(
-                "site-gen: {} pages, {} files in {} (css {} B, js {} B, brand files {})",
+                "site-gen: {} pages, {} files in {} (css: {}; js {} B, brand files {})",
                 r.pages,
                 r.files,
                 paths.out.display(),
-                r.css_bytes,
+                css.join(", "),
                 r.js_bytes,
                 r.brand_files
             );

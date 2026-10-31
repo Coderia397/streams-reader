@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["crates/core", "crates/import", "crates/mail", "crates/server", "crates/worker", "crates/player", "crates/web", "xtask"]
+members = ["crates/core", "crates/import", "crates/mail", "crates/server", "crates/worker", "crates/player", "crates/web", "crates/site", "xtask"]
 # The worker and web crates only build for wasm32; `cargo test` / `cargo clippy` at the root cover the native crates.
 default-members = ["crates/core", "crates/import", "crates/mail", "crates/server", "xtask"]
 
