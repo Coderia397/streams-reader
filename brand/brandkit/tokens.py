@@ -23,6 +23,7 @@ SCALAR_TABLES = {
     "tracking": "tracking-",
     "motion": "",
     "component": "",
+    "generative": "",
     "z": "z-",
 }
 

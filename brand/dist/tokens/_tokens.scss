@@ -120,6 +120,7 @@ $motion-values: (
 $component-values: (
   "button-height": "44px",
   "button-height-sm": "36px",
+  "button-height-lg": "48px",
   "button-radius": "var(--radius-pill)",
   "button-padding-x": "var(--space-5)",
   "button-padding-x-sm": "var(--space-4)",
@@ -140,7 +141,25 @@ $component-values: (
   "border-width": "1px",
   "focus-width": "2px",
   "focus-offset": "2px",
-  "content-max": "760px"
+  "content-max": "760px",
+  "glass-blur": "20px",
+  "glass-saturate": "140%"
+);
+
+$generative-values: (
+  "cover-l-top": "0.38",
+  "cover-l-bottom": "0.2",
+  "cover-c-top": "0.08",
+  "cover-c-bottom": "0.05",
+  "cover-glow-l": "0.7",
+  "cover-glow-c": "0.15",
+  "cover-glow-alpha": "0.34",
+  "orb-l-min": "0.62",
+  "orb-l-max": "0.78",
+  "orb-c": "0.12",
+  "orb-highlight-l": "0.93",
+  "orb-highlight-c": "0.04",
+  "orb-highlight-alpha": "0.9"
 );
 
 $z-values: (
@@ -262,6 +281,8 @@ $theme-night: (
 @function dur($n) { $_: _check($motion-values, "dur-#{$n}", "motion"); @return var(--dur-#{$n}); }
 @function ease($n) { $_: _check($motion-values, "ease-#{$n}", "motion"); @return var(--ease-#{$n}); }
 @function size($n) { $_: _check($component-values, $n, "component"); @return var(--#{$n}); }
+// Generated artwork (covers, orbs): lightness, chroma and alpha for oklch(...).
+@function gen($n) { $_: _check($generative-values, $n, "generative"); @return var(--#{$n}); }
 
 // ---- layout helpers
 
@@ -287,9 +308,32 @@ $theme-night: (
   }
 }
 
+// For rows that fill a card with `overflow: hidden`: the ring is drawn inside the row's edge, so the card never
+// clips it. Give the row a radius (or `border-radius: inherit`) where it meets the card's corners.
+@mixin focus-ring-inset {
+  &:focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: calc(-1 * var(--focus-width));
+  }
+}
+
 @mixin tap-target {
   min-width: var(--tap-min);
   min-height: var(--tap-min);
+}
+
+// Grows the hit area of a control drawn smaller than the tap minimum (chips, small buttons, small round buttons)
+// to at least --tap-min in both directions, without changing how it looks. A side already longer than the minimum
+// keeps its own size (min() never lets the inset go positive). Uses ::before, so the control must not use it for
+// anything else.
+@mixin hit-area {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: min(0px, calc((100% - var(--tap-min)) / 2));
+    inset-block: min(0px, calc((100% - var(--tap-min)) / 2));
+  }
 }
 
 @mixin visually-hidden {
@@ -480,6 +524,12 @@ $type-roles: (
   }
 }
 
+// Frosted chrome (dock, tab bar, top bars): the glass colour is set by the caller, this adds the blur.
+@mixin glass {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
 // The spoken word and its sentence (reader).
 @mixin sentence-wash {
   background: var(--color-sentence-wash);
@@ -548,6 +598,7 @@ $type-roles: (
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
   --button-height: 44px;
   --button-height-sm: 36px;
+  --button-height-lg: 48px;
   --button-radius: var(--radius-pill);
   --button-padding-x: var(--space-5);
   --button-padding-x-sm: var(--space-4);
@@ -569,6 +620,21 @@ $type-roles: (
   --focus-width: 2px;
   --focus-offset: 2px;
   --content-max: 760px;
+  --glass-blur: 20px;
+  --glass-saturate: 140%;
+  --cover-l-top: 0.38;
+  --cover-l-bottom: 0.2;
+  --cover-c-top: 0.08;
+  --cover-c-bottom: 0.05;
+  --cover-glow-l: 0.7;
+  --cover-glow-c: 0.15;
+  --cover-glow-alpha: 0.34;
+  --orb-l-min: 0.62;
+  --orb-l-max: 0.78;
+  --orb-c: 0.12;
+  --orb-highlight-l: 0.93;
+  --orb-highlight-c: 0.04;
+  --orb-highlight-alpha: 0.9;
   --z-base: 0;
   --z-sticky: 10;
   --z-dock: 20;

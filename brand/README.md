@@ -44,7 +44,7 @@ Use in SCSS (path relative to the importing file):
 @include t.bp(md) { … }   @include t.reduced-motion { … }
 ```
 
-`t.color()`, `t.space()`, `t.radius()`, `t.text()`, `t.size()` and friends return `var(--…)`, so theme switching needs no rebuild, and an unknown name fails the Sass build. Components are defined once as mixins here (`button`, `icon-button`, `chip`, `input`, `card`, `sheet`, `word-pill`, `sentence-wash`, `type`); app code includes them instead of restyling.
+`t.color()`, `t.space()`, `t.radius()`, `t.text()`, `t.size()` and friends return `var(--…)`, so theme switching needs no rebuild, and an unknown name fails the Sass build. Components are defined once as mixins here (`button`, `icon-button`, `chip`, `input`, `card`, `sheet`, `word-pill`, `sentence-wash`, `type`); app code includes them instead of restyling. `t.gen()` reads the `[generative]` table (lightness, chroma and alpha for the CSS-drawn covers and orbs, written as `oklch(t.gen("orb-l-max") t.gen("orb-c") var(--hue-a))`). `focus-ring-inset` draws the ring inside rows that fill a clipping card, and `hit-area` grows a small control to `--tap-min` in both directions.
 
 Colour roles: `brand` fills primary buttons and play (white `on-brand` label); `brand-hover`/`brand-active` keep that label at AA; `brand-soft` is the tinted fill of selected chips and soft buttons; `brand-text` is brand-coloured text and icons on any surface; `ember` is only the word being spoken (underline, caret, recording); `word-pill` and `sentence-wash` are the reader highlight.
 

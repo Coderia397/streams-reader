@@ -100,10 +100,14 @@ class CheckScriptTests(unittest.TestCase):
                 ".e { color: #abcdef; } // tokens-ok: third-party embed\n"
                 "#main { display: block; }\n"
                 "#add .x {\n"
+                ".f { background: hsl(var(--hue-a) 48% 31%); }\n"
+                ".g { background: oklch(t.gen(\"orb-l\") var(--orb-c) var(--hue-a) / var(--a)); }\n"
+                ".h { background: oklch(var(--l) var(--c) var(--hue-b) / 0.34); }\n"
+                ".i { color: rgb(var(--r), 0, 0); }\n"
             )
             findings = check_tokens.scan(p)
         lines = sorted(int(f.split(":")[1]) for f in findings)
-        self.assertEqual(lines, [1, 3, 4])
+        self.assertEqual(lines, [1, 3, 4, 9, 11, 12])
 
 
 if __name__ == "__main__":
