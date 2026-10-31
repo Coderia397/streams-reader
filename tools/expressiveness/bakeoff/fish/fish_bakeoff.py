@@ -59,10 +59,12 @@ MODELS = {
     "drama3": {"repo": "fishaudio/drama-3-int4", "revision": "a6f588691a13b6607cb09f9800556487ab7aa0fe",
                "files": ["model-*.safetensors", "LICENSE", *COMMON_FILES],
                # max_new_tokens 0 = fish-speech's 600 frames per ~300-byte chunk
-               "gen": {**SAMPLING, "max_new_tokens": 0}},
+               "gen": {**SAMPLING, "max_new_tokens": 0},
+               # embedding + first layers on cuda:0 up to this many GiB; rest + lm_head + tower + codec on cuda:1
+               "dev0_budget_gib": 12.4},
     "s2pro": {"repo": "fishaudio/s2-pro", "revision": "1de9996b6be38b745688de084d87a5633f714e4e",
               "files": ["model-*.safetensors", "LICENSE.md", *COMMON_FILES],
-              "cache_len": 6144,
+              "cache_len": 4096,
               "gen": {**SAMPLING, "max_new_tokens": 1024, "chunk_length": 400}},
 }
 ASR = {"repo": "openai/whisper-large-v3-turbo", "revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9"}
@@ -151,16 +153,22 @@ def build_items() -> list[dict]:
     return items
 
 
-def cmd_jobs(work: Path) -> None:
+def cmd_jobs(work: Path, stages: list[str], only: list[str] | None = None, gen: dict | None = None,
+             label_model: dict | None = None) -> None:
     ds = work / "dataset"
     ds.mkdir(parents=True, exist_ok=True)
     refs = json.loads((REFS_FROM / "refs.json").read_text())
     for voice, r in refs.items():
         shutil.copy(REFS_FROM / r["file"], ds / r["file"])
     items = build_items()
-    jobs = {"fish_speech": FISH_SPEECH, "models": MODELS, "asr": ASR, "mos": MOS, "pins": PINS, "pins_nodeps": PINS_NODEPS,
+    if only:  # "<voice>_<cond>/<passage>/<file>" keys, e.g. female_plain/1-suspense/00.flac
+        items = [i for i in items if f"{i['voice']}_{i['cond']}/{i['passage']}/{i['file']}" in only]
+    models = json.loads(json.dumps(MODELS))
+    for k, g in (gen or {}).items():
+        models[k]["gen"].update(g)
+    jobs = {"fish_speech": FISH_SPEECH, "models": models, "label_model": label_model or {}, "asr": ASR, "mos": MOS, "pins": PINS, "pins_nodeps": PINS_NODEPS,
             "pins_light": PINS_LIGHT, "module_to_pip": MODULE_TO_PIP, "refs": refs, "items": items,
-            "stages": ["refs", "drama3", "s2pro", "asr"],
+            "stages": stages,
             "stage_timeout_s": {"refs": 1800, "drama3": 16200, "s2pro": 14400, "asr": 3600},
             "budget_s": {"drama3": 15000, "s2pro": 13500}}
     (work / "jobs.json").write_text(json.dumps(jobs, ensure_ascii=False, indent=1))
@@ -245,7 +253,7 @@ def cmd_collect(work: Path, audio: Path) -> None:
     groups: dict[tuple[str, str], list[dict]] = {}
     for model in MODELS:
         for it in jobs["items"]:
-            label = f"fish_{model}_{it['voice']}_{it['cond']}"
+            label = f"fish_{jobs.get('label_model', {}).get(model, model)}_{it['voice']}_{it['cond']}"
             groups.setdefault((label, it["passage"]), []).append({**it, "model": model, "label": label})
     for (label, passage), its in groups.items():
         raw = work / "out/raw" / label / passage
@@ -281,9 +289,15 @@ def main() -> None:
     ap.add_argument("--work", type=Path, required=True)
     ap.add_argument("--audio", type=Path)
     ap.add_argument("--wait", action="store_true")
+    ap.add_argument("--only", help="comma list of <voice>_<cond>/<passage>/<file> items (run 5: Drama 3 sampling check)")
+    ap.add_argument("--gen", help='JSON per model, e.g. {"drama3": {"temperature": 1.0, "top_p": 0.9}}')
+    ap.add_argument("--label-model", help='JSON, e.g. {"drama3": "drama3t10"}: label prefix used in outputs')
+    ap.add_argument("--stages", default="refs,drama3,s2pro,asr",
+                    help="run 3 (2026-10-31) used refs,drama3,asr: S2 Pro was complete from run 2")
     a = ap.parse_args()
     if a.cmd == "jobs":
-        cmd_jobs(a.work)
+        cmd_jobs(a.work, a.stages.split(","), a.only.split(",") if a.only else None,
+                 json.loads(a.gen) if a.gen else None, json.loads(a.label_model) if a.label_model else None)
     elif a.cmd == "push":
         cmd_push(a.work)
     elif a.cmd == "pull":

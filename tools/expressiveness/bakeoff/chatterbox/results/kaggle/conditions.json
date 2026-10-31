@@ -1,0 +1,5428 @@
+[
+ {
+  "label": "cb_orig_e50_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e70_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e90_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_dir_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "1-suspense",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "01.flac",
+    "text": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "spoken": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "02.flac",
+    "text": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "Then the gulls rose, all at once, without a sound.",
+    "spoken": "Then the gulls rose, all at once, without a sound.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "fast",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "He set the pipe down.",
+    "spoken": "He set the pipe down.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "05.flac",
+    "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "spoken": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 350
+   },
+   {
+    "file": "06.flac",
+    "text": "Then another.",
+    "spoken": "Then another.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "07.flac",
+    "text": "Nobody had crossed the causeway; he would have seen them.",
+    "spoken": "Nobody had crossed the causeway; he would have seen them.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "The steps were slow and heavy, and they were getting closer.",
+    "spoken": "The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "09.flac",
+    "text": "He reached for the lantern.",
+    "spoken": "He reached for the lantern.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "10.flac",
+    "text": "His hand was shaking.",
+    "spoken": "His hand was shaking.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "11.flac",
+    "text": "The door handle began, very slowly, to turn.",
+    "spoken": "The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.86,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.6,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e50_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e70_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e90_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_dir_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "2-dialogue",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\"",
+    "spoken": "\"Are you going to tell me where you were last night?\"",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "disgusted",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "01.flac",
+    "text": "Martha asked, folding her arms.",
+    "spoken": "Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 700
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Oh, certainly,\" said Tom.",
+    "spoken": "\"Oh, certainly,\" said Tom.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "03.flac",
+    "text": "\"I was at the opera.",
+    "spoken": "\"I was at the opera.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "04.flac",
+    "text": "With the Queen.",
+    "spoken": "With the Queen.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "05.flac",
+    "text": "She sends her warmest regards.\"",
+    "spoken": "She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "06.flac",
+    "text": "\"Don't you dare make a joke of this!",
+    "spoken": "\"Don't you dare make a joke of this!",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.92,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.7,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "07.flac",
+    "text": "I waited up until two in the morning, Tom.",
+    "spoken": "I waited up until two in the morning, Tom.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.86,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.6,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "Two!\"",
+    "spoken": "Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.98,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.8,
+    "pace": "fast",
+    "pause_ms": 900
+   },
+   {
+    "file": "09.flac",
+    "text": "He looked down at the floor.",
+    "spoken": "He looked down at the floor.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "10.flac",
+    "text": "\"I know.",
+    "spoken": "\"I know.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "11.flac",
+    "text": "I'm sorry.",
+    "spoken": "I'm sorry.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "12.flac",
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "spoken": "I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "13.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "14.flac",
+    "text": "\"I think,\" he began, and stopped.",
+    "spoken": "\"I think,\" he began, and stopped.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "15.flac",
+    "text": "He glanced at the window.",
+    "spoken": "He glanced at the window.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "16.flac",
+    "text": "\"I think someone has been following me.",
+    "spoken": "\"I think someone has been following me.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "17.flac",
+    "text": "For a week, perhaps longer.",
+    "spoken": "For a week, perhaps longer.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 300
+   },
+   {
+    "file": "18.flac",
+    "text": "Or perhaps I've imagined the whole thing.",
+    "spoken": "Or perhaps I've imagined the whole thing.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "19.flac",
+    "text": "I honestly don't know anymore.\"",
+    "spoken": "I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e50_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e70_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e90_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_dir_female",
+  "model": "orig",
+  "voice": "female",
+  "passage": "3-reflective",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "01.flac",
+    "text": "The house still ticks, and the wind still moves in the chimney.",
+    "spoken": "The house still ticks, and the wind still moves in the chimney.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "02.flac",
+    "text": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "I used to fill that hour.",
+    "spoken": "I used to fill that hour.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "spoken": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 350
+   },
+   {
+    "file": "05.flac",
+    "text": "Now, more often, I simply sit.",
+    "spoken": "Now, more often, I simply sit.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "06.flac",
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "07.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "08.flac",
+    "text": "They arrive slowly.",
+    "spoken": "They arrive slowly.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "09.flac",
+    "text": "They wait.",
+    "spoken": "They wait.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "10.flac",
+    "text": "And they ask only that we be still enough to notice.",
+    "spoken": "And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 1000
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e50_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e70_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e90_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_dir_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "1-suspense",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "01.flac",
+    "text": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "spoken": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "02.flac",
+    "text": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "Then the gulls rose, all at once, without a sound.",
+    "spoken": "Then the gulls rose, all at once, without a sound.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "fast",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "He set the pipe down.",
+    "spoken": "He set the pipe down.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "05.flac",
+    "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "spoken": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 350
+   },
+   {
+    "file": "06.flac",
+    "text": "Then another.",
+    "spoken": "Then another.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "07.flac",
+    "text": "Nobody had crossed the causeway; he would have seen them.",
+    "spoken": "Nobody had crossed the causeway; he would have seen them.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "The steps were slow and heavy, and they were getting closer.",
+    "spoken": "The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "09.flac",
+    "text": "He reached for the lantern.",
+    "spoken": "He reached for the lantern.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "10.flac",
+    "text": "His hand was shaking.",
+    "spoken": "His hand was shaking.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "11.flac",
+    "text": "The door handle began, very slowly, to turn.",
+    "spoken": "The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.86,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.6,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e50_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e70_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e90_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_dir_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "2-dialogue",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\"",
+    "spoken": "\"Are you going to tell me where you were last night?\"",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "disgusted",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "01.flac",
+    "text": "Martha asked, folding her arms.",
+    "spoken": "Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 700
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Oh, certainly,\" said Tom.",
+    "spoken": "\"Oh, certainly,\" said Tom.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "03.flac",
+    "text": "\"I was at the opera.",
+    "spoken": "\"I was at the opera.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "04.flac",
+    "text": "With the Queen.",
+    "spoken": "With the Queen.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "05.flac",
+    "text": "She sends her warmest regards.\"",
+    "spoken": "She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "06.flac",
+    "text": "\"Don't you dare make a joke of this!",
+    "spoken": "\"Don't you dare make a joke of this!",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.92,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.7,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "07.flac",
+    "text": "I waited up until two in the morning, Tom.",
+    "spoken": "I waited up until two in the morning, Tom.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.86,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.6,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "Two!\"",
+    "spoken": "Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.98,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.8,
+    "pace": "fast",
+    "pause_ms": 900
+   },
+   {
+    "file": "09.flac",
+    "text": "He looked down at the floor.",
+    "spoken": "He looked down at the floor.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "10.flac",
+    "text": "\"I know.",
+    "spoken": "\"I know.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "11.flac",
+    "text": "I'm sorry.",
+    "spoken": "I'm sorry.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "12.flac",
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "spoken": "I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "13.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "14.flac",
+    "text": "\"I think,\" he began, and stopped.",
+    "spoken": "\"I think,\" he began, and stopped.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "15.flac",
+    "text": "He glanced at the window.",
+    "spoken": "He glanced at the window.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "16.flac",
+    "text": "\"I think someone has been following me.",
+    "spoken": "\"I think someone has been following me.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "17.flac",
+    "text": "For a week, perhaps longer.",
+    "spoken": "For a week, perhaps longer.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 300
+   },
+   {
+    "file": "18.flac",
+    "text": "Or perhaps I've imagined the whole thing.",
+    "spoken": "Or perhaps I've imagined the whole thing.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "19.flac",
+    "text": "I honestly don't know anymore.\"",
+    "spoken": "I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e50_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e70_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.7,
+     "cfg_weight": 0.4
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_e90_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.9,
+     "cfg_weight": 0.3
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_orig_dir_male",
+  "model": "orig",
+  "voice": "male",
+  "passage": "3-reflective",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "01.flac",
+    "text": "The house still ticks, and the wind still moves in the chimney.",
+    "spoken": "The house still ticks, and the wind still moves in the chimney.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "02.flac",
+    "text": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "I used to fill that hour.",
+    "spoken": "I used to fill that hour.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "spoken": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 350
+   },
+   {
+    "file": "05.flac",
+    "text": "Now, more often, I simply sit.",
+    "spoken": "Now, more often, I simply sit.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "06.flac",
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "07.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "08.flac",
+    "text": "They arrive slowly.",
+    "spoken": "They arrive slowly.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "09.flac",
+    "text": "They wait.",
+    "spoken": "They wait.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "10.flac",
+    "text": "And they ask only that we be still enough to notice.",
+    "spoken": "And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 1000
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_female",
+  "model": "turbo",
+  "voice": "female",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_tags_female",
+  "model": "turbo",
+  "voice": "female",
+  "passage": "1-suspense",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "01.flac",
+    "text": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "spoken": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "02.flac",
+    "text": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "Then the gulls rose, all at once, without a sound.",
+    "spoken": "Then the gulls rose, all at once, without a sound.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "fast",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "He set the pipe down.",
+    "spoken": "He set the pipe down.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "05.flac",
+    "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "spoken": "[fear] Somewhere beneath him, on the iron stairs, a step creaked.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 350
+   },
+   {
+    "file": "06.flac",
+    "text": "Then another.",
+    "spoken": "[fear] [gasp] Then another.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "07.flac",
+    "text": "Nobody had crossed the causeway; he would have seen them.",
+    "spoken": "Nobody had crossed the causeway; he would have seen them.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "The steps were slow and heavy, and they were getting closer.",
+    "spoken": "[fear] The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "09.flac",
+    "text": "He reached for the lantern.",
+    "spoken": "[fear] He reached for the lantern.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "10.flac",
+    "text": "His hand was shaking.",
+    "spoken": "[fear] [gasp] His hand was shaking.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "11.flac",
+    "text": "The door handle began, very slowly, to turn.",
+    "spoken": "[fear] The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.6,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_female",
+  "model": "turbo",
+  "voice": "female",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_tags_female",
+  "model": "turbo",
+  "voice": "female",
+  "passage": "2-dialogue",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\"",
+    "spoken": "[angry] \"Are you going to tell me where you were last night?\"",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "disgusted",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "01.flac",
+    "text": "Martha asked, folding her arms.",
+    "spoken": "Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 700
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Oh, certainly,\" said Tom.",
+    "spoken": "[happy] [chuckle] \"Oh, certainly,\" said Tom.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "03.flac",
+    "text": "\"I was at the opera.",
+    "spoken": "\"I was at the opera.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "04.flac",
+    "text": "With the Queen.",
+    "spoken": "With the Queen.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "05.flac",
+    "text": "She sends her warmest regards.\"",
+    "spoken": "[happy] She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "06.flac",
+    "text": "\"Don't you dare make a joke of this!",
+    "spoken": "[angry] \"Don't you dare make a joke of this!",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.7,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "07.flac",
+    "text": "I waited up until two in the morning, Tom.",
+    "spoken": "[angry] I waited up until two in the morning, Tom.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.6,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "Two!\"",
+    "spoken": "[angry] Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.8,
+    "pace": "fast",
+    "pause_ms": 900
+   },
+   {
+    "file": "09.flac",
+    "text": "He looked down at the floor.",
+    "spoken": "He looked down at the floor.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "10.flac",
+    "text": "\"I know.",
+    "spoken": "[sigh] \"I know.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "11.flac",
+    "text": "I'm sorry.",
+    "spoken": "I'm sorry.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "12.flac",
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "spoken": "I'm not sure I can uh, explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "13.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "14.flac",
+    "text": "\"I think,\" he began, and stopped.",
+    "spoken": "\"I think,\" he began, and stopped.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "15.flac",
+    "text": "He glanced at the window.",
+    "spoken": "He glanced at the window.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "16.flac",
+    "text": "\"I think someone has been following me.",
+    "spoken": "[fear] \"I think someone has been following me.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "17.flac",
+    "text": "For a week, perhaps longer.",
+    "spoken": "[fear] For a week, perhaps longer.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 300
+   },
+   {
+    "file": "18.flac",
+    "text": "Or perhaps I've imagined the whole thing.",
+    "spoken": "[fear] uh, Or perhaps I've imagined the whole thing.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "19.flac",
+    "text": "I honestly don't know anymore.\"",
+    "spoken": "[fear] I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_female",
+  "model": "turbo",
+  "voice": "female",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_tags_female",
+  "model": "turbo",
+  "voice": "female",
+  "passage": "3-reflective",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "01.flac",
+    "text": "The house still ticks, and the wind still moves in the chimney.",
+    "spoken": "The house still ticks, and the wind still moves in the chimney.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "02.flac",
+    "text": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "I used to fill that hour.",
+    "spoken": "I used to fill that hour.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "spoken": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 350
+   },
+   {
+    "file": "05.flac",
+    "text": "Now, more often, I simply sit.",
+    "spoken": "[sigh] Now, more often, I simply sit.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "06.flac",
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "07.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "08.flac",
+    "text": "They arrive slowly.",
+    "spoken": "They arrive slowly.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "09.flac",
+    "text": "They wait.",
+    "spoken": "They wait.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "10.flac",
+    "text": "And they ask only that we be still enough to notice.",
+    "spoken": "And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 1000
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_male",
+  "model": "turbo",
+  "voice": "male",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_tags_male",
+  "model": "turbo",
+  "voice": "male",
+  "passage": "1-suspense",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "01.flac",
+    "text": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "spoken": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "02.flac",
+    "text": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "Then the gulls rose, all at once, without a sound.",
+    "spoken": "Then the gulls rose, all at once, without a sound.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "fast",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "He set the pipe down.",
+    "spoken": "He set the pipe down.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "05.flac",
+    "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "spoken": "[fear] Somewhere beneath him, on the iron stairs, a step creaked.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 350
+   },
+   {
+    "file": "06.flac",
+    "text": "Then another.",
+    "spoken": "[fear] [gasp] Then another.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "07.flac",
+    "text": "Nobody had crossed the causeway; he would have seen them.",
+    "spoken": "Nobody had crossed the causeway; he would have seen them.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "The steps were slow and heavy, and they were getting closer.",
+    "spoken": "[fear] The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "09.flac",
+    "text": "He reached for the lantern.",
+    "spoken": "[fear] He reached for the lantern.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "10.flac",
+    "text": "His hand was shaking.",
+    "spoken": "[fear] [gasp] His hand was shaking.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "11.flac",
+    "text": "The door handle began, very slowly, to turn.",
+    "spoken": "[fear] The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.6,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_male",
+  "model": "turbo",
+  "voice": "male",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_tags_male",
+  "model": "turbo",
+  "voice": "male",
+  "passage": "2-dialogue",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\"",
+    "spoken": "[angry] \"Are you going to tell me where you were last night?\"",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "disgusted",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "01.flac",
+    "text": "Martha asked, folding her arms.",
+    "spoken": "Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 700
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Oh, certainly,\" said Tom.",
+    "spoken": "[happy] [chuckle] \"Oh, certainly,\" said Tom.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "03.flac",
+    "text": "\"I was at the opera.",
+    "spoken": "\"I was at the opera.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "04.flac",
+    "text": "With the Queen.",
+    "spoken": "With the Queen.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "05.flac",
+    "text": "She sends her warmest regards.\"",
+    "spoken": "[happy] She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "06.flac",
+    "text": "\"Don't you dare make a joke of this!",
+    "spoken": "[angry] \"Don't you dare make a joke of this!",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.7,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "07.flac",
+    "text": "I waited up until two in the morning, Tom.",
+    "spoken": "[angry] I waited up until two in the morning, Tom.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.6,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "Two!\"",
+    "spoken": "[angry] Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.8,
+    "pace": "fast",
+    "pause_ms": 900
+   },
+   {
+    "file": "09.flac",
+    "text": "He looked down at the floor.",
+    "spoken": "He looked down at the floor.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "10.flac",
+    "text": "\"I know.",
+    "spoken": "[sigh] \"I know.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "11.flac",
+    "text": "I'm sorry.",
+    "spoken": "I'm sorry.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "12.flac",
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "spoken": "I'm not sure I can uh, explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "13.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "14.flac",
+    "text": "\"I think,\" he began, and stopped.",
+    "spoken": "\"I think,\" he began, and stopped.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "15.flac",
+    "text": "He glanced at the window.",
+    "spoken": "He glanced at the window.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "16.flac",
+    "text": "\"I think someone has been following me.",
+    "spoken": "[fear] \"I think someone has been following me.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "17.flac",
+    "text": "For a week, perhaps longer.",
+    "spoken": "[fear] For a week, perhaps longer.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 300
+   },
+   {
+    "file": "18.flac",
+    "text": "Or perhaps I've imagined the whole thing.",
+    "spoken": "[fear] uh, Or perhaps I've imagined the whole thing.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "19.flac",
+    "text": "I honestly don't know anymore.\"",
+    "spoken": "[fear] I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_male",
+  "model": "turbo",
+  "voice": "male",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_turbo_tags_male",
+  "model": "turbo",
+  "voice": "male",
+  "passage": "3-reflective",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "01.flac",
+    "text": "The house still ticks, and the wind still moves in the chimney.",
+    "spoken": "The house still ticks, and the wind still moves in the chimney.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "02.flac",
+    "text": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "I used to fill that hour.",
+    "spoken": "I used to fill that hour.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "spoken": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 350
+   },
+   {
+    "file": "05.flac",
+    "text": "Now, more often, I simply sit.",
+    "spoken": "[sigh] Now, more often, I simply sit.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "06.flac",
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "07.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "08.flac",
+    "text": "They arrive slowly.",
+    "spoken": "They arrive slowly.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "09.flac",
+    "text": "They wait.",
+    "spoken": "They wait.",
+    "boundary": "sentence",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "10.flac",
+    "text": "And they ask only that we be still enough to notice.",
+    "spoken": "And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 1000
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_female",
+  "model": "mtl",
+  "voice": "female",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_dir_female",
+  "model": "mtl",
+  "voice": "female",
+  "passage": "1-suspense",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "01.flac",
+    "text": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "spoken": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "02.flac",
+    "text": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "Then the gulls rose, all at once, without a sound.",
+    "spoken": "Then the gulls rose, all at once, without a sound.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "fast",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "He set the pipe down.",
+    "spoken": "He set the pipe down.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "05.flac",
+    "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "spoken": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 350
+   },
+   {
+    "file": "06.flac",
+    "text": "Then another.",
+    "spoken": "Then another.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "07.flac",
+    "text": "Nobody had crossed the causeway; he would have seen them.",
+    "spoken": "Nobody had crossed the causeway; he would have seen them.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "The steps were slow and heavy, and they were getting closer.",
+    "spoken": "The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "09.flac",
+    "text": "He reached for the lantern.",
+    "spoken": "He reached for the lantern.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "10.flac",
+    "text": "His hand was shaking.",
+    "spoken": "His hand was shaking.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "11.flac",
+    "text": "The door handle began, very slowly, to turn.",
+    "spoken": "The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.86,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.6,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_female",
+  "model": "mtl",
+  "voice": "female",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_dir_female",
+  "model": "mtl",
+  "voice": "female",
+  "passage": "2-dialogue",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\"",
+    "spoken": "\"Are you going to tell me where you were last night?\"",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "disgusted",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "01.flac",
+    "text": "Martha asked, folding her arms.",
+    "spoken": "Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 700
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Oh, certainly,\" said Tom.",
+    "spoken": "\"Oh, certainly,\" said Tom.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "03.flac",
+    "text": "\"I was at the opera.",
+    "spoken": "\"I was at the opera.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "04.flac",
+    "text": "With the Queen.",
+    "spoken": "With the Queen.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "05.flac",
+    "text": "She sends her warmest regards.\"",
+    "spoken": "She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "06.flac",
+    "text": "\"Don't you dare make a joke of this!",
+    "spoken": "\"Don't you dare make a joke of this!",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.92,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.7,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "07.flac",
+    "text": "I waited up until two in the morning, Tom.",
+    "spoken": "I waited up until two in the morning, Tom.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.86,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.6,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "Two!\"",
+    "spoken": "Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.98,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.8,
+    "pace": "fast",
+    "pause_ms": 900
+   },
+   {
+    "file": "09.flac",
+    "text": "He looked down at the floor.",
+    "spoken": "He looked down at the floor.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "10.flac",
+    "text": "\"I know.",
+    "spoken": "\"I know.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "11.flac",
+    "text": "I'm sorry.",
+    "spoken": "I'm sorry.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "12.flac",
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "spoken": "I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "13.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "14.flac",
+    "text": "\"I think,\" he began, and stopped.",
+    "spoken": "\"I think,\" he began, and stopped.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "15.flac",
+    "text": "He glanced at the window.",
+    "spoken": "He glanced at the window.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "16.flac",
+    "text": "\"I think someone has been following me.",
+    "spoken": "\"I think someone has been following me.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "17.flac",
+    "text": "For a week, perhaps longer.",
+    "spoken": "For a week, perhaps longer.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 300
+   },
+   {
+    "file": "18.flac",
+    "text": "Or perhaps I've imagined the whole thing.",
+    "spoken": "Or perhaps I've imagined the whole thing.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "19.flac",
+    "text": "I honestly don't know anymore.\"",
+    "spoken": "I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_female",
+  "model": "mtl",
+  "voice": "female",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_dir_female",
+  "model": "mtl",
+  "voice": "female",
+  "passage": "3-reflective",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "01.flac",
+    "text": "The house still ticks, and the wind still moves in the chimney.",
+    "spoken": "The house still ticks, and the wind still moves in the chimney.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "02.flac",
+    "text": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "I used to fill that hour.",
+    "spoken": "I used to fill that hour.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "spoken": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 350
+   },
+   {
+    "file": "05.flac",
+    "text": "Now, more often, I simply sit.",
+    "spoken": "Now, more often, I simply sit.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "06.flac",
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "07.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "08.flac",
+    "text": "They arrive slowly.",
+    "spoken": "They arrive slowly.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "09.flac",
+    "text": "They wait.",
+    "spoken": "They wait.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "10.flac",
+    "text": "And they ask only that we be still enough to notice.",
+    "spoken": "And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 1000
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_male",
+  "model": "mtl",
+  "voice": "male",
+  "passage": "1-suspense",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "spoken": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "spoken": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_dir_male",
+  "model": "mtl",
+  "voice": "male",
+  "passage": "1-suspense",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "spoken": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "01.flac",
+    "text": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "spoken": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "02.flac",
+    "text": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "spoken": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "Then the gulls rose, all at once, without a sound.",
+    "spoken": "Then the gulls rose, all at once, without a sound.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "fast",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "He set the pipe down.",
+    "spoken": "He set the pipe down.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "05.flac",
+    "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "spoken": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 350
+   },
+   {
+    "file": "06.flac",
+    "text": "Then another.",
+    "spoken": "Then another.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "07.flac",
+    "text": "Nobody had crossed the causeway; he would have seen them.",
+    "spoken": "Nobody had crossed the causeway; he would have seen them.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "The steps were slow and heavy, and they were getting closer.",
+    "spoken": "The steps were slow and heavy, and they were getting closer.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "09.flac",
+    "text": "He reached for the lantern.",
+    "spoken": "He reached for the lantern.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "10.flac",
+    "text": "His hand was shaking.",
+    "spoken": "His hand was shaking.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "11.flac",
+    "text": "The door handle began, very slowly, to turn.",
+    "spoken": "The door handle began, very slowly, to turn.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.86,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.6,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_male",
+  "model": "mtl",
+  "voice": "male",
+  "passage": "2-dialogue",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "spoken": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "spoken": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "spoken": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "03.flac",
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "spoken": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "04.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "05.flac",
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "spoken": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_dir_male",
+  "model": "mtl",
+  "voice": "male",
+  "passage": "2-dialogue",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "\"Are you going to tell me where you were last night?\"",
+    "spoken": "\"Are you going to tell me where you were last night?\"",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "disgusted",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "01.flac",
+    "text": "Martha asked, folding her arms.",
+    "spoken": "Martha asked, folding her arms.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 700
+   },
+   {
+    "file": "02.flac",
+    "text": "\"Oh, certainly,\" said Tom.",
+    "spoken": "\"Oh, certainly,\" said Tom.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "03.flac",
+    "text": "\"I was at the opera.",
+    "spoken": "\"I was at the opera.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "04.flac",
+    "text": "With the Queen.",
+    "spoken": "With the Queen.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.68,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 250
+   },
+   {
+    "file": "05.flac",
+    "text": "She sends her warmest regards.\"",
+    "spoken": "She sends her warmest regards.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "happy",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "06.flac",
+    "text": "\"Don't you dare make a joke of this!",
+    "spoken": "\"Don't you dare make a joke of this!",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.92,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.7,
+    "pace": "fast",
+    "pause_ms": 300
+   },
+   {
+    "file": "07.flac",
+    "text": "I waited up until two in the morning, Tom.",
+    "spoken": "I waited up until two in the morning, Tom.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.86,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.6,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "08.flac",
+    "text": "Two!\"",
+    "spoken": "Two!\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.98,
+     "cfg_weight": 0.3,
+     "temperature": 0.8
+    },
+    "emotion": "angry",
+    "intensity": 0.8,
+    "pace": "fast",
+    "pause_ms": 900
+   },
+   {
+    "file": "09.flac",
+    "text": "He looked down at the floor.",
+    "spoken": "He looked down at the floor.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "10.flac",
+    "text": "\"I know.",
+    "spoken": "\"I know.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "11.flac",
+    "text": "I'm sorry.",
+    "spoken": "I'm sorry.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 250
+   },
+   {
+    "file": "12.flac",
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "spoken": "I'm not sure I can explain it, not properly.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "sad",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "13.flac",
+    "text": "\"Then try,\" she said, more quietly now.",
+    "spoken": "\"Then try,\" she said, more quietly now.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "14.flac",
+    "text": "\"I think,\" he began, and stopped.",
+    "spoken": "\"I think,\" he began, and stopped.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "15.flac",
+    "text": "He glanced at the window.",
+    "spoken": "He glanced at the window.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "16.flac",
+    "text": "\"I think someone has been following me.",
+    "spoken": "\"I think someone has been following me.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "17.flac",
+    "text": "For a week, perhaps longer.",
+    "spoken": "For a week, perhaps longer.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 300
+   },
+   {
+    "file": "18.flac",
+    "text": "Or perhaps I've imagined the whole thing.",
+    "spoken": "Or perhaps I've imagined the whole thing.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.74,
+     "cfg_weight": 0.4,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "19.flac",
+    "text": "I honestly don't know anymore.\"",
+    "spoken": "I honestly don't know anymore.\"",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.8,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "fearful",
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_ms": 1200
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_male",
+  "model": "mtl",
+  "voice": "male",
+  "passage": "3-reflective",
+  "mode": "segment",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "01.flac",
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   },
+   {
+    "file": "02.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5
+    },
+    "pause_ms": null
+   }
+  ]
+ },
+ {
+  "label": "cb_mtl3_dir_male",
+  "model": "mtl",
+  "voice": "male",
+  "passage": "3-reflective",
+  "mode": "sentence",
+  "items": [
+   {
+    "file": "00.flac",
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "spoken": "There is a particular kind of quiet that comes only in the last hour before dawn.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "01.flac",
+    "text": "The house still ticks, and the wind still moves in the chimney.",
+    "spoken": "The house still ticks, and the wind still moves in the chimney.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 300
+   },
+   {
+    "file": "02.flac",
+    "text": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "spoken": "Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 800
+   },
+   {
+    "file": "03.flac",
+    "text": "I used to fill that hour.",
+    "spoken": "I used to fill that hour.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_ms": 400
+   },
+   {
+    "file": "04.flac",
+    "text": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "spoken": "I read, I wrote letters, I made long lists of everything I meant to do.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 350
+   },
+   {
+    "file": "05.flac",
+    "text": "Now, more often, I simply sit.",
+    "spoken": "Now, more often, I simply sit.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "06.flac",
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "spoken": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.5,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_ms": 800
+   },
+   {
+    "file": "07.flac",
+    "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "spoken": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 500
+   },
+   {
+    "file": "08.flac",
+    "text": "They arrive slowly.",
+    "spoken": "They arrive slowly.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 400
+   },
+   {
+    "file": "09.flac",
+    "text": "They wait.",
+    "spoken": "They wait.",
+    "boundary": "sentence",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_ms": 600
+   },
+   {
+    "file": "10.flac",
+    "text": "And they ask only that we be still enough to notice.",
+    "spoken": "And they ask only that we be still enough to notice.",
+    "boundary": "paragraph",
+    "params": {
+     "exaggeration": 0.5,
+     "cfg_weight": 0.35,
+     "temperature": 0.8
+    },
+    "emotion": "neutral",
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_ms": 1000
+   }
+  ]
+ }
+]

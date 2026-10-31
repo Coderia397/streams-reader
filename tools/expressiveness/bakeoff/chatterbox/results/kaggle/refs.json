@@ -1,0 +1,22 @@
+{
+ "female": {
+  "file": "ref_female.wav",
+  "source": "https://archive.org/download/solo_pride_librivox/prideandprejudice_01-04_austen_apc_64kb.mp3",
+  "reader_of": "Austen, Pride and Prejudice ch. 1, Mr and Mrs Bennet (LibriVox version 2, solo), 0:35-1:50",
+  "start_s": 42.66,
+  "length_s": 12.52,
+  "f0_sd_st": 2.34,
+  "f0_median_hz": 228.6,
+  "gain_db": 4.9
+ },
+ "male": {
+  "file": "ref_male.wav",
+  "source": "https://archive.org/download/walden_librivox/walden_c05_64kb.mp3",
+  "reader_of": "Thoreau, Walden ch. 5 'Solitude' (LibriVox), 1:00-2:15",
+  "start_s": 87.36,
+  "length_s": 11.34,
+  "f0_sd_st": 2.38,
+  "f0_median_hz": 106.0,
+  "gain_db": 4.9
+ }
+}

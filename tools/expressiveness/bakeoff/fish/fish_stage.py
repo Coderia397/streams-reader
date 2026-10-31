@@ -264,6 +264,55 @@ def int4_backbone_stream(ckpt, n_experts, inter, stats):
         raise ValueError(f"incomplete int4 tensors: experts layers {sorted(stage_e)[:5]}, dense {sorted(dense)[:5]}")
 
 
+def place_two(backbone, devices, dev0_budget_gib):
+    """Run 2 (2026-10-31): materialize()'s even split left cuda:1 at 12.85 GiB with the lm_head and the codebook
+    tower, and the codec OOMed there. Fill cuda:0 with the embedding and the first layers up to a byte budget, the
+    rest, the norm and the lm_head on cuda:1 (with the tower and the codec)."""
+    from fish_speech.models.text2semantic.fish_omni.backbone import module_bytes
+    budget = dev0_budget_gib * 2**30
+    used = module_bytes(backbone.model.embed_tokens)
+    backbone.model.embed_tokens.to_empty(device=devices[0])
+    backbone.model.norm.to_empty(device=devices[1])
+    backbone.lm_head.to_empty(device=devices[1])
+    placement = {str(d): [] for d in devices}
+    on_first = True
+    for i, layer in enumerate(backbone.model.layers):
+        size = module_bytes(layer)
+        if on_first and used + size > budget:
+            on_first = False
+        d = devices[0] if on_first else devices[1]
+        if on_first:
+            used += size
+        layer.to_empty(device=d)
+        placement[str(d)].append(i)
+    backbone.inverse_frequencies.clear()
+    log["placement"] = {k: [v[0], v[-1]] if v else [] for k, v in placement.items()}
+    log["dev0_bytes_gib"] = round(used / 2**30, 2)
+    event(f"placement {log['placement']}, cuda:0 weights {log['dev0_bytes_gib']} GiB")
+
+
+def load_codec_small(path, device):
+    """The codec's transformers each hold a 32768^2 bool causal mask (1 GiB) and 327680 RoPE rows; segments here
+    are under 30 s, so both are cut to 8192 positions on the CPU before the move to the GPU. All of it runs under
+    inference_mode like load_codec_model itself: run 3 (2026-10-31) moved the inference-mode CPU tensors to the GPU
+    outside it and the first conv failed with "Inference tensors do not track version counter"."""
+    from fish_speech.models.text2semantic.inference import load_codec_model
+    with torch.inference_mode():
+        codec = load_codec_model(path, "cpu", torch.float16)
+        cut = 0
+        for mod in codec.modules():
+            mask = getattr(mod, "causal_mask", None)
+            if isinstance(mask, torch.Tensor) and mask.shape[-1] > 8192:
+                mod.causal_mask = mask[:8192, :8192].contiguous()
+                cut += 1
+            fr = getattr(mod, "freqs_cis", None)
+            if isinstance(fr, torch.Tensor) and fr.shape[0] > 8192:
+                mod.freqs_cis = fr[:8192].contiguous()
+        codec = codec.to(device)
+    log.setdefault("codec_masks_cut", cut)
+    return codec
+
+
 def load_drama3_int4(ckpt, devices, tower_device, dtype):
     from tokenizers import Tokenizer
     from fish_speech.models.text2semantic.fish_omni import moe as fmoe
@@ -281,7 +330,10 @@ def load_drama3_int4(ckpt, devices, tower_device, dtype):
     with torch.device("meta"):
         backbone = FishOmniBackbone(config.text, fp8_experts=False, dtype=dtype)
         decoder = FishOmniAudioDecoder(config, dtype=dtype)
-    backbone.materialize(devices)
+    if len(devices) == 2:
+        place_two(backbone, devices, spec["models"]["drama3"]["dev0_budget_gib"])
+    else:
+        backbone.materialize(devices)
     stats = {"expert_layers": 0, "dense": 0}
     load_backbone_weights(backbone, int4_backbone_stream(ckpt, config.text.num_experts,
                                                          config.text.moe_intermediate_size, stats))
@@ -350,8 +402,16 @@ def render(model_key, model, decode_one_token, device, codec, codec_device, gen_
         if not codes:
             raise RuntimeError("no audio frames")
         merged = torch.cat(codes, dim=1)
-        with torch.inference_mode():
-            audio = decode_to_audio(merged.to(codec_device), codec).float().cpu().numpy()
+        try:
+            with torch.inference_mode():
+                audio = decode_to_audio(merged.to(codec_device), codec).float().cpu().numpy()
+        except torch.OutOfMemoryError:  # decode chunk by chunk (seams at chunk joins), logged per item
+            torch.cuda.empty_cache()
+            log.setdefault("chunked_decodes", 0)
+            log["chunked_decodes"] += 1
+            with torch.inference_mode():
+                audio = np.concatenate([decode_to_audio(c.to(codec_device), codec).float().cpu().numpy()
+                                        for c in codes])
         for d in devices:
             torch.cuda.synchronize(d)
         t2 = time.perf_counter()
@@ -372,7 +432,7 @@ def render(model_key, model, decode_one_token, device, codec, codec_device, gen_
             log["errors"].append("time budget reached")
             event("time budget reached")
             break
-        label = f"fish_{model_key}_{it['voice']}_{it['cond']}"
+        label = f"fish_{spec.get('label_model', {}).get(model_key, model_key)}_{it['voice']}_{it['cond']}"
         path = f"{OUT}/raw/{label}/{it['passage']}/{it['file']}"
         os.makedirs(os.path.dirname(path), exist_ok=True)
         rec = {"label": label, "passage": it["passage"], "file": it["file"]}
@@ -395,10 +455,34 @@ def render(model_key, model, decode_one_token, device, codec, codec_device, gen_
         save()
 
 
+DL_SNIPPET = ("import sys, json; from huggingface_hub import snapshot_download; "
+              "a = json.loads(sys.argv[1]); print(snapshot_download(a[0], revision=a[1], allow_patterns=a[2], "
+              "local_dir=a[3], max_workers=2))")
+
+
 def download(repo, revision, patterns, local):
-    from huggingface_hub import snapshot_download
+    """Anonymous downloads of the 22 GB repo hit 429 on the Xet CDN (run 1, 2026-10-31): each attempt runs in a
+    subprocess (resuming finished files), alternating Xet and plain HTTP, two workers, growing back-off."""
     t = time.time()
-    root = snapshot_download(repo, revision=revision, allow_patterns=patterns, local_dir=local)
+    attempts = []
+    root = None
+    for k in range(10):
+        env = dict(os.environ)
+        if k % 2 == 1:
+            env["HF_HUB_DISABLE_XET"] = "1"
+        r = subprocess.run([sys.executable, "-c", DL_SNIPPET, json.dumps([repo, revision, patterns, local])],
+                           env=env, capture_output=True, text=True)
+        tail = (r.stderr.strip().splitlines() or ["?"])[-1][-300:]
+        attempts.append({"xet": k % 2 == 0, "rc": r.returncode, "s": round(time.time() - t), "tail": tail})
+        log["download_attempts"] = attempts
+        save()
+        if r.returncode == 0:
+            root = r.stdout.strip().splitlines()[-1]
+            break
+        event(f"download attempt {k + 1} failed: {tail}")
+        time.sleep(min(60 * (k + 1), 300))
+    if root is None:
+        raise RuntimeError(f"download of {repo} failed {len(attempts)} times")
     size = sum(os.path.getsize(os.path.join(dp, f)) for dp, _, fs in os.walk(root) for f in fs)
     log["download"] = {"repo": repo, "revision": revision, "seconds": round(time.time() - t, 1),
                        "gib": round(size / 2**30, 2)}
@@ -408,7 +492,6 @@ def download(repo, revision, patterns, local):
 
 def stage_drama3():
     os.environ["FISH_DRAMA3_CUDA_GRAPH"] = "0"
-    from fish_speech.models.text2semantic.inference import load_codec_model
     m = spec["models"]["drama3"]
     selftest_unpack()
     local = "/tmp/hf/drama3"
@@ -426,8 +509,9 @@ def stage_drama3():
         log["memory_after_load"] = mem(devices)
         log["nvidia_smi_after_load"] = smi()
         event(f"model loaded in {log['load_s']} s; {log['nvidia_smi_after_load']}")
-        codec = load_codec_model(f"{ckpt}/codec.pth", str(tower), torch.float16)
+        codec = load_codec_small(f"{ckpt}/codec.pth", str(tower))
         log["nvidia_smi_after_codec"] = smi()
+        event(f"codec loaded; {log['nvidia_smi_after_codec']}")
         render("drama3", model, None, str(tower), codec, str(tower), m["gen"], spec["budget_s"]["drama3"], devices)
     finally:
         shutil.rmtree(local, ignore_errors=True)
@@ -451,10 +535,13 @@ def stage_s2pro():
         log["load_s"] = round(time.time() - t, 1)
         log["memory_after_load"] = mem([torch.device(dev)])
         log["nvidia_smi_after_load"] = smi()
-        codec = load_codec_model(f"{ckpt}/codec.pth", dev, torch.float16)
+        # Run 1 (2026-10-31): model + 6144-frame caches filled cuda:0 to 14.4 GiB and the codec OOMed encoding the
+        # reference; the codec now sits on the second T4.
+        cdev = "cuda:1" if torch.cuda.device_count() > 1 else dev
+        codec = load_codec_model(f"{ckpt}/codec.pth", cdev, torch.float16)
         event(f"model loaded in {log['load_s']} s; {smi()}")
-        render("s2pro", model, decode_one_token, dev, codec, dev, m["gen"], spec["budget_s"]["s2pro"],
-               [torch.device(dev)])
+        devs = sorted({torch.device(dev), torch.device(cdev)}, key=str)
+        render("s2pro", model, decode_one_token, dev, codec, cdev, m["gen"], spec["budget_s"]["s2pro"], devs)
     finally:
         shutil.rmtree(local, ignore_errors=True)
 

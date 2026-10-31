@@ -20,3 +20,6 @@
 /apps/tauri/gen/
 /apps/tauri/target/
 *.crate
+
+# Bake-off renders: thousands of clips, kept locally (results and notes are committed)
+/tools/expressiveness/bakeoff/*/audio/

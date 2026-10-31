@@ -85,7 +85,8 @@ log["stages"]["setup"] = round(time.time() - t, 1)
 save()
 
 env = dict(os.environ, HF_HOME="/tmp/hf/home", HF_HUB_ENABLE_HF_TRANSFER="0", PYTHONUNBUFFERED="1",
-           TOKENIZERS_PARALLELISM="false")
+           TOKENIZERS_PARALLELISM="false",
+           PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True")
 for stage in JOBS["stages"]:
     t = time.time()
     try:

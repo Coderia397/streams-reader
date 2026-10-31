@@ -60,16 +60,23 @@ MODELS = {
     "whisper": {"repo": "openai/whisper-large-v3-turbo", "revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9"},
 }
 PINS = ["qwen-tts==0.1.1", "transformers==4.57.3", "accelerate==1.12.0", "imageio-ffmpeg==0.6.0"]
-FAST_PIN = "faster-qwen3-tts==0.5.4"
+# run 2: unpinned, pip took transformers 5.22.1 (2026-10-30) and qwen-tts-hf crashed (Qwen3TTSTokenizerV2Encoder
+# .upsample has no setter); 5.15.1 was the newest release when qwen-tts-hf 0.1.1.post1 shipped (2026-08-25)
+FAST_PIN = "faster-qwen3-tts==0.5.4 qwen-tts-hf==0.1.1.post1 transformers==5.15.1"
 IA = "https://archive.org/download"
 # LibriVox intros ("This is a LibriVox recording ..."): neutral reading by the same public-domain readers as the
 # human ceiling files. F0 median of the first 30 s (praat, 2026-10-31): poe 201 Hz, pp 223 Hz, walden 105 Hz.
 REFS = {
+    # run 4: "cut"/"text" fixed by hand from the energy envelope (scratchpad tools/pauses.py, 10 ms frames, max-35 dB):
+    # Whisper word timestamps ran past the 30 s file for pp_f/walden_m and the auto cut fell back to one word.
     "poe_f": {"url": f"{IA}/12_creepytales_1206_librivox/creepytalesbypoe_01_poe_64kb.mp3", "start_s": 0,
-              "length_s": 30, "max_s": 14},
+              "length_s": 30, "max_s": 12, "min_s": 4, "cut": [0.63, 10.15],
+              "text": "Chapter 1 of Creepy Tales by Edgar Allan Poe. This is a LibriVox recording."},
     "pp_f": {"url": f"{IA}/solo_pride_librivox/prideandprejudice_01-04_austen_apc_64kb.mp3", "start_s": 0,
-             "length_s": 30, "max_s": 14},
-    "walden_m": {"url": f"{IA}/walden_librivox/walden_c05_64kb.mp3", "start_s": 0, "length_s": 30, "max_s": 14},
+             "length_s": 30, "max_s": 12, "min_s": 4},
+    "walden_m": {"url": f"{IA}/walden_librivox/walden_c05_64kb.mp3", "start_s": 0, "length_s": 30, "max_s": 12, "min_s": 4,
+                 "cut": [3.07, 13.33], "text": "This is a LibriVox recording. All LibriVox recordings are in the public "
+                 "domain. For more information, please visit LibriVox.org."},
 }
 CV_MAIN = {"serena": "Serena", "aiden": "Aiden"}   # warm female (Chinese native), sunny/warm US male
 CV_EXTRA = {"ryan": "Ryan", "vivian": "Vivian", "sohee": "Sohee"}
@@ -176,9 +183,12 @@ def build_conditions() -> list[dict]:
     return out
 
 
-def cmd_jobs(work: Path) -> None:
+def cmd_jobs(work: Path, only: str | None = None, skip_engines: str = "") -> None:
     conds = build_conditions()
-    spec = {"models": MODELS, "pins": PINS, "fast_pin": FAST_PIN, "seed": SEED, "refs": REFS, "conditions": conds}
+    if only:
+        conds = [c for c in conds if re.search(only, c["label"])]
+    spec = {"models": MODELS, "pins": PINS, "fast_pin": FAST_PIN, "seed": SEED, "refs": REFS, "conditions": conds,
+            "skip_engines": [e for e in skip_engines.split(",") if e], "retry_engines": ["clone", "vd"]}
     work.mkdir(parents=True, exist_ok=True)
     (work / "spec.json").write_text(json.dumps(spec, ensure_ascii=False, indent=1))
     n, eng = 0, {}
@@ -193,7 +203,37 @@ def cmd_jobs(work: Path) -> None:
 
 
 # ----------------------------------------------------------------------------------------------------------- push
+DATASET = f"{OWNER}/streams-qwen3tts-prior-raw"
+
+
+def push_prior(work: Path) -> list[str]:
+    """Run 2+: W/prior/prior_raw.tar (raw clips of engines already rendered) goes up as a private dataset."""
+    ds = work / "prior"
+    if not (ds / "prior_raw.tar").exists():
+        return []
+    if (ds / ".uploaded").exists():
+        return [DATASET]
+    (ds / "dataset-metadata.json").write_text(json.dumps(
+        {"title": "streams-qwen3tts-prior-raw", "id": DATASET, "licenses": [{"name": "other"}]}))
+    st = kaggle("datasets", "status", DATASET, capture=True)
+    if st.returncode == 0 and "ready" in st.stdout.lower():
+        r = kaggle("datasets", "version", "-p", str(ds), "-r", "skip", "-m", time.strftime("raw %Y-%m-%d %H:%M"))
+    else:
+        r = kaggle("datasets", "create", "-p", str(ds), "-r", "skip")
+    if r.returncode != 0:
+        raise SystemExit("dataset upload failed")
+    for _ in range(60):
+        s_ = kaggle("datasets", "status", DATASET, capture=True).stdout.strip().lower()
+        print("dataset:", s_, flush=True)
+        if "ready" in s_:
+            (ds / ".uploaded").write_text(time.strftime("%Y-%m-%d %H:%M"))
+            break
+        time.sleep(10)
+    return [DATASET]
+
+
 def cmd_push(work: Path) -> None:
+    sources = push_prior(work)
     spec = (work / "spec.json").read_bytes()
     src = (HERE / "qwen_kernel.py").read_text()
     blob = base64.b64encode(zlib.compress(spec, 9)).decode()
@@ -204,7 +244,7 @@ def cmd_push(work: Path) -> None:
     (kd / "kernel-metadata.json").write_text(json.dumps({
         "id": KERNEL, "title": "streams-qwen3tts-bakeoff", "code_file": "qwen_kernel.py", "language": "python",
         "kernel_type": "script", "is_private": True, "enable_gpu": True, "enable_internet": True,
-        "machine_shape": "NvidiaTeslaT4", "dataset_sources": [], "competition_sources": [], "kernel_sources": []}))
+        "machine_shape": "NvidiaTeslaT4", "dataset_sources": sources, "competition_sources": [], "kernel_sources": []}))
     if kaggle("kernels", "push", "-p", str(kd), "--accelerator", "NvidiaTeslaT4").returncode != 0:
         raise SystemExit("kernel push failed")
 
@@ -254,6 +294,10 @@ def cmd_collect(work: Path) -> None:
             print(f"skip {c['label']}/{c['passage']}: {sum(isinstance(x, BaseException) for x in clips)} missing")
             continue
         done = pipeline.finish_batch(clips, profile)
+        bad = [f"{it['file']}: {fin}" for it, fin in zip(c["items"], done) if isinstance(fin, BaseException)]
+        if bad:
+            print(f"skip {c['label']}/{c['passage']}: {'; '.join(bad)[:200]}")
+            continue
         d = AUDIO / c["label"] / c["passage"]
         d.mkdir(parents=True, exist_ok=True)
         meta = []
@@ -379,8 +423,10 @@ def main() -> None:
     ap.add_argument("cmd", choices=["jobs", "push", "pull", "collect", "check"])
     ap.add_argument("--work", type=Path, required=True)
     ap.add_argument("--wait", action="store_true")
+    ap.add_argument("--only", help="jobs: keep condition labels matching this regex")
+    ap.add_argument("--skip-engines", default="", help="jobs: engines the kernel does not render (comma list)")
     a = ap.parse_args()
-    {"jobs": lambda: cmd_jobs(a.work), "push": lambda: cmd_push(a.work), "pull": lambda: cmd_pull(a.work, a.wait),
+    {"jobs": lambda: cmd_jobs(a.work, a.only, a.skip_engines), "push": lambda: cmd_push(a.work), "pull": lambda: cmd_pull(a.work, a.wait),
      "collect": lambda: cmd_collect(a.work), "check": lambda: cmd_check(a.work)}[a.cmd]()
 
 

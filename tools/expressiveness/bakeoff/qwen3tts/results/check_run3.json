@@ -1,0 +1,211 @@
+{
+ "qwen_fast_cv_serena_styled": {
+  "clips": 43,
+  "wer_pct": 3.1,
+  "spk_cos": [
+   0.943,
+   0.987
+  ],
+  "rtf": 0.835,
+  "capped": 0,
+  "lead_s": 0.08,
+  "trail_s": 0.04,
+  "max_gap_s": 0.76,
+  "cps": 13.5,
+  "hf_pct": 2.87,
+  "worst": [],
+  "audio_s": 141.6,
+  "gpu_s": 118.2
+ },
+ "qwen_fast_cv_aiden_styled": {
+  "clips": 43,
+  "wer_pct": 1.1,
+  "spk_cos": [
+   0.945,
+   0.981
+  ],
+  "rtf": 0.827,
+  "capped": 0,
+  "lead_s": 0.08,
+  "trail_s": 0.04,
+  "max_gap_s": 1.05,
+  "cps": 16.0,
+  "hf_pct": 0.32,
+  "worst": [
+   "1-suspense/06.flac wer 0.50: ' than another.'"
+  ],
+  "audio_s": 131.0,
+  "gpu_s": 108.4
+ },
+ "qwen_clone_pp_f_seg": {
+  "clips": 12,
+  "wer_pct": 403.0,
+  "spk_cos": [
+   0.987,
+   0.99
+  ],
+  "rtf": 4.332,
+  "capped": 2,
+  "lead_s": 0.0,
+  "trail_s": 0.37,
+  "max_gap_s": 1.17,
+  "cps": 9.7,
+  "hf_pct": 0.84,
+  "worst": [
+   "1-suspense/02.flac wer 13.24: ' He re, he re, he re, he re, he re, re, re, he re, he re, really, really, le, le, le, le, '",
+   "2-dialogue/00.flac wer 18.31: ' Are you, are you, are you, are you, are you, are you, are you, are you, are you, are you,'",
+   "2-dialogue/01.flac wer 0.47: ' Oh, oh, oh, oh, oh, certainly. With the queen, she sends her warmest regards.'",
+   "2-dialogue/03.flac wer 11.79: ' He looked, he looked, he looked, he looked, he looked, he looked, he looked, he looked, l'",
+   "2-dialogue/05.flac wer 0.31: \" I think someone has been following me for a week, perhaps longer, or perhaps I've imagine\"",
+   "3-reflective/01.flac wer 6.70: ' this. I used, I used, I used, I used, I used, I used, I used, I used, I used, I used, I u'"
+  ],
+  "audio_s": 221.3,
+  "gpu_s": 958.6
+ },
+ "qwen_clone_pp_f_sent": {
+  "clips": 43,
+  "wer_pct": 680.2,
+  "spk_cos": [
+   0.971,
+   0.987
+  ],
+  "rtf": 3.49,
+  "capped": 9,
+  "lead_s": 0.0,
+  "trail_s": 0.37,
+  "max_gap_s": 2.03,
+  "cps": 7.3,
+  "hf_pct": 0.58,
+  "worst": [
+   "1-suspense/00.flac wer 13.18: ' The lighthouse. The light. The light. The light. The light. The light. The light. The lig'",
+   "1-suspense/01.flac wer 3.65: ' This outside. This outs. This outs. This outs. This outs. This outs. This outs. Outs. Out'",
+   "1-suspense/02.flac wer 13.88: ' He we, we, we, we, we, we, we, we, we, we, we, we, we, we, we, we, we, we, we, we, we, we'",
+   "1-suspense/03.flac wer 1.30: ' Then, then this, then this, this, then, then this. This, then, this, then, they.'",
+   "1-suspense/04.flac wer 59.00: ' He said... He said... He said... He said... He said... He said... He said... He said... H'",
+   "1-suspense/05.flac wer 2.20: ' Some was, some was, some was, some was, some lair. This, this some was, some was, some wa'"
+  ],
+  "audio_s": 342.2,
+  "gpu_s": 1194.1
+ },
+ "qwen_clone_walden_m_seg": {
+  "clips": 12,
+  "wer_pct": 374.4,
+  "spk_cos": [
+   0.983,
+   0.99
+  ],
+  "rtf": 4.235,
+  "capped": 8,
+  "lead_s": 0.0,
+  "trail_s": 0.12,
+  "max_gap_s": 1.23,
+  "cps": 7.9,
+  "hf_pct": 2.59,
+  "worst": [
+   "1-suspense/02.flac wer 0.76: ' Very slowly to turn.'",
+   "2-dialogue/01.flac wer 12.88: ' Oh, who, oh, oh, oh, oh, oh, oh, oh, oh, oh, the, the, the, the, the, the, the, the, the,'",
+   "2-dialogue/03.flac wer 11.68: ' He looked, he looked, he looked, he looked, look, look, look, look, look, look, look, loo'",
+   "2-dialogue/04.flac wer 2.86: ' Then, then, then, then, this, this, this, this, this, this, this, this, this, this, this,'",
+   "2-dialogue/05.flac wer 0.26: \" I think. I think someone has been following me for a week, perhaps longer, or perhaps I'v\""
+  ],
+  "audio_s": 304.2,
+  "gpu_s": 1288.1
+ },
+ "qwen_clone_walden_m_sent": {
+  "clips": 43,
+  "wer_pct": 474.6,
+  "spk_cos": [
+   0.967,
+   0.987
+  ],
+  "rtf": 3.529,
+  "capped": 12,
+  "lead_s": 0.0,
+  "trail_s": 0.15,
+  "max_gap_s": 2.74,
+  "cps": 6.6,
+  "hf_pct": 0.63,
+  "worst": [
+   "1-suspense/00.flac wer 0.88: ' the lighthouse because the lighthouse pre recomplet like leap that the the the the'",
+   "1-suspense/01.flac wer 9.65: ' Outs, outs, outs, outs, outs, outs, outs, outs, outs, outs, outs, outs, outs, outs, outs,'",
+   "1-suspense/02.flac wer 1.12: ' He woke. He woke. He woke. This. He will. This. This. He woke. The. He woke. The. The. Th'",
+   "1-suspense/03.flac wer 2.40: ' THEN, THEN, THEN, THEN, THEN, THEN, THEN, THEN, THEN, THEN, THEN, THEN, THEN, THEN, THEN,'",
+   "1-suspense/05.flac wer 1.00: ' Somewhere, this, somewhere, this, this, this, this, somewhere, this, somewhere, somewhere'",
+   "1-suspense/06.flac wer 0.50: ' Then and another.'"
+  ],
+  "audio_s": 362.3,
+  "gpu_s": 1278.6
+ },
+ "qwen_vd_f_styled": {
+  "clips": 43,
+  "wer_pct": 1.7,
+  "spk_cos": [
+   0.958,
+   0.981
+  ],
+  "rtf": 2.159,
+  "capped": 0,
+  "lead_s": 0.04,
+  "trail_s": 0.15,
+  "max_gap_s": 1.2,
+  "cps": 15.3,
+  "hf_pct": 1.25,
+  "worst": [],
+  "audio_s": 132.8,
+  "gpu_s": 286.7
+ },
+ "qwen_vd_f_segstyled": {
+  "clips": 12,
+  "wer_pct": 0.8,
+  "spk_cos": [
+   0.978,
+   0.989
+  ],
+  "rtf": 2.131,
+  "capped": 0,
+  "lead_s": 0.03,
+  "trail_s": 0.18,
+  "max_gap_s": 1.51,
+  "cps": 12.8,
+  "hf_pct": 1.28,
+  "worst": [],
+  "audio_s": 150.1,
+  "gpu_s": 319.8
+ },
+ "qwen_vd_m_styled": {
+  "clips": 43,
+  "wer_pct": 0.8,
+  "spk_cos": [
+   0.941,
+   0.979
+  ],
+  "rtf": 2.168,
+  "capped": 0,
+  "lead_s": 0.04,
+  "trail_s": 0.17,
+  "max_gap_s": 0.94,
+  "cps": 14.9,
+  "hf_pct": 0.98,
+  "worst": [],
+  "audio_s": 135.0,
+  "gpu_s": 292.6
+ },
+ "qwen_vd_m_segstyled": {
+  "clips": 12,
+  "wer_pct": 0.6,
+  "spk_cos": [
+   0.973,
+   0.988
+  ],
+  "rtf": 2.148,
+  "capped": 0,
+  "lead_s": 0.04,
+  "trail_s": 0.19,
+  "max_gap_s": 1.28,
+  "cps": 13.4,
+  "hf_pct": 0.77,
+  "worst": [],
+  "audio_s": 144.3,
+  "gpu_s": 310.0
+ }
+}

@@ -1,0 +1,137 @@
+{
+ "cb_mtl3_dir_female": {
+  "pitch_breaks_per_min": 28.5,
+  "f0_median_hz": 217.5,
+  "hf_6_8k_db": -51.2
+ },
+ "cb_mtl3_dir_female_dp": {
+  "pitch_breaks_per_min": 28.5,
+  "f0_median_hz": 217.5,
+  "hf_6_8k_db": -50.3
+ },
+ "cb_mtl3_dir_male": {
+  "pitch_breaks_per_min": 12.8,
+  "f0_median_hz": 104.7,
+  "hf_6_8k_db": -36.8
+ },
+ "cb_mtl3_dir_male_dp": {
+  "pitch_breaks_per_min": 12.8,
+  "f0_median_hz": 104.7,
+  "hf_6_8k_db": -36.6
+ },
+ "cb_mtl3_female": {
+  "pitch_breaks_per_min": 29.2,
+  "f0_median_hz": 222.7,
+  "hf_6_8k_db": -51.2
+ },
+ "cb_mtl3_male": {
+  "pitch_breaks_per_min": 13.5,
+  "f0_median_hz": 109.7,
+  "hf_6_8k_db": -38.7
+ },
+ "cb_orig_dir_female": {
+  "pitch_breaks_per_min": 29.6,
+  "f0_median_hz": 228.9,
+  "hf_6_8k_db": -51.6
+ },
+ "cb_orig_dir_female_dp": {
+  "pitch_breaks_per_min": 29.6,
+  "f0_median_hz": 228.9,
+  "hf_6_8k_db": -49.3
+ },
+ "cb_orig_dir_male": {
+  "pitch_breaks_per_min": 21.7,
+  "f0_median_hz": 111.5,
+  "hf_6_8k_db": -36.3
+ },
+ "cb_orig_dir_male_dp": {
+  "pitch_breaks_per_min": 21.7,
+  "f0_median_hz": 111.5,
+  "hf_6_8k_db": -36.0
+ },
+ "cb_orig_e50_female": {
+  "pitch_breaks_per_min": 25.2,
+  "f0_median_hz": 227.0,
+  "hf_6_8k_db": -50.8
+ },
+ "cb_orig_e50_male": {
+  "pitch_breaks_per_min": 9.1,
+  "f0_median_hz": 110.6,
+  "hf_6_8k_db": -35.9
+ },
+ "cb_orig_e70_female": {
+  "pitch_breaks_per_min": 30.9,
+  "f0_median_hz": 232.6,
+  "hf_6_8k_db": -52.4
+ },
+ "cb_orig_e70_male": {
+  "pitch_breaks_per_min": 13.1,
+  "f0_median_hz": 117.3,
+  "hf_6_8k_db": -37.0
+ },
+ "cb_orig_e90_female": {
+  "pitch_breaks_per_min": 28.7,
+  "f0_median_hz": 245.9,
+  "hf_6_8k_db": -49.7
+ },
+ "cb_orig_e90_male": {
+  "pitch_breaks_per_min": 16.1,
+  "f0_median_hz": 128.8,
+  "hf_6_8k_db": -37.4
+ },
+ "cb_turbo_female": {
+  "pitch_breaks_per_min": 19.1,
+  "f0_median_hz": 224.3,
+  "hf_6_8k_db": -48.9
+ },
+ "cb_turbo_male": {
+  "pitch_breaks_per_min": 13.4,
+  "f0_median_hz": 109.0,
+  "hf_6_8k_db": -36.7
+ },
+ "cb_turbo_tags_female": {
+  "pitch_breaks_per_min": 49.6,
+  "f0_median_hz": 219.5,
+  "hf_6_8k_db": -50.4
+ },
+ "cb_turbo_tags_female_dp": {
+  "pitch_breaks_per_min": 49.6,
+  "f0_median_hz": 219.5,
+  "hf_6_8k_db": -49.2
+ },
+ "cb_turbo_tags_male": {
+  "pitch_breaks_per_min": 11.5,
+  "f0_median_hz": 104.7,
+  "hf_6_8k_db": -37.2
+ },
+ "cb_turbo_tags_male_dp": {
+  "pitch_breaks_per_min": 11.5,
+  "f0_median_hz": 104.8,
+  "hf_6_8k_db": -36.6
+ },
+ "af_heart": {
+  "pitch_breaks_per_min": 14.0,
+  "f0_median_hz": 197.9,
+  "hf_6_8k_db": -30.6
+ },
+ "am_michael": {
+  "pitch_breaks_per_min": 4.5,
+  "f0_median_hz": 113.8,
+  "hf_6_8k_db": -21.2
+ },
+ "bf_emma": {
+  "pitch_breaks_per_min": 5.6,
+  "f0_median_hz": 180.5,
+  "hf_6_8k_db": -30.9
+ },
+ "bm_george": {
+  "pitch_breaks_per_min": 1.7,
+  "f0_median_hz": 139.4,
+  "hf_6_8k_db": -30.7
+ },
+ "human": {
+  "pitch_breaks_per_min": 39.0,
+  "f0_median_hz": 182.9,
+  "hf_6_8k_db": -37.3
+ }
+}

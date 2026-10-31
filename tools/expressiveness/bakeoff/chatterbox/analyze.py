@@ -32,7 +32,8 @@ def words(t: str) -> list[str]:
     t = re.sub(r"\[[^\]]*\]", " ", t.lower().replace("’", "'"))
     t = re.sub(r"(\d+)(:00)?", lambda m: " " + NUM.get(m.group(1), m.group(1)) + " ", t)
     t = re.sub(r"[^a-z0-9' ]+", " ", t)
-    return [w for w in t.split() if w not in FILLERS]
+    t = [w.strip("'") for w in t.split()]  # Whisper wraps quotes as "'...'": stray apostrophes are not words
+    return [w for w in t if w and w not in FILLERS]
 
 
 def edits(ref: list[str], hyp: list[str]) -> int:

@@ -1,0 +1,23 @@
+{
+ "lvf": {
+  "source": "https://archive.org/download/solo_pride_librivox/prideandprejudice_01-04_austen_apc_64kb.mp3",
+  "start_s": 272.05,
+  "length_s": 11.45,
+  "description": "LibriVox Pride and Prejudice v2 solo reader, 4:32.05-4:43.50",
+  "seconds": 11.15,
+  "gain_db": 1.4
+ },
+ "lvm": {
+  "source": "https://archive.org/download/walden_librivox/walden_c05_64kb.mp3",
+  "start_s": 303.8,
+  "length_s": 13.1,
+  "description": "LibriVox Walden ch. 5 reader, 5:03.8-5:16.9",
+  "seconds": 13.06,
+  "gain_db": 5.1
+ },
+ "heart": {
+  "source": "/private/tmp/claude-501/-Users-ibrahim-code-nolabs-reader/a97fc270-2dc8-4cdf-895f-e925bee528d9/scratchpad/expr/ming/dataset/ref_af_heart.wav",
+  "description": "Kokoro af_heart, neutral library text (Ming study ref)",
+  "seconds": 13.93
+ }
+}

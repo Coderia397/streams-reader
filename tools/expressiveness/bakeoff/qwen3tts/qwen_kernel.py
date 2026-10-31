@@ -32,7 +32,7 @@ role, spec_path, out = sys.argv[1], sys.argv[2], sys.argv[3]
 spec = json.load(open(spec_path))
 OUT = out
 wlog = {"role": role, "items": [], "errors": [], "models": {}}
-LOGP = f"{OUT}/worker_{role}.json"
+LOGP = f"{OUT}/worker_{role}" + (f"_{sys.argv[5]}" if role == "analysis" and len(sys.argv) > 5 else "") + ".json"
 def save():
     json.dump(wlog, open(LOGP, "w"), indent=1)
 def seed(n):
@@ -56,7 +56,7 @@ def load(repo_key, dtype):
         "vram_after_load_gb": round(torch.cuda.memory_allocated() / 2**30, 2)})
     return m
 
-def free(m):
+def free(m):  # only drops the local name; module-level models are freed with an inline del (run 2 OOM)
     del m; gc.collect(); torch.cuda.empty_cache()
 
 def gen(model, engine, text, ctrl):
@@ -99,7 +99,7 @@ def probe(repo_key, engine, ctrl):
             r["rtf"] = round(r["gpu_s"] / max(r["audio_s"], 1e-6), 3)
             r["peak_vram_gb"] = round(torch.cuda.max_memory_allocated() / 2**30, 2)
             res[dt] = r
-            free(m)
+            del m; gc.collect(); torch.cuda.empty_cache()
         except Exception:
             res[dt] = {"ok": False, "error": traceback.format_exc()[-1500:]}
             gc.collect(); torch.cuda.empty_cache()
@@ -122,14 +122,28 @@ def run_conditions(model, engine, conds, ctrl_extra=None):
         for k, it in enumerate(c["items"]):
             ctrl = dict(it["controls"]); ctrl.update(ctrl_extra or {})
             try:
-                seed(spec["seed"] + k); sync(); t0 = time.time()
-                wavs, sr = gen(model, engine, it["text"], ctrl)
-                sync(); g = time.time() - t0
-                w = np.clip(np.asarray(wavs[0], dtype=np.float32), -1, 1)
+                # run 3: one seed retry for a runaway (capped), silent or too short (> 28 chars/s) clip, as the app's
+                # seed fallback would; gpu_s counts every attempt, gpu_s_first only the first
+                tries, g_all = [], 0.0
+                for attempt in range(1 + int(engine in spec.get("retry_engines", []))):
+                    seed(spec["seed"] + k + 7919 * attempt); sync(); t0 = time.time()
+                    wavs, sr = gen(model, engine, it["text"], ctrl)
+                    sync(); g = time.time() - t0; g_all += g
+                    w = np.clip(np.asarray(wavs[0], dtype=np.float32), -1, 1)
+                    a = w.size / sr
+                    capped = a * 12.5 >= max_tokens(it["text"]) - 1
+                    rms = float(np.sqrt(np.mean(w ** 2))) if w.size else 0.0
+                    cps = len(it["text"]) / max(a, 0.05)
+                    bad = capped or rms < 1e-3 or cps > 28
+                    tries.append((bad, abs(np.log(cps / 13.0)), w, a, capped, g))
+                    if not bad:
+                        break
+                best = min(tries, key=lambda x: (x[0], x[1]))
+                _, _, w, a, capped, _ = best
                 sf.write(f"{d}/{it['file']}", w, sr, subtype="PCM_16")
-                a = w.size / sr
-                wlog["items"].append({"label": c["label"], "passage": c["passage"], "file": it["file"], "gpu_s": round(g, 3),
-                    "audio_s": round(a, 3), "sr": sr, "capped": a * 12.5 >= max_tokens(it["text"]) - 1,
+                wlog["items"].append({"label": c["label"], "passage": c["passage"], "file": it["file"], "gpu_s": round(g_all, 3),
+                    "gpu_s_first": round(tries[0][5], 3), "attempts": len(tries), "kept": tries.index(best),
+                    "audio_s": round(a, 3), "sr": sr, "capped": bool(capped),
                     "peak_vram_gb": round(torch.cuda.max_memory_allocated() / 2**30, 2)})
             except Exception:
                 wlog["errors"].append({"label": c["label"], "passage": c["passage"], "file": it["file"],
@@ -160,23 +174,51 @@ elif role == "base_vd":
     refs = {}
     for name, r in spec["refs"].items():
         w, sr = sf.read(f"{OUT}/refs/{name}_full.wav", dtype="float32")
-        o = asr({"raw": w, "sampling_rate": sr}, return_timestamps=True, generate_kwargs={"language": "en"})
-        chunks = [c for c in o["chunks"] if c["timestamp"][0] is not None and c["timestamp"][1] is not None]
-        start = chunks[0]["timestamp"][0]
-        sel = []
-        for c in chunks:
-            if c["timestamp"][1] - start > r["max_s"]:
+        if r.get("cut"):
+            # run 4: Whisper word timestamps stretched past the 30 s file (pp_f, walden_m: "This" 0-5 s over 3 s of
+            # leading silence), so the cut fell back to one word. Cut and text fixed from the energy envelope.
+            a, b = int(r["cut"][0] * sr), min(w.size, int(r["cut"][1] * sr))
+            clip = w[a:b] / max(1e-6, float(np.abs(w[a:b]).max())) * 0.84
+            sf.write(f"{OUT}/refs/{name}.wav", clip, sr, subtype="PCM_16")
+            refs[name] = {"file": f"refs/{name}.wav", "start_s": r["cut"][0], "end_s": r["cut"][1], "text": r["text"],
+                          "ref_mode": "fixed"}
+            continue
+        # run 2: segment-level chunks gave transcripts that did not match the cut audio (pp_f 0-15 s, walden_m cut
+        # mid-sentence) and those clones babbled or stopped early. Run 3: word timestamps, cut at the latest
+        # sentence end within max_s that is followed by a pause, end refined on the energy envelope.
+        mode = "word"
+        try:
+            o = asr({"raw": w, "sampling_rate": sr}, return_timestamps="word", generate_kwargs={"language": "en"})
+        except Exception:
+            mode = "chunk"
+            o = asr({"raw": w, "sampling_rate": sr}, return_timestamps=True, generate_kwargs={"language": "en"})
+        words = [c for c in o["chunks"] if c["timestamp"][0] is not None and c["timestamp"][1] is not None]
+        start = words[0]["timestamp"][0]
+        best = None
+        for i, c in enumerate(words):
+            end_i = c["timestamp"][1]
+            if end_i - start > r["max_s"]:
                 break
-            sel.append(c)
-        if not sel:
-            sel = chunks[:1]
-        end = sel[-1]["timestamp"][1]
-        a, b = max(0, int((start - 0.05) * sr)), min(w.size, int((end + 0.25) * sr))
+            nxt = words[i + 1]["timestamp"][0] if i + 1 < len(words) else end_i + 1.0
+            if c["text"].strip()[-1:] in ".!?" and end_i - start >= r.get("min_s", 3.0) and nxt - end_i >= 0.12:
+                best = (i, nxt)
+        if best is None:
+            best = (0, words[1]["timestamp"][0] if len(words) > 1 else words[0]["timestamp"][1] + 1.0)
+        sel = words[: best[0] + 1]
+        end, nxt = sel[-1]["timestamp"][1], best[1]
+        hop = sr // 100
+        fr = w[: w.size // hop * hop].reshape(-1, hop)
+        db = 20 * np.log10(np.sqrt((fr ** 2).mean(1)) + 1e-9)
+        lo, hi = int(end * 100), min(db.size, int(min(nxt - 0.03, end + 0.6) * 100))
+        live = np.flatnonzero(db[lo:hi] > db.max() - 30)
+        end = (lo + live[-1] + 1) / 100 if live.size else end
+        a, b = max(0, int((start - 0.05) * sr)), min(w.size, int(min(end + 0.2, nxt - 0.02) * sr))
         clip = w[a:b]
         clip = clip / max(1e-6, float(np.abs(clip).max())) * 0.84
         sf.write(f"{OUT}/refs/{name}.wav", clip, sr, subtype="PCM_16")
         refs[name] = {"file": f"refs/{name}.wav", "start_s": round(start, 2), "end_s": round(end, 2),
-                      "text": " ".join(c["text"].strip() for c in sel), "full_chunks": o["chunks"]}
+                      "text": ("".join(c["text"] for c in sel) if mode == "word" else
+                               " ".join(c["text"].strip() for c in sel)).strip(), "ref_mode": mode, "full_chunks": o["chunks"]}
     wlog["refs"] = refs; save()
     json.dump(refs, open(f"{OUT}/refs/refs.json", "w"), indent=1)
     del asr; gc.collect(); torch.cuda.empty_cache()
@@ -189,14 +231,14 @@ elif role == "base_vd":
             p = m.create_voice_clone_prompt(ref_audio=f"{OUT}/{refs[name]['file']}", ref_text=refs[name]["text"])
             run_conditions(m, "clone", [c for c in clone if c["items"][0]["controls"]["ref"] == name], {"_prompt": p})
         wlog["models"]["base"]["peak_vram_gb"] = round(torch.cuda.max_memory_allocated() / 2**30, 2)
-        free(m)
+        del m; gc.collect(); torch.cuda.empty_cache()
     vd = conds_of("vd")
     if vd:
         dt = wlog.get("chosen_dtype", {}).get("base", "fp32")
         m = load("voicedesign", dt)
         run_conditions(m, "vd", vd)
         wlog["models"]["voicedesign"]["peak_vram_gb"] = round(torch.cuda.max_memory_allocated() / 2**30, 2)
-        free(m)
+        del m; gc.collect(); torch.cuda.empty_cache()
     save()
 
 elif role == "fast":
@@ -210,10 +252,34 @@ elif role == "fast":
     torch.cuda.reset_peak_memory_stats()
     sig = inspect.signature(FasterQwen3TTS.from_pretrained)
     wlog["from_pretrained_sig"] = str(sig)
-    t = time.time()
-    m = FasterQwen3TTS.from_pretrained(path)
-    wlog["load_s"] = round(time.time() - t, 1); save()
-    t = time.time(); m.warmup(prefill_len=100); sync(); wlog["warmup_s"] = round(time.time() - t, 1)
+    # T4 has no native bf16 (the library default): fp16 first, kept only if a test sentence is finite, not silent and
+    # not capped; else bf16
+    for fdt in ["fp16", "bf16"]:
+        try:
+            t = time.time()
+            m = FasterQwen3TTS.from_pretrained(path, dtype=DT[fdt])
+            wlog["load_s"] = round(time.time() - t, 1); wlog["dtype"] = fdt; save()
+            t = time.time(); m.warmup(prefill_len=100); sync(); wlog["warmup_s"] = round(time.time() - t, 1)
+            seed(1234); sync(); t0 = time.time()
+            tw, tsr = m.generate_custom_voice(text=PROBE[0], speaker="Serena", language="English",
+                                              max_new_tokens=max_tokens(PROBE[0]))
+            sync()
+            tw = tw[0]
+            tw = tw.detach().float().cpu().numpy() if hasattr(tw, "detach") else np.asarray(tw, dtype=np.float32)
+            ta = tw.size / tsr
+            ok = bool(np.isfinite(tw).all()) and float(np.sqrt(np.mean(tw ** 2))) > 1e-3 and \
+                0.4 < ta and ta * 12.5 < max_tokens(PROBE[0]) - 1
+            wlog.setdefault("dtype_test", {})[fdt] = {"ok": ok, "audio_s": round(ta, 2),
+                                                      "gpu_s": round(time.time() - t0, 2)}
+            save()
+            if ok:
+                break
+            del m; gc.collect(); torch.cuda.empty_cache()
+        except Exception:
+            wlog.setdefault("dtype_test", {})[fdt] = {"ok": False, "error": traceback.format_exc()[-1500:]}
+            save(); gc.collect(); torch.cuda.empty_cache()
+    else:
+        raise RuntimeError("faster-qwen3-tts: no dtype works")
     wlog["generate_custom_voice_sig"] = str(inspect.signature(m.generate_custom_voice)); save()
     for c in conds_of("fast"):
         d = f"{OUT}/raw/{c['label']}/{c['passage']}"
@@ -272,7 +338,7 @@ elif role == "analysis":
             with torch.inference_mode():
                 e = m.model.extract_speaker_embedding(audio=np.ascontiguousarray(w, dtype=np.float32), sr=tsr)
             res[f.replace(OUT + "/", "")]["spk"] = [round(float(x), 5) for x in e.reshape(-1).float().cpu().tolist()]
-        free(m)
+        del m; gc.collect(); torch.cuda.empty_cache()
     except Exception:
         wlog["errors"].append({"stage": "speaker_embedding", "error": traceback.format_exc()[-2000:]})
     tag = sys.argv[5] if len(sys.argv) > 5 else "main"
@@ -302,15 +368,63 @@ def main():
     # faster-qwen3-tts in its own venv (it needs transformers 5); installed on the CPU while the GPUs work
     fast_pip = None
     if any(c["engine"] == "fast" for c in spec["conditions"]):
-        fast_pip = subprocess.Popen("python -m venv --system-site-packages /tmp/fenv && /tmp/fenv/bin/pip install -q "
-                                    + spec["fast_pin"] + " > /tmp/fast_pip.log 2>&1", shell=True)
+        # run 1: `python -m venv` failed in ensurepip on the Kaggle image, so the venv is made without pip and the
+        # system pip installs into it (pip --python), with uv as the fallback
+        pin = spec["fast_pin"]
+        fast_pip = subprocess.Popen(
+            "( python -m venv --without-pip --system-site-packages /tmp/fenv && "
+            f"python -m pip --python /tmp/fenv/bin/python install -q {pin} ) > /tmp/fast_pip.log 2>&1 || "
+            "( echo FALLBACK_UV; pip install -q uv==0.9.7 && rm -rf /tmp/fenv && "
+            f"uv venv --system-site-packages /tmp/fenv && uv pip install --python /tmp/fenv/bin/python {pin} ) "
+            ">> /tmp/fast_pip.log 2>&1", shell=True)
     t = time.time()
     import imageio_ffmpeg
     ff = imageio_ffmpeg.get_ffmpeg_exe()
+    # run 1: the static ffmpeg segfaulted (rc -11) opening the https URLs, so download first, then decode the local file
+    import urllib.request
     for name, r in spec["refs"].items():
-        rc = subprocess.run([ff, "-hide_banner", "-loglevel", "error", "-y", "-ss", str(r["start_s"]), "-t",
-                             str(r["length_s"]), "-i", r["url"], "-ac", "1", "-ar", "24000", f"{OUT}/refs/{name}_full.wav"]).returncode
-        log.setdefault("ref_download", {})[name] = rc
+        src = f"/tmp/ref_{name}.mp3"
+        info = {}
+        for attempt in range(4):
+            try:
+                req = urllib.request.Request(r["url"], headers={"User-Agent": "streams-bakeoff/1.0"})
+                with urllib.request.urlopen(req, timeout=120) as resp, open(src, "wb") as fh:
+                    fh.write(resp.read())
+                info["bytes"] = os.path.getsize(src)
+                break
+            except Exception as e:
+                info["download_error"] = repr(e)[:300]
+                time.sleep(10)
+        p = subprocess.run([ff, "-hide_banner", "-loglevel", "error", "-y", "-ss", str(r["start_s"]), "-t",
+                            str(r["length_s"]), "-i", src, "-ac", "1", "-ar", "24000", f"{OUT}/refs/{name}_full.wav"],
+                           capture_output=True, text=True)
+        info["ffmpeg_rc"] = p.returncode
+        if p.returncode != 0:
+            info["ffmpeg_err"] = p.stderr[-300:]
+            import librosa, soundfile as sf
+            w, _ = librosa.load(src, sr=24000, mono=True, offset=r["start_s"], duration=r["length_s"])
+            sf.write(f"{OUT}/refs/{name}_full.wav", w, 24000, subtype="PCM_16")
+            info["decoder"] = "librosa"
+        log.setdefault("ref_download", {})[name] = info
+    save()
+    # run 2+: earlier raw clips (a tar in an attached dataset) are restored so the analysis stage covers them
+    import glob, tarfile
+    for tf in glob.glob("/kaggle/input/**/prior_raw.tar", recursive=True):
+        with tarfile.open(tf) as t:
+            t.extractall(OUT, filter="data")
+        log.setdefault("prior_raw", []).append(tf)
+    # run 2: Kaggle had unpacked the uploaded tar into a raw/ tree (with macOS ._ files), so the glob above found
+    # nothing and the prior clips were never analysed; copy unpacked trees too, and delete them again at the end
+    import shutil
+    restored = []
+    for rd in glob.glob("/kaggle/input/**/raw", recursive=True):
+        for ld in glob.glob(f"{rd}/qwen_*"):
+            dst = f"{OUT}/raw/{os.path.basename(ld)}"
+            if not os.path.exists(dst):
+                shutil.copytree(ld, dst, ignore=shutil.ignore_patterns("._*"))
+                restored.append(dst)
+    log["prior_restored"] = [os.path.basename(x) for x in restored]
+    skip = set(spec.get("skip_engines", []))
     stage("refs", t)
 
     def launch(role, gpu, *extra):
@@ -327,16 +441,39 @@ def main():
         stage(name, t)
 
     gpu1 = 1 if ngpu > 1 else 0
-    if ngpu > 1:
+    main_labels = sorted({c["label"] for c in spec["conditions"] if c["engine"] != "fast"})
+
+    def finish_fast_pip():
+        log["fast_pip_rc"] = fast_pip.wait()
+        try:
+            log["fast_pip_log"] = open("/tmp/fast_pip.log").read()[-3000:]
+        except OSError as e:
+            log["fast_pip_log"] = repr(e)
+        save()
+
+    if "cv" in skip and ngpu > 1:
+        # cv clips come from the prior run: base_vd on gpu1 while faster-qwen3-tts runs on gpu0
+        pb = launch("base_vd", 1)
+        if fast_pip is not None:
+            finish_fast_pip()
+            wait([("fast", launch("fast", 0))], "fast")
+        wait([("base_vd", pb)], "render_base_vd")
+        fast_labels = sorted({c["label"] for c in spec["conditions"] if c["engine"] == "fast"})
+        pa = launch("analysis", 1, ",".join(main_labels), "main")
+        if fast_labels:
+            wait([("analysis_fast", launch("analysis", 0, ",".join(fast_labels), "fast"))], "analysis_fast")
+        wait([("analysis", pa)], "analysis_main")
+        fast_pip = None
+        main_labels = None
+    elif ngpu > 1:
         wait([("cv", launch("cv", 0)), ("base_vd", launch("base_vd", 1))], "render")
     else:
         wait([("cv", launch("cv", 0))], "render_cv")
         wait([("base_vd", launch("base_vd", 0))], "render_base_vd")
-    main_labels = sorted({c["label"] for c in spec["conditions"] if c["engine"] != "fast"})
-    if fast_pip is not None:
-        log["fast_pip_rc"] = fast_pip.wait()
-        log["fast_pip_log"] = open("/tmp/fast_pip.log").read()[-3000:]
-        save()
+    if main_labels is None:
+        pass
+    elif fast_pip is not None:
+        finish_fast_pip()
         if ngpu > 1:
             pa = launch("analysis", gpu1, ",".join(main_labels), "main")
             wait([("fast", launch("fast", 0))], "fast")
@@ -353,6 +490,8 @@ def main():
             log.setdefault("worker_tail", {})[role] = open(f"/tmp/{role}.log").read()[-4000:]
         except OSError:
             pass
+    for dst in restored:  # prior clips are local already; keep the output download small
+        shutil.rmtree(dst, ignore_errors=True)
     save()
 
 

@@ -1,0 +1,615 @@
+{
+ "itts25_heart_directed": {
+  "wer": 0.0226,
+  "syl_per_s": 3.7,
+  "hnr_db": 14.26,
+  "f0_jumps_per_min": 3.41,
+  "long_gaps": 0,
+  "audio_s": 163.9,
+  "hf_ratio_db": -23.27,
+  "worst": [
+   {
+    "clip": "3-reflective/06.webm",
+    "errors": 3,
+    "words": 16,
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I watched the window turn from black to gray and from gray to the faintest blue."
+   },
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 2,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry."
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it, not properly."
+   },
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 1,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "to"
+   }
+  ]
+ },
+ "itts25_heart_directed_dp": {
+  "wer": 0.0226,
+  "syl_per_s": 3.7,
+  "hnr_db": 14.26,
+  "f0_jumps_per_min": 3.41,
+  "long_gaps": 0,
+  "audio_s": 170.7,
+  "hf_ratio_db": -22.72,
+  "worst": [
+   {
+    "clip": "3-reflective/06.webm",
+    "errors": 3,
+    "words": 16,
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I watched the window turn from black to gray and from gray to the faintest blue."
+   },
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 2,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry."
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it, not properly."
+   },
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 1,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "to"
+   }
+  ]
+ },
+ "itts25_heart_emotext": {
+  "wer": 0.0226,
+  "syl_per_s": 4.1,
+  "hnr_db": 15.32,
+  "f0_jumps_per_min": 2.16,
+  "long_gaps": 0,
+  "audio_s": 144.4,
+  "hf_ratio_db": -23.49,
+  "worst": [
+   {
+    "clip": "3-reflective/06.webm",
+    "errors": 3,
+    "words": 16,
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I watched the window turn from black to gray and from gray to the faintest blue."
+   },
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 2,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry."
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure. I can explain it. Not properly."
+   },
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 1,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "to"
+   }
+  ]
+ },
+ "itts25_heart_plain": {
+  "wer": 0.0169,
+  "syl_per_s": 4.66,
+  "hnr_db": 13.63,
+  "f0_jumps_per_min": 1.23,
+  "long_gaps": 0,
+  "audio_s": 125.3,
+  "hf_ratio_db": -23.13,
+  "worst": [
+   {
+    "clip": "2-dialogue/03.webm",
+    "errors": 4,
+    "words": 19,
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "asr": "He looked down at the floor. I know. I am sorry. I am not sure I can explain it, not properly."
+   },
+   {
+    "clip": "3-reflective/01.webm",
+    "errors": 2,
+    "words": 43,
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to gray and from gray to the faintest blue."
+   }
+  ]
+ },
+ "itts25_heart_plain_sent": {
+  "wer": 0.0198,
+  "syl_per_s": 3.83,
+  "hnr_db": 14.0,
+  "f0_jumps_per_min": 3.53,
+  "long_gaps": 0,
+  "audio_s": 157.6,
+  "hf_ratio_db": -23.48,
+  "worst": [
+   {
+    "clip": "3-reflective/06.webm",
+    "errors": 3,
+    "words": 16,
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I watched the window turn from black to gray and from gray to the faintest blue."
+   },
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 2,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry."
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it, not properly."
+   }
+  ]
+ },
+ "itts25_lvf_directed": {
+  "wer": 0.0169,
+  "syl_per_s": 3.81,
+  "hnr_db": 13.27,
+  "f0_jumps_per_min": 13.57,
+  "long_gaps": 0,
+  "audio_s": 170.4,
+  "hf_ratio_db": -37.28,
+  "worst": [
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it. Not properly."
+   },
+   {
+    "clip": "2-dialogue/07.webm",
+    "errors": 1,
+    "words": 9,
+    "text": "I waited up until two in the morning, Tom.",
+    "asr": "I WAITED UP UNTIL TWO IN THE MORNING! HAHA"
+   },
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 1,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "too!"
+   },
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 1,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I... I'm sorry."
+   },
+   {
+    "clip": "3-reflective/09.webm",
+    "errors": 1,
+    "words": 2,
+    "text": "They wait.",
+    "asr": "They wait, too."
+   }
+  ]
+ },
+ "itts25_lvf_directed_dp": {
+  "wer": 0.0169,
+  "syl_per_s": 3.8,
+  "hnr_db": 13.27,
+  "f0_jumps_per_min": 13.54,
+  "long_gaps": 0,
+  "audio_s": 177.1,
+  "hf_ratio_db": -36.43,
+  "worst": [
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it. Not properly."
+   },
+   {
+    "clip": "2-dialogue/07.webm",
+    "errors": 1,
+    "words": 9,
+    "text": "I waited up until two in the morning, Tom.",
+    "asr": "I WAITED UP UNTIL TWO IN THE MORNING! HAHA"
+   },
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 1,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "too!"
+   },
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 1,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I... I'm sorry."
+   },
+   {
+    "clip": "3-reflective/09.webm",
+    "errors": 1,
+    "words": 2,
+    "text": "They wait.",
+    "asr": "They wait, too."
+   }
+  ]
+ },
+ "itts25_lvf_emotext": {
+  "wer": 0.0254,
+  "syl_per_s": 3.49,
+  "hnr_db": 14.39,
+  "f0_jumps_per_min": 12.44,
+  "long_gaps": 0,
+  "audio_s": 186.3,
+  "hf_ratio_db": -37.94,
+  "worst": [
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 2,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry."
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it. Not properly."
+   },
+   {
+    "clip": "3-reflective/06.webm",
+    "errors": 2,
+    "words": 16,
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I watch the window turn from black to gray and from gray to the faintest blue"
+   },
+   {
+    "clip": "2-dialogue/06.webm",
+    "errors": 1,
+    "words": 8,
+    "text": "\"Don't you dare make a joke of this!",
+    "asr": "taught you dare make a joke of this"
+   },
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 1,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "too"
+   },
+   {
+    "clip": "3-reflective/01.webm",
+    "errors": 1,
+    "words": 12,
+    "text": "The house still ticks, and the wind still moves in the chimney.",
+    "asr": "The house still ticks, and the wand still moves in the chimney."
+   }
+  ]
+ },
+ "itts25_lvf_plain": {
+  "wer": 0.0282,
+  "syl_per_s": 4.93,
+  "hnr_db": 12.05,
+  "f0_jumps_per_min": 13.64,
+  "long_gaps": 0,
+  "audio_s": 122.0,
+  "hf_ratio_db": -38.94,
+  "worst": [
+   {
+    "clip": "2-dialogue/03.webm",
+    "errors": 4,
+    "words": 19,
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "asr": "He looked down at the floor. I know. I am sorry. I am not sure I can explain it. Not properly."
+   },
+   {
+    "clip": "2-dialogue/05.webm",
+    "errors": 4,
+    "words": 35,
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "asr": "I think,\" he began, and stopped, he glanced at the window, \"'I think someone has been following me for a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know any more.'\""
+   },
+   {
+    "clip": "3-reflective/01.webm",
+    "errors": 2,
+    "words": 43,
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to gray, and from gray to the faintest blue."
+   }
+  ]
+ },
+ "itts25_lvf_plain_sent": {
+  "wer": 0.0254,
+  "syl_per_s": 3.99,
+  "hnr_db": 12.43,
+  "f0_jumps_per_min": 10.53,
+  "long_gaps": 0,
+  "audio_s": 162.3,
+  "hf_ratio_db": -37.98,
+  "worst": [
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 3,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry. Sorry!"
+   },
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 2,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "2. W. Knapsen"
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it. Not properly."
+   },
+   {
+    "clip": "1-suspense/06.webm",
+    "errors": 1,
+    "words": 2,
+    "text": "Then another.",
+    "asr": "Then another sim."
+   },
+   {
+    "clip": "3-reflective/09.webm",
+    "errors": 1,
+    "words": 2,
+    "text": "They wait.",
+    "asr": "They wait, too."
+   }
+  ]
+ },
+ "itts25_lvm_directed": {
+  "wer": 0.0226,
+  "syl_per_s": 2.77,
+  "hnr_db": 9.72,
+  "f0_jumps_per_min": 2.19,
+  "long_gaps": 3,
+  "audio_s": 240.1,
+  "hf_ratio_db": -26.88,
+  "worst": [
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 2,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry."
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it. Not properly."
+   },
+   {
+    "clip": "3-reflective/06.webm",
+    "errors": 2,
+    "words": 16,
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I watch the window turn from black to gray, and from gray to the faintest blue."
+   },
+   {
+    "clip": "1-suspense/05.webm",
+    "errors": 1,
+    "words": 10,
+    "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "asr": "Somewhere beneath him on the iron stairs, a step creek."
+   },
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 1,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "to"
+   }
+  ]
+ },
+ "itts25_lvm_directed_dp": {
+  "wer": 0.0226,
+  "syl_per_s": 2.77,
+  "hnr_db": 9.72,
+  "f0_jumps_per_min": 2.19,
+  "long_gaps": 3,
+  "audio_s": 246.8,
+  "hf_ratio_db": -26.77,
+  "worst": [
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 2,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry."
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it. Not properly."
+   },
+   {
+    "clip": "3-reflective/06.webm",
+    "errors": 2,
+    "words": 16,
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I watch the window turn from black to gray, and from gray to the faintest blue."
+   },
+   {
+    "clip": "1-suspense/05.webm",
+    "errors": 1,
+    "words": 10,
+    "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "asr": "Somewhere beneath him on the iron stairs, a step creek."
+   },
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 1,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "to"
+   }
+  ]
+ },
+ "itts25_lvm_emotext": {
+  "wer": 0.0198,
+  "syl_per_s": 2.78,
+  "hnr_db": 10.95,
+  "f0_jumps_per_min": 8.07,
+  "long_gaps": 4,
+  "audio_s": 233.6,
+  "hf_ratio_db": -31.03,
+  "worst": [
+   {
+    "clip": "3-reflective/06.webm",
+    "errors": 3,
+    "words": 16,
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I watched the window turn from black to gray and from gray to the faintest blue."
+   },
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 2,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry."
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it. Not properly."
+   }
+  ]
+ },
+ "itts25_lvm_plain": {
+  "wer": 0.0367,
+  "syl_per_s": 3.62,
+  "hnr_db": 10.21,
+  "f0_jumps_per_min": 0.48,
+  "long_gaps": 4,
+  "audio_s": 172.8,
+  "hf_ratio_db": -28.65,
+  "worst": [
+   {
+    "clip": "2-dialogue/03.webm",
+    "errors": 4,
+    "words": 19,
+    "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+    "asr": "He looked down at the floor. I know, I am sorry. I am not sure I can explain it, not properly."
+   },
+   {
+    "clip": "3-reflective/01.webm",
+    "errors": 3,
+    "words": 43,
+    "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I used to fill that hour I read, I wrote letters. I made long lists of everything I meant to do now. More often I simply sit. I watched the window turn from black to gray and from gray to the faintest blue."
+   },
+   {
+    "clip": "1-suspense/00.webm",
+    "errors": 2,
+    "words": 56,
+    "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+    "asr": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp-room. He wound the clock, trimmed the wick, and sat down by the wick-end with his pipe."
+   },
+   {
+    "clip": "2-dialogue/05.webm",
+    "errors": 2,
+    "words": 35,
+    "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+    "asr": "I think,\" he began, and stopped. He glanced at the window. I think someone has been following me for a week, perhaps longer, or perhaps I've imagined the whole thing. I honestly don't know any more."
+   },
+   {
+    "clip": "3-reflective/00.webm",
+    "errors": 2,
+    "words": 41,
+    "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun.",
+    "asr": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still dicks, and the wind still moves in the chimney. the mind is quiet, because the day's arguments have not yet begun."
+   }
+  ]
+ },
+ "itts25_lvm_plain_sent": {
+  "wer": 0.0254,
+  "syl_per_s": 2.65,
+  "hnr_db": 10.39,
+  "f0_jumps_per_min": 3.14,
+  "long_gaps": 0,
+  "audio_s": 244.6,
+  "hf_ratio_db": -27.64,
+  "worst": [
+   {
+    "clip": "2-dialogue/08.webm",
+    "errors": 2,
+    "words": 1,
+    "text": "Two!\"",
+    "asr": "to sim"
+   },
+   {
+    "clip": "2-dialogue/11.webm",
+    "errors": 2,
+    "words": 2,
+    "text": "I'm sorry.",
+    "asr": "I am sorry."
+   },
+   {
+    "clip": "2-dialogue/12.webm",
+    "errors": 2,
+    "words": 9,
+    "text": "I'm not sure I can explain it, not properly.\"",
+    "asr": "I am not sure I can explain it. Not properly."
+   },
+   {
+    "clip": "3-reflective/06.webm",
+    "errors": 2,
+    "words": 16,
+    "text": "I watch the window turn from black to grey, and from grey to the faintest blue.",
+    "asr": "I watch the window turn from black to gray, and from gray to the faintest blue."
+   },
+   {
+    "clip": "1-suspense/05.webm",
+    "errors": 1,
+    "words": 10,
+    "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+    "asr": "Somewhere beneath him on the iron stairs, a step creak."
+   }
+  ]
+ }
+}
