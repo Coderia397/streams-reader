@@ -1,0 +1,153 @@
+# Explore shelves: hand-curated Standard Ebooks titles (CC0, U.S. public domain). Read by tools/catalog/build.py.
+#
+# `repo` is the GitHub repo under github.com/standardebooks. `year` is the first publication (negative = BCE);
+# `year_approx = true` when only the era is known. `died` (required) is the death year of the last-surviving person whose
+# work is in this edition: author, translator, illustrator or introduction writer; `died_approx = true` marks an upper
+# bound. Under life + 70 a title is served worldwide from year died + 71; before that it is U.S. public domain only and
+# the index marks it `region = "us"` (served to U.S. requests only). Every repo appears on exactly one shelf. Keep any
+# single book under about 2.5 million characters (the catalogue budget is 150 MB on R2); re-run the build after editing.
+
+version = 1
+
+[[shelf]]
+id = "classics"
+title = "The great classics"
+blurb = "The novels everyone means to read, ready to hear."
+books = [
+  { repo = "jane-austen_pride-and-prejudice", year = 1813, died = 1817 },
+  { repo = "charlotte-bronte_jane-eyre", year = 1847, died = 1855 },
+  { repo = "emily-bronte_wuthering-heights", year = 1847, died = 1848 },
+  { repo = "fyodor-dostoevsky_crime-and-punishment_constance-garnett", year = 1866, died = 1946 },
+  { repo = "herman-melville_moby-dick", year = 1851, died = 1891 },
+  { repo = "f-scott-fitzgerald_the-great-gatsby", year = 1925, died = 1940 },
+]
+
+[[shelf]]
+id = "adventure"
+title = "Sea and adventure"
+blurb = "Treasure maps, duels, balloons and the open road."
+books = [
+  { repo = "robert-louis-stevenson_treasure-island", year = 1883, died = 1894 },
+  { repo = "alexandre-dumas_the-three-musketeers_william-robson", year = 1844, died = 1870 },
+  { repo = "jules-verne_around-the-world-in-eighty-days_george-makepeace-towle", year = 1872, died = 1905 },
+  { repo = "jack-london_the-call-of-the-wild", year = 1903, died = 1916 },
+  { repo = "h-rider-haggard_king-solomons-mines", year = 1885, died = 1925 },
+  { repo = "anthony-hope_the-prisoner-of-zenda", year = 1894, died = 1933 },
+]
+
+[[shelf]]
+id = "mystery"
+title = "Mysteries and detectives"
+blurb = "Locked rooms, hounds on the moor and the first great sleuths."
+books = [
+  { repo = "arthur-conan-doyle_the-adventures-of-sherlock-holmes", year = 1892, died = 1930 },
+  { repo = "arthur-conan-doyle_the-hound-of-the-baskervilles", year = 1902, died = 1930 },
+  { repo = "agatha-christie_the-mysterious-affair-at-styles", year = 1920, died = 1976 },
+  { repo = "wilkie-collins_the-moonstone", year = 1868, died = 1889 },
+  { repo = "g-k-chesterton_the-innocence-of-father-brown", year = 1911, died = 1936 },
+  { repo = "john-buchan_the-thirty-nine-steps", year = 1915, died = 1940 },
+]
+
+[[shelf]]
+id = "romance"
+title = "Love and society"
+blurb = "Second chances, sharp tongues and hearts at odds with manners."
+books = [
+  { repo = "jane-austen_persuasion", year = 1817, died = 1817 },
+  { repo = "elizabeth-gaskell_north-and-south", year = 1855, died = 1865 },
+  { repo = "e-m-forster_a-room-with-a-view", year = 1908, died = 1970 },
+  { repo = "edith-wharton_the-age-of-innocence", year = 1920, died = 1937 },
+  { repo = "l-m-montgomery_the-blue-castle", year = 1926, died = 1942 },
+  { repo = "thomas-hardy_far-from-the-madding-crowd", year = 1874, died = 1928 },
+]
+
+[[shelf]]
+id = "science-fiction"
+title = "Early science fiction"
+blurb = "Where the genre began: time machines, Martians and the first dystopia."
+books = [
+  { repo = "mary-shelley_frankenstein", year = 1818, died = 1851 },
+  { repo = "h-g-wells_the-time-machine", year = 1895, died = 1946 },
+  { repo = "h-g-wells_the-war-of-the-worlds", year = 1898, died = 1946 },
+  { repo = "jules-verne_journey-to-the-center-of-the-earth_f-a-malleson", year = 1864, died = 1905 },
+  { repo = "edwin-a-abbott_flatland", year = 1884, died = 1926 },
+  { repo = "edgar-rice-burroughs_a-princess-of-mars", year = 1912, died = 1950 },
+  { repo = "yevgeny-zamyatin_we_gregory-zilboorg", year = 1924, died = 1959 },
+]
+
+[[shelf]]
+id = "philosophy"
+title = "Ideas that last"
+blurb = "Short books of big thinking, from Stoic notebooks to the art of war."
+books = [
+  { repo = "marcus-aurelius_meditations_george-long", year = 180, year_approx = true, died = 1879 },
+  { repo = "laozi_tao-te-ching_james-legge", year = -400, year_approx = true, died = 1897 },
+  { repo = "sun-tzu_the-art-of-war_lionel-giles", year = -500, year_approx = true, died = 1958 },
+  { repo = "niccolo-machiavelli_the-prince_w-k-marriott", year = 1532, died = 1927 },
+  { repo = "john-stuart-mill_on-liberty", year = 1859, died = 1873 },
+  { repo = "bertrand-russell_the-problems-of-philosophy", year = 1912, died = 1970 },
+]
+
+[[shelf]]
+id = "poetry"
+title = "Poems to hear"
+blurb = "Verse was written for the ear. Here it is read aloud."
+books = [
+  { repo = "john-keats_poetry", year = 1821, year_approx = true, died = 1821 },
+  { repo = "edgar-allan-poe_poetry", year = 1849, year_approx = true, died = 1849 },
+  { repo = "w-b-yeats_poetry", year = 1928, year_approx = true, died = 1939 },
+  { repo = "t-s-eliot_poetry", year = 1922, year_approx = true, died = 1965 },
+  { repo = "rabindranath-tagore_gitanjali", year = 1912, died = 1941 },
+  { repo = "kahlil-gibran_the-prophet", year = 1923, died = 1931 },
+]
+
+[[shelf]]
+id = "short-stories"
+title = "Short stories"
+blurb = "Finish one before your coffee goes cold."
+books = [
+  { repo = "edgar-allan-poe_short-fiction", year = 1845, year_approx = true, died = 1849 },
+  { repo = "robert-louis-stevenson_the-strange-case-of-dr-jekyll-and-mr-hyde", year = 1886, died = 1894 },
+  { repo = "james-joyce_dubliners", year = 1914, died = 1941 },
+  { repo = "henry-james_the-turn-of-the-screw", year = 1898, died = 1916 },
+  { repo = "m-r-james_short-fiction", year = 1911, year_approx = true, died = 1936 },
+  { repo = "kate-chopin_short-fiction", year = 1897, year_approx = true, died = 1904 },
+]
+
+[[shelf]]
+id = "children"
+title = "For younger listeners"
+blurb = "Bedtime classics that grown-ups enjoy just as much."
+books = [
+  { repo = "lewis-carroll_alices-adventures-in-wonderland_john-tenniel", year = 1865, died = 1914 },
+  { repo = "kenneth-grahame_the-wind-in-the-willows", year = 1908, died = 1932 },
+  { repo = "l-frank-baum_the-wonderful-wizard-of-oz", year = 1900, died = 1919 },
+  { repo = "j-m-barrie_peter-and-wendy", year = 1911, died = 1937 },
+  { repo = "frances-hodgson-burnett_the-secret-garden", year = 1911, died = 1924 },
+  { repo = "rudyard-kipling_the-jungle-book", year = 1894, died = 1936 },
+]
+
+[[shelf]]
+id = "history"
+title = "History and lives"
+blurb = "Memoirs, expeditions and eyewitness accounts."
+books = [
+  { repo = "frederick-douglass_narrative-of-the-life-of-frederick-douglass", year = 1845, died = 1895 },
+  { repo = "booker-t-washington_up-from-slavery", year = 1901, died = 1915 },
+  { repo = "benjamin-franklin_the-autobiography-of-benjamin-franklin", year = 1791, died = 1790 },
+  { repo = "lytton-strachey_eminent-victorians", year = 1918, died = 1932 },
+  { repo = "apsley-cherry-garrard_the-worst-journey-in-the-world", year = 1922, died = 1959 },
+  { repo = "julius-caesar_commentaries-on-the-gallic-war_w-a-mcdevitte_w-s-bohn", year = -50, year_approx = true, died = 1900, died_approx = true },
+]
+
+[[shelf]]
+id = "essays"
+title = "Essays and arguments"
+blurb = "Voices that argued for a freer, plainer, fairer life."
+books = [
+  { repo = "henry-david-thoreau_walden", year = 1854, died = 1862 },
+  { repo = "mary-wollstonecraft_a-vindication-of-the-rights-of-woman", year = 1792, died = 1797 },
+  { repo = "w-e-b-du-bois_the-souls-of-black-folk", year = 1903, died = 1963 },
+  { repo = "g-k-chesterton_orthodoxy", year = 1908, died = 1936 },
+  { repo = "ralph-waldo-emerson_essays", year = 1841, year_approx = true, died = 1882 },
+]

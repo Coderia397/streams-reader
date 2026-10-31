@@ -1,0 +1,27 @@
+# Converts EPUB files into the app's DocumentBody JSON with the exact importer the web app runs (nolabs-import), so
+# catalogue bodies match what a user would get by importing the same EPUB. Its own workspace keeps it out of the
+# root build; build with CARGO_TARGET_DIR pointing at the root `target/` to reuse compiled dependencies.
+[package]
+name = "epub2body"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[dependencies]
+nolabs-core = { path = "../../../crates/core" }
+nolabs-import = { path = "../../../crates/import" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+hex = "0.4"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "warn"
+panic = "warn"
