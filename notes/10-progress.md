@@ -4,6 +4,18 @@ Progress log, newest first. Each entry: done, blocked, next.
 
 ## 2026-10-31
 
+### Explore catalogue pipeline (see note 23-explore-catalog)
+- Done:
+  - `tools/catalog/` contains `build.py` (uv), `secat/`, the Rust `epub2body` around `nolabs_import::from_epub`, `shelves.toml` and the tests (17 pass, 1 strict xfail).
+  - 66 Standard Ebooks titles on 11 shelves were built and uploaded to R2 `nolabs-media/catalog/v1/`: 397 objects, 38.7 MB, checked by reading them back.
+  - `supabase/migrations/0005_catalog.sql` adds `documents.catalog_id`. It is written but not applied.
+- Blocked: nothing.
+- Next (other owners):
+  - Worker: `GET /api/catalog[/…]` and `POST /api/documents/{id}/from-catalog`.
+  - Web app: the Explore screen.
+  - Apply 0005.
+  - Fix the importer's creator-role bug (several roles per creator, so the author is lost).
+
 ### Expressiveness harness and Kokoro baseline
 - Done: `tools/expressiveness/` (passages, app-segmenter bin, render.py, fetch_human.py, prosody.py, calibration.json, results/baseline.{json,md}); 4 Kokoro voices x 3 passages rendered via the live API, two flat controls, three LibriVox ceiling clips; EI defined and validated (monotone -0.86 < Kokoro -0.49..0.32 < human 0.89). See note 20.
 - Blocked: nothing. No ZeroGPU spent.
@@ -15,6 +27,7 @@ Progress log, newest first. Each entry: done, blocked, next.
 - Blocked: GitHub release page for v0.1.0 — both the env token and gh's stored login are fine-grained tokens without Contents: write (HTTP 403 on POST /releases). Unblock: owner adds Contents read/write to the token.
 - Film v1.1 done 01:30 (Ming voice-over: 38/280 GPU-s, 1/3 runs used; rig QA 8 passes, 0 metric issues; outputs local in media/dist). Open bug reported by the film agent: once in the app capture, after a chapter heading the first paragraph was skipped in audio and highlight — reproduce in the live find-fix loop after deploy (check segmenter heading boundary + player first-segment append).
 - Domain: reader.streams.watch attached 01:25 via `cargo xtask domain`; Google sign-in live (D34).
+- Agent admin 01:35: paused workflow motion-and-film-v2 (run wf_80ae0c27-54b: product motion reel + Blender film v2) to free Kaggle GPU sessions for the expressive bake-off and save usage; film v1.1 already ships. Resume later with Workflow scriptPath workflows/scripts/motion-and-film-v2-wf_80ae0c27-54b.js + resumeFromRunId wf_80ae0c27-54b. Kept: app-complete, landing-v2, player loop, expressiveness study, bake-off (wf_e6f34261-3b1), parallel tracks.
 - Safety net: hourly self check-in (session cron, :13 past each hour) resumes anything stopped by a usage limit.
 - Next: when app-complete lands → D1 migrate 0002, deploy secrets, build, deploy, smoke, Pixel test, live find-fix loop; then landing v2, Blender film v2, native apps builds in CI.
 
