@@ -12,6 +12,14 @@ These claims below are superseded by 26:
 - "an unacknowledged lease can be claimed again" (only after 30 s): the tab holding the lease may now re-claim at once, so a reload inside the lease receives the page. Work order step 7 changes accordingly.
 - Measurements table: e2e is now 42 checks, browser unit tests 37, packaging tests 17, zip 24,565 bytes.
 
+## 2026-10-31 (owner request): proactive "Listen" suggestion
+- Seen by the owner in ElevenReader's extension (screenshot, 2026-10-31): when text is selected on a page, a small card appears top-right: the product mark, "Listen with ElevenReader", a one-line preview of the selection, and an "Import" button. It appears on its own, without opening the toolbar menu.
+- Status: open, to build. Plan (assumed design, not built):
+  - Trigger: a selection of at least about 80 characters, or an article page detected by the existing extractor; never on inputs, editors or sites the user turned it off for; at most once per page unless dismissed and reselected.
+  - Card: Streams Reader mark, "Listen in Streams Reader", the selection preview, a Listen button (opens the app with the existing handoff) and a close button; auto-hides after a few seconds without hover; respects reduced motion; RTL aware; 8 languages.
+  - Permissions: showing it on any site needs a content script on all sites, which Chrome warns about ("read and change all your data"). Keep the install minimal: ship it as an opt-in setting that asks for optional_host_permissions at runtime, plus a per-site "don't suggest here" switch.
+  - Privacy: the selection stays in the page until the user presses Listen; nothing is sent before that.
+
 ## 2026-10-31
 
 ### What exists (verified)
