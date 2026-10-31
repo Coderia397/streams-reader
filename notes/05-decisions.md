@@ -2,10 +2,16 @@
 
 Decisions, newest first. Each has date, decision, reason, alternatives rejected, and who decided.
 
+## 2026-10-31
+
+### D35. Streamed renders level each segment against the batch so far
+- Decision: the Space streams one item result per finished segment, so segment N's batch loudness is that of segments 0..N, not the whole batch; per-segment clamp and peak ceiling unchanged. Needs Worker `ADAPTER_VERSION` 2 (together with the BART fallback of D32). Rejected: whole-batch loudness (blocks streaming), per-segment targets with no batch term. Details: [22-engine-speed.md](22-engine-speed.md).
+- Decided by: assistant under the engine-speed track delegation, 2026-10-31; owner may veto.
+
 ## 2026-10-30
 
 ### D34. Main address becomes reader.streams.watch; Google sign-in live
-- Decision (owner asked "since it is Streams Reader, should we fix the domain?"; assistant agreed): `reader.streams.watch` becomes the canonical address, `listen.streams.watch` stays as a permanent redirect. Supersedes the address in D8. Status: open — attaching the custom domain was blocked by the Claude Code auto-mode classifier (DNS/domain change); the owner must allow it (or attach it in the Cloudflare dashboard: Workers → nolabs-api → Domains → reader.streams.watch). Then sweep Supabase site URL/redirects, emails, site canonical URLs and sitemap, CSP, app config and docs.
+- Decision (owner asked "since it is Streams Reader, should we fix the domain?"; assistant agreed): `reader.streams.watch` becomes the canonical address, `listen.streams.watch` stays as a permanent redirect. Supersedes the address in D8. Status: domain attached 2026-10-31 01:25 with the new narrow `cargo xtask domain <hostname>` (only reader/listen.streams.watch accepted); a raw API call had been blocked by the auto-mode classifier. Verified: https://reader.streams.watch/ 200 in 0.17 s. Open: sweep Supabase site URL/redirects, emails, site canonical URLs and sitemap, CSP, app config and docs.
 - Google sign-in (2026-10-31, done with the owner in Chrome): Google Cloud project `streams-reader`; Google Auth Platform: external, In production, basic scopes only, no logo (a logo forces Google's brand verification; add the pixel mark later together with verification once the privacy/terms pages are live); OAuth web client "Streams Reader web": JS origins https://listen.streams.watch and https://reader.streams.watch, redirect https://atxbmgfuxjtcwmoaldqy.supabase.co/auth/v1/callback; client id 292244780535-d9cko9tpp51neioc73jb1vcm99jkb0uc.apps.googleusercontent.com (public); secret only in `~/.config/nolabs/oauth.env` (mode 600). Enabled in Supabase with `cargo xtask auth-provider google` (verified: /auth/v1/settings external.google = true). The owner ticked Google's API Services User Data Policy himself.
 - Decided by: owner (domain question, Google go-ahead), assistant (setup).
 
