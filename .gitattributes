@@ -1,0 +1,15 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webm binary
+*.ogg binary
+*.woff2 binary
+*.ico binary
+*.icns binary
+*.fst binary
+# Vendored third-party code is not counted in the language stats.
+media/scene/vendor/** linguist-vendored
+crates/web/assets/vendor/** linguist-vendored
+space/vendor/** linguist-vendored
+# Generated design tokens and exports.
+brand/dist/** linguist-generated
