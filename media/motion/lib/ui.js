@@ -72,28 +72,39 @@ export function phoneReader(S) {
   </div>`;
 }
 
-export function phoneLibrary(S) {
+// Library page body, shared by phone and laptop (pages/library/{mod,hero,row}.rs)
+function libraryBody(S) {
   const [first, ...rest] = S.library;
   const kind = { book: "book-2-line", article: "article-line", pdf: "file-pdf-2-line", text: "file-text-line" };
-  return `<div class="view library"><div class="page">
-    <div class="page-head"><span class="brandline">${markSVG(1.5)}${wordmark(17)}</span>
-      <span style="display:flex;gap:4px"><span class="icon-btn">${icon("search-line")}</span>
-      <span class="icon-btn" style="background:var(--color-brand);color:#fff">${icon("add-line")}</span></span></div>
-    <div class="page-title">${esc(S.ui.library)}</div>
+  return `<div class="page-head"><div class="page-title">${esc(S.ui.library)}</div>
+      <span class="page-head__actions"><span class="icon-btn">${icon("search-line")}</span>
+      <span class="icon-btn icon-btn--primary">${icon("add-line")}</span></span></div>
     <div class="hero"><div class="hero__top">${cover(first, "l")}<div class="hero__text">
       <span class="overline">${esc(S.ui.continue)}</span><span class="hero__title">${esc(first.title)}</span>
       <span class="hero__author">${esc(first.author)}</span><span class="hero__meta">${esc(first.meta)}</span></div></div>
       <div class="hero__foot"><div class="progress"><span class="progress__fill" style="width:${first.pct}%"></span></div>
-      <span class="play-btn play-btn--small">${icon("play-large-fill")}</span></div></div>
+      <span class="play-btn play-btn--small">${icon("pause-large-fill")}</span></div></div>
     <div class="list-head overline">${esc(S.ui.all)}</div>
     <ul class="doc-list">${rest.map((d) => `<li class="doc-row" data-row>${cover(d, "s")}<span class="doc-row__body">
       <span class="doc-row__title">${esc(d.title)}</span>
       <span class="doc-row__meta">${icon(kind[d.kind] || "file-text-line")}<span>${esc(d.meta)}</span></span>
       <span class="progress progress--thin"><span class="progress__fill" style="width:${d.pct}%"></span></span></span>
-      <span class="icon-btn">${icon("more-2-fill")}</span></li>`).join("")}</ul>
-    </div>
+      <span class="icon-btn">${icon("more-2-fill")}</span></li>`).join("")}</ul>`;
+}
+
+// floating mini player (components/mini.rs): cover, title, chapter and voice, play state, thin progress line
+function mini(S) {
+  return `<div class="mini">${cover(S.library[0], "xs")}<span class="mini__text"><b>${esc(S.library[0].title)}</b>
+    <span>${esc(S.doc.chapter)} · <span class="mini-voice">${esc(S.voices[1].name)}</span></span></span>
+    <span class="eq">${"<i></i>".repeat(3)}</span>
+    <span class="icon-btn mini__play">${icon("pause-large-fill")}</span><span class="mini__line"></span></div>`;
+}
+
+export function phoneLibrary(S) {
+  return `<div class="view library"><div class="page">${libraryBody(S)}</div>
+    <div class="chrome">${mini(S)}
     <div class="tabbar"><span class="tab is-on">${icon("book-shelf-line")}${esc(S.ui.library)}</span>
-      <span class="tab">${icon("user-voice-line")}${esc(S.ui.voices)}</span><span class="tab">${icon("settings-4-line")}${esc(S.ui.settings)}</span></div>
+      <span class="tab">${icon("user-voice-line")}${esc(S.ui.voices)}</span><span class="tab">${icon("settings-4-line")}${esc(S.ui.settings)}</span></div></div>
   </div>`;
 }
 
@@ -146,23 +157,14 @@ export function controlSheet(S) {
     </div></div></div>`;
 }
 
+// wide layout (base/_layout.scss, components/_tabbar.scss): the tab bar becomes a rail with the mark on top,
+// the page keeps its 760 px column, the mini player floats at the bottom of the main area
 export function laptopLibrary(S) {
-  return `<div class="desk"><div class="desk__side"><span class="brandline">${markSVG(1.75)}${wordmark(19)}</span>
-      <div class="desk__nav"><div class="is-on">${icon("book-shelf-line")}${esc(S.ui.library)}</div>
-      <div>${icon("user-voice-line")}${esc(S.ui.voices)}</div><div>${icon("settings-4-line")}${esc(S.ui.settings)}</div></div></div>
-    <div class="desk__main"><div class="page-head" style="height:44px"><span></span>
-      <span style="display:flex;gap:10px"><span class="icon-btn" style="background:var(--color-surface-2)">${icon("search-line")}</span>
-      <span class="btn btn--primary">${icon("add-line")}${esc(S.ui.add)}</span></span></div>
-      <div class="page-title">${esc(S.ui.library)}</div>
-      <div class="overline" style="margin-bottom:14px">${esc(S.ui.continue)}</div>
-      <div class="desk__grid">${S.library.slice(0, 4).map((d) => `<div class="desk__card" data-card>${cover(d, "s")}
-        <b>${esc(d.title)}</b><span>${esc(d.author || d.meta)}</span>
-        <span class="progress progress--thin"><span class="progress__fill" style="width:${d.pct}%"></span></span></div>`).join("")}</div>
-    </div>
-    <div class="mini">${cover(S.library[0], "xs")}<span class="t" style="flex:1"><b>${esc(S.library[0].title)}</b><span>${esc(S.doc.chapter)} · ${esc(S.voices[1].name)}</span></span>
-      <span class="icon-btn">${icon("replay-15-line")}</span><span class="play-btn play-btn--small">${icon("pause-large-fill")}</span>
-      <span class="icon-btn">${icon("forward-15-line")}</span><span class="eq" style="margin-left:8px">${"<i></i>".repeat(3)}</span></div>
-  </div>`;
+  return `<div class="desk"><div class="rail"><span class="rail__brand">${markSVG(2)}</span>
+      <span class="tab is-on">${icon("book-shelf-line")}${esc(S.ui.library)}</span>
+      <span class="tab">${icon("user-voice-line")}${esc(S.ui.voices)}</span><span class="tab">${icon("settings-4-line")}${esc(S.ui.settings)}</span></div>
+    <div class="desk__main"><div class="page">${libraryBody(S)}</div></div>
+    <div class="desk__chrome">${mini(S)}</div></div>`;
 }
 
 // The outlined wordmark (brand/wordmark), never live text.
@@ -176,7 +178,7 @@ export function markSVG(cell = 12, color = "var(--color-brand)", ember = false) 
   rows.forEach((r, y) => [...r].forEach((ch, x) => {
     if (ch === ".") return;
     const fill = ch === "o" && ember ? "var(--color-ember)" : color;
-    const rect = `<rect x="${x}" y="${y}" width="1" height="1" fill="${fill}"/>`;
+    const rect = `<rect x="${x}" y="${y}" width="1" height="1" style="fill:${fill}"/>`;
     if ((x === 12 || x === 13) && y >= 4 && y <= 11) arc += rect; else body += rect;
   }));
   const s = cell * 16;

@@ -1,0 +1,17 @@
+{
+ "shot": "shots/film.json",
+ "blender": "4.5",
+ "screen_url": "https://raw.githubusercontent.com/Coderia397/streams-reader/main/media/assets/screen/app-alice.webm",
+ "max_hours": 2.5,
+ "tasks": [
+  {"segment": "room_book", "frames": [200], "percent": 50, "samples": 64, "metrics": true},
+  {"segment": "room_phone", "frames": [90], "percent": 50, "samples": 64, "metrics": true},
+  {"segment": "room_pov", "frames": [120], "percent": 50, "samples": 64},
+  {"segment": "room_lookup", "frames": [45, 60, 120], "percent": 50, "samples": 64, "metrics": true},
+  {"segment": "park_walk", "frames": [150], "percent": 50, "samples": 64, "metrics": true},
+  {"segment": "park_end", "frames": [60], "percent": 50, "samples": 64},
+  {"segment": "room_phone", "frames": [90], "percent": 100, "samples": 128, "prefix": "bench_cycles_"},
+  {"segment": "room_phone", "frames": [90], "percent": 100, "samples": 64, "engine": "eevee", "prefix": "bench_eevee_", "timeout": 900},
+  {"segment": "park_walk", "frames": [150], "percent": 100, "samples": 128, "prefix": "bench_cycles_"}
+ ]
+}

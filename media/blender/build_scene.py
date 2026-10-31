@@ -796,9 +796,9 @@ def pixel_image(name, size, fn):
     for y in range(size):
         for x in range(size):
             r, g, b = fn(x, size - 1 - y)
-            px.extend((srgb_to_lin(r / 255), srgb_to_lin(g / 255), srgb_to_lin(b / 255), 1.0))
+            px.extend((r / 255, g / 255, b / 255, 1.0))      # byte image in sRGB: store display values
     img.pixels = px
-    img.colorspace_settings.name = "Linear Rec.709" if "Linear Rec.709" in [i.name for i in bpy.types.ColorManagedInputColorspaceSettings.bl_rna.properties["name"].enum_items] else img.colorspace_settings.name
+    img.pack()
     return img
 
 
@@ -859,13 +859,15 @@ def planks_material():
     nz.inputs["Scale"].default_value = 18
     nz.inputs["Detail"].default_value = 4
     L.new(mp.outputs["Vector"], nz.inputs["Vector"])
-    mv = N.new("ShaderNodeMix")
-    mv.data_type = "RGBA"
-    mv.blend_type = "MULTIPLY"
-    mv.inputs[0].default_value = 0.35
-    L.new(br.outputs["Color"], mv.inputs[6])
-    L.new(nz.outputs["Color"], mv.inputs[7])
-    L.new(mv.outputs[2], bsdf.inputs["Base Color"])
+    mr = N.new("ShaderNodeMapRange")
+    mr.inputs["To Min"].default_value = 0.72
+    mr.inputs["To Max"].default_value = 1.12
+    L.new(nz.outputs["Fac"], mr.inputs["Value"])
+    mv = N.new("ShaderNodeVectorMath")
+    mv.operation = "SCALE"
+    L.new(br.outputs["Color"], mv.inputs[0])
+    L.new(mr.outputs["Result"], mv.inputs["Scale"])
+    L.new(mv.outputs["Vector"], bsdf.inputs["Base Color"])
     set_in(bsdf, "Roughness", 0.45)
     set_in(bsdf, "Coat Weight", 0.25)
     bump = N.new("ShaderNodeBump")
@@ -929,6 +931,11 @@ def build_room(mats, rng, coll=None):
         B((0.07, 0.07, 0.12), (x, y, 0.06), 0.015, col("#5A3B26"), "wood")
     B((0.2, 0.5, 0.3), (-0.5, -0.05, 0.6), 0.06, col("#E5D7B8"), "knit", rot=(0, 8, 0))
     mb.pop()
+    # ottoman in front of the chair: the short voxel legs rest on it instead of dangling
+    B((0.64, 0.46, 0.22), (-0.2, 0.68, 0.17), 0.06, fab, "fabric")
+    B((0.6, 0.42, 0.06), (-0.2, 0.68, 0.06), 0.02, fabd, "fabric")
+    for x, y in ((-0.45, 0.5), (0.05, 0.5), (-0.45, 0.86), (0.05, 0.86)):
+        B((0.05, 0.05, 0.06), (x, y, 0.03), 0.01, col("#5A3B26"), "wood")
     # floor lamp
     brass = col("#B8894A")
     mb.push(Matrix.Translation((-1.05, 1.6, 0)))
@@ -989,7 +996,7 @@ def build_room(mats, rng, coll=None):
     # wall art frame (print added as an image quad)
     B((0.62, 0.04, 0.8), (-0.85, 2.17, 2.05), 0.01, col("#2A2420"), "wood")
     art = pixel_image("art", 16, art_pixels)
-    quad("art", 0.5, 0.68, image_material("art", art, 0.9), Matrix.Translation((-0.85, 2.147, 2.05)) @ eul(90, 0, 0) @ eul(0, 180, 0) @ eul(0, 0, 180), coll)
+    quad("art", 0.5, 0.68, image_material("art", art, 0.9), Matrix.Translation((-0.85, 2.147, 2.05)) @ eul(90, 0, 0), coll)
     # fairy lights: beads on a sagging string along the back wall
     pts = []
     for i in range(61):
@@ -1000,7 +1007,10 @@ def build_room(mats, rng, coll=None):
         if i % 2 == 0:
             B((0.03, 0.03, 0.03), (x, 2.11, z - 0.025), 0.008, col("#FFC67A"), "bead")
     room = mb.build("room", mats, coll=coll)
-    curve_from_points("fairy_wire", pts, 0.004, voxel_material("wire", rough=0.5), coll)
+    wm = bpy.data.materials.new("wire")
+    wm.use_nodes = True
+    set_in(_principled(wm.node_tree), "Base Color", col("#222222"))
+    curve_from_points("fairy_wire", pts, 0.004, wm, coll)
     # outside: night sky, moon, city towers with lit windows, rain on the glass
     sky_m, nt, bsdf = node_material("night_sky")
     set_in(bsdf, "Base Color", (0, 0, 0, 1))
@@ -1324,8 +1334,6 @@ def build_park(mats, rng, coll=None):
 def falling_leaves(mats, rng, frames, region, n=60, coll=None):
     """Leaves drifting down through the light (two linear keys each; no sim needed)."""
     cols = ["#E0A23A", "#C9692E", "#EDB64F", "#9DB552"]
-    mb = MB()
-    mb.box((0.06, 0.045, 0.004), (0, 0, 0), 0.0, col("#FFFFFF"), "leaf")
     for i in range(n):
         x0 = rng.uniform(region[0], region[1])
         y0 = rng.uniform(region[2], region[3])
@@ -1495,27 +1503,45 @@ class Walk:
     def body(self, t):
         return self.start + self.fwd * (self.v * t)
 
+    TOE, HEEL, SOLE = 0.18, 0.10, 0.077    # toe / heel distance from the ankle along the foot, ankle height
+
+    def pivot_toe(self, ankle, pitch):
+        """Ankle position when the foot (planted flat with its ankle at `ankle`) rolls onto its toe by pitch deg."""
+        v = self.fwd * self.TOE + Vector((0, 0, -self.SOLE))
+        rot = Matrix.Rotation(rad(pitch), 3, self.fwd.cross(Vector((0, 0, 1))))
+        return ankle + v - rot @ v
+
+    def min_corner(self, pitch):
+        a = rad(pitch)
+        toe = -self.SOLE * math.cos(a) + self.TOE * math.sin(a)
+        heel = -self.SOLE * math.cos(a) - self.HEEL * math.sin(a)
+        return min(toe, heel)
+
     def foot(self, side, t):
-        """World position of the ankle and pitch (deg) for a foot at time t."""
+        """World ankle position, pitch (deg, + = toes up) and swing progress for a foot at time t.
+        Cycle: flat stance 0-0.42, heel-off rolling over the toe 0.42-0.6, swing 0.6-1 (lift, toes up, land flat)."""
         off = 0.0 if side == "L" else 0.5
         u = self.f * t + self.phase + off
         n = math.floor(u)
         frac = u - n
         lat = self.left * (0.1 if side == "L" else -0.1)
-        ahead = self.step * self.stance          # foot lands this far ahead of the body (lands at frac 0)
+        ahead = self.step * self.stance          # the foot lands this far ahead of the body (at frac 0)
 
         def plant(k):
             tl = (k - self.phase - off) / self.f
-            return self.body(tl) + self.fwd * ahead + lat
+            return self.body(tl) + self.fwd * ahead + lat + Vector((0, 0, self.SOLE))
 
+        if frac < 0.42:
+            return plant(n), 0.0, 0.0
         if frac < self.stance:
-            p = plant(n)
-            return p + Vector((0, 0, 0.077)), 0.0, 0.0
+            pitch = -20 * smooth((frac - 0.42) / (self.stance - 0.42))
+            return self.pivot_toe(plant(n), pitch), pitch, 0.0
         w = (frac - self.stance) / (1 - self.stance)
-        a, b = plant(n), plant(n + 1)
-        e = smooth(w)
-        p = a.lerp(b, e) + Vector((0, 0, 0.077 + 0.075 * math.sin(math.pi * w) ** 1.2))
-        pitch = lerp(-24, 12, smooth(w * 1.15)) if w < 0.87 else lerp(12, 0, (w - 0.87) / 0.13)
+        a = self.pivot_toe(plant(n), -20)
+        b = plant(n + 1)
+        p = a.lerp(b, smooth(w)) + Vector((0, 0, 0.07 * math.sin(math.pi * w)))
+        pitch = lerp(-20, 9, smooth(w / 0.8)) if w < 0.8 else lerp(9, 0, smooth((w - 0.8) / 0.2))
+        p.z = max(p.z, -self.min_corner(pitch))
         return p, pitch, w
 
     def hips_bob(self, t):
@@ -1530,8 +1556,8 @@ def ankle_rot(fwd, pitch_deg=0.0, yaw_deg=0.0):
     f = Vector(fwd)
     f.rotate(Matrix.Rotation(rad(yaw_deg), 3, "Z"))
     up = Vector((0, 0, 1))
-    side = f.cross(up)          # foot local X (= -right)
-    rot = Matrix.Rotation(rad(-pitch_deg), 3, side)
+    side = f.cross(up)          # points to the foot's right; rotating about it by +pitch lifts the toes
+    rot = Matrix.Rotation(rad(pitch_deg), 3, side)
     y = rot @ f
     z = rot @ up
     return frame_axes(y, z)
@@ -1583,17 +1609,13 @@ class Film:
                 ob.visible_camera = False
         self.cable = None
         if ch.get("cable"):
-            self.cable = curve_from_points("cable", [(0, 0, i * 0.01) for i in range(24)], 0.0032,
-                                           voxel_material("cable_m", rough=0.45, coat=0.2), None)
-            self.cable.data.materials[0] = voxel_material("cable_m")
-            self.cable.data.bevel_resolution = 3
-            # the cable curve has no colour attribute: give it a flat dark material
-            cm = bpy.data.materials.new("cable_dark")
+            cm = bpy.data.materials.new("cable_dark")     # curves carry no colour attribute: flat material
             cm.use_nodes = True
             b = _principled(cm.node_tree)
             set_in(b, "Base Color", col("#1B1E2A"))
             set_in(b, "Roughness", 0.4)
-            self.cable.data.materials[0] = cm
+            self.cable = curve_from_points("cable", [(0, 0, i * 0.01) for i in range(24)], 0.0032, cm, None)
+            self.cable.data.bevel_resolution = 3
         self.camera_setup()
         log("character and props built")
         self.bake_body()
@@ -1667,7 +1689,7 @@ class Film:
         if ch.get("walk"):
             w = self.walk
             p = w.body(t)
-            return Matrix.Translation(p) @ Matrix.Rotation(rad(ch["walk"]["heading"]) - math.pi / 2 + math.pi, 4, "Z") @ Matrix.Rotation(math.pi, 4, "Z")
+            return Matrix.Translation(p) @ Matrix.Rotation(rad(ch["walk"]["heading"] + 90), 4, "Z")
         base = Vector(ch.get("root", [-0.2, 1.3, 0.0]))
         return Matrix.Translation(base) @ Matrix.Rotation(rad(ch.get("yaw", 0)), 4, "Z")
 
@@ -1841,8 +1863,9 @@ class Film:
         w = track(ch.get("headphones", [{"t": 0, "v": 0.0}]), t, 0.0)
         head = C.world_bone("head", dg)
         neck = C.world_bone("neck", dg)
-        ears = head @ compose((0, 0.25 * HEAD_S, -0.01 * HEAD_S), Matrix.Rotation(rad(90), 3, "X"))
-        rest = neck @ compose((0, 0.0, -0.055), Matrix.Rotation(rad(90), 3, "X") @ Matrix.Rotation(rad(-62), 3, "X"))
+        hpc = ch.get("hp_neck", {"pos": [0, 0.07, -0.03], "rot": -165})
+        ears = head @ compose((0, 0.25 * HEAD_S, -0.01 * HEAD_S), Matrix.Rotation(rad(-90), 3, "X"))
+        rest = neck @ compose(Vector(hpc["pos"]), Matrix.Rotation(rad(hpc["rot"]), 3, "X"))
         if w <= 0:
             return rest, w
         if w >= 1:
@@ -1875,7 +1898,7 @@ class Film:
                 cand = {}
                 if itemM is not None:
                     cand["item"] = grip_matrix(itemM, self.item, "R" if s == "R" else "L")
-                cupM = hpM @ compose(((0.335 + 0.11) * sx * HEAD_S, 0.0, -0.01), Matrix(((sx * -1, 0, 0), (0, 0, -1), (0, 1, 0))).transposed() if False else Matrix.Identity(3))
+                cupM = hpM @ Matrix.Translation(((0.335 + 0.14) * sx * HEAD_S, 0.0, -0.01))
                 # hand on the cup: palm on the outer face, fingers up along the cup, thumb forward
                 cup_rot = hpM.to_3x3().normalized() @ Matrix(((1, 0, 0), (0, 0, 1), (0, -1, 0))).transposed()
                 cand["cup"] = compose(cupM.translation, cup_rot)
@@ -2027,7 +2050,7 @@ class Film:
         pos = pos + Vector((nz["cam_x"].fbm(t, 0.2), 0, nz["cam_z"].fbm(t, 0.22))) * 0.004 * hh
         M = compose(pos, rot)
         key_matrix(self.cam, M, f)
-        self.cam.data.lens = 12.0 / math.tan(rad(lens_to_fov(lens)) / 2) if False else lens
+        self.cam.data.lens = lens
         self.cam.data.keyframe_insert("lens", frame=f)
         fk = cam.get("focus", [{"t": 0, "on": "face"}])
         fd = None
@@ -2155,7 +2178,7 @@ class Film:
                 an = C.world_bone("foot." + s, dg)
                 tf = C.tg["ik_foot." + s].evaluated_get(dg).matrix_world.translation
                 row["foot_err_" + s] = round((an.translation - tf).length, 4)
-                lo = min((an @ Vector((x, y, -0.077))).z for x in (-0.095, 0.095) for y in (-0.03, 0.3))
+                lo = min((an @ Vector((x, y, -0.077))).z for x in (-0.095, 0.095) for y in (-0.10, 0.18))
                 row["sole_" + s] = round(lo, 4)
                 for b in ("shin", "forearm"):
                     m1 = C.world_bone(("thigh." if b == "shin" else "upper_arm.") + s, dg).to_3x3()

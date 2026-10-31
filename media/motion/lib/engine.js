@@ -325,7 +325,8 @@ function render(t) {
   const e = envAt(t);
   $$(".eq").forEach((eq, j) => $$("i", eq).forEach((b, k) => {
     const wob = 0.55 + 0.45 * Math.sin(t * (9 + k * 3.3) + k * 1.7 + j);
-    b.style.transform = `scaleY(${clamp(0.18 + e * 1.1 * wob, 0.18, 1)})`;
+    const idle = 0.42 + 0.22 * Math.sin(t * (4.1 + k * 1.3) + k * 2.2 + j);   // playing between words: keep a gentle pulse
+    b.style.transform = `scaleY(${clamp(Math.max(idle, 0.2 + e * 1.1 * wob), 0.25, 1)})`;
   }));
   $$(".chip--voice .eq").forEach((eq) => { eq.style.opacity = pl ? 1 : 0; eq.style.width = pl ? "13px" : "0px"; });
 
@@ -418,20 +419,21 @@ function render(t) {
     });
   }
 
-  // end card
+  // end card: the product fades away first, then mark, wordmark, line and address rise in turn
   const ec = $(".endcard");
-  ec.style.opacity = s.end;
-  ec.style.visibility = s.end > 0.001 ? "visible" : "hidden";
-  const mk = $(".endcard .mark");
-  mk.style.transform = `translateY(${(1 - s.end) * 16}px)`;
-  const wm = $(".endcard .wordmark"), tg = $(".endcard .tag"), ur = $(".endcard .url");
   const endT = (D.events.find((e) => e.type === "end") || { t: 1e9 }).t;
-  const stag = (k) => EASE.expo(prog(t, endT + 0.25 + k * 0.18, 1.0));
-  [wm, tg, ur].forEach((el, k) => { const p = stag(k); el.style.opacity = p; el.style.transform = `translateY(${(1 - p) * 14}px)`; });
-  // the voice arc breathes once with the music (the only part of the mark that may move)
-  const ap = prog(t, endT + 0.4, 2.2);
-  $(".endcard .arc").style.opacity = 0.35 + 0.65 * EASE.out(clamp(ap * 2.5)) - 0.25 * Math.sin(Math.PI * clamp((ap - 0.4) / 0.6));
-  $("#world").style.opacity = 1 - s.end;
+  ec.style.opacity = 1;
+  ec.style.visibility = t >= endT ? "visible" : "hidden";
+  const mk = $(".endcard .mark");
+  const pm = EASE.out(prog(t, endT + 0.45, 1.1));
+  mk.style.opacity = pm; mk.style.transform = `translateY(${(1 - pm) * 18}px) scale(${0.97 + 0.03 * pm})`;
+  const wm = $(".endcard .wordmark"), tg = $(".endcard .tag"), ur = $(".endcard .url");
+  [wm, tg, ur].forEach((el, k) => { const p = EASE.expo(prog(t, endT + 0.7 + k * 0.2, 1.0)); el.style.opacity = p; el.style.transform = `translateY(${(1 - p) * 14}px)`; });
+  // the voice arc breathes once (the only part of the mark that may move)
+  const ap = prog(t, endT + 0.9, 2.4);
+  $(".endcard .arc").style.opacity = 0.3 + 0.7 * EASE.out(clamp(ap * 2.2)) - 0.22 * Math.sin(Math.PI * clamp((ap - 0.45) / 0.55));
+  $("#world").style.opacity = 1 - EASE.inout(prog(t, endT, 0.7));
+  $("#world").style.visibility = t > endT + 0.75 ? "hidden" : "visible";
   $("#fade").style.opacity = s.fade;
 }
 

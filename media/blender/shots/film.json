@@ -1,0 +1,174 @@
+{
+ "name": "film-v2",
+ "note": "Blender film v2. Same story and edit points as media/shots/promo.json. Blender world: Z up, metres; the room character sits at root [-0.2, 1.3, 0] facing -Y; the park path runs along +X. Hold positions are in the spine frame (X = character's left, Y = up the spine, Z = front) or, with frame 'root', in the same axes around the root. Times are seconds from the segment start.",
+ "fps": 30,
+ "resolution": [1920, 1080],
+ "seed": 11,
+ "duration": 41.0,
+ "segments": [
+  {
+   "id": "room_book", "start": 0.0, "end": 7.4, "set": "room",
+   "lights": {"lamp": 45, "fairy": 3.0, "moon": 0.35, "fill": 14, "rim": 25, "screen_glow": 0},
+   "exposure": 0.0,
+   "character": {
+    "item": "book",
+    "headphones": [{"t": 0, "v": 0.0}],
+    "hold": [{"t": 0, "pos": [0.0, 0.17, 0.31], "aim": [0, 0.68, 0.2], "roll": 0}],
+    "hands": {"L": [{"t": 0, "v": "item"}], "R": [{"t": 0, "v": "item"}]},
+    "poses": [{"t": 0, "pose": "sit"}, {"t": 3.4, "pose": "sit_nod", "blend": 1.4}, {"t": 4.3, "pose": "sit", "blend": 0.45},
+              {"t": 6.2, "pose": "sit_nod", "blend": 1.2}],
+    "expressions": [{"t": 0, "expr": "tired"}, {"t": 3.2, "expr": "sleepy", "blend": 1.0}, {"t": 4.3, "expr": "tired", "blend": 0.3},
+                    {"t": 6.0, "expr": "sleepy", "blend": 0.8}],
+    "look_w": [{"t": 0, "v": 0.85}],
+    "feet": {"L": [0.13, -0.5, 0.357], "R": [-0.13, -0.5, 0.357]}
+   },
+   "camera": {
+    "fstop": 2.8, "handheld": 0.3,
+    "keys": [
+     {"t": 0, "pos": [2.5, -2.3, 1.6], "look": [-0.2, 1.15, 0.95], "lens": 32},
+     {"t": 7.4, "pos": [1.35, -0.75, 1.32], "look": "face", "aim": [0, 0, -0.1], "lens": 42, "ease": "inout"}
+    ],
+    "focus": [{"t": 0, "on": "face"}]
+   }
+  },
+  {
+   "id": "room_phone", "start": 7.4, "end": 11.4, "set": "room",
+   "lights": {"lamp": 40, "fairy": 3.0, "moon": 0.35, "fill": 10, "rim": 25, "screen_glow": 2.5},
+   "screen": {"in": 0.0, "bright": 1.6, "on": [{"t": 0, "v": 0.15}, {"t": 0.4, "v": 1.0, "blend": 0.5}]},
+   "character": {
+    "item": "phone",
+    "headphones": [{"t": 0, "v": 0.0}],
+    "hold": [{"t": 0, "pos": [-0.08, 0.28, 0.33], "aim": [0, 0.68, 0.22], "roll": -8}],
+    "hands": {"L": [{"t": 0, "v": "rest"}], "R": [{"t": 0, "v": "item"}]},
+    "rest": {"L": {"pos": [0.44, -0.12, 0.69], "y": [0, -1, 0], "z": [1, 0, 0]}},
+    "poses": [{"t": 0, "pose": "sit"}],
+    "expressions": [{"t": 0, "expr": "tired"}, {"t": 1.3, "expr": "calm", "blend": 0.8}, {"t": 3.0, "expr": "absorbed", "blend": 0.8}],
+    "look_w": [{"t": 0, "v": 0.9}],
+    "feet": {"L": [0.13, -0.5, 0.357], "R": [-0.13, -0.5, 0.357]}
+   },
+   "camera": {
+    "fstop": 2.0, "handheld": 0.25,
+    "keys": [
+     {"t": 0, "orbit": [30, 2, 1.95], "around": "face", "look": "face", "aim": [0, 0, -0.1], "lens": 50},
+     {"t": 4.0, "orbit": [26, 2, 1.55], "around": "face", "look": "face", "aim": [0, 0, -0.1], "lens": 52, "ease": "linear"}
+    ],
+    "focus": [{"t": 0, "on": "face"}]
+   }
+  },
+  {
+   "id": "room_pov", "start": 11.4, "end": 19.0, "set": "room",
+   "lights": {"lamp": 40, "fairy": 3.0, "moon": 0.35, "fill": 8, "rim": 25, "screen_glow": 2.5},
+   "screen": {"in": 3.0, "bright": 1.5},
+   "character": {
+    "item": "phone", "pov": true,
+    "headphones": [{"t": 0, "v": 0.0}],
+    "hold": [{"t": 0, "pos": [-0.07, 0.3, 0.33], "aim": [0, 0.68, 0.22], "roll": -6}],
+    "hands": {"L": [{"t": 0, "v": "rest"}], "R": [{"t": 0, "v": "item"}]},
+    "rest": {"L": {"pos": [0.44, -0.12, 0.69], "y": [0, -1, 0], "z": [1, 0, 0]}},
+    "poses": [{"t": 0, "pose": "sit"}],
+    "expressions": [{"t": 0, "expr": "absorbed"}],
+    "look_w": [{"t": 0, "v": 0.95}],
+    "feet": {"L": [0.13, -0.5, 0.357], "R": [-0.13, -0.5, 0.357]}
+   },
+   "camera": {
+    "fstop": 2.8, "handheld": 0.35,
+    "keys": [
+     {"t": 0, "pos": [0, 0.04, 0.03], "rel": "pov", "look": "phone", "lens": 34},
+     {"t": 7.6, "pos": [0, 0.02, 0.0], "rel": "pov", "look": "phone", "lens": 42, "ease": "linear"}
+    ],
+    "focus": [{"t": 0, "on": "phone"}]
+   }
+  },
+  {
+   "id": "room_lookup", "start": 19.0, "end": 23.4, "tail": 0.8, "set": "room",
+   "lights": {"lamp": 40, "fairy": 3.0, "moon": 0.4, "fill": 10, "rim": 25, "screen_glow": 2.5},
+   "screen": {"in": 10.6, "bright": 1.6},
+   "character": {
+    "item": "phone",
+    "headphones": [{"t": 0, "v": 0.0}, {"t": 1.5, "v": 1.0, "blend": 0.85}],
+    "hold": [{"t": 0, "pos": [-0.08, 0.28, 0.33], "aim": [0, 0.68, 0.22], "roll": -8},
+             {"t": 0.5, "pos": [-0.11, 0.66, 0.2], "aim": [-0.11, 1.66, 0.2], "frame": "root", "blend": 0.65}],
+    "hands": {"L": [{"t": 0, "v": "rest"}, {"t": 1.05, "v": "cup", "blend": 0.45}, {"t": 2.45, "v": "rest", "blend": 0.55}],
+              "R": [{"t": 0, "v": "item"}, {"t": 1.15, "v": "cup", "blend": 0.4}, {"t": 2.45, "v": "item", "blend": 0.55}]},
+    "rest": {"L": {"pos": [0.44, -0.12, 0.69], "y": [0, -1, 0], "z": [1, 0, 0]}},
+    "poses": [{"t": 0, "pose": "sit"}, {"t": 0.7, "pose": "sit_up", "blend": 0.7}],
+    "expressions": [{"t": 0, "expr": "absorbed"}, {"t": 0.7, "expr": "look_up_calm", "blend": 0.6}, {"t": 2.4, "expr": "content", "blend": 0.7}],
+    "look_w": [{"t": 0, "v": 0.9}, {"t": 0.55, "v": 0.0, "blend": 0.5}],
+    "feet": {"L": [0.13, -0.5, 0.357], "R": [-0.13, -0.5, 0.357]}
+   },
+   "camera": {
+    "fstop": 2.2, "handheld": 0.22,
+    "keys": [
+     {"t": 0, "orbit": [-28, 4, 1.75], "around": "face", "look": "face", "aim": [0, 0, -0.12], "lens": 46},
+     {"t": 2.7, "orbit": [-33, 5, 1.6], "around": "face", "look": "face", "aim": [0, 0, -0.1], "lens": 48, "ease": "linear"},
+     {"t": 3.4, "pos": [0.95, 0.45, 1.5], "look": [0.9, 2.2, 1.6], "lens": 45, "ease": "in"},
+     {"t": 4.4, "pos": [0.4, 0.75, 1.45], "look": [1.15, 2.6, 1.75], "lens": 52, "ease": "inout"},
+     {"t": 5.2, "pos": [0.33, 0.8, 1.45], "look": [1.15, 2.6, 1.77], "lens": 53, "ease": "linear"}
+    ],
+    "focus": [{"t": 0, "on": "face"}, {"t": 3.2, "on": "window", "blend": 0.9}]
+   }
+  },
+  {
+   "id": "park_walk", "start": 23.4, "end": 30.6, "set": "park",
+   "lights": {"sun": 4.5, "sun_k": 3300, "sun_elev": 11, "sun_azim": 150, "sky": 0.3, "haze": 0.006, "screen_glow": 0.3},
+   "screen": {"in": 14.0, "bright": 2.2},
+   "leaves": [-6, 4, -3, 4],
+   "character": {
+    "item": "phone", "cable": true,
+    "headphones": [{"t": 0, "v": 1.0}],
+    "walk": {"start": [-4.0, -0.15, 0.0], "heading": 0, "speed": 0.62, "cadence": 0.9, "phase": 0.1},
+    "hold": [{"t": 0, "pos": [-0.05, 0.14, 0.3], "aim": [0, 0.68, 0.25], "roll": -6}],
+    "hands": {"L": [{"t": 0, "v": "rest"}], "R": [{"t": 0, "v": "item"}]},
+    "ik_left": [{"t": 0, "v": 0.0}],
+    "poses": [{"t": 0, "pose": "walk"}],
+    "expressions": [{"t": 0, "expr": "calm"}, {"t": 5.0, "expr": "content", "blend": 1.5}],
+    "look_w": [{"t": 0, "v": 0.25}]
+   },
+   "camera": {
+    "fstop": 2.8, "handheld": 0.35,
+    "keys": [
+     {"t": 0, "orbit": [-70, 4, 3.2], "around": "chest", "look": "chest", "aim": [0.6, 3.6, 2.2], "lens": 45},
+     {"t": 2.4, "orbit": [-70, 6, 2.9], "around": "chest", "look": "chest", "aim": [0.25, 0, 0.3], "lens": 45, "ease": "inout"},
+     {"t": 7.2, "orbit": [-58, 7, 2.3], "around": "chest", "look": "chest", "aim": [0.15, 0, 0.3], "lens": 45, "ease": "linear"}
+    ],
+    "focus": [{"t": 0, "on": 5.5}, {"t": 2.2, "on": "face", "blend": 1.0}]
+   }
+  },
+  {
+   "id": "park_end", "start": 30.6, "end": 41.0, "set": "park",
+   "lights": {"sun": 4.5, "sun_k": 3300, "sun_elev": 11, "sun_azim": 150, "sky": 0.3, "haze": 0.006, "screen_glow": 0.3},
+   "screen": {"in": 20.0, "bright": 2.2},
+   "leaves": [2, 12, -3, 4],
+   "character": {
+    "item": "phone", "cable": true,
+    "headphones": [{"t": 0, "v": 1.0}],
+    "walk": {"start": [4.0, -0.15, 0.0], "heading": 0, "speed": 0.62, "cadence": 0.9, "phase": 0.35},
+    "hold": [{"t": 0, "pos": [-0.05, 0.14, 0.3], "aim": [0, 0.68, 0.25], "roll": -6}],
+    "hands": {"L": [{"t": 0, "v": "rest"}], "R": [{"t": 0, "v": "item"}]},
+    "ik_left": [{"t": 0, "v": 0.0}],
+    "poses": [{"t": 0, "pose": "walk"}],
+    "expressions": [{"t": 0, "expr": "calm"}, {"t": 5.5, "expr": "soft_smile", "blend": 1.2}],
+    "look_w": [{"t": 0, "v": 0.2}]
+   },
+   "camera": {
+    "fstop": 3.5, "handheld": 0.2,
+    "keys": [
+     {"t": 0, "orbit": [-40, 8, 4.2], "around": "chest", "look": "chest", "aim": [0.6, 0, 0.2], "lens": 40},
+     {"t": 10.4, "orbit": [-25, 24, 7.5], "around": "chest", "look": "chest", "aim": [1.4, 0, 0.6], "lens": 40, "ease": "inout"}
+    ],
+    "focus": [{"t": 0, "on": "face"}]
+   }
+  }
+ ],
+ "post": {
+  "order": ["room_book", "room_phone", "room_pov", "room_lookup", "park_walk", "park_end"],
+  "dissolve": {"room_lookup->park_walk": 0.8},
+  "fade_in": [0.0, 1.6],
+  "endcard_dim": {"start": 36.0, "end": 37.0, "level": 0.82},
+  "overlays": [
+   {"start": 31.2, "end": 36.5, "type": "title", "text": "Your library, read aloud.", "sub": "Free · Open source · On every device"},
+   {"start": 36.6, "end": 41.0, "type": "endcard", "logo": "brand/wordmark/streams-reader-stacked-on-dark.svg", "sub": "listen.streams.watch"}
+  ],
+  "audio_from": "media/shots/promo.json"
+ }
+}
