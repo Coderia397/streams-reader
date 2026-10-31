@@ -2,7 +2,8 @@
 
 Only the Cloudflare Worker calls this Space (it is private). Every endpoint takes one JSON string and returns one JSON
 string; contract v1 lives in nolabs_engine/contracts.py (mirror of crates/core/src/proto/engine.rs). Audio is written
-to R2 directly; responses carry metadata only.
+to R2 directly; responses carry metadata only. render_cpu and render_gpu stream one item result per finished segment
+as `generating` events before the full response (see handlers.py).
 """
 from nolabs_engine import runtime
 
@@ -58,16 +59,32 @@ print(f"nolabs engine: threads={THREADS} kokoro={STATUS['kokoro']} ming={STATUS[
 ENDPOINTS = Endpoints(Service(storage.from_env(), KOKORO, MING, statuses=STATUS), passthrough=(gr.Error,))
 
 
+def _gradio_error(failure: EndpointFailure) -> Exception:
+    """Bad requests and engine errors become gr.Error with the contract's prefixes; ZeroGPU errors are re-raised as
+    they came so the Worker can read their text."""
+    if failure.kind is FailureKind.PASSTHROUGH and isinstance(failure.original, gr.Error):
+        return failure.original
+    return gr.Error(failure.message, print_exception=failure.kind is FailureKind.ENGINE)
+
+
 def _gradio(handler):
-    """Bind a handler to Gradio: bad requests and engine errors become gr.Error with the contract's prefixes; ZeroGPU
-    errors are re-raised as they came so the Worker can read their text."""
     def call(raw: str) -> str:
         try:
             return handler(raw)
         except EndpointFailure as failure:
-            if failure.kind is FailureKind.PASSTHROUGH and isinstance(failure.original, gr.Error):
-                raise failure.original from None
-            raise gr.Error(failure.message, print_exception=failure.kind is FailureKind.ENGINE) from None
+            raise _gradio_error(failure) from None
+    call.__name__ = handler.__name__
+    return call
+
+
+def _gradio_stream(handler):
+    """A generator handler stays a generator function, so Gradio sends each yield as a `generating` event and the
+    last one as `complete`."""
+    def call(raw: str):
+        try:
+            yield from handler(raw)
+        except EndpointFailure as failure:
+            raise _gradio_error(failure) from None
     call.__name__ = handler.__name__
     return call
 
@@ -77,10 +94,11 @@ with gr.Blocks(title="nolabs engine") as demo:
     request, response = gr.Textbox(visible=False), gr.Textbox(visible=False)
     # (handler, concurrency id): one CPU job at a time (Kokoro and reference preparation share 2 vCPU), one GPU job
     # at a time, and health with no concurrency limit so it answers while a render runs.
-    for handler, queue in ((ENDPOINTS.render_cpu, "cpu"), (ENDPOINTS.render_gpu, "gpu"),
-                           (ENDPOINTS.prepare_reference, "cpu"), (ENDPOINTS.health, None)):
+    bindings = ((_gradio_stream(ENDPOINTS.render_cpu), "cpu"), (_gradio_stream(ENDPOINTS.render_gpu), "gpu"),
+                (_gradio(ENDPOINTS.prepare_reference), "cpu"), (_gradio(ENDPOINTS.health), None))
+    for handler, queue in bindings:
         gr.Button(handler.__name__, visible=False).click(
-            _gradio(handler), request, response, api_name=handler.__name__,
+            handler, request, response, api_name=handler.__name__,
             concurrency_limit=1 if queue else None, concurrency_id=queue,
         )
 

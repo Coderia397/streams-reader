@@ -2,7 +2,8 @@
 
 ZeroGPU rules shape this module: the model is built and moved to CUDA at import time (CUDA is emulated outside the
 decorated function), all GPU work for one request happens in a single call because a free account gets few runs and
-5 GPU-minutes a day, and the call returns float32 PCM only, so encoding and uploads never hold the GPU.
+5 GPU-minutes a day, and the call yields float32 PCM only, so encoding and uploads never hold the GPU; they run on the
+CPU side while the call is still rendering later items.
 """
 from __future__ import annotations
 
@@ -10,6 +11,7 @@ import os
 import sys
 import tempfile
 import time
+from collections.abc import Generator
 
 import numpy as np
 import soundfile as sf
@@ -17,7 +19,7 @@ import spaces
 import torch
 
 from .. import revisions
-from .ming import GpuResult, MingEngine
+from .ming import GpuAnchor, GpuDone, GpuEvent, GpuWave, MingEngine
 from .ming_plan import ANCHOR_TEXT, GpuPolicy, Job, request_seconds
 
 VENDOR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "vendor", "ming3")
@@ -49,26 +51,28 @@ def _duration(jobs: list[Job]) -> int:
 
 
 @spaces.GPU(duration=_duration)
-def run(jobs: list[Job]) -> GpuResult:
-    """Synthesise every job in one GPU call. A failing job becomes an error string so the rest of the batch survives;
-    anchors needed by EMOTION jobs on presets are rendered first and returned so the caller can cache them."""
+def run(jobs: list[Job]) -> Generator[GpuEvent, None, None]:
+    """Synthesise every job in one GPU call, yielding each wave as soon as it exists (ZeroGPU forwards a generator's
+    items from its worker process while the call goes on). A failing job yields an error string so the rest of the
+    batch survives; an anchor needed by EMOTION jobs on presets is rendered first and yielded so the caller can cache
+    it."""
     started = time.monotonic()
-    anchors: dict[str, np.ndarray] = {}
     anchor_paths: dict[str, str] = {}
-    waves: list[np.ndarray | str] = []
-    for job in jobs:
+    for index, job in enumerate(jobs):
         try:
             prompt = job.prompt
             voice_id = job.anchor_voice
             if voice_id is not None:
                 if voice_id not in anchor_paths:
-                    anchors[voice_id] = _synthesize(Job("IP", ANCHOR_TEXT, {"ip": voice_id}), "")
-                    anchor_paths[voice_id] = _write_temp_wav(voice_id, anchors[voice_id])
+                    anchor = _synthesize(Job("IP", ANCHOR_TEXT, {"ip": voice_id}), "")
+                    anchor_paths[voice_id] = _write_temp_wav(voice_id, anchor)
+                    yield GpuAnchor(voice_id, anchor)
                 prompt = anchor_paths[voice_id]
-            waves.append(_synthesize(job, prompt))
+            wave: np.ndarray | str = _synthesize(job, prompt)
         except Exception as e:  # noqa: BLE001 - one bad item must not lose the rest of the batch
-            waves.append(f"{type(e).__name__}: {e}")
-    return GpuResult(waves=waves, anchors=anchors, gpu_s=time.monotonic() - started)
+            wave = f"{type(e).__name__}: {e}"
+        yield GpuWave(index, wave)
+    yield GpuDone(time.monotonic() - started)
 
 
 def _write_temp_wav(voice_id: str, wave: np.ndarray) -> str:

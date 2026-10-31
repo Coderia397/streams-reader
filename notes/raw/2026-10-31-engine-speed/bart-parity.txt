@@ -1,0 +1,26 @@
+Zorblax                          zˈɔɹblæks
+Hermione                         hˈɜɹmiˌOn
+Daenerys                         dˈAnəɹiz
+quokka                           kwˈɑkə
+Nguyen                           əŋɡˈIən
+Szczepanski                      ʃˌɑkzəpˈænski
+flibbertigibbet                  flˌɪbəɹɾəʤˈɪbət
+Kubernetes                       kˌubəɹnˈits
+Tauri                            tˈɔɹi
+Xiaomi                           ʃiˈOmi
+Ouagadougou                      wˌɑɡədˈuɡu
+Llanfair                         lˈænfˌɛɹ
+antidisestablishmentarianism     ˌæntidˌɪsəstˌæblɪ
+Cthulhu                          θˈulhu
+Bezos                            bˈAzOz
+Kokoro                           kəkˈɔɹO
+misaki                           mɪsˈɑki
+nolabs                           nˈOlˌæbz
+Pfizer                           pfˈIzəɹ
+Worcestershire                   wˈʊstəɹʃˌɪɹ
+a parity 20 / 20
+a ms/word uncached 231.9
+b parity 20 / 20
+b ms/word uncached 192.9
+
+[exited with code 0]

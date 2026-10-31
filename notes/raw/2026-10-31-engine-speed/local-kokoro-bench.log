@@ -1,0 +1,173 @@
+=== before round 1 01:27:03 9.70 34.09 44.96
+render job=benchbenchbench0 engine=kokoro items=4 ok=4 elapsed_ms=80839 gpu_ms=0
+render job=benchbenchbench0 engine=kokoro items=4 ok=4 elapsed_ms=68718 gpu_ms=0
+{
+  "label": "before",
+  "streaming": false,
+  "chars": 994,
+  "segments": 4,
+  "threads": 2,
+  "upload_ms": 150.0,
+  "voice": "af_heart",
+  "load_s": 6.52,
+  "torch": "2.2.2",
+  "median_first_item_s": 74.9345,
+  "median_total_s": 74.9345,
+  "median_rtf": 1.3274,
+  "runs": [
+    {
+      "first_item_s": 80.993,
+      "item_s": [
+        80.993,
+        80.993,
+        80.993,
+        80.993
+      ],
+      "total_s": 80.993,
+      "audio_s": 56.45,
+      "rtf": 1.4348
+    },
+    {
+      "first_item_s": 68.876,
+      "item_s": [
+        68.876,
+        68.876,
+        68.876,
+        68.876
+      ],
+      "total_s": 68.876,
+      "audio_s": 56.454,
+      "rtf": 1.22
+    }
+  ]
+}
+=== after round 1 01:29:49 11.19 24.96 39.28
+render job=benchbenchbench0 engine=kokoro items=4 ok=4 first_ms=35468 elapsed_ms=97068 gpu_ms=0
+render job=benchbenchbench0 engine=kokoro items=4 ok=4 first_ms=15249 elapsed_ms=47605 gpu_ms=0
+{
+  "label": "after",
+  "streaming": true,
+  "chars": 994,
+  "segments": 4,
+  "threads": 2,
+  "upload_ms": 150.0,
+  "voice": "af_heart",
+  "load_s": 7.95,
+  "torch": "2.2.2",
+  "median_first_item_s": 25.358500000000003,
+  "median_total_s": 72.49,
+  "median_rtf": 1.2842,
+  "runs": [
+    {
+      "first_item_s": 35.468,
+      "item_s": [
+        35.468,
+        69.588,
+        83.364,
+        97.068
+      ],
+      "total_s": 97.22,
+      "audio_s": 56.449,
+      "rtf": 1.7223
+    },
+    {
+      "first_item_s": 15.249,
+      "item_s": [
+        15.249,
+        28.274,
+        36.337,
+        47.605
+      ],
+      "total_s": 47.76,
+      "audio_s": 56.448,
+      "rtf": 0.8461
+    }
+  ]
+}
+=== before round 2 01:32:34 11.83 20.39 34.92
+render job=benchbenchbench0 engine=kokoro items=4 ok=4 elapsed_ms=65625 gpu_ms=0
+render job=benchbenchbench0 engine=kokoro items=4 ok=4 elapsed_ms=55058 gpu_ms=0
+{
+  "label": "before",
+  "streaming": false,
+  "chars": 994,
+  "segments": 4,
+  "threads": 2,
+  "upload_ms": 150.0,
+  "voice": "af_heart",
+  "load_s": 8.28,
+  "torch": "2.2.2",
+  "median_first_item_s": 60.493500000000004,
+  "median_total_s": 60.493500000000004,
+  "median_rtf": 1.07165,
+  "runs": [
+    {
+      "first_item_s": 65.778,
+      "item_s": [
+        65.778,
+        65.778,
+        65.778,
+        65.778
+      ],
+      "total_s": 65.778,
+      "audio_s": 56.449,
+      "rtf": 1.1653
+    },
+    {
+      "first_item_s": 55.209,
+      "item_s": [
+        55.209,
+        55.209,
+        55.209,
+        55.209
+      ],
+      "total_s": 55.209,
+      "audio_s": 56.45,
+      "rtf": 0.978
+    }
+  ]
+}
+=== after round 2 01:34:54 11.76 16.98 31.30
+render job=benchbenchbench0 engine=kokoro items=4 ok=4 first_ms=19070 elapsed_ms=64097 gpu_ms=0
+render job=benchbenchbench0 engine=kokoro items=4 ok=4 first_ms=12661 elapsed_ms=41157 gpu_ms=0
+{
+  "label": "after",
+  "streaming": true,
+  "chars": 994,
+  "segments": 4,
+  "threads": 2,
+  "upload_ms": 150.0,
+  "voice": "af_heart",
+  "load_s": 5.46,
+  "torch": "2.2.2",
+  "median_first_item_s": 15.8655,
+  "median_total_s": 52.7875,
+  "median_rtf": 0.9351,
+  "runs": [
+    {
+      "first_item_s": 19.07,
+      "item_s": [
+        19.07,
+        34.87,
+        47.817,
+        64.097
+      ],
+      "total_s": 64.251,
+      "audio_s": 56.45,
+      "rtf": 1.1382
+    },
+    {
+      "first_item_s": 12.661,
+      "item_s": [
+        12.661,
+        24.53,
+        32.25,
+        41.156
+      ],
+      "total_s": 41.324,
+      "audio_s": 56.45,
+      "rtf": 0.732
+    }
+  ]
+}
+=== end 01:36:54 7.44 13.70 28.12

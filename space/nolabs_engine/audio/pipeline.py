@@ -1,5 +1,6 @@
-"""One render batch from raw model waveforms to encoded clips: trim, batch loudness, per-segment gain and peak ceiling,
-boundary pause, resample + encode. Failures stay per item so one bad clip never loses the rest of the batch."""
+"""One render batch from raw model waveforms to encoded clips: trim, programme loudness, per-segment gain and peak
+ceiling, boundary pause, resample + encode. Failures stay per item so one bad clip never loses the rest of the batch.
+Clips are levelled in order as they arrive (`Stream`), so the first one can ship before the last one exists."""
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
@@ -44,26 +45,55 @@ class _Prepared:
     loudness: float | None
 
 
+@dataclass(frozen=True)
+class Levelled:
+    """A clip with its gain decided, ready to encode. Produced in segment order by `Stream.level`."""
+    prepared: _Prepared
+    boundary: str
+    gain_db: float
+
+
+class Stream:
+    """One render batch processed segment by segment, so each clip can be encoded and uploaded while the next one is
+    still being synthesised.
+
+    `level` must be called in segment order (it extends the batch programme loudness); `finish` (resample + encode,
+    the slow part) may run on any thread and in any order."""
+
+    def __init__(self, profile: AudioProfile, encode: Encoder = codec.encode_webm):
+        self.profile, self._encode = profile, encode
+        self._programmes: dict[int, loudness.Programme] = {}
+
+    def level(self, clip: RawClip | BaseException) -> Levelled | BaseException:
+        if isinstance(clip, BaseException):
+            return clip
+        try:
+            prepared = _prepare(clip)
+        except Exception as e:  # noqa: BLE001 - reported per item
+            return e
+        if isinstance(prepared, BaseException):
+            return prepared
+        programme = self._programmes.setdefault(prepared.sample_rate, loudness.Programme(prepared.sample_rate))
+        programme.add(prepared.wave)
+        gain = loudness.plan_gains([prepared.loudness], programme.loudness(), self.profile.target_lufs,
+                                   self.profile.max_correction_db)[0]
+        return Levelled(prepared=prepared, boundary=clip.boundary, gain_db=gain)
+
+    def finish(self, item: Levelled | BaseException) -> FinishedClip | BaseException:
+        if isinstance(item, BaseException):
+            return item
+        try:
+            return _finish(item.prepared, item.boundary, item.gain_db, self.profile, self._encode)
+        except Exception as e:  # noqa: BLE001 - reported per item
+            return e
+
+
 def finish_batch(clips: Sequence[RawClip | BaseException], profile: AudioProfile,
                  encode: Encoder = codec.encode_webm) -> list[FinishedClip | BaseException]:
-    """Process a batch. Entries that are already exceptions (synthesis failed) pass through unchanged; the result is
-    aligned with `clips`."""
-    prepared: list[_Prepared | BaseException] = [_prepare(c) if isinstance(c, RawClip) else c for c in clips]
-    measured = [p for p in prepared if isinstance(p, _Prepared)]
-    gains = loudness.plan_gains([p.loudness for p in measured], _batch_loudness(measured), profile.target_lufs,
-                                profile.max_correction_db)
-    gain_of = {id(p): g for p, g in zip(measured, gains, strict=True)}
-    out: list[FinishedClip | BaseException] = []
-    boundaries = [c.boundary if isinstance(c, RawClip) else "" for c in clips]
-    for item, boundary in zip(prepared, boundaries, strict=True):
-        if isinstance(item, BaseException):
-            out.append(item)
-            continue
-        try:
-            out.append(_finish(item, boundary, gain_of[id(item)], profile, encode))
-        except Exception as e:  # noqa: BLE001 - reported per item
-            out.append(e)
-    return out
+    """The whole batch in one thread, with exactly the levelling the streamed path applies. Entries that are already
+    exceptions (synthesis failed) pass through unchanged; the result is aligned with `clips`."""
+    stream = Stream(profile, encode)
+    return [stream.finish(stream.level(clip)) for clip in clips]
 
 
 def _prepare(clip: RawClip) -> _Prepared | BaseException:
@@ -71,19 +101,7 @@ def _prepare(clip: RawClip) -> _Prepared | BaseException:
     if trimmed.silent:
         return SilentOutput("the engine produced only silence")
     return _Prepared(wave=trimmed.wave, sample_rate=clip.sample_rate, lead_samples=trimmed.lead_samples,
-                     loudness=loudness.measure(trimmed.wave, clip.sample_rate))
-
-
-def _batch_loudness(prepared: Sequence[_Prepared]) -> float | None:
-    """Integrated loudness of the batch as one programme. Every clip of a batch comes from one engine, so they share a
-    sample rate; a mixed batch falls back to the mean of the per-clip values."""
-    if not prepared:
-        return None
-    rates = {p.sample_rate for p in prepared}
-    if len(rates) == 1:
-        return loudness.measure(np.concatenate([p.wave for p in prepared]), rates.pop())
-    values = [p.loudness for p in prepared if p.loudness is not None]
-    return float(np.mean(values)) if values else None
+                     loudness=loudness.measure_blocks(trimmed.wave, clip.sample_rate))
 
 
 def _finish(item: _Prepared, boundary: str, gain_db: float, profile: AudioProfile, encode: Encoder) -> FinishedClip:

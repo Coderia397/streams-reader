@@ -25,8 +25,17 @@ MING_FILES: tuple[str, ...] = (
     "special_tokens_map.json", "tokenizer.json", "tokenizer_config.json", "vocab.json",
 )
 
+# Kokoro's out-of-lexicon G2P fallback (engines/g2p_fallback.py), by Kokoro lang code: a = US, b = UK English.
+# Commits read from the HF API on 2026-10-31; Apache-2.0; model.safetensors is 3,011,692 bytes each.
+G2P_REPOS: dict[str, tuple[str, str]] = {
+    "a": ("PeterReid/graphemes_to_phonemes_en_us", "a5631b285d18d59483c32c0c3379cb9fac924f4b"),
+    "b": ("PeterReid/graphemes_to_phonemes_en_gb", "d8357d5067fa26a5c34134d6bbcf4bbf000c0ac8"),
+}
+G2P_FILES: tuple[str, ...] = ("config.json", "generation_config.json", "model.safetensors")
+
 MODEL_REVS: dict[str, str] = {
     "kokoro": f"{KOKORO_REPO}@{KOKORO_COMMIT}",
+    "kokoro_g2p": ",".join(f"{repo}@{commit}" for repo, commit in G2P_REPOS.values()),
     "ming": f"{MING_REPO}@{MING_COMMIT}",
 }
 

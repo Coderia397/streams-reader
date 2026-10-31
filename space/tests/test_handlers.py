@@ -32,7 +32,7 @@ class FailingService(Service):
         super().__init__(Storage(), None, None, statuses={"kokoro": "ready"})
         self.error = error
 
-    def render_cpu(self, req):
+    def stream_cpu(self, req):
         raise self.error
 
 
@@ -48,23 +48,23 @@ def failure(call) -> EndpointFailure:
 
 
 def test_bad_json_is_a_bad_request():
-    f = failure(lambda: endpoints().render_cpu("{nope"))
+    f = failure(lambda: list(endpoints().render_cpu("{nope")))
     assert f.kind is FailureKind.BAD_REQUEST and f.message.startswith("bad request: request is not valid JSON")
 
 
 def test_contract_violation_is_a_bad_request():
-    f = failure(lambda: endpoints().render_gpu(json.dumps(kokoro_request(v=2))))
+    f = failure(lambda: list(endpoints().render_gpu(json.dumps(kokoro_request(v=2)))))
     assert f.message == "bad request: contract version 2 not supported (expected 1)"
 
 
 def test_unexpected_exception_is_an_engine_error():
-    f = failure(lambda: endpoints(KeyError("x")).render_cpu(json.dumps(kokoro_request())))
+    f = failure(lambda: list(endpoints(KeyError("x")).render_cpu(json.dumps(kokoro_request()))))
     assert f.kind is FailureKind.ENGINE and f.message == "engine error: KeyError: 'x'" and f.original is None
 
 
 def test_gradio_errors_pass_through_as_the_same_object():
     original = GradioError("You have exceeded your ZeroGPU runs limit. ")
-    f = failure(lambda: endpoints(original).render_cpu(json.dumps(kokoro_request())))
+    f = failure(lambda: list(endpoints(original).render_cpu(json.dumps(kokoro_request()))))
     assert f.kind is FailureKind.PASSTHROUGH and f.original is original
 
 
@@ -81,7 +81,7 @@ def test_zerogpu_texts_pass_through_unwrapped(message):
 
 
 def test_engine_missing_maps_to_engine_error():
-    f = failure(lambda: endpoints().render_cpu(json.dumps(kokoro_request())))
+    f = failure(lambda: list(endpoints().render_cpu(json.dumps(kokoro_request()))))
     assert f.message == "engine error: EngineUnavailable: kokoro is not loaded (ready)"
 
 
@@ -94,3 +94,23 @@ def test_prepare_reference_validates_before_touching_storage():
     f = failure(lambda: endpoints().prepare_reference(json.dumps({"v": 1, "raw_key": "x", "ref_key": "y",
                                                                   "transcript": "z"})))
     assert f.kind is FailureKind.BAD_REQUEST and "raw_key" in f.message
+
+
+def test_render_streams_item_results_then_the_full_response():
+    from conftest import K1, K2, item
+    from test_service import FakeKokoro, fake_encode
+
+    svc = Service(FakeStorageForStream(), FakeKokoro(), None, statuses={"kokoro": "ready"}, encode=fake_encode)
+    body = json.dumps(kokoro_request(item(K1, "one"), item(K2, "two")))
+    *items, last = list(Endpoints(svc).render_cpu(body))
+    assert [c.parse_item_result(x).key for x in items] == [K1, K2]
+    response = c.parse_engine_response(last)
+    assert [r.to_json() for r in response.items] == items
+
+
+class FakeStorageForStream(Storage):
+    def put_audio(self, key, data):
+        pass
+
+    def put_json(self, key, text):
+        pass

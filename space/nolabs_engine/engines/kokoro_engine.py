@@ -1,7 +1,8 @@
 """Kokoro-82M on the Space CPU: the standard narrator. It spends no ZeroGPU quota, so it can read whole books.
 
-Weights and voices load from the pinned snapshot (revisions.py) by file path, because `KModel`/`KPipeline` would
-otherwise fetch the repo's latest commit through `hf_hub_download`.
+Unknown words are phonemised by the BART fallback (g2p_fallback.py) instead of espeak-ng. Weights and voices load from
+the pinned snapshot (revisions.py) by file path, because `KModel`/`KPipeline` would otherwise fetch the repo's latest
+commit through `hf_hub_download`.
 """
 from __future__ import annotations
 
@@ -14,6 +15,7 @@ import torch
 
 from .. import revisions
 from ..voices import KOKORO_VOICES, kokoro_lang_code
+from .g2p_fallback import BartFallback
 from .timing import Word, place_tokens
 
 SAMPLE_RATE = 24_000
@@ -41,6 +43,9 @@ class KokoroEngine:
         ).to("cpu").eval()
         self._pipelines = {code: KPipeline(lang_code=code, repo_id=revisions.KOKORO_REPO, model=self._model)
                            for code in "ab"}
+        for code, pipeline in self._pipelines.items():
+            # Out-of-lexicon words go to the BART network, not espeak-ng (D32): same pronunciations as the apps.
+            pipeline.g2p.fallback = BartFallback(revisions.snapshot(*revisions.G2P_REPOS[code], revisions.G2P_FILES))
         self._voice_dir = os.path.join(root, "voices")
         # KPipeline caches voices in a plain dict and the model is not re-entrant; one synthesis at a time.
         self._lock = threading.Lock()

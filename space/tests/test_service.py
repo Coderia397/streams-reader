@@ -1,6 +1,8 @@
 import hashlib
 import io
 import json
+import threading
+import time
 from dataclasses import dataclass
 
 import numpy as np
@@ -9,11 +11,14 @@ import soundfile as sf
 from conftest import JOB, K1, K2, K3, VOICE_ID, item, kokoro_request, ming_request, reference_voice, tone
 
 from nolabs_engine import contracts as c
-from nolabs_engine.audio import codec
+from nolabs_engine.audio import codec, pipeline
 from nolabs_engine.errors import ContractError, EngineUnavailable, InputError
+from nolabs_engine.engines.ming import GpuDone, GpuWave, MingClip, MingDone, MingEngine
+from nolabs_engine.engines.ming_plan import GpuPolicy
 from nolabs_engine.service import Service
 
 SR = 24_000
+WAIT_S = 5.0
 
 
 class FakeStorage:
@@ -73,24 +78,18 @@ class FakeKokoro:
         return Synth(wave, SR, ((600, 900, 0, 4),))
 
 
-@dataclass
-class MingOut:
-    waves: list
-    sample_rate: int
-    gpu_s: float
-
-
 class FakeMing:
     def __init__(self, error: Exception | None = None):
         self.calls = []
         self.error = error
 
-    def render(self, items, voice, ref_path):
+    def render_stream(self, items, voice, ref_path):
         self.calls.append((items, voice, ref_path))
         if self.error is not None:
             raise self.error
-        waves = [tone(1.0, 44_100) if "bad" not in i.text else "ValueError: no" for i in items]
-        return MingOut(waves, 44_100, 1.5)
+        for i, it in enumerate(items):
+            yield MingClip(i, tone(1.0, 44_100) if "bad" not in it.text else "ValueError: no", 44_100)
+        yield MingDone(1.5)
 
 
 def fake_encode(wave, source_rate, out_rate, kbps):
@@ -184,6 +183,74 @@ def test_wrong_endpoint_or_missing_engine():
         service().render_cpu(c.parse_engine_request(kokoro_request()))
 
 
+# --------------------------------------------------------------------------------------------------------- streaming
+
+
+class GatedKokoro(FakeKokoro):
+    """Item i+1 is synthesised only once the consumer holds item i's result, so a test hangs (and fails) if results
+    wait for the whole batch."""
+
+    def __init__(self, handed_out: list):
+        super().__init__()
+        self.handed_out = handed_out
+
+    def synthesize(self, text, voice):
+        index = len(self.calls)
+        deadline = time.monotonic() + 5
+        while index > 0 and len(self.handed_out) < index and time.monotonic() < deadline:
+            time.sleep(0.001)
+        assert len(self.handed_out) >= index, "item results were held back until later items were synthesised"
+        return super().synthesize(text, voice)
+
+
+def test_stream_cpu_yields_each_item_before_the_next_is_synthesised_then_the_response():
+    store, handed_out = FakeStorage(), []
+    keys = (K1, K2, K3)
+    body = kokoro_request(*(item(k, f"Segment {i}.") for i, k in enumerate(keys)))
+    svc = service(store, GatedKokoro(handed_out))
+    events = []
+    for event in svc.stream_cpu(c.parse_engine_request(body)):
+        if isinstance(event, c.EngineItemResult):
+            # The audio and its sidecar are in R2 before the result is announced; the marker is not.
+            assert f"audio/kokoro/{event.key}.webm.json" in store.objects
+            assert f"jobs/{JOB}.json" not in store.objects
+            handed_out.append(event)
+        events.append(event)
+    *items, response = events
+    assert [r.key for r in items] == list(keys) and isinstance(response, c.EngineResponse)
+    assert response.items == tuple(items) and all(r.ok for r in items)
+    assert c.parse_engine_response(store.objects[f"jobs/{JOB}.json"]) == response
+    assert [k for _, k, _ in store.writes][-1] == f"jobs/{JOB}.json"
+
+
+def test_stream_keeps_request_order_when_uploads_finish_out_of_order():
+    class SlowFirstStorage(FakeStorage):
+        def put_audio(self, key, data):
+            if K1 in key:
+                time.sleep(0.05)
+            super().put_audio(key, data)
+
+    body = kokoro_request(item(K1, "one"), item(K2, "two"), item(K3, "boom"))
+    events = list(service(SlowFirstStorage(), FakeKokoro(), max_ahead=3).stream_cpu(c.parse_engine_request(body)))
+    assert [e.key for e in events[:-1]] == [K1, K2, K3]
+    assert [e.ok for e in events[:-1]] == [True, True, False]
+
+
+def test_streamed_and_drained_renders_give_the_same_response():
+    body = kokoro_request(item(K1, "one", boundary="paragraph"), item(K2, "hush"), item(K3, "three"))
+    streamed = list(service(kokoro=FakeKokoro()).stream_cpu(c.parse_engine_request(body)))[-1]
+    drained = render_cpu(service(kokoro=FakeKokoro()), body)
+    assert streamed.items == drained.items
+
+
+def test_stream_gpu_yields_items_then_response_with_gpu_time():
+    store = FakeStorage()
+    body = ming_request(item(K1, "one", "ip", "ming"), item(K2, "bad two", "ip", "ming"))
+    events = list(service(store, ming=FakeMing()).stream_gpu(c.parse_engine_request(body)))
+    assert [type(e) for e in events] == [c.EngineItemResult, c.EngineItemResult, c.EngineResponse]
+    assert events[0].ok and events[1].error.code == "synthesis_failed" and events[2].gpu_ms == 1500
+
+
 # -------------------------------------------------------------------------------------------------------------- ming
 
 
@@ -212,6 +279,103 @@ def test_zerogpu_error_propagates_and_writes_nothing():
     with pytest.raises(RuntimeError) as caught:
         service(store, ming=FakeMing(error)).render_gpu(c.parse_engine_request(ming_request()))
     assert caught.value is error and store.writes == []
+
+
+def test_zerogpu_abort_mid_batch_keeps_finished_items_and_writes_no_marker(tmp_path):
+    # Item 0 is in R2 with its sidecar before the abort; no marker, and the error keeps its identity (and text).
+    store = FakeStorage()
+    error = RuntimeError("You have exceeded your free ZeroGPU quota (60s requested vs. 12s left). "
+                         "Try again in 0:42:00.")
+
+    def gpu_run(jobs):
+        yield GpuWave(0, tone(1.0, 44_100))
+        raise error
+
+    ming = MingEngine(gpu_run, 44_100, GpuPolicy(), anchor_dir=str(tmp_path))
+    req = c.parse_engine_request(ming_request(item(K1, "one", "ip", "ming"), item(K2, "two", "ip", "ming")))
+    events = []
+    with pytest.raises(RuntimeError) as caught:
+        for event in service(store, ming=ming).stream_gpu(req):
+            events.append(event)
+    assert caught.value is error
+    assert [type(e) for e in events] == [c.EngineItemResult] and events[0].ok
+    audio_key = f"audio/ming/{K1}.webm"
+    assert [key for _, key, _ in store.writes] == [audio_key, c.sidecar_key(audio_key)]
+    assert req.marker_key not in store.objects
+
+
+class HeldMing(MingEngine):
+    """Keeps every generator it hands out alive, as a traceback or a lingering frame would, so only an explicit
+    `close()` (never a refcount drop) can end them."""
+
+    def __init__(self, gpu_run, tmp_path):
+        self.held: list = []
+
+        def held_gpu_run(jobs):
+            run = gpu_run(jobs)
+            self.held.append(run)
+            return run
+
+        super().__init__(held_gpu_run, 44_100, GpuPolicy(), anchor_dir=str(tmp_path))
+
+    def render_stream(self, items, voice, ref_path):
+        events = super().render_stream(items, voice, ref_path)
+        self.held.append(events)
+        return events
+
+
+def start_synth(events) -> threading.Thread:
+    """Pull the first result (which starts the 'synth' thread) and return that thread."""
+    before = set(threading.enumerate())
+    assert isinstance(next(events), c.EngineItemResult)
+    synth = [t for t in threading.enumerate() if t.name == "synth" and t not in before]
+    assert len(synth) == 1
+    return synth[0]
+
+
+def test_closing_stream_gpu_early_closes_the_gpu_generator_on_the_synthesis_thread(tmp_path):
+    # spaces stops the ZeroGPU worker only when GeneratorExit reaches its generator; that must happen when the client
+    # goes away, not whenever the last reference happens to drop. HeldMing holds every link, so each close is needed.
+    closed_on: list[str] = []
+
+    def gpu_run(jobs):
+        try:
+            for i in range(len(jobs)):
+                yield GpuWave(i, tone(1.0, 44_100))
+            yield GpuDone(1.0)
+        finally:
+            closed_on.append(threading.current_thread().name)
+
+    ming = HeldMing(gpu_run, tmp_path)
+    req = c.parse_engine_request(ming_request(*(item(k, f"item {k[:4]}", "ip", "ming") for k in (K1, K2, K3))))
+    events = service(ming=ming, max_ahead=1).stream_gpu(req)
+    synth = start_synth(events)
+    events.close()
+    synth.join(WAIT_S)
+    assert not synth.is_alive()
+    assert closed_on == ["synth"]
+    assert len(ming.held) == 2 and all(g.gi_frame is None for g in ming.held)
+
+
+def test_closing_a_stream_early_closes_the_engine_generator_it_was_given():
+    # The first link of the chain: `_stream` closes the clip source itself, on the synthesis thread.
+    closed_on: list[str] = []
+
+    def clips():
+        try:
+            while True:
+                yield pipeline.RawClip(wave=tone(1.0, SR), sample_rate=SR, boundary="sentence"), ()
+        finally:
+            closed_on.append(threading.current_thread().name)
+
+    source = clips()  # held here for the whole test, so only an explicit close can run its `finally`
+    req = c.parse_engine_request(kokoro_request(item(K1, "one"), item(K2, "two"), item(K3, "three")))
+    events = service(max_ahead=1)._stream(req, 0.0, source, lambda: 0)
+    synth = start_synth(events)
+    events.close()
+    synth.join(WAIT_S)
+    assert not synth.is_alive()
+    assert closed_on == ["synth"] and source.gi_frame is None
 
 
 # --------------------------------------------------------------------------------------------- prepare reference

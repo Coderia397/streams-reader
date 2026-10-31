@@ -88,3 +88,51 @@ def test_apply_gain_respects_peak_ceiling_without_limiting():
 def test_apply_gain_on_quiet_audio_hits_the_requested_gain():
     out, applied = loudness.apply_gain(tone(1.0, SR, amplitude=0.01), 6.0, -1.5)
     assert applied == pytest.approx(6.0) and np.abs(out).max() == pytest.approx(0.01 * 10 ** 0.3, rel=1e-4)
+
+
+def speechlike(seconds: float, seed: int, level: float) -> np.ndarray:
+    """Noise bursts with gaps, so gating has something to gate."""
+    rng = np.random.default_rng(seed)
+    wave = rng.normal(0, level, int(seconds * SR)).astype(np.float32)
+    envelope = (np.sin(np.arange(wave.size) / SR * 2 * np.pi * 1.3) > -0.3).astype(np.float32)
+    return wave * envelope
+
+
+def test_programme_equals_measure_blocks_on_the_concatenation_for_random_clip_lengths():
+    # Lengths are random to the sample, so block edges fall anywhere relative to clip joins and trailing remainders.
+    rng = np.random.default_rng(22)
+    checked = 0
+    for case in range(25):
+        clips = [speechlike(float(rng.uniform(0.3, 6.0)), 100 * case + k, float(rng.uniform(0.01, 0.3)))
+                 for k in range(int(rng.integers(1, 6)))]
+        programme = loudness.Programme(SR)
+        for i, clip in enumerate(clips, start=1):
+            programme.add(clip)
+            expected = loudness.measure_blocks(np.concatenate(clips[:i]), SR)
+            if expected is None:
+                assert programme.loudness() is None
+                continue
+            assert programme.loudness() == pytest.approx(expected, abs=1e-9)
+            checked += 1
+    assert checked >= 50
+
+
+def test_measure_blocks_equals_pyloudnorm_when_no_partial_block_is_left():
+    # pyloudnorm adds a partial trailing block when more than 50 ms remain after the last full hop; at whole hops
+    # (and up to 50 ms past them) both meters count the same complete blocks.
+    for seconds, seed in ((3.0, 1), (0.7, 2), (5.34, 3), (2.04, 4)):
+        wave = speechlike(seconds, seed, 0.1)
+        assert loudness.measure_blocks(wave, SR) == pytest.approx(lufs(wave), abs=1e-9)
+    assert loudness.measure_blocks(tone(0.3, SR), SR) is None
+    assert loudness.measure_blocks(np.zeros(SR, np.float32), SR) is None
+
+
+def test_programme_of_nothing_measurable_is_none():
+    programme = loudness.Programme(SR)
+    assert programme.loudness() is None
+    programme.add(np.zeros(int(0.3 * SR), np.float32))  # shorter than one 400 ms block
+    assert programme.loudness() is None
+    programme.add(np.zeros(SR, np.float32))
+    assert programme.loudness() is None  # every block under the -70 LUFS gate
+    programme.add(tone(1.0, SR))
+    assert programme.loudness() is not None

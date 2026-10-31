@@ -1,9 +1,13 @@
-"""The four Space endpoints as plain functions from one JSON string to one JSON string. app.py binds them to Gradio and
-turns `EndpointFailure` into `gr.Error`; everything else is testable without Gradio."""
+"""The four Space endpoints as plain functions of one JSON string. app.py binds them to Gradio and turns
+`EndpointFailure` into `gr.Error`; everything else is testable without Gradio.
+
+The render endpoints are generators (Gradio streams each yield as a `generating` SSE event): one EngineItemResult JSON
+per finished item, in request order, then the full EngineResponse JSON, which Gradio also sends as the `complete`
+event. A client that only reads `complete` sees exactly the contract v1 response."""
 from __future__ import annotations
 
 import traceback
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 
 from . import contracts
 from .errors import FailureKind, classify
@@ -26,11 +30,11 @@ class Endpoints:
         self.service = service
         self.passthrough = passthrough
 
-    def render_cpu(self, raw: str) -> str:
-        return self._call(lambda: self.service.render_cpu(contracts.parse_engine_request(raw)).to_json())
+    def render_cpu(self, raw: str) -> Iterator[str]:
+        return self._stream(lambda: self.service.stream_cpu(contracts.parse_engine_request(raw)))
 
-    def render_gpu(self, raw: str) -> str:
-        return self._call(lambda: self.service.render_gpu(contracts.parse_engine_request(raw)).to_json())
+    def render_gpu(self, raw: str) -> Iterator[str]:
+        return self._stream(lambda: self.service.stream_gpu(contracts.parse_engine_request(raw)))
 
     def prepare_reference(self, raw: str) -> str:
         return self._call(
@@ -44,7 +48,18 @@ class Endpoints:
         try:
             return fn()
         except Exception as e:
-            kind, message = classify(e, self.passthrough)
-            if kind is FailureKind.ENGINE:
-                traceback.print_exc()
-            raise EndpointFailure(kind, message, e if kind is FailureKind.PASSTHROUGH else None) from e
+            raise self._failure(e) from e
+
+    def _stream(self, fn: Callable[[], Iterator[contracts.EngineItemResult | contracts.EngineResponse]]
+                ) -> Iterator[str]:
+        try:
+            for event in fn():
+                yield event.to_json()
+        except Exception as e:
+            raise self._failure(e) from e
+
+    def _failure(self, e: Exception) -> EndpointFailure:
+        kind, message = classify(e, self.passthrough)
+        if kind is FailureKind.ENGINE:
+            traceback.print_exc()
+        return EndpointFailure(kind, message, e if kind is FailureKind.PASSTHROUGH else None)

@@ -1,4 +1,5 @@
-"""The Ming engine as the service sees it: plan on the CPU, one GPU call per batch, anchors cached on the CPU side.
+"""The Ming engine as the service sees it: plan on the CPU, one GPU call per batch that streams each wave out as it is
+done, anchors cached on the CPU side.
 
 The GPU function itself lives in ming_gpu.py; it is injected here so this orchestration is testable without torch or
 `spaces`. Exceptions from the GPU call (ZeroGPU quota, runs limit, illegal duration) are deliberately not caught: they
@@ -6,12 +7,13 @@ must reach the Worker with their original text.
 """
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import io
 import os
 import tempfile
 import threading
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Generator, Sequence
 from dataclasses import dataclass
 
 import numpy as np
@@ -23,23 +25,41 @@ from . import ming_plan
 from .ming_plan import GpuPolicy, Job
 
 
+# What the GPU generator yields, in this order: per job, the anchor it needed (if rendered in this call) and then its
+# wave; finally the GPU seconds spent. Plain dataclasses, because ZeroGPU pickles them across its worker process.
 @dataclass(frozen=True)
-class GpuResult:
-    """What the GPU function returns: float32 PCM (or an error string) per job, PCM of anchors it rendered by preset
-    id, and the GPU seconds spent inside the call."""
-    waves: list[np.ndarray | str]
-    anchors: dict[str, np.ndarray]
+class GpuAnchor:
+    voice_id: str
+    wave: np.ndarray
+
+
+@dataclass(frozen=True)
+class GpuWave:
+    index: int
+    # float32 PCM, or the error text when this job failed.
+    wave: np.ndarray | str
+
+
+@dataclass(frozen=True)
+class GpuDone:
     gpu_s: float
 
 
+GpuEvent = GpuAnchor | GpuWave | GpuDone
+# A generator, not any iterator: `close()` is how an early stop reaches the ZeroGPU worker.
+GpuRun = Callable[[list[Job]], Generator[GpuEvent, None, None]]
+
+
 @dataclass(frozen=True)
-class MingOutput:
-    waves: list[np.ndarray | str]
+class MingClip:
+    index: int
+    wave: np.ndarray | str
     sample_rate: int
+
+
+@dataclass(frozen=True)
+class MingDone:
     gpu_s: float
-
-
-GpuRun = Callable[[list[Job]], GpuResult]
 
 
 class MingEngine:
@@ -59,19 +79,32 @@ class MingEngine:
         with self._lock:
             return dict(self._anchors)
 
-    def render(self, items: Sequence[EngineItem], voice: EngineVoice, ref_path: str) -> MingOutput:
+    def render_stream(self, items: Sequence[EngineItem], voice: EngineVoice,
+                      ref_path: str) -> Generator[MingClip | MingDone, None, None]:
+        """Yield each item's wave as soon as the GPU call has it, in item order, then `MingDone`. The GPU call is
+        still one call for the whole batch; encoding and uploads overlap it on the CPU side."""
         jobs = ming_plan.plan_batch(items, voice, ref_path, self.anchors)
         chars = ming_plan.item_chars(jobs)
         if self.policy.needed(chars) > self.policy.max_s:
             raise ContractError(
                 f"batch of {chars} characters needs about {self.policy.needed(chars):.0f} GPU seconds, more than the "
                 f"{self.policy.max_s} s one call may request; send fewer items")
-        result = self._gpu_run(jobs)
-        if len(result.waves) != len(jobs):
-            raise RuntimeError(f"GPU call returned {len(result.waves)} clips for {len(jobs)} items")
-        for voice_id, wave in result.anchors.items():
-            self._save_anchor(voice_id, wave)
-        return MingOutput(waves=list(result.waves), sample_rate=self.sample_rate, gpu_s=result.gpu_s)
+        expected, done = 0, None
+        # Closed explicitly: the spaces wrapper stops the GPU worker only when GeneratorExit reaches its generator.
+        with contextlib.closing(self._gpu_run(jobs)) as run:
+            for event in run:
+                if isinstance(event, GpuAnchor):
+                    self._save_anchor(event.voice_id, event.wave)
+                elif isinstance(event, GpuWave):
+                    if event.index != expected:
+                        raise RuntimeError(f"GPU call returned item {event.index} where item {expected} was due")
+                    expected += 1
+                    yield MingClip(event.index, event.wave, self.sample_rate)
+                elif isinstance(event, GpuDone):
+                    done = event
+        if expected != len(jobs) or done is None:
+            raise RuntimeError(f"GPU call returned {expected} clips for {len(jobs)} items")
+        yield MingDone(done.gpu_s)
 
     def _save_anchor(self, voice_id: str, wave: np.ndarray) -> None:
         buf = io.BytesIO()

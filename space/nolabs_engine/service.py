@@ -1,22 +1,23 @@
-"""Request handling: synthesise, post-process, upload, report. Engines, storage, the clock and ffmpeg are injected so
-the whole flow runs in tests with fakes.
+"""Request handling: synthesise, post-process, upload, report, one segment at a time so results stream out.
+Engines, storage, the clock and ffmpeg are injected so the whole flow runs in tests with fakes.
 
 Write order per job (notes/09): each clip's audio, then its sidecar `<object_key>.json`, and the job marker (the full
 response) last, so a marker always means every listed object is in place.
 """
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import io
 import time
-from collections.abc import Callable, Mapping, Sequence
-from concurrent.futures import Future, ThreadPoolExecutor
+from collections.abc import Callable, Generator, Iterator, Mapping, Sequence
+from concurrent.futures import ThreadPoolExecutor
 from typing import Protocol
 
 import numpy as np
 import soundfile as sf
 
-from . import reference
+from . import reference, streaming
 from .audio import codec, pipeline
 from .audio.pipeline import FinishedClip, RawClip, SilentOutput
 from .contracts import (
@@ -32,6 +33,7 @@ from .contracts import (
     ReferenceVoice,
     sidecar_key,
 )
+from .engines.ming import MingClip, MingDone
 from .engines.timing import Word, shift_words
 from .errors import ContractError, EngineUnavailable, InputError
 from .revisions import MODEL_REVS
@@ -59,14 +61,9 @@ class KokoroLike(Protocol):
     def synthesize(self, text: str, voice: str) -> SynthesisLike: ...
 
 
-class MingOutputLike(Protocol):
-    waves: list[np.ndarray | str]
-    sample_rate: int
-    gpu_s: float
-
-
 class MingLike(Protocol):
-    def render(self, items: Sequence[EngineItem], voice: EngineVoice, ref_path: str) -> MingOutputLike: ...
+    def render_stream(self, items: Sequence[EngineItem], voice: EngineVoice,
+                      ref_path: str) -> Generator[MingClip | MingDone, None, None]: ...
 
 
 class ItemFailure(Exception):
@@ -84,16 +81,21 @@ class Service:
     def __init__(self, storage: StorageLike, kokoro: KokoroLike | None = None, ming: MingLike | None = None, *,
                  statuses: Mapping[str, str] | None = None, model_revs: Mapping[str, str] = MODEL_REVS,
                  clock: Callable[[], float] = time.monotonic, encode: pipeline.Encoder = codec.encode_webm,
-                 decode: Decoder = codec.decode_mono, upload_workers: int = 4):
+                 decode: Decoder = codec.decode_mono, upload_workers: int = 4, max_ahead: int = 2):
         self.storage, self.kokoro, self.ming = storage, kokoro, ming
         self.statuses = statuses if statuses is not None else {}
         self.model_revs = dict(model_revs)
         self.clock, self._encode, self._decode = clock, encode, decode
+        # Items synthesised but not yet handed out: segment N+1 renders while N encodes and uploads.
+        self.max_ahead = max_ahead
         self._uploads = ThreadPoolExecutor(max_workers=upload_workers, thread_name_prefix="r2")
 
     # -- render ---------------------------------------------------------------------------------------------------
+    #
+    # `stream_*` yield one EngineItemResult per item, in request order, as soon as its audio and sidecar are in R2,
+    # then the EngineResponse (the same results, after the marker is written). `render_*` return the response only.
 
-    def render_cpu(self, req: EngineRequest) -> EngineResponse:
+    def stream_cpu(self, req: EngineRequest) -> Iterator[EngineItemResult | EngineResponse]:
         if req.engine != "kokoro":
             raise ContractError("render_cpu only runs the kokoro engine")
         kokoro = self.kokoro
@@ -101,20 +103,20 @@ class Service:
             raise EngineUnavailable(f"kokoro is not loaded ({self.statuses.get('kokoro', 'unknown')})")
         if not isinstance(req.voice, PresetVoice):
             raise ContractError("the kokoro engine only has preset voices")
-        started = self.clock()
-        clips: list[RawClip | BaseException] = []
-        words: list[Sequence[Word]] = []
-        for item in req.items:
-            try:
-                synth = kokoro.synthesize(item.text, req.voice.id)
-                clips.append(RawClip(wave=synth.wave, sample_rate=synth.sample_rate, boundary=item.boundary))
-                words.append(synth.words)
-            except Exception as e:  # noqa: BLE001 - reported per item, the batch carries on
-                clips.append(ItemFailure("synthesis_failed", f"{type(e).__name__}: {e}"))
-                words.append(())
-        return self._complete(req, clips, words, started, gpu_ms=0)
+        voice = req.voice.id
 
-    def render_gpu(self, req: EngineRequest) -> EngineResponse:
+        def synthesise() -> Iterator[tuple[RawClip | BaseException, Sequence[Word]]]:
+            for item in req.items:
+                try:
+                    synth = kokoro.synthesize(item.text, voice)
+                except Exception as e:  # noqa: BLE001 - reported per item, the batch carries on
+                    yield ItemFailure("synthesis_failed", f"{type(e).__name__}: {e}"), ()
+                    continue
+                yield RawClip(wave=synth.wave, sample_rate=synth.sample_rate, boundary=item.boundary), synth.words
+
+        yield from self._stream(req, self.clock(), synthesise(), lambda: 0)
+
+    def stream_gpu(self, req: EngineRequest) -> Iterator[EngineItemResult | EngineResponse]:
         if req.engine != "ming":
             raise ContractError("render_gpu only runs the ming engine")
         ming = self.ming
@@ -122,37 +124,75 @@ class Service:
             raise EngineUnavailable(f"ming is not loaded ({self.statuses.get('ming', 'unknown')})")
         started = self.clock()
         ref_path = self.storage.download(req.voice.ref_key) if isinstance(req.voice, ReferenceVoice) else ""
-        # Not wrapped: ZeroGPU quota and runs-limit errors must reach the Worker with their original text.
-        out = ming.render(req.items, req.voice, ref_path)
-        clips: list[RawClip | BaseException] = [
-            ItemFailure("synthesis_failed", wave) if isinstance(wave, str)
-            else RawClip(wave=wave, sample_rate=out.sample_rate, boundary=item.boundary)
-            for item, wave in zip(req.items, out.waves, strict=True)
-        ]
-        return self._complete(req, clips, [() for _ in req.items], started, gpu_ms=round(out.gpu_s * 1000))
+        gpu_ms = [0]
 
-    def _complete(self, req: EngineRequest, clips: Sequence[RawClip | BaseException], words: Sequence[Sequence[Word]],
-                  started: float, gpu_ms: int) -> EngineResponse:
-        finished = pipeline.finish_batch(clips, req.audio, self._encode)
-        results: list[EngineItemResult | None] = [None] * len(req.items)
-        pending: list[tuple[int, Future[EngineItemResult]]] = []
-        for i, (item, clip, item_words) in enumerate(zip(req.items, finished, words, strict=True)):
-            if isinstance(clip, BaseException):
-                results[i] = _failure(item.key, clip)
-                continue
-            result = _success(item, clip, item_words)
-            pending.append((i, self._uploads.submit(self._upload, item, clip, result)))
-        for i, future in pending:
-            results[i] = future.result()
-        items = tuple(r if r is not None else EngineItemResult.failed(req.items[i].key, "internal", "no result")
-                      for i, r in enumerate(results))
-        response = EngineResponse(job_id=req.job_id, engine=req.engine, items=items,
-                                  elapsed_ms=round((self.clock() - started) * 1000), gpu_ms=gpu_ms)
+        def synthesise() -> Iterator[tuple[RawClip | BaseException, Sequence[Word]]]:
+            # Not wrapped: ZeroGPU quota and runs-limit errors must reach the Worker with their original text.
+            # Closed explicitly so an early close reaches the GPU generator now, not whenever the frames are freed.
+            with contextlib.closing(ming.render_stream(req.items, req.voice, ref_path)) as events:
+                for event in events:
+                    if isinstance(event, MingDone):
+                        gpu_ms[0] = round(event.gpu_s * 1000)
+                        continue
+                    item = req.items[event.index]
+                    if isinstance(event.wave, str):
+                        yield ItemFailure("synthesis_failed", event.wave), ()
+                    else:
+                        yield RawClip(wave=event.wave, sample_rate=event.sample_rate, boundary=item.boundary), ()
+
+        yield from self._stream(req, started, synthesise(), lambda: gpu_ms[0])
+
+    def render_cpu(self, req: EngineRequest) -> EngineResponse:
+        return _last(self.stream_cpu(req))
+
+    def render_gpu(self, req: EngineRequest) -> EngineResponse:
+        return _last(self.stream_gpu(req))
+
+    def _stream(self, req: EngineRequest, started: float,
+                clips: Iterator[tuple[RawClip | BaseException, Sequence[Word]]],
+                gpu_ms: Callable[[], int]) -> Iterator[EngineItemResult | EngineResponse]:
+        """Level each clip in order on the synthesis thread, encode + upload it on the pool, and yield results in
+        request order. Write order per item stays audio then sidecar; the marker is written after the last item."""
+        stream = pipeline.Stream(req.audio, self._encode)
+        items = iter(req.items)
+
+        def levelled() -> Iterator[tuple[EngineItem, pipeline.Levelled | BaseException, Sequence[Word]]]:
+            try:
+                for clip, words in clips:
+                    item = next(items, None)
+                    if item is None:
+                        raise RuntimeError(f"the engine returned more clips than the {len(req.items)} items asked for")
+                    yield item, stream.level(clip), words
+            finally:
+                # Close the engine generator explicitly, on this (the synthesis) thread: for Ming this chain reaches
+                # the ZeroGPU generator, whose GeneratorExit is what stops the GPU worker after a client disconnect.
+                close = getattr(clips, "close", None)
+                if close is not None:
+                    close()
+
+        def finish(work: tuple[EngineItem, pipeline.Levelled | BaseException, Sequence[Word]]) -> EngineItemResult:
+            item, clip, words = work
+            done = stream.finish(clip)
+            if isinstance(done, BaseException):
+                return _failure(item.key, done)
+            return self._upload(item, done, _success(item, done, words))
+
+        results: list[EngineItemResult] = []
+        first_ms: int | None = None
+        for result in streaming.ordered_pipeline(levelled(), finish, self._uploads, self.max_ahead):
+            if first_ms is None:
+                first_ms = round((self.clock() - started) * 1000)
+            results.append(result)
+            yield result
+        if len(results) != len(req.items):
+            raise RuntimeError(f"the engine returned {len(results)} clips for {len(req.items)} items")
+        response = EngineResponse(job_id=req.job_id, engine=req.engine, items=tuple(results),
+                                  elapsed_ms=round((self.clock() - started) * 1000), gpu_ms=gpu_ms())
         self._write_marker(req.marker_key, response)
-        ok = sum(1 for r in items if r.ok)
-        print(f"render job={req.job_id} engine={req.engine} items={len(items)} ok={ok} "
-              f"elapsed_ms={response.elapsed_ms} gpu_ms={gpu_ms}", flush=True)
-        return response
+        ok = sum(1 for r in results if r.ok)
+        print(f"render job={req.job_id} engine={req.engine} items={len(results)} ok={ok} first_ms={first_ms} "
+              f"elapsed_ms={response.elapsed_ms} gpu_ms={response.gpu_ms}", flush=True)
+        yield response
 
     def _upload(self, item: EngineItem, clip: FinishedClip, result: EngineItemResult) -> EngineItemResult:
         try:
@@ -193,6 +233,15 @@ class Service:
 
     def health(self) -> EngineHealth:
         return EngineHealth(engines=dict(self.statuses), storage_ok=self.storage.ping(), model_revs=self.model_revs)
+
+
+def _last(events: Iterator[EngineItemResult | EngineResponse]) -> EngineResponse:
+    response = None
+    for event in events:
+        response = event
+    if not isinstance(response, EngineResponse):
+        raise RuntimeError("the render stream ended without a response")
+    return response
 
 
 def wav_bytes(wave: np.ndarray, sample_rate: int) -> bytes:

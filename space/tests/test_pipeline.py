@@ -4,7 +4,7 @@ import pytest
 from conftest import KOKORO_AUDIO, MING_AUDIO, tone
 
 from nolabs_engine import contracts as c
-from nolabs_engine.audio import pipeline, silence
+from nolabs_engine.audio import loudness, pipeline, silence
 from nolabs_engine.audio.pipeline import RawClip, SilentOutput
 
 SR = 24_000
@@ -99,3 +99,36 @@ def test_nan_output_is_sanitised():
     wave[100:200] = np.nan
     out = pipeline.finish_batch([RawClip(wave, SR, "sentence")], profile(KOKORO_AUDIO), rec := Recorder())
     assert isinstance(out[0], pipeline.FinishedClip) and np.isfinite(rec.calls[0][0]).all()
+
+
+def test_a_segment_is_levelled_without_looking_at_later_segments():
+    # Streaming: segment N's gain may depend on segments 0..N only, so the first one can ship before the rest exist.
+    first = RawClip(tone(2.0, SR, amplitude=0.3), SR, "sentence")
+    alone = pipeline.Stream(profile(KOKORO_AUDIO), Recorder())
+    followed = pipeline.Stream(profile(KOKORO_AUDIO), Recorder())
+    gain_alone = alone.level(first).gain_db
+    gain_followed = followed.level(first).gain_db
+    followed.level(RawClip(tone(2.0, SR, amplitude=0.01), SR, "sentence"))
+    assert gain_alone == gain_followed
+    assert lufs(tone(2.0, SR, amplitude=0.3)) + gain_alone == pytest.approx(-16.0, abs=0.05)
+
+
+def test_stream_finish_can_run_out_of_order():
+    stream = pipeline.Stream(profile(KOKORO_AUDIO), Recorder())
+    levelled = [stream.level(RawClip(tone(1.0, SR, amplitude=a), SR, "sentence")) for a in (0.3, 0.1, 0.2)]
+    in_order = [stream.finish(x).data for x in levelled]
+    assert [stream.finish(x).data for x in reversed(levelled)] == list(reversed(in_order))
+
+
+def test_per_clip_and_batch_terms_use_the_same_meter():
+    # 2.08 s leaves 80 ms after the last full hop, where pyloudnorm adds a partial block and the programme meter does
+    # not; the per-clip term must come from the programme meter or segment 1's gain is off by that difference.
+    rng = np.random.default_rng(7)
+    clips = [RawClip((0.1 * rng.standard_normal(int(s * SR))).astype(np.float32), SR, "sentence") for s in (3.0, 2.08)]
+    stream = pipeline.Stream(profile(KOKORO_AUDIO), Recorder())
+    first, second = (stream.level(clip) for clip in clips)
+    wave = second.prepared.wave
+    assert second.prepared.loudness == loudness.measure_blocks(wave, SR)
+    assert abs(loudness.measure_blocks(wave, SR) - lufs(wave)) > 0.01  # the case is one where the meters disagree
+    # Unclamped, the batch term cancels and the clip lands on the target by the programme meter.
+    assert second.gain_db == pytest.approx(-16.0 - loudness.measure_blocks(wave, SR), abs=1e-9)
