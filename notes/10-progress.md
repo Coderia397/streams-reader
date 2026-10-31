@@ -2,6 +2,15 @@
 
 Progress log, newest first. Each entry: done, blocked, next.
 
+## 2026-10-31
+
+### 00:40-01:10, after the usage-limit reset
+- Done: committed brand v2 (pixel mark, central tokens), landing site v1, film studio, native-apps scaffold; merged accounts phase 1 into main (conflicts in notes resolved; brand's D18 renumbered D26; D25 recorded after the first attempt silently failed); removed merged branches and worktrees; repo hygiene (CHANGELOG with versioning policy, CONTRIBUTING, SECURITY, issue/PR templates, Dependabot, .editorconfig, .gitattributes); GitHub: vulnerability alerts, automatic security fixes, secret scanning + push protection on, area/priority labels, tag v0.1.0 at the first live deploy (c4b5c43).
+- Resumed after the limit: film studio (Ming voice-over + rig QA), native apps architect, on-device TTS research, player find-fix loop (round 2+), expressiveness study; launched app-complete workflow (finish redesign on brand v2, accounts wiring, player web fix, critic loop, Worker serving site at / and app at /app).
+- Blocked: GitHub release page for v0.1.0 — both the env token and gh's stored login are fine-grained tokens without Contents: write (HTTP 403 on POST /releases). Unblock: owner adds Contents read/write to the token.
+- Safety net: hourly self check-in (session cron, :13 past each hour) resumes anything stopped by a usage limit.
+- Next: when app-complete lands → D1 migrate 0002, deploy secrets, build, deploy, smoke, Pixel test, live find-fix loop; then landing v2, Blender film v2, native apps builds in CI.
+
 ## 2026-10-30
 
 ### Late evening, brand mark v2 (D18)
