@@ -1,0 +1,208 @@
+{
+ "model": "@cf/google/gemma-4-26b-a4b-it",
+ "prompt_version": 1,
+ "key": "4d2dc7fc34d57112daa7b9c9bc332d4a2a8b6951166a43588fbbaa3ff70a58a4",
+ "elapsed_s": 24.6,
+ "usage": {
+  "prompt_tokens": 1675,
+  "completion_tokens": 1351,
+  "total_tokens": 3026,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  },
+  "neurons": 52.07272720336914
+ },
+ "finish_reason": "stop",
+ "reasoning_chars": 0,
+ "request": "Sentences:\n[0] There is a particular kind of quiet that comes only in the last hour before dawn.\n    words: 0:There | 1:is | 2:a | 3:particular | 4:kind | 5:of | 6:quiet | 7:that | 8:comes | 9:only | 10:in | 11:the | 12:last | 13:hour | 14:before | 15:dawn.\n[1] The house still ticks, and the wind still moves in the chimney.\n    words: 0:The | 1:house | 2:still | 3:ticks, | 4:and | 5:the | 6:wind | 7:still | 8:moves | 9:in | 10:the | 11:chimney.\n[2] (ends paragraph) Yet the mind is quiet, because the day's arguments have not yet begun.\n    words: 0:Yet | 1:the | 2:mind | 3:is | 4:quiet, | 5:because | 6:the | 7:day's | 8:arguments | 9:have | 10:not | 11:yet | 12:begun.\n[3] I used to fill that hour.\n    words: 0:I | 1:used | 2:to | 3:fill | 4:that | 5:hour.\n[4] I read, I wrote letters, I made long lists of everything I meant to do.\n    words: 0:I | 1:read, | 2:I | 3:wrote | 4:letters, | 5:I | 6:made | 7:long | 8:lists | 9:of | 10:everything | 11:I | 12:meant | 13:to | 14:do.\n[5] Now, more often, I simply sit.\n    words: 0:Now, | 1:more | 2:often, | 3:I | 4:simply | 5:sit.\n[6] (ends paragraph) I watch the window turn from black to grey, and from grey to the faintest blue.\n    words: 0:I | 1:watch | 2:the | 3:window | 4:turn | 5:from | 6:black | 7:to | 8:grey, | 9:and | 10:from | 11:grey | 12:to | 13:the | 14:faintest | 15:blue.\n[7] What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves.\n    words: 0:What | 1:I | 2:have | 3:learned, | 4:if | 5:I | 6:have | 7:learned | 8:anything | 9:at | 10:all, | 11:is | 12:this: | 13:the | 14:things | 15:that | 16:matter | 17:most | 18:rarely | 19:announce | 20:themselves.\n[8] They arrive slowly.\n    words: 0:They | 1:arrive | 2:slowly.\n[9] They wait.\n    words: 0:They | 1:wait.\n[10] (ends paragraph) And they ask only that we be still enough to notice.\n    words: 0:And | 1:they | 2:ask | 3:only | 4:that | 5:we | 6:be | 7:still | 8:enough | 9:to | 10:notice.\n\nQuotes: none",
+ "response": {
+  "genre": "fiction",
+  "characters": [],
+  "quotes": [],
+  "sentences": [
+   {
+    "sentence_idx": 0,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.8,
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_after_ms": 600,
+    "emphasis_words": [
+     {
+      "word_idx": 6,
+      "word": "quiet"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 1,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.7,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 2,
+      "word": "still"
+     },
+     {
+      "word_idx": 7,
+      "word": "still"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 2,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.6,
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_after_ms": 800,
+    "emphasis_words": [
+     {
+      "word_idx": 4,
+      "word": "quiet,"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 3,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 4,
+      "word": "hour."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 4,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 350,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 5,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.6,
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 4,
+      "word": "sit."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 6,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.7,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 800,
+    "emphasis_words": [
+     {
+      "word_idx": 14,
+      "word": "blue."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 7,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.6,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 500,
+    "emphasis_words": [
+     {
+      "word_idx": 16,
+      "word": "matter"
+     },
+     {
+      "word_idx": 18,
+      "word": "rarely"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 8,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.7,
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 2,
+      "word": "slowly."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 9,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.7,
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_after_ms": 600,
+    "emphasis_words": [
+     {
+      "word_idx": 1,
+      "word": "wait."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 10,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.6,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 1000,
+    "emphasis_words": [
+     {
+      "word_idx": 7,
+      "word": "still"
+     },
+     {
+      "word_idx": 10,
+      "word": "notice."
+     }
+    ],
+    "tags": []
+   }
+  ]
+ }
+}

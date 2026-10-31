@@ -1,0 +1,66 @@
+{
+  "type": "object",
+  "properties": {
+    "genre": {"type": "string", "enum": ["fiction", "nonfiction"]},
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "gender": {"type": "string", "enum": ["female", "male", "unknown"]},
+          "age": {"type": "string", "enum": ["child", "young", "adult", "old", "unknown"]}
+        },
+        "required": ["name", "gender", "age"]
+      }
+    },
+    "quotes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "quote_idx": {"type": "integer"},
+          "speaker": {"type": "string"}
+        },
+        "required": ["quote_idx", "speaker"]
+      }
+    },
+    "sentences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sentence_idx": {"type": "integer"},
+          "mode": {"type": "string", "enum": ["plain", "tags", "emotion"]},
+          "emotion": {"type": "string", "enum": ["neutral", "happy", "sad", "angry", "fearful", "disgusted", "surprised"]},
+          "confidence": {"type": "number"},
+          "intensity": {"type": "number"},
+          "pace": {"type": "string", "enum": ["slow", "normal", "fast"]},
+          "pause_after_ms": {"type": "integer"},
+          "emphasis_words": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {"word_idx": {"type": "integer"}, "word": {"type": "string"}},
+              "required": ["word_idx", "word"]
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "before_word_idx": {"type": "integer"},
+                "anchor_word": {"type": "string"},
+                "tag": {"type": "string", "enum": ["[Breathing]", "[Sigh]", "[Laughter]", "[Surprise-ah]", "[Surprise-oh]", "[Uhm]", "[Cough]"]}
+              },
+              "required": ["before_word_idx", "anchor_word", "tag"]
+            }
+          }
+        },
+        "required": ["sentence_idx", "mode", "emotion", "confidence", "intensity", "pace", "pause_after_ms", "emphasis_words", "tags"]
+      }
+    }
+  },
+  "required": ["genre", "characters", "quotes", "sentences"]
+}

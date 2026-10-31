@@ -1,0 +1,14 @@
+# Prints the Kokoro segments (and the sentence ranges inside each) for passage files, using the app's own
+# normaliser, segmenter and sentence splitter, so the harness renders exactly what the app would.
+# Run: CARGO_TARGET_DIR=<scratch>/target cargo run -q --release --manifest-path tools/expressiveness/segment/Cargo.toml -- passages/*.txt
+[package]
+name = "expr-segment"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+nolabs-core = { path = "../../../crates/core" }
+serde_json = "1"
+
+[workspace]

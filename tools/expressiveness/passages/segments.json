@@ -1,0 +1,252 @@
+{
+  "1-suspense": [
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          98
+        ],
+        [
+          99,
+          213
+        ],
+        [
+          214,
+          293
+        ]
+      ],
+      "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years. Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe."
+    },
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          50
+        ],
+        [
+          51,
+          72
+        ],
+        [
+          73,
+          131
+        ],
+        [
+          132,
+          145
+        ],
+        [
+          146,
+          203
+        ],
+        [
+          204,
+          264
+        ]
+      ],
+      "text": "Then the gulls rose, all at once, without a sound. He set the pipe down. Somewhere beneath him, on the iron stairs, a step creaked. Then another. Nobody had crossed the causeway; he would have seen them. The steps were slow and heavy, and they were getting closer."
+    },
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          27
+        ],
+        [
+          28,
+          49
+        ],
+        [
+          50,
+          94
+        ]
+      ],
+      "text": "He reached for the lantern. His hand was shaking. The door handle began, very slowly, to turn."
+    }
+  ],
+  "2-dialogue": [
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          53
+        ],
+        [
+          54,
+          85
+        ]
+      ],
+      "text": "\"Are you going to tell me where you were last night?\" Martha asked, folding her arms."
+    },
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          26
+        ],
+        [
+          27,
+          47
+        ],
+        [
+          48,
+          63
+        ],
+        [
+          64,
+          95
+        ]
+      ],
+      "text": "\"Oh, certainly,\" said Tom. \"I was at the opera. With the Queen. She sends her warmest regards.\""
+    },
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          36
+        ],
+        [
+          37,
+          79
+        ],
+        [
+          80,
+          85
+        ]
+      ],
+      "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\""
+    },
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          28
+        ],
+        [
+          29,
+          37
+        ],
+        [
+          38,
+          48
+        ],
+        [
+          49,
+          94
+        ]
+      ],
+      "text": "He looked down at the floor. \"I know. I'm sorry. I'm not sure I can explain it, not properly.\""
+    },
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          39
+        ]
+      ],
+      "text": "\"Then try,\" she said, more quietly now."
+    },
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          33
+        ],
+        [
+          34,
+          59
+        ],
+        [
+          60,
+          99
+        ],
+        [
+          100,
+          127
+        ],
+        [
+          128,
+          169
+        ],
+        [
+          170,
+          201
+        ]
+      ],
+      "text": "\"I think,\" he began, and stopped. He glanced at the window. \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\""
+    }
+  ],
+  "3-reflective": [
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          81
+        ],
+        [
+          82,
+          145
+        ],
+        [
+          146,
+          216
+        ]
+      ],
+      "text": "There is a particular kind of quiet that comes only in the last hour before dawn. The house still ticks, and the wind still moves in the chimney. Yet the mind is quiet, because the day's arguments have not yet begun."
+    },
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          25
+        ],
+        [
+          26,
+          97
+        ],
+        [
+          98,
+          128
+        ],
+        [
+          129,
+          208
+        ]
+      ],
+      "text": "I used to fill that hour. I read, I wrote letters, I made long lists of everything I meant to do. Now, more often, I simply sit. I watch the window turn from black to grey, and from grey to the faintest blue."
+    },
+    {
+      "boundary": "paragraph",
+      "sentences": [
+        [
+          0,
+          120
+        ],
+        [
+          121,
+          140
+        ],
+        [
+          141,
+          151
+        ],
+        [
+          152,
+          204
+        ]
+      ],
+      "text": "What I have learned, if I have learned anything at all, is this: the things that matter most rarely announce themselves. They arrive slowly. They wait. And they ask only that we be still enough to notice."
+    }
+  ]
+}

@@ -1,0 +1,368 @@
+{
+ "model": "@cf/google/gemma-4-26b-a4b-it",
+ "prompt_version": 1,
+ "key": "dc5c254563466f5bb6c6b951ae7f09db8695963c75d66a8ca147a60349f47383",
+ "elapsed_s": 64.9,
+ "usage": {
+  "prompt_tokens": 1956,
+  "completion_tokens": 2501,
+  "total_tokens": 4457,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  },
+  "neurons": 85.99090576171875
+ },
+ "finish_reason": "stop",
+ "reasoning_chars": 0,
+ "request": "Sentences:\n[0] \"Are you going to tell me where you were last night?\"\n    words: 0:\"Are | 1:you | 2:going | 3:to | 4:tell | 5:me | 6:where | 7:you | 8:were | 9:last | 10:night?\"\n[1] (ends paragraph) Martha asked, folding her arms.\n    words: 0:Martha | 1:asked, | 2:folding | 3:her | 4:arms.\n[2] \"Oh, certainly,\" said Tom.\n    words: 0:\"Oh, | 1:certainly,\" | 2:said | 3:Tom.\n[3] \"I was at the opera.\n    words: 0:\"I | 1:was | 2:at | 3:the | 4:opera.\n[4] With the Queen.\n    words: 0:With | 1:the | 2:Queen.\n[5] (ends paragraph) She sends her warmest regards.\"\n    words: 0:She | 1:sends | 2:her | 3:warmest | 4:regards.\"\n[6] \"Don't you dare make a joke of this!\n    words: 0:\"Don't | 1:you | 2:dare | 3:make | 4:a | 5:joke | 6:of | 7:this!\n[7] I waited up until two in the morning, Tom.\n    words: 0:I | 1:waited | 2:up | 3:until | 4:two | 5:in | 6:the | 7:morning, | 8:Tom.\n[8] (ends paragraph) Two!\"\n    words: 0:Two!\"\n[9] He looked down at the floor.\n    words: 0:He | 1:looked | 2:down | 3:at | 4:the | 5:floor.\n[10] \"I know.\n    words: 0:\"I | 1:know.\n[11] I'm sorry.\n    words: 0:I'm | 1:sorry.\n[12] (ends paragraph) I'm not sure I can explain it, not properly.\"\n    words: 0:I'm | 1:not | 2:sure | 3:I | 4:can | 5:explain | 6:it, | 7:not | 8:properly.\"\n[13] (ends paragraph) \"Then try,\" she said, more quietly now.\n    words: 0:\"Then | 1:try,\" | 2:she | 3:said, | 4:more | 5:quietly | 6:now.\n[14] \"I think,\" he began, and stopped.\n    words: 0:\"I | 1:think,\" | 2:he | 3:began, | 4:and | 5:stopped.\n[15] He glanced at the window.\n    words: 0:He | 1:glanced | 2:at | 3:the | 4:window.\n[16] \"I think someone has been following me.\n    words: 0:\"I | 1:think | 2:someone | 3:has | 4:been | 5:following | 6:me.\n[17] For a week, perhaps longer.\n    words: 0:For | 1:a | 2:week, | 3:perhaps | 4:longer.\n[18] Or perhaps I've imagined the whole thing.\n    words: 0:Or | 1:perhaps | 2:I've | 3:imagined | 4:the | 5:whole | 6:thing.\n[19] (ends paragraph) I honestly don't know anymore.\"\n    words: 0:I | 1:honestly | 2:don't | 3:know | 4:anymore.\"\n\nQuotes:\n[q0] (sentences 0) \"Are you going to tell me where you were last night?\"\n[q1] (sentences 2) \"Oh, certainly,\"\n[q2] (sentences 3, 4, 5) \"I was at the opera. With the Queen. She sends her warmest regards.\"\n[q3] (sentences 6, 7, 8) \"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"\n[q4] (sentences 10, 11, 12) \"I know. I'm sorry. I'm not sure I can explain it, not properly.\"\n[q5] (sentences 13) \"Then try,\"\n[q6] (sentences 14) \"I think,\"\n[q7] (sentences 16, 17, 18, 19) \"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+ "response": {
+  "genre": "fiction",
+  "characters": [
+   {
+    "name": "Martha",
+    "gender": "female",
+    "age": "unknown"
+   },
+   {
+    "name": "Tom",
+    "gender": "male",
+    "age": "unknown"
+   }
+  ],
+  "quotes": [
+   {
+    "quote_idx": 0,
+    "speaker": "Martha"
+   },
+   {
+    "quote_idx": 1,
+    "speaker": "Tom"
+   },
+   {
+    "quote_idx": 2,
+    "speaker": "Tom"
+   },
+   {
+    "quote_idx": 3,
+    "speaker": "Martha"
+   },
+   {
+    "quote_idx": 4,
+    "speaker": "Tom"
+   },
+   {
+    "quote_idx": 5,
+    "speaker": "Martha"
+   },
+   {
+    "quote_idx": 6,
+    "speaker": "Tom"
+   },
+   {
+    "quote_idx": 7,
+    "speaker": "Tom"
+   }
+  ],
+  "sentences": [
+   {
+    "sentence_idx": 0,
+    "mode": "emotion",
+    "emotion": "disgusted",
+    "confidence": 0.7,
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 6,
+      "word": "where"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 1,
+    "mode": "tags",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 700,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 2,
+    "mode": "emotion",
+    "emotion": "happy",
+    "confidence": 0.8,
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 1,
+      "word": "certainly,"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 3,
+    "mode": "emotion",
+    "emotion": "happy",
+    "confidence": 0.8,
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_after_ms": 250,
+    "emphasis_words": [
+     {
+      "word_idx": 3,
+      "word": "opera."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 4,
+    "mode": "emotion",
+    "emotion": "happy",
+    "confidence": 0.7,
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_after_ms": 250,
+    "emphasis_words": [
+     {
+      "word_idx": 1,
+      "word": "Queen."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 5,
+    "mode": "emotion",
+    "emotion": "happy",
+    "confidence": 0.7,
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_after_ms": 800,
+    "emphasis_words": [
+     {
+      "word_idx": 3,
+      "word": "warmest"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 6,
+    "mode": "emotion",
+    "emotion": "angry",
+    "confidence": 0.9,
+    "intensity": 0.7,
+    "pace": "fast",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 2,
+      "word": "dare"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 7,
+    "mode": "emotion",
+    "emotion": "angry",
+    "confidence": 0.8,
+    "intensity": 0.6,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 4,
+      "word": "two"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 8,
+    "mode": "emotion",
+    "emotion": "angry",
+    "confidence": 0.9,
+    "intensity": 0.8,
+    "pace": "fast",
+    "pause_after_ms": 900,
+    "emphasis_words": [
+     {
+      "word_idx": 0,
+      "word": "Two!"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 9,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 10,
+    "mode": "emotion",
+    "emotion": "sad",
+    "confidence": 0.7,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 250,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 11,
+    "mode": "emotion",
+    "emotion": "sad",
+    "confidence": 0.8,
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_after_ms": 250,
+    "emphasis_words": [
+     {
+      "word_idx": 1,
+      "word": "sorry."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 12,
+    "mode": "emotion",
+    "emotion": "sad",
+    "confidence": 0.7,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 800,
+    "emphasis_words": [
+     {
+      "word_idx": 7,
+      "word": "not"
+     },
+     {
+      "word_idx": 8,
+      "word": "properly."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 13,
+    "mode": "tags",
+    "emotion": "neutral",
+    "confidence": 0.6,
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_after_ms": 500,
+    "emphasis_words": [
+     {
+      "word_idx": 5,
+      "word": "quietly"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 14,
+    "mode": "tags",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 15,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 400,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 16,
+    "mode": "emotion",
+    "emotion": "fearful",
+    "confidence": 0.7,
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 5,
+      "word": "following"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 17,
+    "mode": "emotion",
+    "emotion": "fearful",
+    "confidence": 0.6,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 4,
+      "word": "longer."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 18,
+    "mode": "emotion",
+    "emotion": "fearful",
+    "confidence": 0.6,
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 5,
+      "word": "whole"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 19,
+    "mode": "emotion",
+    "emotion": "fearful",
+    "confidence": 0.7,
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_after_ms": 1200,
+    "emphasis_words": [
+     {
+      "word_idx": 3,
+      "word": "know"
+     }
+    ],
+    "tags": []
+   }
+  ]
+ }
+}

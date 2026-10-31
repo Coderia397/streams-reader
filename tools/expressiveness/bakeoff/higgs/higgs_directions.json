@@ -1,0 +1,49 @@
+{
+ "_doc": "Hand-written per-sentence Higgs TTS 3 control tags (PROMPTING.md of bosonai/higgs-tts-3-4b: sentence-level emotion/style/prosody tags at the start of a sentence, inline pause and sfx where they fire; an sfx tag must be followed by its onomatopoeia). Shape: passage -> segment -> sentence, as segments.json; null = the sentence as written. Mapped from passages/directions.json (the Ming study's 7 emotions) to Higgs' 21: fearful -> fear, surprised -> surprise, angry -> anger, happy -> amusement (Tom is joking), sad -> sadness / helplessness / longing, neutral reflective narration -> contemplation; Ming's [Laughter] -> sfx:laughter, [Sigh] -> sfx:sigh, [Uhm] and [Breathing] -> prosody:pause (Higgs has no breathing or filler tag).",
+ "1-suspense": [
+  [null, null, null],
+  ["<|emotion:surprise|>Then the gulls rose, all at once, without a sound.",
+   "<|emotion:fear|>He set the pipe down.",
+   "<|emotion:fear|>Somewhere beneath him, on the iron stairs, <|prosody:pause|> a step creaked.",
+   "<|emotion:fear|><|prosody:pause|>Then another.",
+   "<|emotion:confusion|>Nobody had crossed the causeway; he would have seen them.",
+   "<|emotion:fear|><|prosody:speed_slow|>The steps were slow and heavy, <|prosody:pause|> and they were getting closer."],
+  ["<|emotion:fear|>He reached for the lantern.",
+   "<|emotion:helplessness|><|prosody:pause|>His hand was shaking.",
+   "<|emotion:fear|><|prosody:speed_slow|>The door handle began, <|prosody:pause|> very slowly, <|prosody:pause|> to turn."]
+ ],
+ "2-dialogue": [
+  ["<|emotion:anger|>\"Are you going to tell me where you were last night?\"", null],
+  ["<|emotion:amusement|><|sfx:laughter|>Haha, \"oh, certainly,\" said Tom.",
+   "<|emotion:amusement|>\"I was at the opera.",
+   "<|emotion:amusement|>With the Queen.",
+   "<|emotion:amusement|>She sends her warmest regards.\""],
+  ["<|emotion:anger|><|prosody:expressive_high|>\"Don't you dare make a joke of this!",
+   "<|emotion:anger|>I waited up until two in the morning, Tom.",
+   "<|emotion:anger|><|style:shouting|>Two!\""],
+  [null,
+   "<|emotion:sadness|><|sfx:sigh|>Haah, \"I know.",
+   "<|emotion:sadness|>I'm sorry.",
+   "<|emotion:helplessness|>I'm not sure I can <|prosody:pause|> explain it, not properly.\""],
+  ["<|emotion:sadness|><|prosody:speed_slow|>\"Then try,\" she said, more quietly now."],
+  ["<|emotion:fear|>\"I think,\" he began, <|prosody:pause|> and stopped.",
+   null,
+   "<|emotion:fear|>\"I think someone has been following me.",
+   "<|emotion:fear|>For a week, perhaps longer.",
+   "<|emotion:confusion|><|prosody:pause|>Or perhaps I've imagined the whole thing.",
+   "<|emotion:helplessness|>I honestly don't know anymore.\""]
+ ],
+ "3-reflective": [
+  ["<|emotion:contemplation|>There is a particular kind of quiet that comes only in the last hour before dawn.",
+   "<|emotion:contentment|>The house still ticks, and the wind still moves in the chimney.",
+   "<|emotion:contemplation|>Yet the mind is quiet, because the day's arguments have not yet begun."],
+  ["<|emotion:longing|>I used to fill that hour.",
+   null,
+   "<|emotion:contemplation|><|sfx:sigh|>Haah, now, more often, I simply sit.",
+   "<|emotion:contemplation|>I watch the window turn from black to grey, <|prosody:pause|> and from grey to the faintest blue."],
+  ["<|emotion:contemplation|>What I have learned, if I have learned anything at all, is this: <|prosody:pause|> the things that matter most rarely announce themselves.",
+   "<|emotion:longing|>They arrive slowly.",
+   "<|emotion:longing|>They wait.",
+   "<|emotion:longing|><|prosody:speed_slow|>And they ask only that we be still enough to notice."]
+ ]
+}

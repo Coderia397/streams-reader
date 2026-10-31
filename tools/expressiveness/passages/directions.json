@@ -1,0 +1,21 @@
+{
+ "_doc": "Hand-written per-sentence direction for the Ming study (notes/32). Shape: passage -> segment (as in segments.json) -> sentence (as in its sentences ranges) -> emotion, or [emotion, tagged text]. Emotions are the contract names (happy sad angry fearful disgusted surprised neutral). A tagged text replaces the sentence and carries Ming paralinguistic tags; it is rendered with the TTS task (reference + transcript), which has no emotion control, so its emotion is intent only.",
+ "1-suspense": [
+  ["neutral", "neutral", "neutral"],
+  ["surprised", "fearful", "fearful", ["fearful", "[Breathing] Then another."], "fearful", "fearful"],
+  ["fearful", ["fearful", "[Breathing] His hand was shaking."], "fearful"]
+ ],
+ "2-dialogue": [
+  ["angry", "neutral"],
+  [["happy", "[Laughter] \"Oh, certainly,\" said Tom."], "happy", "happy", "happy"],
+  ["angry", "angry", "angry"],
+  ["neutral", ["sad", "[Sigh] \"I know."], "sad", ["sad", "I'm not sure I can [Uhm] explain it, not properly.\""]],
+  ["sad"],
+  ["fearful", "neutral", "fearful", "fearful", ["neutral", "[Uhm] Or perhaps I've imagined the whole thing."], "sad"]
+ ],
+ "3-reflective": [
+  ["neutral", "neutral", "neutral"],
+  ["sad", "neutral", ["neutral", "[Sigh] Now, more often, I simply sit."], "neutral"],
+  ["neutral", "sad", "sad", "sad"]
+ ]
+}

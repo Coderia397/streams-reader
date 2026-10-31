@@ -1,0 +1,122 @@
+{
+ "a_blend": {
+  "wer": 0.0056,
+  "errors": 2,
+  "words": 354,
+  "clips_with_errors": [
+   {
+    "passage": "2-dialogue",
+    "file": "05.webm",
+    "errors": 2,
+    "hyp": "I think, he began and stopped. He glanced at the window. I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know any more."
+   }
+  ]
+ },
+ "a_chars": {
+  "wer": 0.0056,
+  "errors": 2,
+  "words": 354,
+  "clips_with_errors": [
+   {
+    "passage": "2-dialogue",
+    "file": "05.webm",
+    "errors": 2,
+    "hyp": "I think he began and stopped. He glanced at the window. I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know any more."
+   }
+  ]
+ },
+ "a_emph": {
+  "wer": 0.0113,
+  "errors": 4,
+  "words": 354,
+  "clips_with_errors": [
+   {
+    "passage": "1-suspense",
+    "file": "00.webm",
+    "errors": 3,
+    "hyp": "The lighthouse keeper finished his supper at seven, as he had done every evening for 11 years. Outside the sea lay flattened, silver under a pale sky, and the gulls had settled on the rocks below the lamp room. He wound the clock, trimmed the wick, and sat down by the window with his pipe."
+   },
+   {
+    "passage": "2-dialogue",
+    "file": "00.webm",
+    "errors": 1,
+    "hyp": "Are you going to tell me where you were last night? Martha ask, folding her arms."
+   }
+  ]
+ },
+ "a_pause": {
+  "wer": 0.0,
+  "errors": 0,
+  "words": 354,
+  "clips_with_errors": []
+ },
+ "a_speed": {
+  "wer": 0.0,
+  "errors": 0,
+  "words": 354,
+  "clips_with_errors": []
+ },
+ "b_chars": {
+  "wer": 0.0,
+  "errors": 0,
+  "words": 354,
+  "clips_with_errors": []
+ },
+ "b_emph": {
+  "wer": 0.0028,
+  "errors": 1,
+  "words": 354,
+  "clips_with_errors": [
+   {
+    "passage": "2-dialogue",
+    "file": "00.webm",
+    "errors": 1,
+    "hyp": "Are you going to tell me where you were last night? Martha ask, folding her arms."
+   }
+  ]
+ },
+ "b_f0": {
+  "wer": 0.0028,
+  "errors": 1,
+  "words": 354,
+  "clips_with_errors": [
+   {
+    "passage": "2-dialogue",
+    "file": "00.webm",
+    "errors": 1,
+    "hyp": "Are you going to tell me where you were last night? Martha ask, folding her arms."
+   }
+  ]
+ },
+ "b_full": {
+  "wer": 0.0,
+  "errors": 0,
+  "words": 354,
+  "clips_with_errors": []
+ },
+ "b_speed": {
+  "wer": 0.0028,
+  "errors": 1,
+  "words": 354,
+  "clips_with_errors": [
+   {
+    "passage": "2-dialogue",
+    "file": "00.webm",
+    "errors": 1,
+    "hyp": "Are you going to tell me where you were last night? Martha ask, folding her arms."
+   }
+  ]
+ },
+ "k_plain": {
+  "wer": 0.0,
+  "errors": 0,
+  "words": 354,
+  "clips_with_errors": []
+ },
+ "k_sent": {
+  "wer": 0.0,
+  "errors": 0,
+  "words": 354,
+  "clips_with_errors": []
+ }
+}

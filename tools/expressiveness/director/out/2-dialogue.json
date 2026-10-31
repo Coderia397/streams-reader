@@ -1,0 +1,1219 @@
+{
+ "passage": "2-dialogue",
+ "model": "@cf/google/gemma-4-26b-a4b-it",
+ "prompt_version": 1,
+ "cache_key": "dc5c254563466f5bb6c6b951ae7f09db8695963c75d66a8ca147a60349f47383",
+ "usage": {
+  "prompt_tokens": 1956,
+  "completion_tokens": 2501,
+  "total_tokens": 4457,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  },
+  "neurons": 85.99090576171875
+ },
+ "elapsed_s": 64.9,
+ "genre": "fiction",
+ "characters": [
+  {
+   "name": "Martha",
+   "gender": "female",
+   "age": "unknown"
+  },
+  {
+   "name": "Tom",
+   "gender": "male",
+   "age": "unknown"
+  }
+ ],
+ "quotes": [
+  {
+   "quote_idx": 0,
+   "segment": 0,
+   "span": [
+    0,
+    53
+   ],
+   "text": "\"Are you going to tell me where you were last night?\"",
+   "sentences": [
+    0
+   ]
+  },
+  {
+   "quote_idx": 1,
+   "segment": 1,
+   "span": [
+    0,
+    16
+   ],
+   "text": "\"Oh, certainly,\"",
+   "sentences": [
+    2
+   ]
+  },
+  {
+   "quote_idx": 2,
+   "segment": 1,
+   "span": [
+    27,
+    95
+   ],
+   "text": "\"I was at the opera. With the Queen. She sends her warmest regards.\"",
+   "sentences": [
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "quote_idx": 3,
+   "segment": 2,
+   "span": [
+    0,
+    85
+   ],
+   "text": "\"Don't you dare make a joke of this! I waited up until two in the morning, Tom. Two!\"",
+   "sentences": [
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "quote_idx": 4,
+   "segment": 3,
+   "span": [
+    29,
+    94
+   ],
+   "text": "\"I know. I'm sorry. I'm not sure I can explain it, not properly.\"",
+   "sentences": [
+    10,
+    11,
+    12
+   ]
+  },
+  {
+   "quote_idx": 5,
+   "segment": 4,
+   "span": [
+    0,
+    11
+   ],
+   "text": "\"Then try,\"",
+   "sentences": [
+    13
+   ]
+  },
+  {
+   "quote_idx": 6,
+   "segment": 5,
+   "span": [
+    0,
+    10
+   ],
+   "text": "\"I think,\"",
+   "sentences": [
+    14
+   ]
+  },
+  {
+   "quote_idx": 7,
+   "segment": 5,
+   "span": [
+    60,
+    201
+   ],
+   "text": "\"I think someone has been following me. For a week, perhaps longer. Or perhaps I've imagined the whole thing. I honestly don't know anymore.\"",
+   "sentences": [
+    16,
+    17,
+    18,
+    19
+   ]
+  }
+ ],
+ "raw": {
+  "genre": "fiction",
+  "characters": [
+   {
+    "name": "Martha",
+    "gender": "female",
+    "age": "unknown"
+   },
+   {
+    "name": "Tom",
+    "gender": "male",
+    "age": "unknown"
+   }
+  ],
+  "quotes": [
+   {
+    "quote_idx": 0,
+    "speaker": "Martha"
+   },
+   {
+    "quote_idx": 1,
+    "speaker": "Tom"
+   },
+   {
+    "quote_idx": 2,
+    "speaker": "Tom"
+   },
+   {
+    "quote_idx": 3,
+    "speaker": "Martha"
+   },
+   {
+    "quote_idx": 4,
+    "speaker": "Tom"
+   },
+   {
+    "quote_idx": 5,
+    "speaker": "Martha"
+   },
+   {
+    "quote_idx": 6,
+    "speaker": "Tom"
+   },
+   {
+    "quote_idx": 7,
+    "speaker": "Tom"
+   }
+  ],
+  "sentences": [
+   {
+    "sentence_idx": 0,
+    "mode": "emotion",
+    "emotion": "disgusted",
+    "confidence": 0.7,
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 6,
+      "word": "where"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 1,
+    "mode": "tags",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 700,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 2,
+    "mode": "emotion",
+    "emotion": "happy",
+    "confidence": 0.8,
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 1,
+      "word": "certainly,"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 3,
+    "mode": "emotion",
+    "emotion": "happy",
+    "confidence": 0.8,
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_after_ms": 250,
+    "emphasis_words": [
+     {
+      "word_idx": 3,
+      "word": "opera."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 4,
+    "mode": "emotion",
+    "emotion": "happy",
+    "confidence": 0.7,
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_after_ms": 250,
+    "emphasis_words": [
+     {
+      "word_idx": 1,
+      "word": "Queen."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 5,
+    "mode": "emotion",
+    "emotion": "happy",
+    "confidence": 0.7,
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_after_ms": 800,
+    "emphasis_words": [
+     {
+      "word_idx": 3,
+      "word": "warmest"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 6,
+    "mode": "emotion",
+    "emotion": "angry",
+    "confidence": 0.9,
+    "intensity": 0.7,
+    "pace": "fast",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 2,
+      "word": "dare"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 7,
+    "mode": "emotion",
+    "emotion": "angry",
+    "confidence": 0.8,
+    "intensity": 0.6,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 4,
+      "word": "two"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 8,
+    "mode": "emotion",
+    "emotion": "angry",
+    "confidence": 0.9,
+    "intensity": 0.8,
+    "pace": "fast",
+    "pause_after_ms": 900,
+    "emphasis_words": [
+     {
+      "word_idx": 0,
+      "word": "Two!"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 9,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 10,
+    "mode": "emotion",
+    "emotion": "sad",
+    "confidence": 0.7,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 250,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 11,
+    "mode": "emotion",
+    "emotion": "sad",
+    "confidence": 0.8,
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_after_ms": 250,
+    "emphasis_words": [
+     {
+      "word_idx": 1,
+      "word": "sorry."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 12,
+    "mode": "emotion",
+    "emotion": "sad",
+    "confidence": 0.7,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 800,
+    "emphasis_words": [
+     {
+      "word_idx": 7,
+      "word": "not"
+     },
+     {
+      "word_idx": 8,
+      "word": "properly."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 13,
+    "mode": "tags",
+    "emotion": "neutral",
+    "confidence": 0.6,
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_after_ms": 500,
+    "emphasis_words": [
+     {
+      "word_idx": 5,
+      "word": "quietly"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 14,
+    "mode": "tags",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.3,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 15,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.5,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 400,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 16,
+    "mode": "emotion",
+    "emotion": "fearful",
+    "confidence": 0.7,
+    "intensity": 0.5,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 5,
+      "word": "following"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 17,
+    "mode": "emotion",
+    "emotion": "fearful",
+    "confidence": 0.6,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 4,
+      "word": "longer."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 18,
+    "mode": "emotion",
+    "emotion": "fearful",
+    "confidence": 0.6,
+    "intensity": 0.4,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 5,
+      "word": "whole"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 19,
+    "mode": "emotion",
+    "emotion": "fearful",
+    "confidence": 0.7,
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_after_ms": 1200,
+    "emphasis_words": [
+     {
+      "word_idx": 3,
+      "word": "know"
+     }
+    ],
+    "tags": []
+   }
+  ]
+ },
+ "plan": [
+  {
+   "idx": 0,
+   "segment": 0,
+   "text": "\"Are you going to tell me where you were last night?\"",
+   "words": [
+    "\"Are",
+    "you",
+    "going",
+    "to",
+    "tell",
+    "me",
+    "where",
+    "you",
+    "were",
+    "last",
+    "night?\""
+   ],
+   "parts": [
+    {
+     "span": [
+      0,
+      53
+     ],
+     "quote_idx": 0,
+     "speaker": "Martha"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Martha",
+   "mode": "plain",
+   "emotion": "disgusted",
+   "confidence": 0.7,
+   "intensity": 0.5,
+   "pace": "normal",
+   "pause_after_ms": 400,
+   "emphasis": [
+    6
+   ],
+   "tags": []
+  },
+  {
+   "idx": 1,
+   "segment": 0,
+   "text": "Martha asked, folding her arms.",
+   "words": [
+    "Martha",
+    "asked,",
+    "folding",
+    "her",
+    "arms."
+   ],
+   "parts": [
+    {
+     "span": [
+      54,
+      85
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": true,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.5,
+   "intensity": 0.2,
+   "pace": "normal",
+   "pause_after_ms": 700,
+   "emphasis": [],
+   "tags": []
+  },
+  {
+   "idx": 2,
+   "segment": 1,
+   "text": "\"Oh, certainly,\" said Tom.",
+   "words": [
+    "\"Oh,",
+    "certainly,\"",
+    "said",
+    "Tom."
+   ],
+   "parts": [
+    {
+     "span": [
+      0,
+      16
+     ],
+     "quote_idx": 1,
+     "speaker": "Tom"
+    },
+    {
+     "span": [
+      16,
+      26
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "emotion",
+   "emotion": "happy",
+   "confidence": 0.8,
+   "intensity": 0.4,
+   "pace": "normal",
+   "pause_after_ms": 400,
+   "emphasis": [
+    1
+   ],
+   "tags": []
+  },
+  {
+   "idx": 3,
+   "segment": 1,
+   "text": "\"I was at the opera.",
+   "words": [
+    "\"I",
+    "was",
+    "at",
+    "the",
+    "opera."
+   ],
+   "parts": [
+    {
+     "span": [
+      27,
+      47
+     ],
+     "quote_idx": 2,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "emotion",
+   "emotion": "happy",
+   "confidence": 0.8,
+   "intensity": 0.3,
+   "pace": "normal",
+   "pause_after_ms": 250,
+   "emphasis": [
+    4
+   ],
+   "tags": []
+  },
+  {
+   "idx": 4,
+   "segment": 1,
+   "text": "With the Queen.",
+   "words": [
+    "With",
+    "the",
+    "Queen."
+   ],
+   "parts": [
+    {
+     "span": [
+      48,
+      63
+     ],
+     "quote_idx": 2,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "plain",
+   "emotion": "happy",
+   "confidence": 0.7,
+   "intensity": 0.3,
+   "pace": "normal",
+   "pause_after_ms": 250,
+   "emphasis": [
+    2
+   ],
+   "tags": []
+  },
+  {
+   "idx": 5,
+   "segment": 1,
+   "text": "She sends her warmest regards.\"",
+   "words": [
+    "She",
+    "sends",
+    "her",
+    "warmest",
+    "regards.\""
+   ],
+   "parts": [
+    {
+     "span": [
+      64,
+      95
+     ],
+     "quote_idx": 2,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": true,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "plain",
+   "emotion": "happy",
+   "confidence": 0.7,
+   "intensity": 0.4,
+   "pace": "normal",
+   "pause_after_ms": 800,
+   "emphasis": [
+    3
+   ],
+   "tags": []
+  },
+  {
+   "idx": 6,
+   "segment": 2,
+   "text": "\"Don't you dare make a joke of this!",
+   "words": [
+    "\"Don't",
+    "you",
+    "dare",
+    "make",
+    "a",
+    "joke",
+    "of",
+    "this!"
+   ],
+   "parts": [
+    {
+     "span": [
+      0,
+      36
+     ],
+     "quote_idx": 3,
+     "speaker": "Martha"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Martha",
+   "mode": "emotion",
+   "emotion": "angry",
+   "confidence": 0.9,
+   "intensity": 0.7,
+   "pace": "fast",
+   "pause_after_ms": 300,
+   "emphasis": [
+    2
+   ],
+   "tags": []
+  },
+  {
+   "idx": 7,
+   "segment": 2,
+   "text": "I waited up until two in the morning, Tom.",
+   "words": [
+    "I",
+    "waited",
+    "up",
+    "until",
+    "two",
+    "in",
+    "the",
+    "morning,",
+    "Tom."
+   ],
+   "parts": [
+    {
+     "span": [
+      37,
+      79
+     ],
+     "quote_idx": 3,
+     "speaker": "Martha"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Martha",
+   "mode": "emotion",
+   "emotion": "angry",
+   "confidence": 0.8,
+   "intensity": 0.6,
+   "pace": "normal",
+   "pause_after_ms": 300,
+   "emphasis": [
+    4
+   ],
+   "tags": []
+  },
+  {
+   "idx": 8,
+   "segment": 2,
+   "text": "Two!\"",
+   "words": [
+    "Two!\""
+   ],
+   "parts": [
+    {
+     "span": [
+      80,
+      85
+     ],
+     "quote_idx": 3,
+     "speaker": "Martha"
+    }
+   ],
+   "last_in_segment": true,
+   "boundary": "paragraph",
+   "track": "Martha",
+   "mode": "emotion",
+   "emotion": "angry",
+   "confidence": 0.9,
+   "intensity": 0.8,
+   "pace": "fast",
+   "pause_after_ms": 900,
+   "emphasis": [
+    0
+   ],
+   "tags": []
+  },
+  {
+   "idx": 9,
+   "segment": 3,
+   "text": "He looked down at the floor.",
+   "words": [
+    "He",
+    "looked",
+    "down",
+    "at",
+    "the",
+    "floor."
+   ],
+   "parts": [
+    {
+     "span": [
+      0,
+      28
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.5,
+   "intensity": 0.2,
+   "pace": "slow",
+   "pause_after_ms": 400,
+   "emphasis": [],
+   "tags": []
+  },
+  {
+   "idx": 10,
+   "segment": 3,
+   "text": "\"I know.",
+   "words": [
+    "\"I",
+    "know."
+   ],
+   "parts": [
+    {
+     "span": [
+      29,
+      37
+     ],
+     "quote_idx": 4,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "plain",
+   "emotion": "sad",
+   "confidence": 0.7,
+   "intensity": 0.4,
+   "pace": "slow",
+   "pause_after_ms": 250,
+   "emphasis": [],
+   "tags": []
+  },
+  {
+   "idx": 11,
+   "segment": 3,
+   "text": "I'm sorry.",
+   "words": [
+    "I'm",
+    "sorry."
+   ],
+   "parts": [
+    {
+     "span": [
+      38,
+      48
+     ],
+     "quote_idx": 4,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "emotion",
+   "emotion": "sad",
+   "confidence": 0.8,
+   "intensity": 0.5,
+   "pace": "slow",
+   "pause_after_ms": 250,
+   "emphasis": [
+    1
+   ],
+   "tags": []
+  },
+  {
+   "idx": 12,
+   "segment": 3,
+   "text": "I'm not sure I can explain it, not properly.\"",
+   "words": [
+    "I'm",
+    "not",
+    "sure",
+    "I",
+    "can",
+    "explain",
+    "it,",
+    "not",
+    "properly.\""
+   ],
+   "parts": [
+    {
+     "span": [
+      49,
+      94
+     ],
+     "quote_idx": 4,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": true,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "plain",
+   "emotion": "sad",
+   "confidence": 0.7,
+   "intensity": 0.4,
+   "pace": "slow",
+   "pause_after_ms": 800,
+   "emphasis": [
+    7,
+    8
+   ],
+   "tags": []
+  },
+  {
+   "idx": 13,
+   "segment": 4,
+   "text": "\"Then try,\" she said, more quietly now.",
+   "words": [
+    "\"Then",
+    "try,\"",
+    "she",
+    "said,",
+    "more",
+    "quietly",
+    "now."
+   ],
+   "parts": [
+    {
+     "span": [
+      0,
+      11
+     ],
+     "quote_idx": 5,
+     "speaker": "Martha"
+    },
+    {
+     "span": [
+      11,
+      39
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": true,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.6,
+   "intensity": 0.3,
+   "pace": "slow",
+   "pause_after_ms": 500,
+   "emphasis": [
+    5
+   ],
+   "tags": []
+  },
+  {
+   "idx": 14,
+   "segment": 5,
+   "text": "\"I think,\" he began, and stopped.",
+   "words": [
+    "\"I",
+    "think,\"",
+    "he",
+    "began,",
+    "and",
+    "stopped."
+   ],
+   "parts": [
+    {
+     "span": [
+      0,
+      10
+     ],
+     "quote_idx": 6,
+     "speaker": "Tom"
+    },
+    {
+     "span": [
+      10,
+      33
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.5,
+   "intensity": 0.3,
+   "pace": "slow",
+   "pause_after_ms": 400,
+   "emphasis": [],
+   "tags": []
+  },
+  {
+   "idx": 15,
+   "segment": 5,
+   "text": "He glanced at the window.",
+   "words": [
+    "He",
+    "glanced",
+    "at",
+    "the",
+    "window."
+   ],
+   "parts": [
+    {
+     "span": [
+      34,
+      59
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.5,
+   "intensity": 0.2,
+   "pace": "normal",
+   "pause_after_ms": 400,
+   "emphasis": [],
+   "tags": []
+  },
+  {
+   "idx": 16,
+   "segment": 5,
+   "text": "\"I think someone has been following me.",
+   "words": [
+    "\"I",
+    "think",
+    "someone",
+    "has",
+    "been",
+    "following",
+    "me."
+   ],
+   "parts": [
+    {
+     "span": [
+      60,
+      99
+     ],
+     "quote_idx": 7,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.7,
+   "intensity": 0.5,
+   "pace": "normal",
+   "pause_after_ms": 300,
+   "emphasis": [
+    5
+   ],
+   "tags": []
+  },
+  {
+   "idx": 17,
+   "segment": 5,
+   "text": "For a week, perhaps longer.",
+   "words": [
+    "For",
+    "a",
+    "week,",
+    "perhaps",
+    "longer."
+   ],
+   "parts": [
+    {
+     "span": [
+      100,
+      127
+     ],
+     "quote_idx": 7,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.6,
+   "intensity": 0.4,
+   "pace": "slow",
+   "pause_after_ms": 300,
+   "emphasis": [
+    4
+   ],
+   "tags": []
+  },
+  {
+   "idx": 18,
+   "segment": 5,
+   "text": "Or perhaps I've imagined the whole thing.",
+   "words": [
+    "Or",
+    "perhaps",
+    "I've",
+    "imagined",
+    "the",
+    "whole",
+    "thing."
+   ],
+   "parts": [
+    {
+     "span": [
+      128,
+      169
+     ],
+     "quote_idx": 7,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.6,
+   "intensity": 0.4,
+   "pace": "normal",
+   "pause_after_ms": 300,
+   "emphasis": [
+    5
+   ],
+   "tags": []
+  },
+  {
+   "idx": 19,
+   "segment": 5,
+   "text": "I honestly don't know anymore.\"",
+   "words": [
+    "I",
+    "honestly",
+    "don't",
+    "know",
+    "anymore.\""
+   ],
+   "parts": [
+    {
+     "span": [
+      170,
+      201
+     ],
+     "quote_idx": 7,
+     "speaker": "Tom"
+    }
+   ],
+   "last_in_segment": true,
+   "boundary": "paragraph",
+   "track": "Tom",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.7,
+   "intensity": 0.5,
+   "pace": "slow",
+   "pause_after_ms": 1200,
+   "emphasis": [
+    3
+   ],
+   "tags": []
+  }
+ ],
+ "log": [
+  "s3: emphasis 'opera.' moved 3->4",
+  "s4: emphasis 'Queen.' moved 1->2"
+ ]
+}

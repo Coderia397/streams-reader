@@ -1,0 +1,688 @@
+{
+ "passage": "1-suspense",
+ "model": "@cf/google/gemma-4-26b-a4b-it",
+ "prompt_version": 1,
+ "cache_key": "e7e61bb07f3babcff33c14cc2f68539341e3d9218ee5f10691cacce10d3d9759",
+ "usage": {
+  "prompt_tokens": 1686,
+  "completion_tokens": 1347,
+  "total_tokens": 3033,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  },
+  "neurons": 52.063636779785156
+ },
+ "elapsed_s": 26.8,
+ "genre": "fiction",
+ "characters": [],
+ "quotes": [],
+ "raw": {
+  "genre": "fiction",
+  "characters": [],
+  "quotes": [],
+  "sentences": [
+   {
+    "sentence_idx": 0,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.9,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 15,
+      "word": "eleven"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 1,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.8,
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 6,
+      "word": "silver"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 2,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.7,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 800,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 3,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.6,
+    "intensity": 0.3,
+    "pace": "fast",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 8,
+      "word": "sound."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 4,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.7,
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 5,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.6,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 350,
+    "emphasis_words": [
+     {
+      "word_idx": 8,
+      "word": "creaked."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 6,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.7,
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_after_ms": 600,
+    "emphasis_words": [
+     {
+      "word_idx": 1,
+      "word": "another."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 7,
+    "mode": "plain",
+    "emotion": "angry",
+    "confidence": 0.5,
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 0,
+      "word": "Nobody"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 8,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.8,
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_after_ms": 800,
+    "emphasis_words": [
+     {
+      "word_idx": 9,
+      "word": "closer."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 9,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.7,
+    "intensity": 0.4,
+    "pace": "fast",
+    "pause_after_ms": 300,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 10,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.8,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 2,
+      "word": "shaking."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 11,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.9,
+    "intensity": 0.6,
+    "pace": "slow",
+    "pause_after_ms": 1200,
+    "emphasis_words": [
+     {
+      "word_idx": 6,
+      "word": "turn."
+     }
+    ],
+    "tags": []
+   }
+  ]
+ },
+ "plan": [
+  {
+   "idx": 0,
+   "segment": 0,
+   "text": "The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.",
+   "words": [
+    "The",
+    "lighthouse",
+    "keeper",
+    "finished",
+    "his",
+    "supper",
+    "at",
+    "seven,",
+    "as",
+    "he",
+    "had",
+    "done",
+    "every",
+    "evening",
+    "for",
+    "eleven",
+    "years."
+   ],
+   "parts": [
+    {
+     "span": [
+      0,
+      98
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.9,
+   "intensity": 0.2,
+   "pace": "normal",
+   "pause_after_ms": 300,
+   "emphasis": [
+    15
+   ],
+   "tags": []
+  },
+  {
+   "idx": 1,
+   "segment": 0,
+   "text": "Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.",
+   "words": [
+    "Outside,",
+    "the",
+    "sea",
+    "lay",
+    "flat",
+    "and",
+    "silver",
+    "under",
+    "a",
+    "pale",
+    "sky,",
+    "and",
+    "the",
+    "gulls",
+    "had",
+    "settled",
+    "on",
+    "the",
+    "rocks",
+    "below",
+    "the",
+    "lamp",
+    "room."
+   ],
+   "parts": [
+    {
+     "span": [
+      99,
+      213
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.8,
+   "intensity": 0.2,
+   "pace": "slow",
+   "pause_after_ms": 400,
+   "emphasis": [
+    6
+   ],
+   "tags": []
+  },
+  {
+   "idx": 2,
+   "segment": 0,
+   "text": "He wound the clock, trimmed the wick, and sat down by the window with his pipe.",
+   "words": [
+    "He",
+    "wound",
+    "the",
+    "clock,",
+    "trimmed",
+    "the",
+    "wick,",
+    "and",
+    "sat",
+    "down",
+    "by",
+    "the",
+    "window",
+    "with",
+    "his",
+    "pipe."
+   ],
+   "parts": [
+    {
+     "span": [
+      214,
+      293
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": true,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.7,
+   "intensity": 0.2,
+   "pace": "normal",
+   "pause_after_ms": 800,
+   "emphasis": [],
+   "tags": []
+  },
+  {
+   "idx": 3,
+   "segment": 1,
+   "text": "Then the gulls rose, all at once, without a sound.",
+   "words": [
+    "Then",
+    "the",
+    "gulls",
+    "rose,",
+    "all",
+    "at",
+    "once,",
+    "without",
+    "a",
+    "sound."
+   ],
+   "parts": [
+    {
+     "span": [
+      0,
+      50
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.6,
+   "intensity": 0.3,
+   "pace": "fast",
+   "pause_after_ms": 400,
+   "emphasis": [
+    9
+   ],
+   "tags": []
+  },
+  {
+   "idx": 4,
+   "segment": 1,
+   "text": "He set the pipe down.",
+   "words": [
+    "He",
+    "set",
+    "the",
+    "pipe",
+    "down."
+   ],
+   "parts": [
+    {
+     "span": [
+      51,
+      72
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "neutral",
+   "confidence": 0.7,
+   "intensity": 0.3,
+   "pace": "normal",
+   "pause_after_ms": 300,
+   "emphasis": [],
+   "tags": []
+  },
+  {
+   "idx": 5,
+   "segment": 1,
+   "text": "Somewhere beneath him, on the iron stairs, a step creaked.",
+   "words": [
+    "Somewhere",
+    "beneath",
+    "him,",
+    "on",
+    "the",
+    "iron",
+    "stairs,",
+    "a",
+    "step",
+    "creaked."
+   ],
+   "parts": [
+    {
+     "span": [
+      73,
+      131
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.6,
+   "intensity": 0.4,
+   "pace": "slow",
+   "pause_after_ms": 350,
+   "emphasis": [
+    9
+   ],
+   "tags": []
+  },
+  {
+   "idx": 6,
+   "segment": 1,
+   "text": "Then another.",
+   "words": [
+    "Then",
+    "another."
+   ],
+   "parts": [
+    {
+     "span": [
+      132,
+      145
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.7,
+   "intensity": 0.5,
+   "pace": "slow",
+   "pause_after_ms": 600,
+   "emphasis": [
+    1
+   ],
+   "tags": []
+  },
+  {
+   "idx": 7,
+   "segment": 1,
+   "text": "Nobody had crossed the causeway; he would have seen them.",
+   "words": [
+    "Nobody",
+    "had",
+    "crossed",
+    "the",
+    "causeway;",
+    "he",
+    "would",
+    "have",
+    "seen",
+    "them."
+   ],
+   "parts": [
+    {
+     "span": [
+      146,
+      203
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.5,
+   "intensity": 0.3,
+   "pace": "normal",
+   "pause_after_ms": 300,
+   "emphasis": [
+    0
+   ],
+   "tags": []
+  },
+  {
+   "idx": 8,
+   "segment": 1,
+   "text": "The steps were slow and heavy, and they were getting closer.",
+   "words": [
+    "The",
+    "steps",
+    "were",
+    "slow",
+    "and",
+    "heavy,",
+    "and",
+    "they",
+    "were",
+    "getting",
+    "closer."
+   ],
+   "parts": [
+    {
+     "span": [
+      204,
+      264
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": true,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.8,
+   "intensity": 0.5,
+   "pace": "slow",
+   "pause_after_ms": 800,
+   "emphasis": [
+    10
+   ],
+   "tags": []
+  },
+  {
+   "idx": 9,
+   "segment": 2,
+   "text": "He reached for the lantern.",
+   "words": [
+    "He",
+    "reached",
+    "for",
+    "the",
+    "lantern."
+   ],
+   "parts": [
+    {
+     "span": [
+      0,
+      27
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.7,
+   "intensity": 0.4,
+   "pace": "fast",
+   "pause_after_ms": 300,
+   "emphasis": [],
+   "tags": []
+  },
+  {
+   "idx": 10,
+   "segment": 2,
+   "text": "His hand was shaking.",
+   "words": [
+    "His",
+    "hand",
+    "was",
+    "shaking."
+   ],
+   "parts": [
+    {
+     "span": [
+      28,
+      49
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": false,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.8,
+   "intensity": 0.4,
+   "pace": "slow",
+   "pause_after_ms": 400,
+   "emphasis": [
+    3
+   ],
+   "tags": []
+  },
+  {
+   "idx": 11,
+   "segment": 2,
+   "text": "The door handle began, very slowly, to turn.",
+   "words": [
+    "The",
+    "door",
+    "handle",
+    "began,",
+    "very",
+    "slowly,",
+    "to",
+    "turn."
+   ],
+   "parts": [
+    {
+     "span": [
+      50,
+      94
+     ],
+     "quote_idx": null,
+     "speaker": null
+    }
+   ],
+   "last_in_segment": true,
+   "boundary": "paragraph",
+   "track": "narrator",
+   "mode": "plain",
+   "emotion": "fearful",
+   "confidence": 0.9,
+   "intensity": 0.6,
+   "pace": "slow",
+   "pause_after_ms": 1200,
+   "emphasis": [
+    7
+   ],
+   "tags": []
+  }
+ ],
+ "log": [
+  "s3: emphasis 'sound.' moved 8->9",
+  "s5: emphasis 'creaked.' moved 8->9",
+  "s7: narrator fearful->angry held (2 sentences since last change)",
+  "s8: emphasis 'closer.' moved 9->10",
+  "s10: emphasis 'shaking.' moved 2->3",
+  "s11: emphasis 'turn.' moved 6->7"
+ ]
+}

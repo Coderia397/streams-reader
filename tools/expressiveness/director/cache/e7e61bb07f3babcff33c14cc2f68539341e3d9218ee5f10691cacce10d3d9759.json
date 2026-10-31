@@ -1,0 +1,202 @@
+{
+ "model": "@cf/google/gemma-4-26b-a4b-it",
+ "prompt_version": 1,
+ "key": "e7e61bb07f3babcff33c14cc2f68539341e3d9218ee5f10691cacce10d3d9759",
+ "elapsed_s": 26.8,
+ "usage": {
+  "prompt_tokens": 1686,
+  "completion_tokens": 1347,
+  "total_tokens": 3033,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  },
+  "neurons": 52.063636779785156
+ },
+ "finish_reason": "stop",
+ "reasoning_chars": 0,
+ "request": "Sentences:\n[0] The lighthouse keeper finished his supper at seven, as he had done every evening for eleven years.\n    words: 0:The | 1:lighthouse | 2:keeper | 3:finished | 4:his | 5:supper | 6:at | 7:seven, | 8:as | 9:he | 10:had | 11:done | 12:every | 13:evening | 14:for | 15:eleven | 16:years.\n[1] Outside, the sea lay flat and silver under a pale sky, and the gulls had settled on the rocks below the lamp room.\n    words: 0:Outside, | 1:the | 2:sea | 3:lay | 4:flat | 5:and | 6:silver | 7:under | 8:a | 9:pale | 10:sky, | 11:and | 12:the | 13:gulls | 14:had | 15:settled | 16:on | 17:the | 18:rocks | 19:below | 20:the | 21:lamp | 22:room.\n[2] (ends paragraph) He wound the clock, trimmed the wick, and sat down by the window with his pipe.\n    words: 0:He | 1:wound | 2:the | 3:clock, | 4:trimmed | 5:the | 6:wick, | 7:and | 8:sat | 9:down | 10:by | 11:the | 12:window | 13:with | 14:his | 15:pipe.\n[3] Then the gulls rose, all at once, without a sound.\n    words: 0:Then | 1:the | 2:gulls | 3:rose, | 4:all | 5:at | 6:once, | 7:without | 8:a | 9:sound.\n[4] He set the pipe down.\n    words: 0:He | 1:set | 2:the | 3:pipe | 4:down.\n[5] Somewhere beneath him, on the iron stairs, a step creaked.\n    words: 0:Somewhere | 1:beneath | 2:him, | 3:on | 4:the | 5:iron | 6:stairs, | 7:a | 8:step | 9:creaked.\n[6] Then another.\n    words: 0:Then | 1:another.\n[7] Nobody had crossed the causeway; he would have seen them.\n    words: 0:Nobody | 1:had | 2:crossed | 3:the | 4:causeway; | 5:he | 6:would | 7:have | 8:seen | 9:them.\n[8] (ends paragraph) The steps were slow and heavy, and they were getting closer.\n    words: 0:The | 1:steps | 2:were | 3:slow | 4:and | 5:heavy, | 6:and | 7:they | 8:were | 9:getting | 10:closer.\n[9] He reached for the lantern.\n    words: 0:He | 1:reached | 2:for | 3:the | 4:lantern.\n[10] His hand was shaking.\n    words: 0:His | 1:hand | 2:was | 3:shaking.\n[11] (ends paragraph) The door handle began, very slowly, to turn.\n    words: 0:The | 1:door | 2:handle | 3:began, | 4:very | 5:slowly, | 6:to | 7:turn.\n\nQuotes: none",
+ "response": {
+  "genre": "fiction",
+  "characters": [],
+  "quotes": [],
+  "sentences": [
+   {
+    "sentence_idx": 0,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.9,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 15,
+      "word": "eleven"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 1,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.8,
+    "intensity": 0.2,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 6,
+      "word": "silver"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 2,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.7,
+    "intensity": 0.2,
+    "pace": "normal",
+    "pause_after_ms": 800,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 3,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.6,
+    "intensity": 0.3,
+    "pace": "fast",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 8,
+      "word": "sound."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 4,
+    "mode": "plain",
+    "emotion": "neutral",
+    "confidence": 0.7,
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 5,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.6,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 350,
+    "emphasis_words": [
+     {
+      "word_idx": 8,
+      "word": "creaked."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 6,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.7,
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_after_ms": 600,
+    "emphasis_words": [
+     {
+      "word_idx": 1,
+      "word": "another."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 7,
+    "mode": "plain",
+    "emotion": "angry",
+    "confidence": 0.5,
+    "intensity": 0.3,
+    "pace": "normal",
+    "pause_after_ms": 300,
+    "emphasis_words": [
+     {
+      "word_idx": 0,
+      "word": "Nobody"
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 8,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.8,
+    "intensity": 0.5,
+    "pace": "slow",
+    "pause_after_ms": 800,
+    "emphasis_words": [
+     {
+      "word_idx": 9,
+      "word": "closer."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 9,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.7,
+    "intensity": 0.4,
+    "pace": "fast",
+    "pause_after_ms": 300,
+    "emphasis_words": [],
+    "tags": []
+   },
+   {
+    "sentence_idx": 10,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.8,
+    "intensity": 0.4,
+    "pace": "slow",
+    "pause_after_ms": 400,
+    "emphasis_words": [
+     {
+      "word_idx": 2,
+      "word": "shaking."
+     }
+    ],
+    "tags": []
+   },
+   {
+    "sentence_idx": 11,
+    "mode": "plain",
+    "emotion": "fearful",
+    "confidence": 0.9,
+    "intensity": 0.6,
+    "pace": "slow",
+    "pause_after_ms": 1200,
+    "emphasis_words": [
+     {
+      "word_idx": 6,
+      "word": "turn."
+     }
+    ],
+    "tags": []
+   }
+  ]
+ }
+}
